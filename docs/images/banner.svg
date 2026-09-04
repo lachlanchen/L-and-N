@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600" role="img" aria-labelledby="title desc">
+  <title id="title">L-and-N pronunciation coach</title>
+  <desc id="desc">A coral and turquoise sound wave surrounds the L-and-N wordmark on a deep navy background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#071926"/>
+      <stop offset="1" stop-color="#0d2730"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#ff8b78"/>
+      <stop offset="1" stop-color="#34e4cf"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="18" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1600" height="600" rx="44" fill="url(#bg)"/>
+  <circle cx="1320" cy="74" r="260" fill="#34e4cf" opacity=".055"/>
+  <circle cx="210" cy="560" r="300" fill="#ff8b78" opacity=".06"/>
+  <g fill="none" stroke="url(#wave)" stroke-width="13" stroke-linecap="round" filter="url(#glow)" opacity=".94">
+    <path d="M120 305h32l14-53 24 111 27-176 29 236 31-175 27 112 19-55h52"/>
+    <path d="M1225 305h52l18-55 28 112 31-175 29 236 27-176 24 111 14-53h32"/>
+  </g>
+  <g text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui, -apple-system, sans-serif">
+    <text x="800" y="260" fill="#f6fbfb" font-size="128" font-weight="760" letter-spacing="-8">L–and–N</text>
+    <text x="800" y="348" fill="#b8cacd" font-size="34" font-weight="520" letter-spacing="9">SEE · HEAR · PRACTISE</text>
+    <text x="800" y="414" fill="#34e4cf" font-size="27" font-weight="650">English · 普通话 · 廣東話</text>
+  </g>
+</svg>

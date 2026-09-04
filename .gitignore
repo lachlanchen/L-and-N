@@ -1,0 +1,33 @@
+# Dependencies and generated web output
+node_modules/
+dist/
+coverage/
+__pycache__/
+*.py[cod]
+
+# Native build products and local IDE state
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+ios/App/Pods/
+ios/App/DerivedData/
+ios/App/*.xcworkspace/xcuserdata/
+**/xcuserdata/
+*.xcuserstate
+
+# Private configuration, runtime evidence, and large source media
+.env
+.env.*
+!.env.example
+.private/
+.runtime/
+.work/
+/audio/
+/video/
+
+# OS/editor caches
+.DS_Store
+.idea/
+.vscode/
+*.log

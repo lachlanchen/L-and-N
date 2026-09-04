@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">L-and-N</string>
+    <string name="title_activity_main">L-and-N</string>
+    <string name="package_name">art.lazying.landn</string>
+    <string name="custom_url_scheme">art.lazying.landn</string>
+</resources>
