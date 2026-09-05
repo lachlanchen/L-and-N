@@ -1,13 +1,13 @@
 {
-  "sourceCommit": "01d0e9e27e5316bb463a10c1904f26b67bd441bc",
-  "deployedAt": "2026-09-05",
+  "sourceCommit": "d837c146eb0ff66b4ea4000a004f582f4c31ef5f",
+  "deployedAt": "2026-09-06",
   "url": "https://l-and-n.lazying.art/",
-  "releasePath": "/opt/l-and-n-web/releases/41299ade4813f32534146c95e7729b80f8d3e3fe37a299fb74a3688b1ac4101d",
-  "previousRelease": "/opt/l-and-n-web/releases/301113c233f55ec5c216655cb16b43ccbd165a20f402f38b1a8e214428671995",
-  "releaseTarSha256": "41299ade4813f32534146c95e7729b80f8d3e3fe37a299fb74a3688b1ac4101d",
-  "distTreeSha256": "2eaae35121ad85c9082cdc2f8b1ed4f4f38628978770b1e9b1fe7e384cce7bd8",
+  "releasePath": "/opt/l-and-n-web/releases/df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1",
+  "previousRelease": "/opt/l-and-n-web/releases/41299ade4813f32534146c95e7729b80f8d3e3fe37a299fb74a3688b1ac4101d",
+  "releaseTarSha256": "df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1",
+  "distTreeSha256": "9a4b36ec48685b8b3c300acd4993f96387beee5737e1eac735b3afddd6381a5d",
   "distTreeFormat": "SHA-256 of the LC_ALL=C sorted relative-path GNU sha256sum manifest",
-  "mainAsset": "assets/index-B60iT4QQ.js",
+  "mainAsset": "assets/index-DcVqO48w.js",
   "downloads": [
     {
       "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk",
@@ -32,6 +32,20 @@
     "rollbackTarget": "verified",
     "recordingLifecycleRegressionTests": "passed",
     "installedPwaUpdateReload": "passed",
-    "liveRepeatedMicrophoneCapture": "passed"
+    "liveRepeatedMicrophoneCapture": "passed",
+    "iosSizedSingleStreamCapture": "passed: exactly one getUserMedia call",
+    "visibleLiveAndRetainedWaveform": "passed",
+    "recognizedTextBeforeScore": "passed: live production path returned a non-placeholder score",
+    "emptyTranscriptAbstains": "passed: no score is displayed or saved"
+  },
+  "speechBackend": {
+    "service": "landn-speech-api.service",
+    "sourceCommit": "210cee1db473d77cad4de9f132f6ae2afe1b5f45",
+    "listen": "127.0.0.1:18063",
+    "model": "Systran faster-whisper-small from the existing offline cache",
+    "route": "private LazyEdge local-llm-speech route only",
+    "persistence": "transient-until-transcribed",
+    "liveAudioTest": "passed: expected word recognized and audio_retained=false",
+    "inflightFilesAfterTest": 0
   }
 }

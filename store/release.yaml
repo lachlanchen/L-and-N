@@ -15,7 +15,7 @@ identifiers:
   apple_team: Q8M2S2FY77
 
 release:
-  prepared_at: 2026-09-05
+  prepared_at: 2026-09-06
   status: apple_and_google_play_in_review
   app_store_release: manual
   google_play_initial_rollout: full
@@ -34,7 +34,7 @@ platforms:
     status: submitted_for_review
   ios:
     minimum_os: 15.0
-    artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-1/App.ipa
+    artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
     app_store_id: 6808872450
     status: waiting_for_review
   watchos:
@@ -54,13 +54,14 @@ testing:
     artifact_manifest: store/artifacts/android-test-release.json
   ios_watchos:
     version: 1.0
-    build: 1
+    build: 2
     internal_group: L & N Internal Testers
-    internal_status: invited
+    internal_status: testing
     public_group: L & N Public Beta
-    public_status: waiting_for_beta_app_review
+    public_status: testing
     public_url: https://testflight.apple.com/join/CpkT8m9C
     public_tester_limit: 100
+    automatic_tester_notification: true
 
 locales:
   interface:

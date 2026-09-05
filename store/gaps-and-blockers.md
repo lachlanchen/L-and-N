@@ -1,6 +1,6 @@
 # Store publication status
 
-Updated: 2026-09-05
+Updated: 2026-09-06
 
 ## Verified locally
 
@@ -23,12 +23,12 @@ Updated: 2026-09-05
 ## Apple App Store
 
 - App record `6808872450` and the iOS/watchOS identifiers are registered.
-- Version `1.0 (1)` was signed, validated, uploaded once, and submitted to App Review on 2026-09-05.
+- Version `1.0 (2)` was signed, validated, uploaded once, and submitted to App Review on 2026-09-06 after replacing build 1 to include the microphone/transcription repair.
 - The iPhone, iPad, and Apple Watch screenshot sets, listing, review information, privacy response, age rating, content rights, medical-device response, pricing, and availability are complete.
 - App Store Connect currently reports **Waiting for Review**. Approval is not yet claimed.
 - Manual release is selected. After approval, public availability requires one explicit release action in App Store Connect.
 - Availability is currently 146 countries or regions. EU/EEA storefronts remain excluded until the account-level Digital Services Act trader status is verified.
-- TestFlight build `1.0 (1)` is assigned to the internal group and the account holder has been invited.
-- The external TestFlight group and public link are configured, but the build is **Waiting for Review**; the link will not admit testers until Apple approves the beta.
+- TestFlight build `1.0 (2)` is **Testing** in the internal group.
+- TestFlight build `1.0 (2)` is also **Testing** in the external group at https://testflight.apple.com/join/CpkT8m9C; automatic tester notification was enabled.
 
 The first Google Play production release uses a full rollout; staged rollout is reserved for later updates. Both provider reviews are now external dependencies.

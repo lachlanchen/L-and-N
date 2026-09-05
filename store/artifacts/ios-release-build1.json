@@ -1,0 +1,64 @@
+{
+  "app": "L & N: Speech Practice",
+  "appleId": "6808872450",
+  "version": "1.0",
+  "build": 1,
+  "sourceCommit": "71dcd7d3122c57ec4263c1d248c83da1ae735ac9",
+  "exportConfigCommit": "20180d6dfcaead2a969504a61ff022f16d465796",
+  "builtAt": "2026-09-05",
+  "toolchain": {
+    "macOS": "15.7.9",
+    "xcode": "26.3 (17C529)"
+  },
+  "archive": {
+    "path": "/Users/lachlanchen/Projects/L-And-N/release/LAndN-1.0.0-1.xcarchive",
+    "signatureVerification": "codesign deep and strict verification passed"
+  },
+  "ipa": {
+    "path": "/Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-1/App.ipa",
+    "bytes": 8712053,
+    "sha256": "b7db4fccf84c14a757df833a68fe7f5c486a95c082c71e3edae717b7c3252438",
+    "validation": "App Store server validation passed"
+  },
+  "bundles": {
+    "ios": {
+      "identifier": "art.lazying.landn",
+      "minimumOS": "15.0"
+    },
+    "watchos": {
+      "identifier": "art.lazying.landn.watchkitapp",
+      "minimumOS": "11.0",
+      "embedded": true
+    }
+  },
+  "signing": {
+    "team": "Q8M2S2FY77",
+    "identity": "Apple Distribution: LazyingArt LLC (Q8M2S2FY77)",
+    "iosProfile": {
+      "name": "L and N App Store 1-B4657463",
+      "uuid": "0870d436-a4b0-4e52-b2cb-e2d5c899ca5d",
+      "sha256": "8581392b69572453c6556e37c486b076a1151c595648af076fd604389914101b"
+    },
+    "watchosProfile": {
+      "name": "L and N Watch App Store 1-B4657463",
+      "uuid": "45b4ab23-b180-4806-a935-f4c150cb590d",
+      "sha256": "45f947677cffe99aef4fca66b256fac97720c395d471caca06bfddeadf05404d"
+    }
+  },
+  "delivery": {
+    "uploadCount": 1,
+    "deliveryUUID": "756523a9-2ae9-4dd8-8c6d-f6693582d31c",
+    "uploaded": "succeeded with no errors",
+    "submittedAt": "2026-09-05",
+    "appStoreConnectStatus": "Waiting for Review",
+    "releaseAfterApproval": "manual"
+  },
+  "verification": {
+    "webChecks": "passed",
+    "iphoneSimulator": "installed, launched, and exercised",
+    "ipadSimulator": "installed, launched, and screenshot captured",
+    "watchSimulator": "embedded companion installed, launched, and exercised",
+    "privacyManifests": "present in the iOS and watchOS bundles",
+    "exportCompliance": "ITSAppUsesNonExemptEncryption=false"
+  }
+}

@@ -1,12 +1,13 @@
 # Store publication handoff
 
-Updated: 2026-09-05
+Updated: 2026-09-06
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
 ## L & N
 
-- Repository: `/home/lachlan/ProjectsLFS/L-And-N`
+- Healthy working copy: `/home/lachlan/L-And-N-audio-repair`
+- Original working copy: `/home/lachlan/ProjectsLFS/L-And-N` (do not use until the failing `ProjectsLFS` filesystem is repaired)
 - PWA: https://l-and-n.lazying.art/
 - Signed Android test APK: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk
 - APK SHA-256: `9b018d62df3c2e0ca1dc3004bd8c0b30fc08459e12b83fe96a395467c4839934`
@@ -19,20 +20,30 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 Formal submission state:
 
 - Google Play Production `1.0.0 (1)`: **Changes in review**. This is the initial full release, not a staged rollout.
-- Apple App Store iOS/watchOS `1.0 (1)`: **Waiting for Review**. The first release is manual, so approval must be followed by one explicit release action.
+- Apple App Store iOS/watchOS `1.0 (2)`: **Waiting for Review**. Build 1 was removed from review and replaced after the microphone/transcription repair. The first release is manual, so approval must be followed by one explicit release action.
 
 Testing state:
 
 - Google Play internal `1.0 (2)`: **Available to internal testers** at https://play.google.com/apps/internaltest/4701251861700553150.
-- TestFlight internal: build `1.0 (1)` is assigned to `L & N Internal Testers`; the account holder is invited.
-- TestFlight public beta: https://testflight.apple.com/join/CpkT8m9C, build **Waiting for Review**, limit 100. The URL will not admit testers before Beta App Review approval.
+- TestFlight internal: build `1.0 (2)` is **Testing** in `L & N Internal Testers`.
+- TestFlight public beta: https://testflight.apple.com/join/CpkT8m9C, build `1.0 (2)` is **Testing**; automatic tester notification was enabled. Build 1 remains in the group as rollback history.
 
 Release evidence and exact hashes are in `store/artifacts/`. Store declarations and provider outcomes are in the platform submission documents. The signed APK is available through the first-party URL above; Android signing material, Apple profiles, exported binaries, browser cookies, and private email-recipient details are intentionally excluded from Git.
 
 The iOS/watchOS archive was built on the Mac reached through the local SSH alias `echomind-kvm-macos`. The current reproducible artifacts there are:
 
-- `/Users/lachlanchen/Projects/L-And-N/release/LAndN-1.0.0-1.xcarchive`
-- `/Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-1/App.ipa`
+- `/Users/lachlanchen/Projects/L-And-N/release/LAndN-1.0.0-2.xcarchive`
+- `/Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa`
+
+Build 2 IPA SHA-256: `eb2106916ab7b70ae0e800e5bafd2e87b66074450168b88e2690a413ef998da9`. The embedded iOS and watchOS bundles both report build 2, deep/strict code-sign verification passed, Apple server validation passed, and upload delivery UUID `513ceb87-254e-4585-98aa-ee428f01e2b1` succeeded.
+
+## Audio repair operations
+
+- The live PWA release is `/opt/l-and-n-web/releases/df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1` on the edge host. Its rollback is `41299ade4813f32534146c95e7729b80f8d3e3fe37a299fb74a3688b1ac4101d`.
+- The private transient speech service is the enabled user unit `landn-speech-api.service`, listening only on `127.0.0.1:18063`. Its immutable source is LocalLLM commit `210cee1db473d77cad4de9f132f6ae2afe1b5f45`; it reuses the existing offline `faster-whisper-small` cache and deletes each inflight file after transcription.
+- Only LazyEdge service `local-llm-speech` targets that port. Protected live configuration is under `~/.config/lazyedge/`; the secret-free rollback location is described by the private operator state, not committed here.
+- Live browser evidence proved one microphone stream, a moving and retained waveform, recognized text, and a non-placeholder score. An empty transcript now produces no score and saves no progress.
+- Reused noVNC stack: Xvfb `:164`, x11vnc `5964`, websockify/noVNC `6164`, Chrome CDP `9484`. Open `http://127.0.0.1:6164/vnc.html?host=127.0.0.1&port=6164&autoconnect=1&resize=scale&view_only=0&shared=0&reconnect=0`. Do not launch a second L & N stack while these processes are live.
 
 ## EchoMind reference
 
@@ -48,6 +59,6 @@ The long-running EchoMind display `:94` / noVNC `6194` / CDP `9294` is currently
 ## Next provider actions
 
 1. Monitor Google Production until the review result is terminal; verify the public listing before claiming it is live.
-2. Monitor TestFlight Beta App Review; after approval, verify the public link from a tester account.
+2. Test build 2 on a physical iPhone from the internal or public TestFlight group, specifically microphone permission, live waveform motion, retained waveform after Stop, and recognized text before scoring.
 3. Monitor Apple App Review. When the version becomes approved/pending developer release, use the manual release control once, then verify the storefront.
 4. Update `store/release.yaml`, the two submission notes, evidence, and artifact manifests after every provider transition.
