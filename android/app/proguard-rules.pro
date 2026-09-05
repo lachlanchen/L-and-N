@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Capacitor discovers plugin and permission callbacks through runtime
+# annotations. R8 full mode can otherwise keep the plugin class while stripping
+# the annotation metadata, causing requestPermissions() to fall through to the
+# legacy path and crash before microphone capture starts.
+-keepattributes RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations,AnnotationDefault
+-keep @interface com.getcapacitor.annotation.**

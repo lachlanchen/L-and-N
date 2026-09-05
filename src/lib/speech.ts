@@ -120,7 +120,10 @@ async function beginNativeRecognition(language: TrainingLanguage): Promise<Speec
     }
   }
 
-  const permission = await SpeechRecognition.requestPermissions()
+  let permission = await SpeechRecognition.checkPermissions()
+  if (permission.speechRecognition !== 'granted') {
+    permission = await SpeechRecognition.requestPermissions()
+  }
   if (permission.speechRecognition !== 'granted') {
     throw new Error('Speech recognition permission was not granted.')
   }
@@ -136,7 +139,10 @@ async function beginNativeRecognition(language: TrainingLanguage): Promise<Speec
   return {
     result,
     stop: async () => {
-      await SpeechRecognition.stop()
+      // Version 7 of the Android community plugin dispatches stopListening()
+      // but never resolves its PluginCall. Fire the command and allow the
+      // recognition result/error promise above to settle independently.
+      void SpeechRecognition.stop().catch(() => undefined)
     },
     sameOriginFallback: 'never',
   }

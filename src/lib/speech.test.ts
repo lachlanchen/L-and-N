@@ -5,6 +5,7 @@ import { beginSpeechRecognition, isIOSWebBrowser, transcribeWithAllowedFallback 
 
 const speechRecognitionMocks = vi.hoisted(() => ({
   available: vi.fn(),
+  checkPermissions: vi.fn(),
   requestPermissions: vi.fn(),
   start: vi.fn(),
   stop: vi.fn(),
@@ -29,6 +30,7 @@ class BrowserRecognition extends EventTarget {
 
 afterEach(() => {
   vi.restoreAllMocks()
+  vi.clearAllMocks()
   delete (window as typeof window & { SpeechRecognition?: typeof BrowserRecognition })
     .SpeechRecognition
   delete (window as typeof window & { webkitSpeechRecognition?: typeof BrowserRecognition })
@@ -131,5 +133,20 @@ describe('speech-recognition privacy boundary', () => {
     const session = await beginSpeechRecognition('en-US')
 
     expect(session.sameOriginFallback).toBe('never')
+  })
+
+  it('does not let an unresolved native stop call block analysis', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    speechRecognitionMocks.available.mockResolvedValue({ available: true })
+    speechRecognitionMocks.checkPermissions.mockResolvedValue({ speechRecognition: 'granted' })
+    speechRecognitionMocks.start.mockResolvedValue({ matches: ['light'] })
+    speechRecognitionMocks.stop.mockReturnValue(new Promise(() => undefined))
+
+    const session = await beginSpeechRecognition('en-US')
+
+    await expect(session.stop()).resolves.toBeUndefined()
+    await expect(session.result).resolves.toBe('light')
+    expect(speechRecognitionMocks.requestPermissions).not.toHaveBeenCalled()
+    expect(speechRecognitionMocks.stop).toHaveBeenCalledOnce()
   })
 })
