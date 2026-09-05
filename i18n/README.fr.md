@@ -29,7 +29,7 @@ Ce retour sert à s'entraîner : ce n'est ni un diagnostic, ni un jugement d'acc
 
 ## Vie privée et services vocaux
 
-Les caractéristiques acoustiques, les scores, la progression et la calibration sont traités localement. L'application installée utilise la reconnaissance vocale native lorsque le système d'exploitation la propose. La PWA hébergée utilise d'abord la reconnaissance vocale compatible du navigateur ; le navigateur ou la plateforme peuvent traiter cette reconnaissance au moyen de leur propre service. Ce n'est qu'en l'absence de reconnaissance vocale compatible dans le navigateur qu'une tentative peut être envoyée brièvement, par une passerelle de même origine à débit limité, au service Whisper privé afin de vérifier le mot. La passerelle n'accepte que le chemin de transcription exact depuis cette origine, limite la taille et la concurrence, ne journalise ni ne stocke l'audio et répond `Cache-Control: no-store`. L'application reste utilisable sans transcription.
+Les caractéristiques acoustiques, les scores, la progression et la calibration sont traités localement. Sur iOS, un seul flux du moteur audio natif alimente à la fois la forme d'onde, l'analyse acoustique locale et la reconnaissance vocale du système ; l'application ne se dispute donc pas le microphone avec elle-même. La PWA hébergée utilise d'abord la reconnaissance vocale compatible du navigateur ; le navigateur ou la plateforme peuvent traiter cette reconnaissance au moyen de leur propre service. Ce n'est qu'en l'absence de reconnaissance vocale compatible dans le navigateur qu'une tentative peut être envoyée brièvement, par une passerelle de même origine à débit limité, au service Whisper privé afin de vérifier le mot. La passerelle n'accepte que le chemin de transcription exact depuis cette origine, limite la taille et la concurrence, ne journalise ni ne stocke l'audio et répond `Cache-Control: no-store`. L'application reste utilisable sans transcription.
 
 Le navigateur ne reçoit aucun secret LazyEdge et ne contacte pas directement le modèle privé. Tous les exemples sont des ressources statiques produites et vérifiées lors de la version.
 
@@ -39,7 +39,7 @@ Le navigateur ne reçoit aucun secret LazyEdge et ne contacte pas directement le
 | --- | --- | --- |
 | Web/PWA | React 19, TypeScript, Vite, Workbox | Chromium adaptatif, cache hors-ligne, enregistrement et score |
 | Android | Capacitor 8 | Émulateur API 36.1 : build, installation, résultat, 3D et audio intégré |
-| iOS | Capacitor 8 | Simulateur iPhone 17 Pro sous macOS : build, installation et lancement |
+| iOS | Capacitor 8 + enregistreur AVAudioEngine natif | Simulateur iPhone 17 Pro : build, installation et lancement ; intégration de l'enregistreur et Watch embarquée compilées (test micro sur appareil physique restant) |
 | watchOS | SwiftUI | Simulateur Apple Watch Series 11 (42 mm) : build, installation et lancement |
 
 ## Construire et tester

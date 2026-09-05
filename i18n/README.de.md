@@ -29,7 +29,7 @@ Das Ergebnis ist Übungshilfe, keine Diagnose, kein Akzenturteil und keine zerti
 
 ## Datenschutz und Sprachdienste
 
-Akustische Merkmale, Punktzahl, Fortschritt und Kalibrierung werden lokal verarbeitet. Die installierte App verwendet native Spracherkennung, wenn das Betriebssystem sie anbietet. Die gehostete PWA nutzt zuerst eine kompatible Spracherkennung des Browsers; der Browser oder die Plattform kann diese Erkennung über einen eigenen Dienst verarbeiten. Nur wenn keine kompatible Browser-Spracherkennung vorhanden ist, kann ein Versuch kurz über ein Same-Origin-Gateway mit Ratenbegrenzung an den privaten Whisper-Dienst gehen, um das Wort gegenzuprüfen. Das Gateway erlaubt nur den exakten Transkriptionspfad dieses Ursprungs, begrenzt Größe und Parallelität, protokolliert oder speichert kein Audio und antwortet mit `Cache-Control: no-store`. Ohne Transkription bleibt die App nutzbar.
+Akustische Merkmale, Punktzahl, Fortschritt und Kalibrierung werden lokal verarbeitet. Unter iOS versorgt ein einziger nativer Audio-Engine-Stream gleichzeitig Wellenform, lokale Akustikanalyse und systemeigene Spracherkennung; die App konkurriert daher nicht mit sich selbst um das Mikrofon. Die gehostete PWA nutzt zuerst eine kompatible Spracherkennung des Browsers; der Browser oder die Plattform kann diese Erkennung über einen eigenen Dienst verarbeiten. Nur wenn keine kompatible Browser-Spracherkennung vorhanden ist, kann ein Versuch kurz über ein Same-Origin-Gateway mit Ratenbegrenzung an den privaten Whisper-Dienst gehen, um das Wort gegenzuprüfen. Das Gateway erlaubt nur den exakten Transkriptionspfad dieses Ursprungs, begrenzt Größe und Parallelität, protokolliert oder speichert kein Audio und antwortet mit `Cache-Control: no-store`. Ohne Transkription bleibt die App nutzbar.
 
 Der Browser erhält keine LazyEdge-Zugangsdaten und verbindet sich nicht direkt mit dem privaten Modell. Alle Hörbeispiele sind statische, beim Release erzeugte und auf Verständlichkeit geprüfte Dateien.
 
@@ -39,7 +39,7 @@ Der Browser erhält keine LazyEdge-Zugangsdaten und verbindet sich nicht direkt 
 | --- | --- | --- |
 | Web/PWA | React 19, TypeScript, Vite, Workbox | Responsive Chromium-Ansicht, Offline-Cache, Aufnahme und Bewertung |
 | Android | Capacitor 8 | API-36.1-Emulator: Build, Installation, Aufnahme, 3D und Audio |
-| iOS | Capacitor 8 | iPhone-17-Pro-Simulator unter macOS: Build, Installation und Start |
+| iOS | Capacitor 8 + nativer AVAudioEngine-Recorder | iPhone-17-Pro-Simulator: Build, Installation und Start; Recorder-Integration und eingebettete Watch kompiliert (Mikrofontest auf echtem Gerät steht aus) |
 | watchOS | SwiftUI | Apple-Watch-Series-11-Simulator (42 mm): Build, Installation und Start |
 
 ## Bauen und testen

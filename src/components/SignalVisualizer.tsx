@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react'
+import type { LiveSignal } from '../lib/audio-capture'
 import type { AcousticFeatures, TargetSound } from '../types'
 
 interface SignalVisualizerProps {
   analyser: AnalyserNode | null
+  liveSignal: LiveSignal | null
   features: AcousticFeatures | null
   recording: boolean
   target: TargetSound
@@ -16,7 +18,28 @@ interface SignalVisualizerProps {
   }
 }
 
-export function SignalVisualizer({ analyser, features, recording, target, copy }: SignalVisualizerProps) {
+function spectrumFromWaveform(waveform: number[], rms: number): number[] {
+  if (waveform.length < 8) return Array.from({ length: 32 }, () => 0)
+  const bins = Math.min(32, Math.floor(waveform.length / 2))
+  const magnitudes = Array.from({ length: bins }, (_, bin) => {
+    let real = 0
+    let imaginary = 0
+    for (let index = 0; index < waveform.length; index += 1) {
+      const angle = (2 * Math.PI * bin * index) / waveform.length
+      real += waveform[index] * Math.cos(angle)
+      imaginary -= waveform[index] * Math.sin(angle)
+    }
+    return Math.sqrt(real ** 2 + imaginary ** 2) / waveform.length
+  })
+  const peak = Math.max(...magnitudes, 0.0001)
+  // Keep the spectral shape visible without amplifying room noise into a
+  // convincing-looking full signal. Normal speech reaches full scale while
+  // silence remains visually quiet.
+  const level = Math.min(1, Math.max(0, rms) * 12)
+  return Array.from({ length: 32 }, (_, index) => ((magnitudes[index] ?? 0) / peak) * level)
+}
+
+export function SignalVisualizer({ analyser, liveSignal, features, recording, target, copy }: SignalVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -28,8 +51,11 @@ export function SignalVisualizer({ analyser, features, recording, target, copy }
     let animationFrame = 0
     const timeData = analyser ? new Uint8Array(analyser.fftSize) : null
     const frequencyData = analyser ? new Uint8Array(analyser.frequencyBinCount) : null
+    const nativeSpectrum = liveSignal
+      ? spectrumFromWaveform(liveSignal.waveform, liveSignal.rms)
+      : null
 
-    const render = (time: number) => {
+    const render = () => {
       const bounds = canvas.getBoundingClientRect()
       const scale = Math.min(window.devicePixelRatio || 1, 2)
       const width = Math.max(1, Math.round(bounds.width * scale))
@@ -71,14 +97,15 @@ export function SignalVisualizer({ analyser, features, recording, target, copy }
           const sourceIndex = Math.floor((index / 32) * Math.min(frequencyData!.length, 420))
           return frequencyData![sourceIndex] / 255
         })
+      } else if (recording && liveSignal?.waveform.length) {
+        waveform = liveSignal.waveform
+        spectrum = nativeSpectrum ?? []
       } else if (features?.waveform.length) {
         waveform = features.waveform
         spectrum = features.spectrum
       } else {
-        waveform = Array.from({ length: 96 }, (_, index) =>
-          Math.sin(index * 0.38 + time / 520) * (0.08 + Math.sin(index * 0.12) * 0.025),
-        )
-        spectrum = Array.from({ length: 32 }, (_, index) => Math.max(0.03, 0.18 - index * 0.004))
+        waveform = Array.from({ length: 96 }, () => 0)
+        spectrum = Array.from({ length: 32 }, () => 0)
       }
 
       const barAreaHeight = height * 0.34
@@ -111,7 +138,7 @@ export function SignalVisualizer({ analyser, features, recording, target, copy }
 
     animationFrame = window.requestAnimationFrame(render)
     return () => window.cancelAnimationFrame(animationFrame)
-  }, [analyser, features, recording, target])
+  }, [analyser, features, liveSignal, recording, target])
 
   return (
     <section className="signal-studio" aria-label={copy.aria}>

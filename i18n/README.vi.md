@@ -29,7 +29,7 @@ Bộ phân tích cục bộ tìm khởi đầu hữu thanh, kiểm tra chất l�
 
 ## Quyền riêng tư và dịch vụ giọng nói
 
-Đặc trưng âm học, điểm, tiến độ và hiệu chỉnh chạy cục bộ. Ứng dụng cài đặt dùng nhận dạng giọng nói gốc khi hệ điều hành cung cấp. PWA được lưu trữ trước tiên dùng tính năng nhận dạng giọng nói tương thích của trình duyệt; trình duyệt hoặc nền tảng có thể xử lý việc nhận dạng đó qua dịch vụ riêng của họ. Chỉ khi không có tính năng nhận dạng giọng nói tương thích trong trình duyệt, một lần thử mới có thể được gửi tạm thời qua cổng cùng nguồn có giới hạn tần suất tới dịch vụ Whisper riêng để đối chiếu từ. Cổng chỉ nhận đúng đường dẫn phiên âm từ nguồn này, giới hạn kích thước và số yêu cầu đồng thời, không ghi nhật ký hay lưu âm thanh và trả về `Cache-Control: no-store`. Ứng dụng vẫn hữu ích khi không có phiên âm.
+Đặc trưng âm học, điểm, tiến độ và hiệu chỉnh chạy cục bộ. Trên iOS, một luồng duy nhất của bộ máy âm thanh gốc đồng thời cấp dữ liệu cho dạng sóng, phân tích âm học cục bộ và nhận dạng giọng nói của hệ thống; các phần của ứng dụng không còn tranh giành micrô. PWA được lưu trữ trước tiên dùng tính năng nhận dạng giọng nói tương thích của trình duyệt; trình duyệt hoặc nền tảng có thể xử lý việc nhận dạng đó qua dịch vụ riêng của họ. Chỉ khi không có tính năng nhận dạng giọng nói tương thích trong trình duyệt, một lần thử mới có thể được gửi tạm thời qua cổng cùng nguồn có giới hạn tần suất tới dịch vụ Whisper riêng để đối chiếu từ. Cổng chỉ nhận đúng đường dẫn phiên âm từ nguồn này, giới hạn kích thước và số yêu cầu đồng thời, không ghi nhật ký hay lưu âm thanh và trả về `Cache-Control: no-store`. Ứng dụng vẫn hữu ích khi không có phiên âm.
 
 Trình duyệt không nhận thông tin xác thực LazyEdge và không kết nối thẳng tới mô hình riêng. Mọi mẫu là tệp tĩnh được tạo và kiểm tra độ rõ khi phát hành.
 
@@ -39,7 +39,7 @@ Trình duyệt không nhận thông tin xác thực LazyEdge và không kết n�
 | --- | --- | --- |
 | Web/PWA | React 19, TypeScript, Vite, Workbox | Chromium đáp ứng, bộ nhớ đệm ngoại tuyến, ghi âm và chấm điểm |
 | Android | Capacitor 8 | Giả lập API 36.1: dựng, cài, kết quả, 3D và âm thanh đóng gói |
-| iOS | Capacitor 8 | Giả lập iPhone 17 Pro trên macOS: dựng, cài và chạy |
+| iOS | Capacitor 8 + bộ ghi AVAudioEngine gốc | Giả lập iPhone 17 Pro: dựng, cài và chạy; đã biên dịch tích hợp bộ ghi và Watch nhúng (vẫn cần thử micrô trên thiết bị thật) |
 | watchOS | SwiftUI | Giả lập Apple Watch Series 11 (42 mm): dựng, cài và chạy |
 
 ## Dựng và kiểm thử

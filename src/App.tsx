@@ -20,49 +20,29 @@ import './App.css'
 import { SignalVisualizer } from './components/SignalVisualizer'
 import { exercises, languageLabels } from './data/curriculum'
 import { feedbackCopy, formatCopy, initialUILanguage, uiCopy, uiLanguageLabels, type UICopy } from './i18n'
-import { decodeAudioFeatures } from './lib/acoustics'
+import {
+  AudioCaptureError,
+  startAudioCapture,
+  type ActiveAudioCapture,
+  type LiveSignal,
+} from './lib/audio-capture'
 import { loadAttempts, saveAttempt, trainingStreak, type AttemptRecord } from './lib/progress'
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
-import { beginSpeechRecognition, speakExample, transcribeWithAllowedFallback, type SpeechSession } from './lib/speech'
+import { speakExample } from './lib/speech'
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
 
 type Tab = 'practice' | 'learn' | 'progress'
+type CapturePhase = 'idle' | 'starting' | 'recording' | 'processing'
 
 const MouthModel3D = lazy(() =>
   import('./components/MouthModel3D').then((module) => ({ default: module.MouthModel3D })),
 )
 
 interface RecordingSession {
-  recorder: MediaRecorder
-  stream: MediaStream
-  speech: SpeechSession
-  chunks: Blob[]
-  audioContext: AudioContext
-  analyser: AnalyserNode
-}
-
-const emptyFeatures: AcousticFeatures = {
-  rms: 0.04,
-  noiseFloor: 0.003,
-  zeroCrossingRate: 0.08,
-  lowBandRatio: 0.22,
-  midBandRatio: 0.35,
-  spectralCentroidHz: 1100,
-  spectralTiltDb: 4,
-  pitchHz: 150,
-  pitchContour: [],
-  firstFormantHz: 500,
-  secondFormantHz: 1450,
-  formantSpacingHz: 950,
-  firstFormantBandwidthHz: 220,
-  nasalPeakContrastDb: 4,
-  voicedContinuity: 0.58,
-  durationMs: 800,
-  onsetMs: 0,
-  onsetDurationMs: 220,
-  signalQuality: 0.25,
-  waveform: [],
-  spectrum: [],
+  capture: ActiveAudioCapture
+  exercise: Exercise
+  calibration: ReturnType<typeof buildAcousticCalibration>
+  operationId: number
 }
 
 function App() {
@@ -70,16 +50,22 @@ function App() {
   const [uiLanguage, setUILanguage] = useState<UILanguage>(initialUILanguage)
   const [language, setLanguage] = useState<TrainingLanguage>('en-US')
   const [exerciseIndex, setExerciseIndex] = useState(0)
-  const [recording, setRecording] = useState(false)
-  const [processing, setProcessing] = useState(false)
+  const [capturePhase, setCapturePhase] = useState<CapturePhase>('idle')
   const [score, setScore] = useState<PronunciationScore | null>(null)
   const [lastFeatures, setLastFeatures] = useState<AcousticFeatures | null>(null)
   const [analyser, setAnalyser] = useState<AnalyserNode | null>(null)
+  const [liveSignal, setLiveSignal] = useState<LiveSignal | null>(null)
   const [error, setError] = useState('')
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
   const sessionRef = useRef<RecordingSession | null>(null)
   const stopTimerRef = useRef<number | null>(null)
+  const capturePhaseRef = useRef<CapturePhase>('idle')
+  const operationRef = useRef(0)
   const copy = uiCopy(uiLanguage)
+  const recording = capturePhase === 'recording'
+  const starting = capturePhase === 'starting'
+  const processing = capturePhase === 'processing'
+  const captureBusy = capturePhase !== 'idle'
 
   const languageExercises = useMemo(
     () => exercises.filter((item) => item.language === language),
@@ -102,14 +88,38 @@ function App() {
     document.title = copy.appTitle
   }, [copy.appTitle, uiLanguage])
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    const releaseCapture = (updateUI: boolean) => {
+      operationRef.current += 1
       if (stopTimerRef.current) window.clearTimeout(stopTimerRef.current)
-      sessionRef.current?.stream.getTracks().forEach((track) => track.stop())
-      void sessionRef.current?.audioContext.close()
-    },
-    [],
-  )
+      stopTimerRef.current = null
+      const session = sessionRef.current
+      sessionRef.current = null
+      if (session) void session.capture.cancel().catch(() => undefined)
+      if (updateUI) {
+        capturePhaseRef.current = 'idle'
+        setCapturePhase('idle')
+        setAnalyser(null)
+        setLiveSignal(null)
+      }
+    }
+    const handleVisibility = () => {
+      if (document.visibilityState === 'hidden') releaseCapture(true)
+    }
+    const handlePageHide = () => releaseCapture(true)
+    document.addEventListener('visibilitychange', handleVisibility)
+    window.addEventListener('pagehide', handlePageHide)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility)
+      window.removeEventListener('pagehide', handlePageHide)
+      releaseCapture(false)
+    }
+  }, [])
+
+  const updateCapturePhase = (phase: CapturePhase) => {
+    capturePhaseRef.current = phase
+    setCapturePhase(phase)
+  }
 
   const moveExercise = (direction: number) => {
     setExerciseIndex((current) =>
@@ -143,115 +153,104 @@ function App() {
 
   const finishRecording = async () => {
     const session = sessionRef.current
-    if (!session || processing) return
-    setRecording(false)
-    setProcessing(true)
+    if (!session || capturePhaseRef.current !== 'recording') return
+    updateCapturePhase('processing')
     if (stopTimerRef.current) window.clearTimeout(stopTimerRef.current)
-
-    const blobPromise = new Promise<Blob>((resolve) => {
-      session.recorder.addEventListener(
-        'stop',
-        () => resolve(new Blob(session.chunks, { type: session.recorder.mimeType || 'audio/webm' })),
-        { once: true },
-      )
-    })
-
-    if (session.recorder.state !== 'inactive') session.recorder.stop()
-    session.stream.getTracks().forEach((track) => track.stop())
-    void session.speech.stop().catch(() => undefined)
+    stopTimerRef.current = null
 
     try {
-      const blob = await Promise.race([
-        blobPromise,
-        new Promise<Blob>((resolve) =>
-          window.setTimeout(() => resolve(new Blob(session.chunks, { type: session.recorder.mimeType || 'audio/webm' })), 1200),
-        ),
-      ])
-      const [features, nativeTranscript, whisperTranscript] = await Promise.all([
-        decodeAudioFeatures(blob).catch(() => emptyFeatures),
-        Promise.race([
-          session.speech.result.catch(() => ''),
-          new Promise<string>((resolve) => window.setTimeout(() => resolve(''), 1800)),
-        ]),
-        transcribeWithAllowedFallback(session.speech, blob, language),
-      ])
-      const transcript = nativeTranscript || whisperTranscript
-      setLastFeatures(features)
-      const result = scorePronunciation(exercise, transcript, features, calibration)
+      const captured = await session.capture.stop()
+      if (operationRef.current !== session.operationId) return
+      setLastFeatures(captured.features)
+      const result = scorePronunciation(
+        session.exercise,
+        captured.transcript,
+        captured.features,
+        session.calibration,
+      )
       setScore(result)
       const next = await saveAttempt({
-        exerciseId: exercise.id,
+        exerciseId: session.exercise.id,
         score: result.overall,
         detectedSound: result.detectedSound,
         createdAt: new Date().toISOString(),
-        target: exercise.target,
-        language: exercise.language,
-        features,
+        target: session.exercise.target,
+        language: session.exercise.language,
+        features: captured.features,
       })
-      setAttempts(next)
+      if (operationRef.current === session.operationId) setAttempts(next)
     } catch (caught) {
       console.warn('Pronunciation scoring failed', caught)
-      setError(copy.errors.scoring)
+      if (operationRef.current !== session.operationId) return
+      if (caught instanceof AudioCaptureError && caught.code === 'silent-recording') {
+        setError(copy.errors.silence)
+      } else if (
+        caught instanceof AudioCaptureError &&
+        (caught.code === 'empty-recording' || caught.code === 'recording-failed')
+      ) {
+        setError(copy.errors.recording)
+      } else {
+        setError(copy.errors.scoring)
+      }
     } finally {
-      sessionRef.current = null
-      setAnalyser(null)
-      void session.audioContext.close()
-      setProcessing(false)
+      if (sessionRef.current === session) sessionRef.current = null
+      if (operationRef.current === session.operationId) {
+        setAnalyser(null)
+        setLiveSignal(null)
+        updateCapturePhase('idle')
+      }
     }
   }
 
   const startRecording = async () => {
+    if (capturePhaseRef.current !== 'idle') return
+    const operationId = operationRef.current + 1
+    operationRef.current = operationId
+    updateCapturePhase('starting')
     setError('')
     setScore(null)
-    let pendingStream: MediaStream | null = null
-    let pendingAudioContext: AudioContext | null = null
+    setLastFeatures(null)
+    setLiveSignal(null)
+    let capture: ActiveAudioCapture | null = null
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+      capture = await startAudioCapture({
+        language,
+        expectedWords: [exercise.word.split(' ')[0], exercise.pair.split(' ')[0]],
+        onLiveSignal: (signal) => {
+          if (operationRef.current === operationId) setLiveSignal(signal)
+        },
       })
-      pendingStream = stream
-      const speech = await beginSpeechRecognition(language)
-      const audioContext = new AudioContext()
-      pendingAudioContext = audioContext
-      const analyserNode = audioContext.createAnalyser()
-      analyserNode.fftSize = 2048
-      analyserNode.smoothingTimeConstant = 0.72
-      audioContext.createMediaStreamSource(stream).connect(analyserNode)
-      const preferredMime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-        ? 'audio/webm;codecs=opus'
-        : MediaRecorder.isTypeSupported('audio/mp4')
-          ? 'audio/mp4'
-          : ''
-      const recorder = new MediaRecorder(stream, preferredMime ? { mimeType: preferredMime } : undefined)
-      const session: RecordingSession = { recorder, stream, speech, chunks: [], audioContext, analyser: analyserNode }
-      recorder.addEventListener('dataavailable', (event) => {
-        if (event.data.size) session.chunks.push(event.data)
-      })
-      recorder.start(100)
+      if (operationRef.current !== operationId) {
+        await capture.cancel()
+        return
+      }
+      const session: RecordingSession = { capture, exercise, calibration, operationId }
       sessionRef.current = session
-      pendingStream = null
-      pendingAudioContext = null
-      setAnalyser(analyserNode)
-      setRecording(true)
+      setAnalyser(capture.analyser)
+      updateCapturePhase('recording')
       stopTimerRef.current = window.setTimeout(() => void finishRecording(), 5000)
     } catch (caught) {
       console.warn('Microphone start failed', caught)
-      pendingStream?.getTracks().forEach((track) => track.stop())
-      if (pendingAudioContext) void pendingAudioContext.close()
-      setError(copy.errors.microphone)
+      await capture?.cancel().catch(() => undefined)
+      if (operationRef.current === operationId) {
+        updateCapturePhase('idle')
+        setAnalyser(null)
+        setLiveSignal(null)
+        setError(copy.errors.microphone)
+      }
     }
   }
 
   const toggleRecording = () => {
-    if (recording) void finishRecording()
-    else void startRecording()
+    if (capturePhaseRef.current === 'recording') void finishRecording()
+    else if (capturePhaseRef.current === 'idle') void startRecording()
   }
 
   const renderPractice = () => (
     <main className="practice-page">
       <div className="language-switcher" data-testid="practice-language-switcher" aria-label={copy.trainingLanguage}>
         {(Object.entries(languageLabels) as Array<[TrainingLanguage, string]>).map(([code, label]) => (
-          <button key={code} data-testid={`practice-language-${code}`} aria-pressed={language === code} className={language === code ? 'active' : ''} onClick={() => selectLanguage(code)}>{label}</button>
+          <button key={code} data-testid={`practice-language-${code}`} aria-pressed={language === code} className={language === code ? 'active' : ''} disabled={captureBusy} onClick={() => selectLanguage(code)}>{label}</button>
         ))}
       </div>
 
@@ -262,7 +261,7 @@ function App() {
 
       <section className="drill-card">
         <div className="drill-topline">
-          <button className="icon-button" aria-label={copy.practice.previousWord} onClick={() => moveExercise(-1)}><ChevronLeft /></button>
+          <button className="icon-button" aria-label={copy.practice.previousWord} disabled={captureBusy} onClick={() => moveExercise(-1)}><ChevronLeft /></button>
           <div className="sound-toggle" role="group" aria-label={copy.practice.soundPicker}>
             {(['L', 'N'] as const).map((sound) => (
               <button
@@ -271,11 +270,12 @@ function App() {
                 type="button"
                 aria-pressed={exercise.target === sound}
                 className={`${sound.toLowerCase()} ${exercise.target === sound ? 'active' : ''}`}
+                disabled={captureBusy}
                 onClick={() => selectTargetSound(sound)}
               >{sound}</button>
             ))}
           </div>
-          <button className="icon-button" aria-label={copy.practice.nextWord} onClick={() => moveExercise(1)}><ChevronRight /></button>
+          <button className="icon-button" aria-label={copy.practice.nextWord} disabled={captureBusy} onClick={() => moveExercise(1)}><ChevronRight /></button>
         </div>
 
         <div className="word-area">
@@ -283,7 +283,7 @@ function App() {
           <h2>{exercise.word}</h2>
           <p className="ipa">{exercise.ipa} <span>· {exercise.translation}</span></p>
           <SoundSpelling exercise={exercise} copy={copy} />
-          <button className="listen-button" title={copy.practice.studioTitle} onClick={() => void speakExample(exercise)}>
+          <button className="listen-button" title={copy.practice.studioTitle} disabled={captureBusy} onClick={() => void speakExample(exercise)}>
             <Volume2 size={19} /> {copy.practice.hearModel}
           </button>
         </div>
@@ -296,16 +296,17 @@ function App() {
 
         <div className="cue"><Target size={18} /><p>{exercise.cue}</p></div>
 
-        <SignalVisualizer analyser={analyser} features={lastFeatures} recording={recording} target={exercise.target} copy={copy.signal} />
+        <SignalVisualizer analyser={analyser} liveSignal={liveSignal} features={lastFeatures} recording={recording} target={exercise.target} copy={copy.signal} />
 
         <button
           className={`record-button ${recording ? 'recording' : ''}`}
           onClick={toggleRecording}
-          disabled={processing}
+          disabled={starting || processing}
+          aria-busy={starting || processing}
           aria-label={recording ? copy.practice.stopAndScore : copy.practice.startRecording}
         >
           <span className="record-orbit"><Mic size={30} /></span>
-          <span>{processing ? copy.practice.analysing : recording ? copy.practice.tapToScore : copy.practice.tapThenSay}</span>
+          <span>{starting ? copy.practice.preparing : processing ? copy.practice.analysing : recording ? copy.practice.tapToScore : copy.practice.tapThenSay}</span>
           {recording && <span className="recording-time">{copy.practice.listening}</span>}
         </button>
 
@@ -378,9 +379,9 @@ function App() {
       {tab === 'learn' && renderLearn()}
       {tab === 'progress' && renderProgress()}
       <nav className="bottom-nav" aria-label={copy.primaryNavigation}>
-        <button className={tab === 'practice' ? 'active' : ''} onClick={() => setTab('practice')}><Mic /><span>{copy.nav.practice}</span></button>
-        <button className={tab === 'learn' ? 'active' : ''} onClick={() => setTab('learn')}><BookOpen /><span>{copy.nav.learn}</span></button>
-        <button className={tab === 'progress' ? 'active' : ''} onClick={() => setTab('progress')}><Activity /><span>{copy.nav.progress}</span></button>
+        <button className={tab === 'practice' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('practice')}><Mic /><span>{copy.nav.practice}</span></button>
+        <button className={tab === 'learn' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('learn')}><BookOpen /><span>{copy.nav.learn}</span></button>
+        <button className={tab === 'progress' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('progress')}><Activity /><span>{copy.nav.progress}</span></button>
       </nav>
     </div>
   )

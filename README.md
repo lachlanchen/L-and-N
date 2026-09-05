@@ -29,7 +29,7 @@ This is a coaching signal, not a diagnosis or a certified accent judgment. A wav
 
 ## Privacy and speech services
 
-Acoustic features, scores, progress, and calibration run locally. The installed app uses native speech recognition when the operating system provides it. The hosted PWA first uses compatible browser speech recognition; the browser or platform may process that recognition through its own service. Only when compatible browser recognition is absent may an attempt be sent transiently through a same-origin, rate-limited gateway to the private Whisper service for a word-level cross-check. The gateway accepts only the exact transcription route from this origin, limits size and concurrency, does not log or store audio, and returns `Cache-Control: no-store`. The app remains useful if transcription is unavailable.
+Acoustic features, scores, progress, and calibration run locally. On iOS, one native audio-engine stream supplies the waveform, local acoustic analysis, and operating-system speech recognition together; the app does not compete with itself for the microphone. The hosted PWA first uses compatible browser speech recognition; the browser or platform may process that recognition through its own service. Only when compatible browser recognition is absent may an attempt be sent transiently through a same-origin, rate-limited gateway to the private Whisper service for a word-level cross-check. The gateway accepts only the exact transcription route from this origin, limits size and concurrency, does not log or store audio, and returns `Cache-Control: no-store`. The app remains useful if transcription is unavailable.
 
 The public browser never receives LazyEdge credentials and never connects directly to the private model service. All packaged studio examples are static audio assets generated and intelligibility-checked at release time.
 
@@ -39,7 +39,7 @@ The public browser never receives LazyEdge credentials and never connects direct
 | --- | --- | --- |
 | Web/PWA | React 19, TypeScript, Vite, Workbox | Responsive Chromium flow, offline precache, microphone/scoring flow |
 | Android | Capacitor 8 | API 36.1 emulator build/install/launch, recording result, 3D model, bundled audio |
-| iOS | Capacitor 8 | iPhone 17 Pro simulator build/install/launch on macOS |
+| iOS | Capacitor 8 + native AVAudioEngine recorder | iPhone 17 Pro simulator build/install/launch; embedded watch and recorder integration compiled (physical-device microphone check still required) |
 | watchOS | SwiftUI | Apple Watch Series 11 (42 mm) simulator build/install/launch |
 
 <p align="center"><img src="docs/images/android-score-current.png" width="240" alt="Android score explanation"> <img src="docs/images/ios-current.png" width="240" alt="iOS practice screen"> <img src="docs/images/watchos-current.png" width="190" alt="watchOS drill"></p>

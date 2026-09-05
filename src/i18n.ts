@@ -35,6 +35,7 @@ export interface UICopy {
     say: string
     not: string
     listening: string
+    preparing: string
     analysing: string
     stopAndScore: string
     startRecording: string
@@ -118,7 +119,7 @@ export interface UICopy {
     next: string
   }
   feedback: Record<PronunciationFeedbackCode, string>
-  errors: { microphone: string; scoring: string }
+  errors: { microphone: string; recording: string; silence: string; scoring: string }
 }
 
 const copies: Record<UILanguage, UICopy> = {
@@ -145,6 +146,7 @@ const copies: Record<UILanguage, UICopy> = {
       say: 'Say',
       not: 'Not',
       listening: 'Listening',
+      preparing: 'Preparing microphone…',
       analysing: 'Analysing…',
       stopAndScore: 'Stop and score recording',
       startRecording: 'Start recording',
@@ -221,7 +223,12 @@ const copies: Record<UILanguage, UICopy> = {
       toneShape: 'Onset and tone are scored separately. Repeat tone {value} with a steadier pitch shape.',
       personalized: 'Your on-device acoustic baseline contributed to this comparison.',
     },
-    errors: { microphone: 'Microphone and speech-recognition permission are required to practise.', scoring: 'The recording could not be scored. Please try again.' },
+    errors: {
+      microphone: 'Microphone access is required to practise. Speech recognition improves the score when available.',
+      recording: 'No usable audio was captured. Check the microphone, then try again.',
+      silence: 'I could not hear a clear word. Move closer to the microphone and try again.',
+      scoring: 'The recording could not be scored. Please try again.',
+    },
   },
   'zh-Hans': {
     appTitle: 'L-and-N 发音教练', uiLanguage: '界面语言', streak: '连续练习', trainingLanguage: '练习语言', primaryNavigation: '主导航',
@@ -230,7 +237,7 @@ const copies: Record<UILanguage, UICopy> = {
       session: '4 分钟辨音练习', sessionHint: '听 · 感受 · 录音', previousWord: '上一个词', nextWord: '下一个词', soundPicker: '选择要练习的音',
       target: '目标', measuredOnset: '分析词首音', onsetToneSeparate: '词首音 · 声调分开评分', hearModel: '听标准示范', say: '请说', not: '不要说成',
       studioTitle: '已验证的离线标准示范', letterMeasured: '分析首字母 {value} 的发音', onsetMeasured: '分析拼音中的 {value} 词首音',
-      listening: '正在聆听', analysing: '分析中…', stopAndScore: '停止录音并评分', startRecording: '开始录音', tapToScore: '点按并评分', tapThenSay: '点按后说出词语',
+      listening: '正在聆听', preparing: '正在准备麦克风…', analysing: '分析中…', stopAndScore: '停止录音并评分', startRecording: '开始录音', tapToScore: '点按并评分', tapThenSay: '点按后说出词语',
       scoreHow: '评分方法', scoreHowBody: '综合辨词、最小对立词、鼻音/边音声学线索和发声稳定性。可用时由设备或浏览器辨词；浏览器不支持兼容识别时，可能使用 L & N 的私有 Whisper 服务，转写后即丢弃录音。',
     },
     signal: { aria: '实时波形与词首频谱', listeningLive: '实时聆听', lastSound: '上次录音', soundLens: '声音镜头', onsetSpectrum: '词首 · 频谱', note: '阴影区域是提取 L/N 线索的位置。波形高度表示信号强弱，不表示发音正确度。' },
@@ -260,7 +267,12 @@ const copies: Record<UILanguage, UICopy> = {
       addNasal: '词首增加短暂鼻腔共鸣。轻触鼻翼，检查是否有振动。', reduceNasal: '减少鼻腔共鸣。舌尖保持抬起，让气流从舌头两侧通过。', acousticSupports: '声学模式支持 /{value}/。',
       signalLimited: '信号质量有限；请靠近麦克风、减少背景噪声并避免爆音。', holdLonger: '把词稍微说长一点，才能更可靠地分析对立。', toneShape: '词首音和声调分开评分。请用更稳定的音高轮廓重复第 {value} 声。', personalized: '本次比较使用了保存在本设备上的个人声学基线。',
     },
-    errors: { microphone: '练习需要麦克风和语音识别权限。', scoring: '本次录音无法评分，请再试一次。' },
+    errors: {
+      microphone: '练习需要麦克风权限；语音识别可用时会提高评分质量。',
+      recording: '没有录到可用的声音。请检查麦克风后重试。',
+      silence: '没有听到清楚的词语。请靠近麦克风再试一次。',
+      scoring: '本次录音无法评分，请再试一次。',
+    },
   },
   'zh-Hant': {
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', primaryNavigation: '主要導覽',
@@ -269,7 +281,7 @@ const copies: Record<UILanguage, UICopy> = {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄音', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '選擇要練習的音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開評分', hearModel: '聽標準示範', say: '請說', not: '不要說成',
       studioTitle: '已驗證的離線標準示範', letterMeasured: '分析首字母 {value} 的發音', onsetMeasured: '分析羅馬字中的 {value} 詞首音',
-      listening: '正在聆聽', analysing: '分析中…', stopAndScore: '停止錄音並評分', startRecording: '開始錄音', tapToScore: '點按並評分', tapThenSay: '點按後說出詞語',
+      listening: '正在聆聽', preparing: '正在準備咪高峰…', analysing: '分析中…', stopAndScore: '停止錄音並評分', startRecording: '開始錄音', tapToScore: '點按並評分', tapThenSay: '點按後說出詞語',
       scoreHow: '評分方法', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索和發聲穩定性。可用時由裝置或瀏覽器辨詞；瀏覽器不支援兼容辨識時，可能使用 L & N 的私有 Whisper 服務，轉寫後即棄置錄音。',
     },
     signal: { aria: '即時波形與詞首頻譜', listeningLive: '即時聆聽', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影區域是提取 L/N 線索的位置。波形高度代表訊號強弱，不代表發音正確度。' },
@@ -299,7 +311,12 @@ const copies: Record<UILanguage, UICopy> = {
       addNasal: '詞首增加短暫鼻腔共鳴。輕觸鼻翼，檢查是否有振動。', reduceNasal: '減少鼻腔共鳴。舌尖保持抬起，讓氣流從舌頭兩側通過。', acousticSupports: '聲學模式支持 /{value}/。',
       signalLimited: '訊號質素有限；請靠近咪高峰、減少背景噪音並避免爆音。', holdLonger: '把詞稍微說長一點，才能更可靠地分析對立。', toneShape: '詞首音和聲調分開評分。請用更穩定的音高輪廓重複第 {value} 聲。', personalized: '本次比較使用了保存在本裝置上的個人聲學基線。',
     },
-    errors: { microphone: '練習需要咪高峰和語音辨識權限。', scoring: '本次錄音無法評分，請再試一次。' },
+    errors: {
+      microphone: '練習需要咪高峰權限；語音辨識可用時會提高評分質素。',
+      recording: '沒有錄到可用的聲音。請檢查咪高峰後再試。',
+      silence: '沒有聽到清楚的詞語。請靠近咪高峰再試一次。',
+      scoring: '本次錄音無法評分，請再試一次。',
+    },
   },
   yue: {
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', primaryNavigation: '主要導覽',
@@ -308,7 +325,7 @@ const copies: Record<UILanguage, UICopy> = {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄低', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '揀想練嘅音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開計', hearModel: '聽標準示範', say: '講', not: '唔好講成',
       studioTitle: '驗證過嘅離線標準示範', letterMeasured: '分析第一個字母 {value} 嘅發音', onsetMeasured: '分析羅馬字入面嘅 {value} 詞首音',
-      listening: '聽緊', analysing: '分析緊…', stopAndScore: '停低錄音並評分', startRecording: '開始錄音', tapToScore: '撳一下評分', tapThenSay: '撳一下，再講個詞',
+      listening: '聽緊', preparing: '準備緊咪高峰…', analysing: '分析緊…', stopAndScore: '停低錄音並評分', startRecording: '開始錄音', tapToScore: '撳一下評分', tapThenSay: '撳一下，再講個詞',
       scoreHow: '點樣評分', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索同發聲穩定性。有得用時由裝置或瀏覽器辨詞；瀏覽器冇兼容辨識時，可能會用 L & N 私有 Whisper 服務，轉寫完就丟棄錄音。',
     },
     signal: { aria: '即時波形同詞首頻譜', listeningLive: '即時聽緊', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影位置係提取 L/N 線索嘅範圍。波形高度只代表訊號強弱，唔代表啱唔啱。' },
@@ -338,7 +355,12 @@ const copies: Record<UILanguage, UICopy> = {
       addNasal: '詞首加少少鼻腔共鳴。輕掂鼻翼，睇吓有冇震。', reduceNasal: '減少鼻腔共鳴。舌尖保持升起，等氣流由舌頭兩邊走。', acousticSupports: '聲學模式支持 /{value}/。',
       signalLimited: '訊號質素有限；行近咪高峰、減少背景聲，同埋避免爆音。', holdLonger: '個詞講長少少，先可以更可靠咁分析對立。', toneShape: '詞首音同聲調分開計。用穩定啲嘅音高走勢再講第 {value} 聲。', personalized: '今次比較用咗儲喺呢部機嘅個人聲學基線。',
     },
-    errors: { microphone: '練習需要咪高峰同語音辨識權限。', scoring: '今次錄音評唔到分，請再試一次。' },
+    errors: {
+      microphone: '練習需要咪高峰權限；有語音辨識時會令評分更準。',
+      recording: '今次錄唔到可用聲音。檢查咪高峰之後再試。',
+      silence: '聽唔到清楚嘅詞。行近咪高峰再試一次。',
+      scoring: '今次錄音評唔到分，請再試一次。',
+    },
   },
 }
 
