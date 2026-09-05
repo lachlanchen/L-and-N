@@ -1,11 +1,13 @@
 {
-  "sourceCommit": "a9c2826ee555100625b80e22e9988aab26c6c779",
+  "sourceCommit": "cb9e1ca986ef50f6e2c99a25a50aad4f0b47ff43",
   "deployedAt": "2026-09-05",
   "url": "https://l-and-n.lazying.art/",
-  "releasePath": "/opt/l-and-n-web/releases/651232edfbbeecdfecde006626ff4eba3d56ab9b83e075df0d2d7a0a347af95b",
-  "releaseTarSha256": "d88b7b460346c7845528e929ff757087fa929d57a0759d5f041d692eabdb5dde",
-  "distTreeSha256": "57d32d696a3111df8ba987bd2f127b60bc441e157eb7887d87f73fc24f872ed0",
-  "mainAsset": "assets/index-D0QJXKKK.js",
+  "releasePath": "/opt/l-and-n-web/releases/f3d4a5c66c6ffb00110503b8957016034abb0254d3d5cbafa3d0fda904854f0e",
+  "previousRelease": "/opt/l-and-n-web/releases/651232edfbbeecdfecde006626ff4eba3d56ab9b83e075df0d2d7a0a347af95b",
+  "releaseTarSha256": "f3d4a5c66c6ffb00110503b8957016034abb0254d3d5cbafa3d0fda904854f0e",
+  "distTreeSha256": "64daee10551443d6ecc1074b5d483ca0932e01f8cccd1729929e61feb3f866bd",
+  "distTreeFormat": "SHA-256 of the LC_ALL=C sorted relative-path GNU sha256sum manifest",
+  "mainAsset": "assets/index-CQCQZXTO.js",
   "downloads": [
     {
       "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk",
@@ -23,6 +25,10 @@
     "immutableAssets": "passed",
     "privacyPage": "passed",
     "supportPage": "passed",
-    "androidDownload": "passed"
+    "androidDownload": "passed",
+    "browserSpeechPrivacyBoundary": "passed",
+    "apiNegativeMatrix": "passed",
+    "certificateSan": "passed",
+    "rollbackTarget": "verified"
   }
 }
