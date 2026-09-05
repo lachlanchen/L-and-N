@@ -21,6 +21,7 @@
 
         <h2>How speech is analyzed</h2>
         <p>In the iOS, Android, and watchOS apps, recognition is requested through the operating system’s speech services. The native apps do not send recordings to an L &amp; N server. Your device and platform settings determine whether the operating system performs recognition on-device or through its own service.</p>
+        <p>In supported browsers, L &amp; N requests the browser’s speech-recognition feature. Whether that recognition runs on-device or through the browser or platform provider is controlled by that browser and platform.</p>
         <p>In browsers that do not provide compatible speech recognition, the web app may send a short recording over encrypted HTTPS to the same-origin private transcription service. It is used only to return that attempt’s text, then discarded. It is not retained or used to train a model.</p>
 
         <h2>What we do not collect</h2>

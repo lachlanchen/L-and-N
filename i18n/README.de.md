@@ -29,7 +29,7 @@ Das Ergebnis ist Übungshilfe, keine Diagnose, kein Akzenturteil und keine zerti
 
 ## Datenschutz und Sprachdienste
 
-Akustische Merkmale, Punktzahl, Fortschritt und Kalibrierung werden lokal verarbeitet. Installierte Apps verwenden native Spracherkennung, wenn das Betriebssystem sie anbietet. In der gehosteten PWA kann eine Aufnahme kurz über ein gleichursprüngliches, begrenztes Gateway an den privaten Whisper-Dienst gehen, um das Wort gegenzuprüfen. Das Gateway erlaubt nur den exakten Transkriptionspfad dieser Herkunft, begrenzt Größe und Parallelität, protokolliert oder speichert kein Audio und antwortet mit `Cache-Control: no-store`. Ohne Transkription bleibt die Übung nutzbar.
+Akustische Merkmale, Punktzahl, Fortschritt und Kalibrierung werden lokal verarbeitet. Die installierte App verwendet native Spracherkennung, wenn das Betriebssystem sie anbietet. Die gehostete PWA nutzt zuerst eine kompatible Spracherkennung des Browsers; der Browser oder die Plattform kann diese Erkennung über einen eigenen Dienst verarbeiten. Nur wenn keine kompatible Browser-Spracherkennung vorhanden ist, kann ein Versuch kurz über ein gleichursprüngliches, ratenbegrenztes Gateway an den privaten Whisper-Dienst gehen, um das Wort gegenzuprüfen. Das Gateway erlaubt nur den exakten Transkriptionspfad dieses Ursprungs, begrenzt Größe und Parallelität, protokolliert oder speichert kein Audio und antwortet mit `Cache-Control: no-store`. Ohne Transkription bleibt die App nutzbar.
 
 Der Browser erhält keine LazyEdge-Zugangsdaten und verbindet sich nicht direkt mit dem privaten Modell. Alle Hörbeispiele sind statische, beim Release erzeugte und auf Verständlichkeit geprüfte Dateien.
 

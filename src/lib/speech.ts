@@ -5,6 +5,7 @@ import type { Exercise, TrainingLanguage } from '../types'
 export interface SpeechSession {
   result: Promise<string>
   stop: () => Promise<void>
+  useSameOriginFallback: boolean
 }
 
 interface BrowserSpeechRecognitionEvent extends Event {
@@ -38,11 +39,24 @@ function browserConstructor(): BrowserSpeechRecognitionConstructor | undefined {
   return browserWindow.SpeechRecognition ?? browserWindow.webkitSpeechRecognition
 }
 
+function sameOriginFallbackSession(): SpeechSession {
+  return {
+    result: Promise.resolve(''),
+    stop: async () => undefined,
+    useSameOriginFallback: true,
+  }
+}
+
 function beginBrowserRecognition(language: TrainingLanguage): SpeechSession {
   const Constructor = browserConstructor()
-  if (!Constructor) return { result: Promise.resolve(''), stop: async () => undefined }
+  if (!Constructor) return sameOriginFallbackSession()
 
-  const recognition = new Constructor()
+  let recognition: BrowserSpeechRecognitionInstance
+  try {
+    recognition = new Constructor()
+  } catch {
+    return sameOriginFallbackSession()
+  }
   recognition.lang = language
   recognition.continuous = false
   recognition.interimResults = false
@@ -62,7 +76,11 @@ function beginBrowserRecognition(language: TrainingLanguage): SpeechSession {
   recognition.onresult = (event) => settle(event.results[0]?.[0]?.transcript ?? '')
   recognition.onerror = () => settle('')
   recognition.onend = () => settle('')
-  recognition.start()
+  try {
+    recognition.start()
+  } catch {
+    return sameOriginFallbackSession()
+  }
 
   return {
     result,
@@ -73,12 +91,19 @@ function beginBrowserRecognition(language: TrainingLanguage): SpeechSession {
         recognition.abort()
       }
     },
+    useSameOriginFallback: false,
   }
 }
 
 async function beginNativeRecognition(language: TrainingLanguage): Promise<SpeechSession> {
   const availability = await SpeechRecognition.available()
-  if (!availability.available) return { result: Promise.resolve(''), stop: async () => undefined }
+  if (!availability.available) {
+    return {
+      result: Promise.resolve(''),
+      stop: async () => undefined,
+      useSameOriginFallback: false,
+    }
+  }
 
   const permission = await SpeechRecognition.requestPermissions()
   if (permission.speechRecognition !== 'granted') {
@@ -98,6 +123,7 @@ async function beginNativeRecognition(language: TrainingLanguage): Promise<Speec
     stop: async () => {
       await SpeechRecognition.stop()
     },
+    useSameOriginFallback: false,
   }
 }
 
@@ -170,4 +196,13 @@ export async function transcribeWithWhisper(
   } finally {
     window.clearTimeout(timeout)
   }
+}
+
+export function transcribeWithAllowedFallback(
+  session: Pick<SpeechSession, 'useSameOriginFallback'>,
+  blob: Blob,
+  language: TrainingLanguage,
+): Promise<string> {
+  if (!session.useSameOriginFallback) return Promise.resolve('')
+  return transcribeWithWhisper(blob, language)
 }

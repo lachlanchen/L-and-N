@@ -29,7 +29,7 @@ Es orientación para practicar, no diagnóstico, juicio de acento ni medición c
 
 ## Privacidad y servicios de voz
 
-Las características acústicas, puntuaciones, progreso y calibración se procesan localmente. Las aplicaciones instaladas usan reconocimiento nativo cuando el sistema lo ofrece. En la PWA alojada, una grabación puede pasar temporalmente por una puerta del mismo origen, limitada por tasa, al Whisper privado para comprobar la palabra. Solo acepta la ruta exacta desde este origen, limita tamaño y concurrencia, no registra ni guarda audio y responde `Cache-Control: no-store`. La práctica sigue funcionando sin transcripción.
+Las características acústicas, puntuaciones, progreso y calibración se procesan localmente. La aplicación instalada usa el reconocimiento de voz nativo cuando el sistema operativo lo ofrece. La PWA alojada utiliza primero un reconocimiento de voz compatible del navegador; el navegador o la plataforma pueden procesar ese reconocimiento mediante su propio servicio. Solo cuando no existe un reconocimiento de voz compatible en el navegador, un intento puede enviarse temporalmente a través de una puerta del mismo origen y con límite de solicitudes al servicio privado de Whisper para comprobar la palabra. La puerta solo acepta la ruta exacta de transcripción desde este origen, limita el tamaño y la concurrencia, no registra ni guarda audio y responde `Cache-Control: no-store`. La aplicación sigue siendo útil sin transcripción.
 
 El navegador no recibe credenciales de LazyEdge ni conecta directamente con el modelo privado. Todos los ejemplos son archivos estáticos generados y comprobados al publicar.
 

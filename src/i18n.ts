@@ -151,7 +151,7 @@ const copies: Record<UILanguage, UICopy> = {
       tapToScore: 'Tap to score',
       tapThenSay: 'Tap, then say it',
       scoreHow: 'How this score works',
-      scoreHowBody: 'Word recognition + minimal-pair contrast + nasal/lateral acoustic cues + delivery stability. Whisper is only a transient word-level cross-check; recordings are not kept.',
+      scoreHowBody: 'Word recognition + minimal-pair contrast + nasal/lateral acoustic cues + delivery stability. Recognition uses the device or browser when available. A browser without compatible recognition may use L & N’s private Whisper service; the recording is discarded after transcription.',
     },
     signal: {
       aria: 'Live waveform and onset spectrum',
@@ -231,7 +231,7 @@ const copies: Record<UILanguage, UICopy> = {
       target: '目标', measuredOnset: '分析词首音', onsetToneSeparate: '词首音 · 声调分开评分', hearModel: '听标准示范', say: '请说', not: '不要说成',
       studioTitle: '已验证的离线标准示范', letterMeasured: '分析首字母 {value} 的发音', onsetMeasured: '分析拼音中的 {value} 词首音',
       listening: '正在聆听', analysing: '分析中…', stopAndScore: '停止录音并评分', startRecording: '开始录音', tapToScore: '点按并评分', tapThenSay: '点按后说出词语',
-      scoreHow: '评分方法', scoreHowBody: '综合辨词、最小对立词、鼻音/边音声学线索和发声稳定性。Whisper 只做即时辨词复核；录音不会保存。',
+      scoreHow: '评分方法', scoreHowBody: '综合辨词、最小对立词、鼻音/边音声学线索和发声稳定性。可用时由设备或浏览器辨词；浏览器不支持兼容识别时，可能使用 L & N 的私有 Whisper 服务，转写后即丢弃录音。',
     },
     signal: { aria: '实时波形与词首频谱', listeningLive: '实时聆听', lastSound: '上次录音', soundLens: '声音镜头', onsetSpectrum: '词首 · 频谱', note: '阴影区域是提取 L/N 线索的位置。波形高度表示信号强弱，不表示发音正确度。' },
     learn: {
@@ -270,7 +270,7 @@ const copies: Record<UILanguage, UICopy> = {
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開評分', hearModel: '聽標準示範', say: '請說', not: '不要說成',
       studioTitle: '已驗證的離線標準示範', letterMeasured: '分析首字母 {value} 的發音', onsetMeasured: '分析羅馬字中的 {value} 詞首音',
       listening: '正在聆聽', analysing: '分析中…', stopAndScore: '停止錄音並評分', startRecording: '開始錄音', tapToScore: '點按並評分', tapThenSay: '點按後說出詞語',
-      scoreHow: '評分方法', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索和發聲穩定性。Whisper 只作即時辨詞複核；錄音不會保存。',
+      scoreHow: '評分方法', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索和發聲穩定性。可用時由裝置或瀏覽器辨詞；瀏覽器不支援兼容辨識時，可能使用 L & N 的私有 Whisper 服務，轉寫後即棄置錄音。',
     },
     signal: { aria: '即時波形與詞首頻譜', listeningLive: '即時聆聽', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影區域是提取 L/N 線索的位置。波形高度代表訊號強弱，不代表發音正確度。' },
     learn: {
@@ -309,7 +309,7 @@ const copies: Record<UILanguage, UICopy> = {
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開計', hearModel: '聽標準示範', say: '講', not: '唔好講成',
       studioTitle: '驗證過嘅離線標準示範', letterMeasured: '分析第一個字母 {value} 嘅發音', onsetMeasured: '分析羅馬字入面嘅 {value} 詞首音',
       listening: '聽緊', analysing: '分析緊…', stopAndScore: '停低錄音並評分', startRecording: '開始錄音', tapToScore: '撳一下評分', tapThenSay: '撳一下，再講個詞',
-      scoreHow: '點樣評分', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索同發聲穩定性。Whisper 只會即時覆核詞語；錄音唔會保存。',
+      scoreHow: '點樣評分', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索同發聲穩定性。有得用時由裝置或瀏覽器辨詞；瀏覽器冇兼容辨識時，可能會用 L & N 私有 Whisper 服務，轉寫完就丟棄錄音。',
     },
     signal: { aria: '即時波形同詞首頻譜', listeningLive: '即時聽緊', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影位置係提取 L/N 線索嘅範圍。波形高度只代表訊號強弱，唔代表啱唔啱。' },
     learn: {

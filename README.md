@@ -29,7 +29,7 @@ This is a coaching signal, not a diagnosis or a certified accent judgment. A wav
 
 ## Privacy and speech services
 
-Acoustic features, scores, progress, and calibration run locally. The installed app uses native speech recognition when the operating system provides it. On the hosted PWA, an attempt may be sent transiently through a same-origin, rate-limited gateway to the private Whisper service for a word-level cross-check. The gateway accepts only the exact transcription route from this origin, limits size and concurrency, does not log or store audio, and returns `Cache-Control: no-store`. The app remains useful if transcription is unavailable.
+Acoustic features, scores, progress, and calibration run locally. The installed app uses native speech recognition when the operating system provides it. The hosted PWA first uses compatible browser speech recognition; the browser or platform may process that recognition through its own service. Only when compatible browser recognition is absent may an attempt be sent transiently through a same-origin, rate-limited gateway to the private Whisper service for a word-level cross-check. The gateway accepts only the exact transcription route from this origin, limits size and concurrency, does not log or store audio, and returns `Cache-Control: no-store`. The app remains useful if transcription is unavailable.
 
 The public browser never receives LazyEdge credentials and never connects directly to the private model service. All packaged studio examples are static audio assets generated and intelligibility-checked at release time.
 

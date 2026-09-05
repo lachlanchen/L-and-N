@@ -23,7 +23,7 @@ import { feedbackCopy, formatCopy, initialUILanguage, uiCopy, uiLanguageLabels, 
 import { decodeAudioFeatures } from './lib/acoustics'
 import { loadAttempts, saveAttempt, trainingStreak, type AttemptRecord } from './lib/progress'
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
-import { beginSpeechRecognition, speakExample, transcribeWithWhisper, type SpeechSession } from './lib/speech'
+import { beginSpeechRecognition, speakExample, transcribeWithAllowedFallback, type SpeechSession } from './lib/speech'
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
 
 type Tab = 'practice' | 'learn' | 'progress'
@@ -173,7 +173,7 @@ function App() {
           session.speech.result.catch(() => ''),
           new Promise<string>((resolve) => window.setTimeout(() => resolve(''), 1800)),
         ]),
-        transcribeWithWhisper(blob, language),
+        transcribeWithAllowedFallback(session.speech, blob, language),
       ])
       const transcript = nativeTranscript || whisperTranscript
       setLastFeatures(features)

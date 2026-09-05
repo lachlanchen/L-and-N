@@ -29,7 +29,7 @@ Bộ phân tích cục bộ tìm khởi đầu hữu thanh, kiểm tra chất l�
 
 ## Quyền riêng tư và dịch vụ giọng nói
 
-Đặc trưng âm học, điểm, tiến độ và hiệu chỉnh chạy cục bộ. Ứng dụng cài đặt dùng nhận dạng gốc khi hệ điều hành có hỗ trợ. Trên PWA lưu trữ, một bản thu có thể được chuyển tạm qua cổng cùng nguồn có giới hạn tốc độ tới Whisper riêng để đối chiếu từ. Cổng chỉ nhận đúng đường dẫn từ trang này, giới hạn kích thước và đồng thời, không ghi nhật ký hay lưu âm thanh và trả `Cache-Control: no-store`. Không có phiên âm, bài tập vẫn dùng được.
+Đặc trưng âm học, điểm, tiến độ và hiệu chỉnh chạy cục bộ. Ứng dụng cài đặt dùng nhận dạng giọng nói gốc khi hệ điều hành cung cấp. PWA được lưu trữ trước tiên dùng tính năng nhận dạng giọng nói tương thích của trình duyệt; trình duyệt hoặc nền tảng có thể xử lý việc nhận dạng đó qua dịch vụ riêng của họ. Chỉ khi không có tính năng nhận dạng giọng nói tương thích trong trình duyệt, một lần thử mới có thể được gửi tạm thời qua cổng cùng nguồn có giới hạn tần suất tới dịch vụ Whisper riêng để đối chiếu từ. Cổng chỉ nhận đúng đường dẫn phiên âm từ nguồn này, giới hạn kích thước và số yêu cầu đồng thời, không ghi nhật ký hay lưu âm thanh và trả về `Cache-Control: no-store`. Ứng dụng vẫn hữu ích khi không có phiên âm.
 
 Trình duyệt không nhận thông tin xác thực LazyEdge và không kết nối thẳng tới mô hình riêng. Mọi mẫu là tệp tĩnh được tạo và kiểm tra độ rõ khi phát hành.
 

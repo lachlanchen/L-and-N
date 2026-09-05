@@ -13,6 +13,6 @@ The first English practice set is based on Pronunciation Snippets' 7:17 lesson, 
 
 ## Processing note
 
-The source host rejected direct media downloads during this build, so the repo does not redistribute its video, audio, or full transcript. The creator-provided English caption track was parsed and validated with Video2Book's timestamp pipeline (154 meaningful entries), then used to verify this short lesson map. Production server transcription uses Whisper only for user-authorized recordings.
+The source host rejected direct media downloads during this build, so the repo does not redistribute its video, audio, or full transcript. The creator-provided English caption track was parsed and validated with Video2Book's timestamp pipeline (154 meaningful entries), then used to verify this short lesson map. The hosted browser fallback uses Whisper only for a recording the user starts, and only when compatible browser recognition is absent.
 
 The Mandarin and Cantonese exercises are original extensions informed by the research in [pronunciation-assessment.md](research/pronunciation-assessment.md). Cantonese items are presented as optional conservative/dictionary contrast practice, not as a judgment against common Hong Kong speech.

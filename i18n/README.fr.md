@@ -29,7 +29,7 @@ Ce retour sert à s'entraîner : ce n'est ni un diagnostic, ni un jugement d'acc
 
 ## Vie privée et services vocaux
 
-Caractéristiques acoustiques, scores, progression et calibration sont traités localement. Les applications installées utilisent la reconnaissance native si le système la fournit. Dans la PWA hébergée, un enregistrement peut transiter brièvement par une passerelle de même origine, limitée en débit, vers Whisper privé afin de vérifier le mot. Elle n'accepte que le chemin exact depuis ce site, limite taille et concurrence, ne journalise ni ne stocke l'audio et répond `Cache-Control: no-store`. L'exercice reste utilisable sans transcription.
+Les caractéristiques acoustiques, les scores, la progression et la calibration sont traités localement. L'application installée utilise la reconnaissance vocale native lorsque le système d'exploitation la propose. La PWA hébergée utilise d'abord la reconnaissance vocale compatible du navigateur ; le navigateur ou la plateforme peuvent traiter cette reconnaissance au moyen de leur propre service. Ce n'est qu'en l'absence de reconnaissance vocale compatible dans le navigateur qu'une tentative peut être envoyée brièvement, par une passerelle de même origine à débit limité, au service Whisper privé afin de vérifier le mot. La passerelle n'accepte que le chemin de transcription exact depuis cette origine, limite la taille et la concurrence, ne journalise ni ne stocke l'audio et répond `Cache-Control: no-store`. L'application reste utilisable sans transcription.
 
 Le navigateur ne reçoit aucun secret LazyEdge et ne contacte pas directement le modèle privé. Tous les exemples sont des ressources statiques produites et vérifiées lors de la version.
 
