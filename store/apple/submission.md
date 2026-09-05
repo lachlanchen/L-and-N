@@ -19,3 +19,14 @@ The App Store declarations record a 4+ age rating, no third-party content, no re
 The free app is configured for 146 countries or regions. EU/EEA storefronts were excluded from this submission because the account's Digital Services Act trader status has not been verified; they can be enabled after that account-level requirement is complete.
 
 Review acceptance and public availability are controlled by Apple. Because manual release is selected, approval alone will not publish the app: the approved version must be released once from App Store Connect.
+
+## TestFlight
+
+- Internal group: `L & N Internal Testers`
+- Internal state: build `1.0 (1)` is assigned; the account holder is **Invited**
+- External group: `L & N Public Beta`
+- Public link: https://testflight.apple.com/join/CpkT8m9C
+- Public limit: 100 testers
+- External build state: **Waiting for Review**
+
+The public link has been created, but Apple does not allow testers to join through it until Beta App Review approves the build. The internal invitation does not depend on the public link; it is delivered to the App Store Connect user's email and appears in TestFlight.

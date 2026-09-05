@@ -18,6 +18,7 @@ Updated: 2026-09-05
 - Production release `1.0.0 (1)` targets 177 countries/regions and uses a full rollout.
 - The signed AAB, store listing, privacy/content declarations, advertising-ID declaration, and release were sent to Google for review on 2026-09-05.
 - Play Console currently reports **Changes in review**. Approval and public availability are not yet claimed.
+- A separate `1.0 (2)` release is **Available to internal testers** at https://play.google.com/apps/internaltest/4701251861700553150. It differs from the production candidate only by Android build number.
 
 ## Apple App Store
 
@@ -27,5 +28,7 @@ Updated: 2026-09-05
 - App Store Connect currently reports **Waiting for Review**. Approval is not yet claimed.
 - Manual release is selected. After approval, public availability requires one explicit release action in App Store Connect.
 - Availability is currently 146 countries or regions. EU/EEA storefronts remain excluded until the account-level Digital Services Act trader status is verified.
+- TestFlight build `1.0 (1)` is assigned to the internal group and the account holder has been invited.
+- The external TestFlight group and public link are configured, but the build is **Waiting for Review**; the link will not admit testers until Apple approves the beta.
 
 The first Google Play production release uses a full rollout; staged rollout is reserved for later updates. Both provider reviews are now external dependencies.

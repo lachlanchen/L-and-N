@@ -42,6 +42,24 @@ platforms:
     embedded_in: ios
     status: embedded_in_submitted_ios_build
 
+testing:
+  android:
+    version: 1.0
+    build: 2
+    track: internal
+    status: available_to_internal_testers
+    url: https://play.google.com/apps/internaltest/4701251861700553150
+    artifact_manifest: store/artifacts/android-test-release.json
+  ios_watchos:
+    version: 1.0
+    build: 1
+    internal_group: L & N Internal Testers
+    internal_status: invited
+    public_group: L & N Public Beta
+    public_status: waiting_for_beta_app_review
+    public_url: https://testflight.apple.com/join/CpkT8m9C
+    public_tester_limit: 100
+
 locales:
   interface:
     - en
