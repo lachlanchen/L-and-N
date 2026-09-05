@@ -1,13 +1,13 @@
 {
-  "sourceCommit": "cb9e1ca986ef50f6e2c99a25a50aad4f0b47ff43",
+  "sourceCommit": "9fa9c5276deddba1cf3047a3f4d3ccce95f3e769",
   "deployedAt": "2026-09-05",
   "url": "https://l-and-n.lazying.art/",
-  "releasePath": "/opt/l-and-n-web/releases/f3d4a5c66c6ffb00110503b8957016034abb0254d3d5cbafa3d0fda904854f0e",
-  "previousRelease": "/opt/l-and-n-web/releases/651232edfbbeecdfecde006626ff4eba3d56ab9b83e075df0d2d7a0a347af95b",
-  "releaseTarSha256": "f3d4a5c66c6ffb00110503b8957016034abb0254d3d5cbafa3d0fda904854f0e",
-  "distTreeSha256": "64daee10551443d6ecc1074b5d483ca0932e01f8cccd1729929e61feb3f866bd",
+  "releasePath": "/opt/l-and-n-web/releases/301113c233f55ec5c216655cb16b43ccbd165a20f402f38b1a8e214428671995",
+  "previousRelease": "/opt/l-and-n-web/releases/f3d4a5c66c6ffb00110503b8957016034abb0254d3d5cbafa3d0fda904854f0e",
+  "releaseTarSha256": "301113c233f55ec5c216655cb16b43ccbd165a20f402f38b1a8e214428671995",
+  "distTreeSha256": "9b81c8fa2bb67c9bf500ca22b448d6ac75924f7dab04ed6aacd6951a2ea5fd3e",
   "distTreeFormat": "SHA-256 of the LC_ALL=C sorted relative-path GNU sha256sum manifest",
-  "mainAsset": "assets/index-CQCQZXTO.js",
+  "mainAsset": "assets/index-Bra0viOM.js",
   "downloads": [
     {
       "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk",
@@ -29,6 +29,7 @@
     "browserSpeechPrivacyBoundary": "passed",
     "apiNegativeMatrix": "passed",
     "certificateSan": "passed",
-    "rollbackTarget": "verified"
+    "rollbackTarget": "verified",
+    "recordingLifecycleRegressionTests": "passed"
   }
 }
