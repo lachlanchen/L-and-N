@@ -1,16 +1,28 @@
 {
-  "sourceCommit": "55646c772dc067e40df129039125be8faee2cfae",
+  "sourceCommit": "a9c2826ee555100625b80e22e9988aab26c6c779",
   "deployedAt": "2026-09-05",
   "url": "https://l-and-n.lazying.art/",
-  "releasePath": "/opt/l-and-n-web/releases/55646c772dc067e40df129039125be8faee2cfae",
-  "releaseTarSha256": "33be554de7ef6d7025aa8172e02fb9dc0db7ec021569a98f935f7d86cdda0a4c",
+  "releasePath": "/opt/l-and-n-web/releases/651232edfbbeecdfecde006626ff4eba3d56ab9b83e075df0d2d7a0a347af95b",
+  "releaseTarSha256": "d88b7b460346c7845528e929ff757087fa929d57a0759d5f041d692eabdb5dde",
+  "distTreeSha256": "57d32d696a3111df8ba987bd2f127b60bc441e157eb7887d87f73fc24f872ed0",
   "mainAsset": "assets/index-D0QJXKKK.js",
+  "downloads": [
+    {
+      "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk",
+      "versionName": "1.0",
+      "versionCode": 2,
+      "bytes": 4457477,
+      "sha256": "9b018d62df3c2e0ca1dc3004bd8c0b30fc08459e12b83fe96a395467c4839934",
+      "contentType": "application/vnd.android.package-archive"
+    }
+  ],
   "verification": {
     "https": "passed",
     "securityHeaders": "passed",
     "serviceWorkerNoCache": "passed",
     "immutableAssets": "passed",
     "privacyPage": "passed",
-    "supportPage": "passed"
+    "supportPage": "passed",
+    "androidDownload": "passed"
   }
 }

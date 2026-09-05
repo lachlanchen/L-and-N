@@ -8,6 +8,8 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 
 - Repository: `/home/lachlan/ProjectsLFS/L-And-N`
 - PWA: https://l-and-n.lazying.art/
+- Signed Android test APK: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk
+- APK SHA-256: `9b018d62df3c2e0ca1dc3004bd8c0b30fc08459e12b83fe96a395467c4839934`
 - Google package: `art.lazying.landn`
 - Apple ID: `6808872450`
 - iOS bundle: `art.lazying.landn`
@@ -25,7 +27,7 @@ Testing state:
 - TestFlight internal: build `1.0 (1)` is assigned to `L & N Internal Testers`; the account holder is invited.
 - TestFlight public beta: https://testflight.apple.com/join/CpkT8m9C, build **Waiting for Review**, limit 100. The URL will not admit testers before Beta App Review approval.
 
-Release evidence and exact hashes are in `store/artifacts/`. Store declarations and provider outcomes are in the platform submission documents. Android signing material, Apple profiles, exported binaries, browser cookies, and the emailed Drive delivery URL are intentionally excluded from Git.
+Release evidence and exact hashes are in `store/artifacts/`. Store declarations and provider outcomes are in the platform submission documents. The signed APK is available through the first-party URL above; Android signing material, Apple profiles, exported binaries, browser cookies, and private email-recipient details are intentionally excluded from Git.
 
 The iOS/watchOS archive was built on the Mac reached through the local SSH alias `echomind-kvm-macos`. The current reproducible artifacts there are:
 

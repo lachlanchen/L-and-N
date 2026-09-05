@@ -49,6 +49,8 @@ testing:
     track: internal
     status: available_to_internal_testers
     url: https://play.google.com/apps/internaltest/4701251861700553150
+    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk
+    direct_apk_sha256: 9b018d62df3c2e0ca1dc3004bd8c0b30fc08459e12b83fe96a395467c4839934
     artifact_manifest: store/artifacts/android-test-release.json
   ios_watchos:
     version: 1.0
