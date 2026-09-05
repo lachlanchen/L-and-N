@@ -5,7 +5,7 @@ import type { Exercise, TrainingLanguage } from '../types'
 export interface SpeechSession {
   result: Promise<string>
   stop: () => Promise<void>
-  useSameOriginFallback: boolean
+  sameOriginFallback: 'never' | 'when-empty'
 }
 
 interface BrowserSpeechRecognitionEvent extends Event {
@@ -43,11 +43,23 @@ function sameOriginFallbackSession(): SpeechSession {
   return {
     result: Promise.resolve(''),
     stop: async () => undefined,
-    useSameOriginFallback: true,
+    sameOriginFallback: 'when-empty',
   }
 }
 
+export function isIOSWebBrowser(): boolean {
+  const userAgent = navigator.userAgent ?? ''
+  const iOSDevice = /iPad|iPhone|iPod/i.test(userAgent)
+  const iPadDesktopMode = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
+  return iOSDevice || iPadDesktopMode
+}
+
 function beginBrowserRecognition(language: TrainingLanguage): SpeechSession {
+  // iOS WebKit cannot reliably keep MediaRecorder/Web Audio and the browser
+  // speech recognizer on the microphone at the same time. Capture once, show
+  // that stream in the waveform, then transcribe that exact blob after stop.
+  if (isIOSWebBrowser()) return sameOriginFallbackSession()
+
   const Constructor = browserConstructor()
   if (!Constructor) return sameOriginFallbackSession()
 
@@ -91,7 +103,10 @@ function beginBrowserRecognition(language: TrainingLanguage): SpeechSession {
         recognition.abort()
       }
     },
-    useSameOriginFallback: false,
+    // A constructor and a successful start do not mean that browser speech
+    // recognition will return a result. Safari and Chromium can end later
+    // with an empty result, so permit a same-origin fallback only in that case.
+    sameOriginFallback: 'when-empty',
   }
 }
 
@@ -101,7 +116,7 @@ async function beginNativeRecognition(language: TrainingLanguage): Promise<Speec
     return {
       result: Promise.resolve(''),
       stop: async () => undefined,
-      useSameOriginFallback: false,
+      sameOriginFallback: 'never',
     }
   }
 
@@ -123,7 +138,7 @@ async function beginNativeRecognition(language: TrainingLanguage): Promise<Speec
     stop: async () => {
       await SpeechRecognition.stop()
     },
-    useSameOriginFallback: false,
+    sameOriginFallback: 'never',
   }
 }
 
@@ -199,10 +214,12 @@ export async function transcribeWithWhisper(
 }
 
 export function transcribeWithAllowedFallback(
-  session: Pick<SpeechSession, 'useSameOriginFallback'>,
+  session: Pick<SpeechSession, 'sameOriginFallback'>,
   blob: Blob,
   language: TrainingLanguage,
+  recognizedText = '',
 ): Promise<string> {
-  if (!session.useSameOriginFallback) return Promise.resolve('')
+  const recognized = recognizedText.trim()
+  if (recognized || session.sameOriginFallback === 'never') return Promise.resolve(recognized)
   return transcribeWithWhisper(blob, language)
 }

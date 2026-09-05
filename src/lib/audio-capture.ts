@@ -82,7 +82,7 @@ const NativeAudioRecorder = registerPlugin<NativeRecorderPlugin>('NativeAudioRec
 const inactiveSpeechSession = (): SpeechSession => ({
   result: Promise.resolve(''),
   stop: async () => undefined,
-  useSameOriginFallback: false,
+  sameOriginFallback: 'never',
 })
 
 const timeout = <T>(promise: Promise<T>, milliseconds: number, message: string): Promise<T> =>
@@ -173,7 +173,7 @@ async function startNativeIOSCapture(options: StartCaptureOptions): Promise<Acti
       try {
         const result = await timeout(
           NativeAudioRecorder.stop(),
-          3500,
+          5000,
           'The native iOS recorder did not finish in time.',
         )
         const samples = decodePCM16Base64(result.pcm16Base64)
@@ -295,15 +295,20 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
           }
           recorder.stop()
           const blob = await timeout(stopped, 2500, 'The browser recorder did not finish in time.')
-          const [features, nativeTranscript, fallbackTranscript] = await Promise.all([
+          const [features, browserTranscript] = await Promise.all([
             decodeAudioFeatures(blob),
             timeout(speech.result.catch(() => ''), 2200, 'Speech recognition did not finish in time.').catch(() => ''),
-            transcribeWithAllowedFallback(speech, blob, options.language),
           ])
           validateCapturedAudio(features, blob.size)
+          const transcript = await transcribeWithAllowedFallback(
+            speech,
+            blob,
+            options.language,
+            browserTranscript,
+          )
           return {
             features,
-            transcript: nativeTranscript || fallbackTranscript,
+            transcript,
             rawBytes: blob.size,
             source: 'web',
           }

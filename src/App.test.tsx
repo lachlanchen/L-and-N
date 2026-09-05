@@ -114,4 +114,48 @@ describe('recording lifecycle', () => {
     expect(screen.queryByText(/confidence/i)).toBeNull()
     expect(warning).toHaveBeenCalledOnce()
   })
+
+  it('shows the captured waveform but saves no score when transcription is empty', async () => {
+    audioCaptureMocks.startAudioCapture.mockResolvedValueOnce({
+      analyser: null,
+      stop: vi.fn(async () => ({
+        transcript: '',
+        rawBytes: 32_000,
+        source: 'web' as const,
+        features: {
+          rms: 0.08,
+          noiseFloor: 0.003,
+          zeroCrossingRate: 0.05,
+          lowBandRatio: 0.08,
+          midBandRatio: 0.52,
+          spectralCentroidHz: 1500,
+          spectralTiltDb: 0,
+          pitchHz: 145,
+          pitchContour: [142, 145, 148],
+          firstFormantHz: 500,
+          secondFormantHz: 1250,
+          formantSpacingHz: 750,
+          firstFormantBandwidthHz: 160,
+          nasalPeakContrastDb: 7,
+          voicedContinuity: 0.9,
+          durationMs: 900,
+          onsetMs: 35,
+          onsetDurationMs: 240,
+          signalQuality: 0.92,
+          waveform: [0, 0.2, -0.2, 0.12, 0.08, -0.1, 0.04, 0],
+          spectrum: [0.1, 0.35, 0.8, 0.5],
+        },
+      })),
+      cancel: vi.fn(async () => undefined),
+    })
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Stop and score recording' })).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Stop and score recording' }))
+
+    expect(await screen.findByText(/I recorded your voice, but could not recognize a word/)).toBeTruthy()
+    expect(screen.getByText('Last sound')).toBeTruthy()
+    expect(screen.queryByText('/ 100')).toBeNull()
+  })
 })

@@ -162,6 +162,11 @@ function App() {
       const captured = await session.capture.stop()
       if (operationRef.current !== session.operationId) return
       setLastFeatures(captured.features)
+      if (!captured.transcript.trim()) {
+        setScore(null)
+        setError(copy.errors.transcription)
+        return
+      }
       const result = scorePronunciation(
         session.exercise,
         captured.transcript,
@@ -426,6 +431,7 @@ function ScoreCard({ score, copy, onRetry, onNext }: { score: PronunciationScore
         <div className="score-ring" style={{ '--score': `${score.overall * 3.6}deg` } as React.CSSProperties}><div><strong>{score.overall}</strong><span>/ 100</span></div></div>
         <div><span className={`confidence ${score.confidence}`}>{copy.score.confidence[score.confidence]}</span><h2>{score.overall >= 82 ? copy.score.landed : score.overall >= 60 ? copy.score.close : copy.score.slowly}</h2><p>{copy.score.detected}: <strong>{detected}</strong></p></div>
       </div>
+      <p className="heard-result"><span>{copy.score.heard}</span><strong>“{score.transcript}”</strong></p>
       <div className="metrics">
         {metricLabels.map(([key, label]) => <div key={key}><span>{label}</span><i><b style={{ width: `${score[key]}%` }} /></i><strong>{score[key]}</strong></div>)}
         {score.tone !== null && <div><span>{copy.score.tone}</span><i><b style={{ width: `${score.tone}%` }} /></i><strong>{score.tone}</strong></div>}

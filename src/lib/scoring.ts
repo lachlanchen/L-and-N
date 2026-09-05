@@ -228,10 +228,12 @@ export function scorePronunciation(
   features: AcousticFeatures,
   calibration?: AcousticCalibration,
 ): PronunciationScore {
-  const recognitionAvailable = normalizeSpeech(transcript).length > 0
+  if (!normalizeSpeech(transcript)) {
+    throw new Error('A recognized word is required before pronunciation can be scored.')
+  }
   const recognition = recognitionScore(exercise.word, transcript)
   const pairRecognition = recognitionScore(exercise.pair, transcript)
-  const contrast = recognitionAvailable ? clampScore(recognition - pairRecognition * 0.55 + 38) : 50
+  const contrast = clampScore(recognition - pairRecognition * 0.55 + 38)
   const acousticInference = inferAcousticSound(features, exercise.language, calibration)
   const acoustic = exercise.target === 'L' ? acousticInference.lEvidence : acousticInference.nEvidence
   const delivery = clampScore(
@@ -241,15 +243,11 @@ export function scorePronunciation(
       100,
   )
   const tone = scoreTone(exercise, features)
-  const soundOverall = recognitionAvailable
-    ? clampScore(recognition * 0.38 + contrast * 0.2 + acoustic * 0.32 + delivery * 0.1)
-    : clampScore(acoustic * 0.7 + delivery * 0.3)
+  const soundOverall = clampScore(recognition * 0.38 + contrast * 0.2 + acoustic * 0.32 + delivery * 0.1)
   const overall = tone === null ? soundOverall : clampScore(soundOverall * 0.88 + tone * 0.12)
   const feedback: PronunciationScore['feedback'] = []
 
-  if (!recognitionAvailable) {
-    feedback.push({ code: 'recognitionUnavailable' })
-  } else if (recognition < 70) {
+  if (recognition < 70) {
     feedback.push({ code: 'recognitionUnclear', value: transcript || '—' })
   } else {
     feedback.push({ code: 'recognitionClear', value: exercise.word })
@@ -268,7 +266,7 @@ export function scorePronunciation(
   if (tone !== null && tone < 62) feedback.push({ code: 'toneShape', value: exercise.tone })
   if (calibration?.L || calibration?.N) feedback.push({ code: 'personalized' })
 
-  const confidence = !recognitionAvailable || features.signalQuality < 0.4
+  const confidence = features.signalQuality < 0.4
     ? 'low'
     : overall >= 82 && acoustic >= 62
       ? 'high'

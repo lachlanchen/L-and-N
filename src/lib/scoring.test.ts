@@ -65,4 +65,10 @@ describe('hybrid pronunciation score', () => {
     expect(correct.recognition).toBe(100)
     expect(correct.evidence.lEvidence).toBeGreaterThan(correct.evidence.nEvidence)
   })
+
+  it('refuses to manufacture a number when no word was recognized', () => {
+    expect(() => scorePronunciation(exercise, '', lLikeFeatures)).toThrow(
+      'A recognized word is required before pronunciation can be scored.',
+    )
+  })
 })

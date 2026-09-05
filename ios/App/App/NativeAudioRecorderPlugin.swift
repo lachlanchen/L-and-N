@@ -70,7 +70,9 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
                 self?.resolveStoppedCapture()
             }
             self.stopDeadline = deadline
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: deadline)
+            // Network-backed system recognition can need longer than the
+            // on-device path to emit its final (or latest partial) result.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.8, execute: deadline)
         }
     }
 
@@ -156,9 +158,9 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
                 request.shouldReportPartialResults = true
                 request.taskHint = .confirmation
                 request.contextualStrings = contextualStrings
-                if recognizer.supportsOnDeviceRecognition {
-                    request.requiresOnDeviceRecognition = true
-                }
+                // Let SFSpeechRecognizer choose on-device or Apple-hosted
+                // recognition. Requiring an uninstalled on-device language
+                // model produced empty transcripts on otherwise valid audio.
                 recognitionRequest = request
                 recognitionFinished = false
                 recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in

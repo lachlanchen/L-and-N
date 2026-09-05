@@ -99,6 +99,8 @@ button:disabled { cursor: not-allowed; }
 .confidence.low { color: #b65f3d; }
 .score-summary h2 { font-family: ui-serif, Georgia, serif; margin: 5px 0; font-size: 23px; color: var(--navy); }
 .score-summary p { margin: 0; color: var(--muted); font-size: 12px; }
+.heard-result { margin: 15px 0 4px; padding: 10px 12px; border-radius: 12px; background: rgba(19,169,155,.08); color: var(--muted); font-size: 13px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.heard-result strong { color: var(--navy); text-align: right; overflow-wrap: anywhere; }
 .metrics { margin: 20px 0; display: grid; gap: 10px; }
 .metrics > div { display: grid; grid-template-columns: 86px 1fr 28px; gap: 10px; align-items: center; font-size: 11px; color: var(--muted); }
 .metrics i { height: 6px; border-radius: 999px; background: #ebe9e4; overflow: hidden; }

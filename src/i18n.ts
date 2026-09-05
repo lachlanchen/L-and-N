@@ -108,6 +108,7 @@ export interface UICopy {
     close: string
     slowly: string
     detected: string
+    heard: string
     uncertain: string
     evidence: string
     lLike: string
@@ -119,7 +120,7 @@ export interface UICopy {
     next: string
   }
   feedback: Record<PronunciationFeedbackCode, string>
-  errors: { microphone: string; recording: string; silence: string; scoring: string }
+  errors: { microphone: string; recording: string; silence: string; transcription: string; scoring: string }
 }
 
 const copies: Record<UILanguage, UICopy> = {
@@ -153,7 +154,7 @@ const copies: Record<UILanguage, UICopy> = {
       tapToScore: 'Tap to score',
       tapThenSay: 'Tap, then say it',
       scoreHow: 'How this score works',
-      scoreHowBody: 'Word recognition + minimal-pair contrast + nasal/lateral acoustic cues + delivery stability. Recognition uses the device or browser when available. A browser without compatible recognition may use L & N’s private Whisper service; the recording is discarded after transcription.',
+      scoreHowBody: 'Word recognition + minimal-pair contrast + nasal/lateral acoustic cues + delivery stability. A score appears only after the word is recognized. Browser recognition that is unavailable or returns no result may use L & N’s private Whisper service; the recording is discarded after transcription.',
     },
     signal: {
       aria: 'Live waveform and onset spectrum',
@@ -206,7 +207,7 @@ const copies: Record<UILanguage, UICopy> = {
     score: {
       word: 'Word', contrast: 'L/N contrast', soundCues: 'Sound cues', voice: 'Voice', tone: 'Tone',
       confidence: { high: 'high confidence', medium: 'medium confidence', low: 'low confidence' },
-      landed: 'That contrast landed.', close: 'Close—shape the first sound.', slowly: 'Build the sound slowly.', detected: 'Detected', uncertain: 'uncertain',
+      landed: 'That contrast landed.', close: 'Close—shape the first sound.', slowly: 'Build the sound slowly.', detected: 'Detected', heard: 'Recognizer heard', uncertain: 'uncertain',
       evidence: 'See the sound evidence', lLike: 'L-like', nLike: 'N-like', signal: 'Signal', nasalBand: 'Nasal band',
       evidenceDetail: 'A1–P0 proxy {nasal} dB · formant spacing ≈ {formant} Hz · tilt {tilt} dB. Microphone estimates—not tongue tracking.',
       retry: 'Try again', next: 'Next word',
@@ -227,6 +228,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: 'Microphone access is required to practise. Speech recognition improves the score when available.',
       recording: 'No usable audio was captured. Check the microphone, then try again.',
       silence: 'I could not hear a clear word. Move closer to the microphone and try again.',
+      transcription: 'I recorded your voice, but could not recognize a word. No score was saved—please say only the displayed word and try again.',
       scoring: 'The recording could not be scored. Please try again.',
     },
   },
@@ -238,7 +240,7 @@ const copies: Record<UILanguage, UICopy> = {
       target: '目标', measuredOnset: '分析词首音', onsetToneSeparate: '词首音 · 声调分开评分', hearModel: '听标准示范', say: '请说', not: '不要说成',
       studioTitle: '已验证的离线标准示范', letterMeasured: '分析首字母 {value} 的发音', onsetMeasured: '分析拼音中的 {value} 词首音',
       listening: '正在聆听', preparing: '正在准备麦克风…', analysing: '分析中…', stopAndScore: '停止录音并评分', startRecording: '开始录音', tapToScore: '点按并评分', tapThenSay: '点按后说出词语',
-      scoreHow: '评分方法', scoreHowBody: '综合辨词、最小对立词、鼻音/边音声学线索和发声稳定性。可用时由设备或浏览器辨词；浏览器不支持兼容识别时，可能使用 L & N 的私有 Whisper 服务，转写后即丢弃录音。',
+      scoreHow: '评分方法', scoreHowBody: '综合辨词、最小对立词、鼻音/边音声学线索和发声稳定性。只有成功辨词后才会显示分数；浏览器无法辨词或没有返回结果时，可能使用 L & N 的私有 Whisper 服务，转写后即丢弃录音。',
     },
     signal: { aria: '实时波形与词首频谱', listeningLive: '实时聆听', lastSound: '上次录音', soundLens: '声音镜头', onsetSpectrum: '词首 · 频谱', note: '阴影区域是提取 L/N 线索的位置。波形高度表示信号强弱，不表示发音正确度。' },
     learn: {
@@ -259,7 +261,7 @@ const copies: Record<UILanguage, UICopy> = {
     progress: { eyebrow: '仅保存在本设备', title: '你的发音地图', hint: '短时、频繁的练习胜过一次练很久。', dayStreak: '连续天数', average: '平均分', attempts: '练习次数', recent: '最近练习', empty: '第一次录音会显示在这里。', start: '开始练习', target: '目标', detected: '检测为', note: '分数只用于发音辅导，不是医学诊断。如用于临床，请与言语治疗专业人员共同验证。', privacy: '隐私政策', support: '帮助与支持' },
     score: {
       word: '辨词', contrast: 'L/N 对立', soundCues: '声音线索', voice: '发声', tone: '声调', confidence: { high: '高置信度', medium: '中等置信度', low: '低置信度' },
-      landed: '这次对立发得很清楚。', close: '很接近——再塑造词首音。', slowly: '先慢慢建立这个音。', detected: '检测结果', uncertain: '不确定', evidence: '查看声音证据', lLike: '更像 L', nLike: '更像 N', signal: '信号', nasalBand: '鼻音频带',
+      landed: '这次对立发得很清楚。', close: '很接近——再塑造词首音。', slowly: '先慢慢建立这个音。', detected: '检测结果', heard: '识别结果', uncertain: '不确定', evidence: '查看声音证据', lLike: '更像 L', nLike: '更像 N', signal: '信号', nasalBand: '鼻音频带',
       evidenceDetail: 'A1–P0 近似值 {nasal} dB · 共振峰间距约 {formant} Hz · 频谱倾斜 {tilt} dB。这些是麦克风估计，不是舌位追踪。', retry: '再试一次', next: '下一个词',
     },
     feedback: {
@@ -271,6 +273,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: '练习需要麦克风权限；语音识别可用时会提高评分质量。',
       recording: '没有录到可用的声音。请检查麦克风后重试。',
       silence: '没有听到清楚的词语。请靠近麦克风再试一次。',
+      transcription: '已录到你的声音，但没有辨认出词语，因此没有保存分数。请只说屏幕上的词语后重试。',
       scoring: '本次录音无法评分，请再试一次。',
     },
   },
@@ -282,7 +285,7 @@ const copies: Record<UILanguage, UICopy> = {
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開評分', hearModel: '聽標準示範', say: '請說', not: '不要說成',
       studioTitle: '已驗證的離線標準示範', letterMeasured: '分析首字母 {value} 的發音', onsetMeasured: '分析羅馬字中的 {value} 詞首音',
       listening: '正在聆聽', preparing: '正在準備咪高峰…', analysing: '分析中…', stopAndScore: '停止錄音並評分', startRecording: '開始錄音', tapToScore: '點按並評分', tapThenSay: '點按後說出詞語',
-      scoreHow: '評分方法', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索和發聲穩定性。可用時由裝置或瀏覽器辨詞；瀏覽器不支援兼容辨識時，可能使用 L & N 的私有 Whisper 服務，轉寫後即棄置錄音。',
+      scoreHow: '評分方法', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索和發聲穩定性。只有成功辨詞後才會顯示分數；瀏覽器無法辨詞或沒有回傳結果時，可能使用 L & N 的私有 Whisper 服務，轉寫後即棄置錄音。',
     },
     signal: { aria: '即時波形與詞首頻譜', listeningLive: '即時聆聽', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影區域是提取 L/N 線索的位置。波形高度代表訊號強弱，不代表發音正確度。' },
     learn: {
@@ -303,7 +306,7 @@ const copies: Record<UILanguage, UICopy> = {
     progress: { eyebrow: '只保存在本裝置', title: '你的發音地圖', hint: '短時間、頻密的練習勝過一次練很久。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '最近練習', empty: '第一次錄音會顯示在這裡。', start: '開始練習', target: '目標', detected: '偵測為', note: '分數只用於發音輔導，並非醫學診斷。如用於臨床，請與言語治療專業人員共同驗證。', privacy: '私隱政策', support: '幫助與支援' },
     score: {
       word: '辨詞', contrast: 'L/N 對立', soundCues: '聲音線索', voice: '發聲', tone: '聲調', confidence: { high: '高可信度', medium: '中等可信度', low: '低可信度' },
-      landed: '這次對立發得很清楚。', close: '很接近——再調整詞首音。', slowly: '先慢慢建立這個音。', detected: '偵測結果', uncertain: '不確定', evidence: '查看聲音證據', lLike: '較像 L', nLike: '較像 N', signal: '訊號', nasalBand: '鼻音頻帶',
+      landed: '這次對立發得很清楚。', close: '很接近——再調整詞首音。', slowly: '先慢慢建立這個音。', detected: '偵測結果', heard: '辨識結果', uncertain: '不確定', evidence: '查看聲音證據', lLike: '較像 L', nLike: '較像 N', signal: '訊號', nasalBand: '鼻音頻帶',
       evidenceDetail: 'A1–P0 近似值 {nasal} dB · 共振峰間距約 {formant} Hz · 頻譜傾斜 {tilt} dB。這些是咪高峰估計，不是舌位追蹤。', retry: '再試一次', next: '下一個詞',
     },
     feedback: {
@@ -315,6 +318,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: '練習需要咪高峰權限；語音辨識可用時會提高評分質素。',
       recording: '沒有錄到可用的聲音。請檢查咪高峰後再試。',
       silence: '沒有聽到清楚的詞語。請靠近咪高峰再試一次。',
+      transcription: '已錄到你的聲音，但未能辨認詞語，所以沒有儲存分數。請只說畫面上的詞語後再試。',
       scoring: '本次錄音無法評分，請再試一次。',
     },
   },
@@ -326,7 +330,7 @@ const copies: Record<UILanguage, UICopy> = {
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開計', hearModel: '聽標準示範', say: '講', not: '唔好講成',
       studioTitle: '驗證過嘅離線標準示範', letterMeasured: '分析第一個字母 {value} 嘅發音', onsetMeasured: '分析羅馬字入面嘅 {value} 詞首音',
       listening: '聽緊', preparing: '準備緊咪高峰…', analysing: '分析緊…', stopAndScore: '停低錄音並評分', startRecording: '開始錄音', tapToScore: '撳一下評分', tapThenSay: '撳一下，再講個詞',
-      scoreHow: '點樣評分', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索同發聲穩定性。有得用時由裝置或瀏覽器辨詞；瀏覽器冇兼容辨識時，可能會用 L & N 私有 Whisper 服務，轉寫完就丟棄錄音。',
+      scoreHow: '點樣評分', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索同發聲穩定性。成功辨到詞先會顯示分數；瀏覽器辨唔到或者冇結果時，可能會用 L & N 私有 Whisper 服務，轉寫完就丟棄錄音。',
     },
     signal: { aria: '即時波形同詞首頻譜', listeningLive: '即時聽緊', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影位置係提取 L/N 線索嘅範圍。波形高度只代表訊號強弱，唔代表啱唔啱。' },
     learn: {
@@ -347,7 +351,7 @@ const copies: Record<UILanguage, UICopy> = {
     progress: { eyebrow: '只保存在呢部機', title: '你嘅發音地圖', hint: '短時間、密啲練，好過一次練好耐。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '最近練習', empty: '第一次錄音會喺度出現。', start: '開始練習', target: '目標', detected: '聽落似', note: '分數只係發音輔導，唔係醫學診斷。如果用作臨床用途，請搵言語治療師一齊驗證。', privacy: '私隱政策', support: '幫助同支援' },
     score: {
       word: '辨詞', contrast: 'L/N 對立', soundCues: '聲音線索', voice: '發聲', tone: '聲調', confidence: { high: '高可信度', medium: '中等可信度', low: '低可信度' },
-      landed: '今次對立講得好清楚。', close: '好接近——再執一執詞首音。', slowly: '慢慢建立呢個音先。', detected: '偵測結果', uncertain: '未肯定', evidence: '睇聲音證據', lLike: '較似 L', nLike: '較似 N', signal: '訊號', nasalBand: '鼻音頻帶',
+      landed: '今次對立講得好清楚。', close: '好接近——再執一執詞首音。', slowly: '慢慢建立呢個音先。', detected: '偵測結果', heard: '辨識結果', uncertain: '未肯定', evidence: '睇聲音證據', lLike: '較似 L', nLike: '較似 N', signal: '訊號', nasalBand: '鼻音頻帶',
       evidenceDetail: 'A1–P0 近似值 {nasal} dB · 共振峰間距約 {formant} Hz · 頻譜傾斜 {tilt} dB。呢啲係咪高峰估計，唔係追蹤舌位。', retry: '再試一次', next: '下一個詞',
     },
     feedback: {
@@ -359,6 +363,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: '練習需要咪高峰權限；有語音辨識時會令評分更準。',
       recording: '今次錄唔到可用聲音。檢查咪高峰之後再試。',
       silence: '聽唔到清楚嘅詞。行近咪高峰再試一次。',
+      transcription: '錄到你把聲，但辨唔到個詞，所以冇儲存分數。請只講畫面上個詞，再試一次。',
       scoring: '今次錄音評唔到分，請再試一次。',
     },
   },

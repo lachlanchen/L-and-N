@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Capacitor } from '@capacitor/core'
-import { beginSpeechRecognition, transcribeWithAllowedFallback } from './speech'
+import { beginSpeechRecognition, isIOSWebBrowser, transcribeWithAllowedFallback } from './speech'
 
 const speechRecognitionMocks = vi.hoisted(() => ({
   available: vi.fn(),
@@ -36,15 +36,15 @@ afterEach(() => {
 })
 
 describe('speech-recognition privacy boundary', () => {
-  it('uses the same-origin fallback only when browser recognition is absent', async () => {
+  it('allows the same-origin fallback when browser recognition is absent', async () => {
     vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(false)
 
     const session = await beginSpeechRecognition('en-US')
 
-    expect(session.useSameOriginFallback).toBe(true)
+    expect(session.sameOriginFallback).toBe('when-empty')
   })
 
-  it('does not upload a second copy when browser recognition is available', async () => {
+  it('does not upload a second copy when browser recognition returns text', async () => {
     vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(false)
     ;(
       window as typeof window & {
@@ -55,11 +55,33 @@ describe('speech-recognition privacy boundary', () => {
     const session = await beginSpeechRecognition('en-US')
     const fetchSpy = vi.spyOn(window, 'fetch')
 
-    expect(session.useSameOriginFallback).toBe(false)
+    expect(session.sameOriginFallback).toBe('when-empty')
     await expect(
-      transcribeWithAllowedFallback(session, new Blob(['audio']), 'en-US'),
-    ).resolves.toBe('')
+      transcribeWithAllowedFallback(session, new Blob(['audio']), 'en-US', ' light '),
+    ).resolves.toBe('light')
     expect(fetchSpy).not.toHaveBeenCalled()
+  })
+
+  it('uses the fallback after a declared browser recognizer returns no text', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(false)
+    ;(
+      window as typeof window & {
+        SpeechRecognition?: typeof BrowserRecognition
+      }
+    ).SpeechRecognition = BrowserRecognition
+    vi.spyOn(window, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({ text: 'night' }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      }),
+    )
+
+    const session = await beginSpeechRecognition('en-US')
+
+    await expect(
+      transcribeWithAllowedFallback(session, new Blob(['audio']), 'en-US', ''),
+    ).resolves.toBe('night')
+    expect(window.fetch).toHaveBeenCalledOnce()
   })
 
   it('falls back when a declared browser recognizer cannot start', async () => {
@@ -77,7 +99,29 @@ describe('speech-recognition privacy boundary', () => {
 
     const session = await beginSpeechRecognition('en-US')
 
-    expect(session.useSameOriginFallback).toBe(true)
+    expect(session.sameOriginFallback).toBe('when-empty')
+  })
+
+  it('uses one captured stream on iPhone web instead of starting a competing recognizer', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(false)
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148',
+    )
+    const start = vi.fn()
+    class IOSBrowserRecognition extends BrowserRecognition {
+      start = start
+    }
+    ;(
+      window as typeof window & {
+        SpeechRecognition?: typeof IOSBrowserRecognition
+      }
+    ).SpeechRecognition = IOSBrowserRecognition
+
+    expect(isIOSWebBrowser()).toBe(true)
+    const session = await beginSpeechRecognition('en-US')
+
+    expect(session.sameOriginFallback).toBe('when-empty')
+    expect(start).not.toHaveBeenCalled()
   })
 
   it('never opts a native app into the L & N server fallback', async () => {
@@ -86,6 +130,6 @@ describe('speech-recognition privacy boundary', () => {
 
     const session = await beginSpeechRecognition('en-US')
 
-    expect(session.useSameOriginFallback).toBe(false)
+    expect(session.sameOriginFallback).toBe('never')
   })
 })
