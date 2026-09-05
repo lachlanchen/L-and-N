@@ -9,6 +9,7 @@ Updated: 2026-09-05
 - The signed release APK installs and launches on an API-36.1 emulator; direct N selection changes the paired exercise from “light” to “night.”
 - Xcode 26.3 builds the combined iOS + embedded watchOS companion project.
 - The combined build installs and launches on an iPhone 17 Pro and Apple Watch Series 11 simulator, and Xcode validates the embedded watch binary relationship.
+- The distribution-signed archive and exported IPA pass deep/strict signature checks and App Store server validation; the same release was also launched on an iPad Pro 13 simulator.
 - Privacy and support pages are packaged in both native wrappers.
 
 ## Google Play
@@ -18,11 +19,13 @@ Updated: 2026-09-05
 - The signed AAB, store listing, privacy/content declarations, advertising-ID declaration, and release were sent to Google for review on 2026-09-05.
 - Play Console currently reports **Changes in review**. Approval and public availability are not yet claimed.
 
-## Apple work still required
+## Apple App Store
 
-- Restore the expired App Store Connect session in the project-owned browser.
-- Verify or create the Apple bundle identifiers `art.lazying.landn` and `art.lazying.landn.watchkitapp`.
-- Obtain Apple distribution signing identity and provisioning profiles, then archive and validate the exact App Store IPA.
-- Create the App Store Connect app/version record, upload the validated archive, finish age rating/privacy/export-compliance forms, and submit once.
+- App record `6808872450` and the iOS/watchOS identifiers are registered.
+- Version `1.0 (1)` was signed, validated, uploaded once, and submitted to App Review on 2026-09-05.
+- The iPhone, iPad, and Apple Watch screenshot sets, listing, review information, privacy response, age rating, content rights, medical-device response, pricing, and availability are complete.
+- App Store Connect currently reports **Waiting for Review**. Approval is not yet claimed.
+- Manual release is selected. After approval, public availability requires one explicit release action in App Store Connect.
+- Availability is currently 146 countries or regions. EU/EEA storefronts remain excluded until the account-level Digital Services Act trader status is verified.
 
-The first Google Play production release must use a full rollout; staged rollout is reserved for later updates. The App Store version is configured for manual release after approval.
+The first Google Play production release uses a full rollout; staged rollout is reserved for later updates. Both provider reviews are now external dependencies.

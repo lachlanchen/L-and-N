@@ -16,7 +16,7 @@ identifiers:
 
 release:
   prepared_at: 2026-09-05
-  status: google_play_in_review
+  status: apple_and_google_play_in_review
   app_store_release: manual
   google_play_initial_rollout: full
   price: free
@@ -34,12 +34,13 @@ platforms:
     status: submitted_for_review
   ios:
     minimum_os: 15.0
-    artifact: pending_signed_archive
-    status: awaiting_apple_auth_and_signing
+    artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-1/App.ipa
+    app_store_id: 6808872450
+    status: waiting_for_review
   watchos:
     minimum_os: 11.0
     embedded_in: ios
-    status: awaiting_apple_auth_and_signing
+    status: embedded_in_submitted_ios_build
 
 locales:
   interface:
