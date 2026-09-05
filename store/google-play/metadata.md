@@ -6,7 +6,7 @@
 - Default language: English (United States)
 - App or game: App
 - Category: Education
-- Tags: Education, Language learning, Pronunciation
+- Tags: Language education, Pronunciation
 - Ads: No
 - Price: Free
 - Contact email: `echomind@lazying.art`
@@ -15,7 +15,7 @@
 
 ### Short description
 
-Practise L and N with clear models, sound views, 3D guidance, and feedback.
+Practice L and N with clear models, sound views, 3D guidance, and feedback.
 
 ### Full description
 

@@ -16,7 +16,7 @@ identifiers:
 
 release:
   prepared_at: 2026-09-05
-  status: candidate
+  status: google_play_in_review
   app_store_release: manual
   google_play_initial_rollout: full
   price: free
@@ -26,20 +26,20 @@ release:
 
 platforms:
   pwa:
-    status: pending_deploy
+    status: production_live
   android:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/release/app-release.aab
-    status: signed_candidate
+    status: submitted_for_review
   ios:
     minimum_os: 15.0
     artifact: pending_signed_archive
-    status: combined_simulator_verified
+    status: awaiting_apple_auth_and_signing
   watchos:
     minimum_os: 11.0
     embedded_in: ios
-    status: combined_simulator_verified
+    status: awaiting_apple_auth_and_signing
 
 locales:
   interface:
