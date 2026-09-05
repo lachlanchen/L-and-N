@@ -1,7 +1,7 @@
 app:
   name: L & N
   version: 1.0.0
-  build: 1
+  build: 3
   owner: LazyingArt LLC
   support_email: echomind@lazying.art
   marketing_url: https://l-and-n.lazying.art
@@ -31,7 +31,7 @@ platforms:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/release/app-release.aab
-    status: submitted_for_review
+    status: build_3_submitted_for_restarted_review
   ios:
     minimum_os: 15.0
     artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
@@ -45,12 +45,12 @@ platforms:
 testing:
   android:
     version: 1.0
-    build: 2
+    build: 3
     track: internal
     status: available_to_internal_testers
     url: https://play.google.com/apps/internaltest/4701251861700553150
-    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk
-    direct_apk_sha256: 9b018d62df3c2e0ca1dc3004bd8c0b30fc08459e12b83fe96a395467c4839934
+    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk
+    direct_apk_sha256: 89867c73d2ae3f3023a1e402e7c7fd21dd4337a409262aff3832f3c30efd1fb7
     artifact_manifest: store/artifacts/android-test-release.json
   ios_watchos:
     version: 1.0

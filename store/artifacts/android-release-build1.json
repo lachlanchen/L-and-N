@@ -1,0 +1,38 @@
+{
+  "app": "L & N: Speech Practice",
+  "package": "art.lazying.landn",
+  "versionName": "1.0",
+  "versionCode": 1,
+  "sourceCommit": "55646c772dc067e40df129039125be8faee2cfae",
+  "builtAt": "2026-09-05",
+  "sdk": {
+    "min": 24,
+    "target": 36
+  },
+  "aab": {
+    "path": "android/app/build/outputs/bundle/release/app-release.aab",
+    "bytes": 4748420,
+    "sha256": "1071f02fd92f53ede13ed1847f6b35650c44006394280f3e429393f6bcca40df",
+    "signatureVerification": "jarsigner verified"
+  },
+  "apk": {
+    "path": "android/app/build/outputs/apk/release/app-release.apk",
+    "bytes": 4457477,
+    "sha256": "0e28f41a450d546b160bae6aa8feb9da7fc58a723ec7a6fed3b18cb6cecdc99c",
+    "signatureVerification": "apksigner v2 verified"
+  },
+  "uploadCertificateSha256": "5d9562b1ec58958dc5dd6d04df8e4e47834242038b4af6ddb42e37d2a0c7b5e3",
+  "permissions": [
+    "android.permission.INTERNET",
+    "android.permission.MODIFY_AUDIO_SETTINGS",
+    "android.permission.RECORD_AUDIO",
+    "android.permission.VIBRATE"
+  ],
+  "verification": {
+    "releaseBuild": "passed with R8 and resource shrinking",
+    "releaseTests": "passed",
+    "releaseLint": "passed",
+    "emulator": "installed and launched on API 36.1",
+    "playConsole": "production 1.0.0 (1), changes in review"
+  }
+}

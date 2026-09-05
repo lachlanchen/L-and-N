@@ -9,8 +9,8 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 - Healthy working copy: `/home/lachlan/L-And-N-audio-repair`
 - Original working copy: `/home/lachlan/ProjectsLFS/L-And-N` (do not use until the failing `ProjectsLFS` filesystem is repaired)
 - PWA: https://l-and-n.lazying.art/
-- Signed Android test APK: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk
-- APK SHA-256: `9b018d62df3c2e0ca1dc3004bd8c0b30fc08459e12b83fe96a395467c4839934`
+- Signed Android test APK: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk
+- APK SHA-256: `89867c73d2ae3f3023a1e402e7c7fd21dd4337a409262aff3832f3c30efd1fb7`
 - Google package: `art.lazying.landn`
 - Apple ID: `6808872450`
 - iOS bundle: `art.lazying.landn`
@@ -19,12 +19,12 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 
 Formal submission state:
 
-- Google Play Production `1.0.0 (1)`: **Changes in review**. This is the initial full release, not a staged rollout.
+- Google Play Production `1.0 (3)`: **Changes in review** after restarting the review to replace build 1 with the microphone-fixed build 3. This is the initial full release, not a staged rollout.
 - Apple App Store iOS/watchOS `1.0 (2)`: **Waiting for Review**. Build 1 was removed from review and replaced after the microphone/transcription repair. The first release is manual, so approval must be followed by one explicit release action.
 
 Testing state:
 
-- Google Play internal `1.0 (2)`: **Available to internal testers** at https://play.google.com/apps/internaltest/4701251861700553150.
+- Google Play internal `1.0 (3)`: **Available to internal testers** at https://play.google.com/apps/internaltest/4701251861700553150.
 - TestFlight internal: build `1.0 (2)` is **Testing** in `L & N Internal Testers`.
 - TestFlight public beta: https://testflight.apple.com/join/CpkT8m9C, build `1.0 (2)` is **Testing**; automatic tester notification was enabled. Build 1 remains in the group as rollback history.
 
@@ -39,10 +39,11 @@ Build 2 IPA SHA-256: `eb2106916ab7b70ae0e800e5bafd2e87b66074450168b88e2690a413ef
 
 ## Audio repair operations
 
-- The live PWA release is `/opt/l-and-n-web/releases/df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1` on the edge host. Its rollback is `41299ade4813f32534146c95e7729b80f8d3e3fe37a299fb74a3688b1ac4101d`.
+- The live PWA/download release is `/opt/l-and-n-web/releases/970e7d97616fec213d52d0de957829225fd9c0f5811c816db6dcfe28ee009841` on `sshem`. Its rollback is `df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1`. The web app still serves the verified `assets/index-DcVqO48w.js`; this release adds the signed build-3 APK without changing that web payload.
 - The private transient speech service is the enabled user unit `landn-speech-api.service`, listening only on `127.0.0.1:18063`. Its immutable source is LocalLLM commit `210cee1db473d77cad4de9f132f6ae2afe1b5f45`; it reuses the existing offline `faster-whisper-small` cache and deletes each inflight file after transcription.
 - Only LazyEdge service `local-llm-speech` targets that port. Protected live configuration is under `~/.config/lazyedge/`; the secret-free rollback location is described by the private operator state, not committed here.
 - Live browser evidence proved one microphone stream, a moving and retained waveform, recognized text, and a non-placeholder score. An empty transcript now produces no score and saves no progress.
+- Android build 3 additionally fixes the minified release permission crash and the non-resolving recorder Stop path. API-36.1 release-emulator evidence shows the live waveform and a clean no-score result for silence.
 - Reused noVNC stack: Xvfb `:164`, x11vnc `5964`, websockify/noVNC `6164`, Chrome CDP `9484`. Open `http://127.0.0.1:6164/vnc.html?host=127.0.0.1&port=6164&autoconnect=1&resize=scale&view_only=0&shared=0&reconnect=0`. Do not launch a second L & N stack while these processes are live.
 
 ## EchoMind reference
@@ -58,7 +59,7 @@ The long-running EchoMind display `:94` / noVNC `6194` / CDP `9294` is currently
 
 ## Next provider actions
 
-1. Monitor Google Production until the review result is terminal; verify the public listing before claiming it is live.
+1. Monitor Google Production build 3 until the review result is terminal; verify the public listing before claiming it is live.
 2. Test build 2 on a physical iPhone from the internal or public TestFlight group, specifically microphone permission, live waveform motion, retained waveform after Stop, and recognized text before scoring.
 3. Monitor Apple App Review. When the version becomes approved/pending developer release, use the manual release control once, then verify the storefront.
 4. Update `store/release.yaml`, the two submission notes, evidence, and artifact manifests after every provider transition.

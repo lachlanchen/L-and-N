@@ -2,23 +2,24 @@
   "app": "L & N: Speech Practice",
   "package": "art.lazying.landn",
   "versionName": "1.0",
-  "versionCode": 1,
-  "sourceCommit": "55646c772dc067e40df129039125be8faee2cfae",
-  "builtAt": "2026-09-05",
+  "versionCode": 3,
+  "sourceCommit": "47b899c200dcf9b4f0c461beceaf638dae15dcc6",
+  "builtAt": "2026-09-06",
   "sdk": {
     "min": 24,
     "target": 36
   },
   "aab": {
     "path": "android/app/build/outputs/bundle/release/app-release.aab",
-    "bytes": 4748420,
-    "sha256": "1071f02fd92f53ede13ed1847f6b35650c44006394280f3e429393f6bcca40df",
-    "signatureVerification": "jarsigner verified"
+    "bytes": 4753364,
+    "sha256": "cba75721242b3f20b9e5e861bfc20e23cec7b5228ace3a8b6afea6dafb38f319",
+    "signatureVerification": "jarsigner verified",
+    "playVerification": "accepted in internal testing and promoted unchanged to Production"
   },
   "apk": {
     "path": "android/app/build/outputs/apk/release/app-release.apk",
-    "bytes": 4457477,
-    "sha256": "0e28f41a450d546b160bae6aa8feb9da7fc58a723ec7a6fed3b18cb6cecdc99c",
+    "bytes": 4461789,
+    "sha256": "89867c73d2ae3f3023a1e402e7c7fd21dd4337a409262aff3832f3c30efd1fb7",
     "signatureVerification": "apksigner v2 verified"
   },
   "uploadCertificateSha256": "5d9562b1ec58958dc5dd6d04df8e4e47834242038b4af6ddb42e37d2a0c7b5e3",
@@ -30,9 +31,15 @@
   ],
   "verification": {
     "releaseBuild": "passed with R8 and resource shrinking",
-    "releaseTests": "passed",
+    "releaseTests": "25 tests in 5 files passed",
     "releaseLint": "passed",
-    "emulator": "installed and launched on API 36.1",
-    "playConsole": "production 1.0.0 (1), changes in review"
+    "emulator": "release APK recorded with a moving waveform and abstained correctly on silence on API 36.1",
+    "playConsole": "production 1.0 (3), changes in review after replacing build 1 and restarting review"
+  },
+  "distribution": {
+    "track": "production",
+    "rollout": "100% after approval",
+    "submittedAt": "2026-09-06",
+    "status": "Changes in review; provider approval and public listing are pending"
   }
 }

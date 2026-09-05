@@ -8,6 +8,8 @@
 
 [Open the live PWA](https://l-and-n.lazying.art) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
 
+[TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C) · [Google Play internal test](https://play.google.com/apps/internaltest/4701251861700553150) · [Signed Android build 3 APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk)
+
 L-and-N turns a small but frustrating speech contrast into a short practice loop: see the letter inside the word, hear a studio model, watch the signal, record, and receive an explained score. The same curriculum runs as an installable PWA, Android app, iPhone/iPad app, and a compact watchOS drill.
 
 ![Practice screen](docs/images/pwa-practice.png)

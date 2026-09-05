@@ -15,10 +15,10 @@ Updated: 2026-09-06
 ## Google Play
 
 - App record created as `L & N: Speech Practice` for `art.lazying.landn`.
-- Production release `1.0.0 (1)` targets 177 countries/regions and uses a full rollout.
-- The signed AAB, store listing, privacy/content declarations, advertising-ID declaration, and release were sent to Google for review on 2026-09-05.
-- Play Console currently reports **Changes in review**. Approval and public availability are not yet claimed.
-- A separate `1.0 (2)` release is **Available to internal testers** at https://play.google.com/apps/internaltest/4701251861700553150. It differs from the production candidate only by Android build number.
+- Production release `1.0 (3)` targets 177 countries/regions and uses a full rollout after approval.
+- The microphone-fixed build 3 AAB replaced build 1 and restarted the Google review on 2026-09-06. The store listing, privacy/content declarations, advertising-ID declaration, and release remain in the same submission.
+- Play Console currently reports **Changes in review** after its quick checks completed. Approval and public availability are not yet claimed.
+- The same `1.0 (3)` release is **Available to internal testers** at https://play.google.com/apps/internaltest/4701251861700553150. The signed APK is also available at https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk.
 
 ## Apple App Store
 

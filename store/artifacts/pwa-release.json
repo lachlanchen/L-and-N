@@ -1,14 +1,23 @@
 {
-  "sourceCommit": "d837c146eb0ff66b4ea4000a004f582f4c31ef5f",
+  "sourceCommit": "47b899c200dcf9b4f0c461beceaf638dae15dcc6",
+  "webSourceCommit": "d837c146eb0ff66b4ea4000a004f582f4c31ef5f",
   "deployedAt": "2026-09-06",
   "url": "https://l-and-n.lazying.art/",
-  "releasePath": "/opt/l-and-n-web/releases/df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1",
-  "previousRelease": "/opt/l-and-n-web/releases/41299ade4813f32534146c95e7729b80f8d3e3fe37a299fb74a3688b1ac4101d",
-  "releaseTarSha256": "df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1",
-  "distTreeSha256": "9a4b36ec48685b8b3c300acd4993f96387beee5737e1eac735b3afddd6381a5d",
+  "releasePath": "/opt/l-and-n-web/releases/970e7d97616fec213d52d0de957829225fd9c0f5811c816db6dcfe28ee009841",
+  "previousRelease": "/opt/l-and-n-web/releases/df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1",
+  "releaseTarSha256": "970e7d97616fec213d52d0de957829225fd9c0f5811c816db6dcfe28ee009841",
+  "distTreeSha256": "b2c41c3ec741d53252096e350abb36346f2d600ad6047ff78039fc34c61254da",
   "distTreeFormat": "SHA-256 of the LC_ALL=C sorted relative-path GNU sha256sum manifest",
   "mainAsset": "assets/index-DcVqO48w.js",
   "downloads": [
+    {
+      "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk",
+      "versionName": "1.0",
+      "versionCode": 3,
+      "bytes": 4461789,
+      "sha256": "89867c73d2ae3f3023a1e402e7c7fd21dd4337a409262aff3832f3c30efd1fb7",
+      "contentType": "application/vnd.android.package-archive"
+    },
     {
       "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk",
       "versionName": "1.0",
@@ -25,7 +34,7 @@
     "immutableAssets": "passed",
     "privacyPage": "passed",
     "supportPage": "passed",
-    "androidDownload": "passed",
+    "androidDownload": "passed for build 3; byte count and SHA-256 verified through the public URL",
     "browserSpeechPrivacyBoundary": "passed",
     "apiNegativeMatrix": "passed",
     "certificateSan": "passed",

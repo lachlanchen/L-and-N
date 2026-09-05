@@ -1,0 +1,38 @@
+{
+  "app": "L & N: Speech Practice",
+  "package": "art.lazying.landn",
+  "versionName": "1.0",
+  "versionCode": 2,
+  "sourceCommit": "8fff3aecd4aeec1d8d6277ff1892cab04b93456a",
+  "builtAt": "2026-09-05",
+  "sdk": {
+    "min": 24,
+    "target": 36
+  },
+  "aab": {
+    "path": "android/app/build/outputs/bundle/release/app-release.aab",
+    "bytes": 4748442,
+    "sha256": "09d5684f2c26ba25ed02fcddb8740f3272527f12084acc248f87f8be812fa14b",
+    "verification": "signed by Gradle and accepted by Google Play"
+  },
+  "apk": {
+    "path": "android/app/build/outputs/apk/release/app-release.apk",
+    "bytes": 4457477,
+    "sha256": "9b018d62df3c2e0ca1dc3004bd8c0b30fc08459e12b83fe96a395467c4839934",
+    "signatureVerification": "apksigner verified"
+  },
+  "uploadCertificateSha256": "5d9562b1ec58958dc5dd6d04df8e4e47834242038b4af6ddb42e37d2a0c7b5e3",
+  "verification": {
+    "webChecks": "lint, 7 unit tests, TypeScript, and production PWA build passed",
+    "androidTests": "Gradle unit tests passed",
+    "releaseLint": "passed",
+    "playConsole": "internal testing active and available to testers"
+  },
+  "distribution": {
+    "track": "internal",
+    "trackId": "4701251861700553150",
+    "joinUrl": "https://play.google.com/apps/internaltest/4701251861700553150",
+    "firstPartyDownloadUrl": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build2-test.apk",
+    "releasedAt": "2026-09-05T12:43:00+08:00"
+  }
+}
