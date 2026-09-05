@@ -1,0 +1,53 @@
+app:
+  name: L & N
+  version: 1.0.0
+  build: 1
+  owner: LazyingArt LLC
+  support_email: echomind@lazying.art
+  marketing_url: https://l-and-n.lazying.art
+  privacy_url: https://l-and-n.lazying.art/privacy.html
+  support_url: https://l-and-n.lazying.art/support.html
+
+identifiers:
+  android: art.lazying.landn
+  ios: art.lazying.landn
+  watchos: art.lazying.landn.watchkitapp
+  apple_team: Q8M2S2FY77
+
+release:
+  prepared_at: 2026-09-05
+  status: candidate
+  app_store_release: manual
+  google_play_initial_rollout: full
+  price: free
+  ads: false
+  in_app_purchases: false
+  accounts: false
+
+platforms:
+  pwa:
+    status: pending_deploy
+  android:
+    min_sdk: 24
+    target_sdk: 36
+    artifact: android/app/build/outputs/bundle/release/app-release.aab
+    status: signed_candidate
+  ios:
+    minimum_os: 15.0
+    artifact: pending_signed_archive
+    status: combined_simulator_verified
+  watchos:
+    minimum_os: 11.0
+    embedded_in: ios
+    status: combined_simulator_verified
+
+locales:
+  interface:
+    - en
+    - zh-Hans
+    - zh-Hant
+    - yue
+  practice:
+    - en-US
+    - zh-CN
+    - yue-HK

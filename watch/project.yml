@@ -5,7 +5,7 @@ options:
     watchOS: "11.0"
 settings:
   base:
-    MARKETING_VERSION: 0.1.0
+    MARKETING_VERSION: 1.0
     CURRENT_PROJECT_VERSION: 1
     SWIFT_VERSION: 5.0
 targets:
@@ -16,14 +16,17 @@ targets:
       - LAndNWatch
     resources:
       - LAndNWatch/Assets.xcassets
+      - LAndNWatch/PrivacyInfo.xcprivacy
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: art.lazying.landn.watch
+        PRODUCT_BUNDLE_IDENTIFIER: art.lazying.landn.watchkitapp
         PRODUCT_NAME: L-and-N
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: L-and-N
-        INFOPLIST_KEY_WKWatchOnly: YES
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+        INFOPLIST_KEY_WKCompanionAppBundleIdentifier: art.lazying.landn
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SKIP_INSTALL: YES
         TARGETED_DEVICE_FAMILY: 4
 schemes:
   LAndNWatch:

@@ -6,7 +6,7 @@
 
 **A calm, evidence-aware pronunciation coach for hearing and producing L and N.**
 
-[Open the live PWA](https://l-and-n.lazying.art) · [Research notes](docs/research/pronunciation-assessment.md) · [Source lesson map](docs/source-lesson.md)
+[Open the live PWA](https://l-and-n.lazying.art) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
 
 L-and-N turns a small but frustrating speech contrast into a short practice loop: see the letter inside the word, hear a studio model, watch the signal, record, and receive an explained score. The same curriculum runs as an installable PWA, Android app, iPhone/iPad app, and a compact watchOS drill.
 
@@ -57,7 +57,7 @@ cd android && ./gradlew testDebugUnitTest assembleDebug
 cd ../watch && xcodegen generate && xcodebuild -project LAndNWatch.xcodeproj -scheme LAndNWatch -sdk watchsimulator build
 ```
 
-Capacitor generates the native web bundles from `dist/`. The watch is an intentionally small independent SwiftUI target. Deployment-specific secrets and runtime state are excluded; [the gateway source](ops/landn_gateway.py) reads its short-scope speech token from a protected file.
+Capacitor generates the native web bundles from `dist/`. The small SwiftUI watch target is embedded into the iOS app for distribution and can still be built independently for simulator development. Deployment-specific secrets and runtime state are excluded; [the gateway source](ops/landn_gateway.py) reads its short-scope speech token from a protected file.
 
 ## Curriculum and evidence
 
@@ -69,7 +69,8 @@ No large expert-rated, cross-device corpus currently validates this release acro
 
 - `src/` — curriculum, audio analysis, explainable scoring, signal display, and 3D model.
 - `public/audio/models/` — bundled, intelligibility-checked studio prompts.
-- `android/`, `ios/`, `watch/` — native wrappers and SwiftUI watch app.
+- `android/`, `ios/`, `watch/` — native wrappers and the embedded SwiftUI watch companion.
+- `store/` — versioned store metadata, privacy declarations, assets, and release status.
 - `ops/` — minimal, dependency-free Whisper gateway and tests.
 - `docs/` — research, lesson provenance, and simulator evidence.
 
@@ -92,7 +93,7 @@ Citation metadata is available in [`CITATION.cff`](CITATION.cff). A compact BibT
   author = {Lachlan Chen},
   title = {L-and-N: a transparent pronunciation coach},
   year = {2026},
-  version = {0.1.0},
+  version = {1.0.0},
   url = {https://github.com/lachlanchen/L-and-N}
 }
 ```

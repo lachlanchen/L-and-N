@@ -245,28 +245,28 @@ export function scorePronunciation(
     ? clampScore(recognition * 0.38 + contrast * 0.2 + acoustic * 0.32 + delivery * 0.1)
     : clampScore(acoustic * 0.7 + delivery * 0.3)
   const overall = tone === null ? soundOverall : clampScore(soundOverall * 0.88 + tone * 0.12)
-  const feedback: string[] = []
+  const feedback: PronunciationScore['feedback'] = []
 
   if (!recognitionAvailable) {
-    feedback.push('Word recognition was unavailable, so this score relies on the recorded onset and carries lower confidence.')
+    feedback.push({ code: 'recognitionUnavailable' })
   } else if (recognition < 70) {
-    feedback.push(`The recognizer heard “${transcript || '—'}”. Slow down and make the first sound clear before the vowel.`)
+    feedback.push({ code: 'recognitionUnclear', value: transcript || '—' })
   } else {
-    feedback.push(`The word identity was clear: “${exercise.word}”.`)
+    feedback.push({ code: 'recognitionClear', value: exercise.word })
   }
 
   if (exercise.target === 'N' && acousticInference.nEvidence < 58) {
-    feedback.push('Add a brief nasal murmur at the start. Touch your nose lightly and check for vibration.')
+    feedback.push({ code: 'addNasal' })
   } else if (exercise.target === 'L' && acousticInference.lEvidence < 58) {
-    feedback.push('Reduce nasal resonance. Keep the tongue tip up and release air around its sides.')
+    feedback.push({ code: 'reduceNasal' })
   } else {
-    feedback.push(`The acoustic pattern supports /${exercise.target.toLowerCase()}/.`)
+    feedback.push({ code: 'acousticSupports', value: exercise.target.toLowerCase() })
   }
 
-  if (features.signalQuality < 0.4) feedback.push('Signal quality was limited; move closer, reduce background noise, and avoid clipping.')
-  if (features.durationMs < 350) feedback.push('Hold the word slightly longer so the contrast can be measured reliably.')
-  if (tone !== null && tone < 62) feedback.push(`The onset and tone are scored separately. Repeat tone ${exercise.tone} with a steadier pitch shape.`)
-  if (calibration?.L || calibration?.N) feedback.push('Your on-device acoustic baseline contributed to this comparison.')
+  if (features.signalQuality < 0.4) feedback.push({ code: 'signalLimited' })
+  if (features.durationMs < 350) feedback.push({ code: 'holdLonger' })
+  if (tone !== null && tone < 62) feedback.push({ code: 'toneShape', value: exercise.tone })
+  if (calibration?.L || calibration?.N) feedback.push({ code: 'personalized' })
 
   const confidence = !recognitionAvailable || features.signalQuality < 0.4
     ? 'low'

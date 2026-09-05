@@ -2,6 +2,12 @@ export type TargetSound = 'L' | 'N'
 
 export type TrainingLanguage = 'en-US' | 'zh-CN' | 'yue-HK'
 
+export type UILanguage =
+  | 'en'
+  | 'zh-Hans'
+  | 'zh-Hant'
+  | 'yue'
+
 export interface Exercise {
   id: string
   language: TrainingLanguage
@@ -50,6 +56,23 @@ export interface AcousticEvidence {
   personalized: boolean
 }
 
+export type PronunciationFeedbackCode =
+  | 'recognitionUnavailable'
+  | 'recognitionUnclear'
+  | 'recognitionClear'
+  | 'addNasal'
+  | 'reduceNasal'
+  | 'acousticSupports'
+  | 'signalLimited'
+  | 'holdLonger'
+  | 'toneShape'
+  | 'personalized'
+
+export interface PronunciationFeedback {
+  code: PronunciationFeedbackCode
+  value?: string | number
+}
+
 export interface PronunciationScore {
   overall: number
   recognition: number
@@ -60,6 +83,6 @@ export interface PronunciationScore {
   detectedSound: TargetSound | 'uncertain'
   transcript: string
   confidence: 'high' | 'medium' | 'low'
-  feedback: string[]
+  feedback: PronunciationFeedback[]
   evidence: AcousticEvidence
 }

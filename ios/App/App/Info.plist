@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>L-and-N</string>
+	<string>L &amp; N</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,7 +25,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>L-and-N records short practice words to measure pronunciation cues.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>L-and-N uses on-device speech recognition to distinguish L and N minimal pairs.</string>
+	<string>L &amp; N uses speech recognition to distinguish L and N minimal pairs. Processing may occur on-device or through Apple's speech service.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>

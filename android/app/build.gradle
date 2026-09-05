@@ -1,5 +1,20 @@
 apply plugin: 'com.android.application'
 
+def envOrProperty = { String name ->
+    def value = System.getenv(name) ?: project.findProperty(name) ?: ""
+    return value.toString().trim()
+}
+def releaseKeystorePath = envOrProperty("LANDN_ANDROID_KEYSTORE_FILE")
+def releaseKeystorePassword = envOrProperty("LANDN_ANDROID_KEYSTORE_PASSWORD")
+def releaseKeyAlias = envOrProperty("LANDN_ANDROID_KEY_ALIAS")
+def releaseKeyPassword = envOrProperty("LANDN_ANDROID_KEY_PASSWORD")
+def releaseSigningReady = [
+    releaseKeystorePath,
+    releaseKeystorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword,
+].every { !it.isEmpty() }
+
 android {
     namespace = "art.lazying.landn"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -16,12 +31,54 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    signingConfigs {
+        if (releaseSigningReady) {
+            release {
+                storeFile file(releaseKeystorePath)
+                storePassword releaseKeystorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
         }
     }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (releaseSigningReady) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+tasks.register("verifyStoreReleaseConfiguration") {
+    group = "verification"
+    description = "Fails unless the Android upload key is configured outside the repository."
+    doLast {
+        def requiredNames = [
+            "LANDN_ANDROID_KEYSTORE_FILE",
+            "LANDN_ANDROID_KEYSTORE_PASSWORD",
+            "LANDN_ANDROID_KEY_ALIAS",
+            "LANDN_ANDROID_KEY_PASSWORD",
+        ]
+        def missingNames = requiredNames.findAll { envOrProperty(it).isEmpty() }
+        if (!missingNames.isEmpty()) {
+            throw new GradleException(
+                "Store release configuration is incomplete: ${missingNames.join(', ')}"
+            )
+        }
+        if (!file(releaseKeystorePath).isFile()) {
+            throw new GradleException(
+                "Android upload keystore does not exist: ${releaseKeystorePath}"
+            )
+        }
+    }
+}
+
+tasks.matching { it.name in ["assembleRelease", "bundleRelease"] }.configureEach {
+    dependsOn(tasks.named("verifyStoreReleaseConfiguration"))
 }
 
 repositories {

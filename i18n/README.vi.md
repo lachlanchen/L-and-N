@@ -90,7 +90,7 @@ Siêu dữ liệu trích dẫn nằm trong [`CITATION.cff`](../CITATION.cff). Bi
   author = {Lachlan Chen},
   title = {L-and-N: a transparent pronunciation coach},
   year = {2026},
-  version = {0.1.0},
+  version = {1.0.0},
   url = {https://github.com/lachlanchen/L-and-N}
 }
 ```

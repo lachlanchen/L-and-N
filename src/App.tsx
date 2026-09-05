@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
+  Globe2,
   Headphones,
   Mic,
   RotateCcw,
@@ -17,12 +18,13 @@ import {
 } from 'lucide-react'
 import './App.css'
 import { SignalVisualizer } from './components/SignalVisualizer'
-import { exercises, languageLabels, lessonPrinciples } from './data/curriculum'
+import { exercises, languageLabels } from './data/curriculum'
+import { feedbackCopy, formatCopy, initialUILanguage, uiCopy, uiLanguageLabels, type UICopy } from './i18n'
 import { decodeAudioFeatures } from './lib/acoustics'
 import { loadAttempts, saveAttempt, trainingStreak, type AttemptRecord } from './lib/progress'
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
 import { beginSpeechRecognition, speakExample, transcribeWithWhisper, type SpeechSession } from './lib/speech'
-import type { AcousticFeatures, Exercise, PronunciationScore, TrainingLanguage } from './types'
+import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
 
 type Tab = 'practice' | 'learn' | 'progress'
 
@@ -63,18 +65,9 @@ const emptyFeatures: AcousticFeatures = {
   spectrum: [],
 }
 
-const metricLabels: Array<[
-  keyof Pick<PronunciationScore, 'recognition' | 'contrast' | 'acoustic' | 'delivery'>,
-  string,
-]> = [
-  ['recognition', 'Word'],
-  ['contrast', 'L/N contrast'],
-  ['acoustic', 'Sound cues'],
-  ['delivery', 'Voice'],
-]
-
 function App() {
   const [tab, setTab] = useState<Tab>('practice')
+  const [uiLanguage, setUILanguage] = useState<UILanguage>(initialUILanguage)
   const [language, setLanguage] = useState<TrainingLanguage>('en-US')
   const [exerciseIndex, setExerciseIndex] = useState(0)
   const [recording, setRecording] = useState(false)
@@ -86,6 +79,7 @@ function App() {
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
   const sessionRef = useRef<RecordingSession | null>(null)
   const stopTimerRef = useRef<number | null>(null)
+  const copy = uiCopy(uiLanguage)
 
   const languageExercises = useMemo(
     () => exercises.filter((item) => item.language === language),
@@ -101,6 +95,12 @@ function App() {
   useEffect(() => {
     void loadAttempts().then(setAttempts)
   }, [])
+
+  useEffect(() => {
+    window.localStorage.setItem('landn.ui-language', uiLanguage)
+    document.documentElement.lang = uiLanguage === 'zh-Hans' ? 'zh-CN' : uiLanguage === 'zh-Hant' ? 'zh-TW' : uiLanguage === 'yue' ? 'yue-HK' : 'en'
+    document.title = copy.appTitle
+  }, [copy.appTitle, uiLanguage])
 
   useEffect(
     () => () => {
@@ -123,6 +123,19 @@ function App() {
   const selectLanguage = (code: TrainingLanguage) => {
     setLanguage(code)
     setExerciseIndex(0)
+    setScore(null)
+    setLastFeatures(null)
+    setError('')
+  }
+
+  const selectTargetSound = (target: TargetSound) => {
+    if (exercise.target === target) return
+    const pairedWord = exercise.pair.split(' ')[0]
+    const pairedIndex = languageExercises.findIndex(
+      (item) => item.target === target && item.word.split(' ')[0] === pairedWord,
+    )
+    const fallbackIndex = languageExercises.findIndex((item) => item.target === target)
+    setExerciseIndex(pairedIndex >= 0 ? pairedIndex : fallbackIndex >= 0 ? fallbackIndex : 0)
     setScore(null)
     setLastFeatures(null)
     setError('')
@@ -177,7 +190,8 @@ function App() {
       })
       setAttempts(next)
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'The recording could not be scored.')
+      console.warn('Pronunciation scoring failed', caught)
+      setError(copy.errors.scoring)
     } finally {
       sessionRef.current = null
       setAnalyser(null)
@@ -221,9 +235,10 @@ function App() {
       setRecording(true)
       stopTimerRef.current = window.setTimeout(() => void finishRecording(), 5000)
     } catch (caught) {
+      console.warn('Microphone start failed', caught)
       pendingStream?.getTracks().forEach((track) => track.stop())
       if (pendingAudioContext) void pendingAudioContext.close()
-      setError(caught instanceof Error ? caught.message : 'Microphone permission is required to practise.')
+      setError(copy.errors.microphone)
     }
   }
 
@@ -234,171 +249,198 @@ function App() {
 
   const renderPractice = () => (
     <main className="practice-page">
-      <section className="hero-copy">
-        <div className="eyebrow"><Sparkles size={14} /> Today · 4 minute drill</div>
-        <h1>Make the air path<br /><span>easy to feel.</span></h1>
-        <p>Listen once. Say one word. Get a cue-specific score.</p>
-      </section>
-
-      <div className="language-switcher" aria-label="Training language">
+      <div className="language-switcher" data-testid="practice-language-switcher" aria-label={copy.trainingLanguage}>
         {(Object.entries(languageLabels) as Array<[TrainingLanguage, string]>).map(([code, label]) => (
-          <button key={code} className={language === code ? 'active' : ''} onClick={() => selectLanguage(code)}>{label}</button>
+          <button key={code} data-testid={`practice-language-${code}`} aria-pressed={language === code} className={language === code ? 'active' : ''} onClick={() => selectLanguage(code)}>{label}</button>
         ))}
+      </div>
+
+      <div className="practice-kicker">
+        <span className="eyebrow"><Sparkles size={14} /> {copy.practice.session}</span>
+        <small>{copy.practice.sessionHint}</small>
       </div>
 
       <section className="drill-card">
         <div className="drill-topline">
-          <button className="icon-button" aria-label="Previous word" onClick={() => moveExercise(-1)}><ChevronLeft /></button>
-          <div className="sound-toggle" aria-label={`Target sound ${exercise.target}`}>
-            <span className={exercise.target === 'L' ? 'l active' : 'l'}>L</span>
-            <span className={exercise.target === 'N' ? 'n active' : 'n'}>N</span>
+          <button className="icon-button" aria-label={copy.practice.previousWord} onClick={() => moveExercise(-1)}><ChevronLeft /></button>
+          <div className="sound-toggle" role="group" aria-label={copy.practice.soundPicker}>
+            {(['L', 'N'] as const).map((sound) => (
+              <button
+                key={sound}
+                data-testid={`practice-sound-${sound.toLowerCase()}`}
+                type="button"
+                aria-pressed={exercise.target === sound}
+                className={`${sound.toLowerCase()} ${exercise.target === sound ? 'active' : ''}`}
+                onClick={() => selectTargetSound(sound)}
+              >{sound}</button>
+            ))}
           </div>
-          <button className="icon-button" aria-label="Next word" onClick={() => moveExercise(1)}><ChevronRight /></button>
+          <button className="icon-button" aria-label={copy.practice.nextWord} onClick={() => moveExercise(1)}><ChevronRight /></button>
         </div>
 
         <div className="word-area">
-          <span className="target-label">TARGET /{exercise.target.toLowerCase()}/</span>
+          <span className="target-label">{copy.practice.target} /{exercise.target.toLowerCase()}/</span>
           <h2>{exercise.word}</h2>
           <p className="ipa">{exercise.ipa} <span>· {exercise.translation}</span></p>
-          <SoundSpelling exercise={exercise} />
-          <button className="listen-button" title="Verified offline studio example" onClick={() => void speakExample(exercise)}>
-            <Volume2 size={19} /> Hear studio model
+          <SoundSpelling exercise={exercise} copy={copy} />
+          <button className="listen-button" title={copy.practice.studioTitle} onClick={() => void speakExample(exercise)}>
+            <Volume2 size={19} /> {copy.practice.hearModel}
           </button>
         </div>
 
         <div className="contrast-row">
-          <div><span>Say</span><strong>{exercise.word}</strong></div>
+          <div><span>{copy.practice.say}</span><strong>{exercise.word}</strong></div>
           <ArrowRight size={18} />
-          <div className="avoid"><span>Not</span><strong>{exercise.pair}</strong></div>
+          <div className="avoid"><span>{copy.practice.not}</span><strong>{exercise.pair}</strong></div>
         </div>
 
         <div className="cue"><Target size={18} /><p>{exercise.cue}</p></div>
 
-        <SignalVisualizer analyser={analyser} features={lastFeatures} recording={recording} target={exercise.target} />
+        <SignalVisualizer analyser={analyser} features={lastFeatures} recording={recording} target={exercise.target} copy={copy.signal} />
 
         <button
           className={`record-button ${recording ? 'recording' : ''}`}
           onClick={toggleRecording}
           disabled={processing}
-          aria-label={recording ? 'Stop and score recording' : 'Start recording'}
+          aria-label={recording ? copy.practice.stopAndScore : copy.practice.startRecording}
         >
           <span className="record-orbit"><Mic size={30} /></span>
-          <span>{processing ? 'Analysing…' : recording ? 'Tap to score' : 'Tap, then say it'}</span>
-          {recording && <span className="recording-time">Listening</span>}
+          <span>{processing ? copy.practice.analysing : recording ? copy.practice.tapToScore : copy.practice.tapThenSay}</span>
+          {recording && <span className="recording-time">{copy.practice.listening}</span>}
         </button>
 
         {error && <p className="error-message">{error}</p>}
       </section>
 
-      {score && <ScoreCard score={score} onRetry={() => setScore(null)} onNext={() => moveExercise(1)} />}
+      {score && <ScoreCard score={score} copy={copy} onRetry={() => setScore(null)} onNext={() => moveExercise(1)} />}
 
       <section className="science-note">
         <Waves size={22} />
-        <div><strong>How this score works</strong><p>Word recognition + minimal-pair contrast + nasal/lateral acoustic cues + delivery stability. Online Whisper is a transient word-level cross-check; recordings are not kept.</p></div>
+        <div><strong>{copy.practice.scoreHow}</strong><p>{copy.practice.scoreHowBody}</p></div>
       </section>
     </main>
   )
 
   const renderLearn = () => (
     <main className="learn-page">
-      <div className="section-heading"><span className="eyebrow"><BookOpen size={14} /> The 60-second science</span><h1>Same place.<br />Different pathway.</h1></div>
-      <Suspense fallback={<div className="model-loading">Preparing the mouth model…</div>}><MouthModel3D /></Suspense>
+      <Suspense fallback={<div className="model-loading">{copy.learn.loading}</div>}><MouthModel3D copy={copy.model} /></Suspense>
+      <div className="section-heading compact"><span className="eyebrow"><BookOpen size={14} /> {copy.learn.eyebrow}</span><h1>{copy.learn.title}</h1></div>
       <section className="principles">
-        {lessonPrinciples.map((principle, index) => (
+        {copy.learn.principles.map((principle, index) => (
           <article key={principle.title}><span>{String(index + 1).padStart(2, '0')}</span><div><h2>{principle.title}</h2><p>{principle.body}</p></div></article>
         ))}
       </section>
       <section className="source-card">
         <Headphones size={22} />
-        <div><strong>Lesson source</strong><p>Built from the linked Pronunciation Snippets lesson, then extended with Mandarin and Cantonese minimal-pair practice.</p><a href="https://www.youtube.com/watch?v=78RQW1Kq_3A" target="_blank" rel="noreferrer">Watch “The Difference Between L &amp; N”</a></div>
+        <div><strong>{copy.learn.source}</strong><p>{copy.learn.sourceBody}</p><a href="https://www.youtube.com/watch?v=78RQW1Kq_3A" target="_blank" rel="noreferrer">{copy.learn.sourceLink}</a></div>
       </section>
     </main>
   )
 
   const renderProgress = () => (
     <main className="progress-page">
-      <div className="section-heading"><span className="eyebrow"><Activity size={14} /> Private on this device</span><h1>Your sound map.</h1><p>Short, frequent practice beats one long session.</p></div>
+      <div className="section-heading compact"><span className="eyebrow"><Activity size={14} /> {copy.progress.eyebrow}</span><h1>{copy.progress.title}</h1><p>{copy.progress.hint}</p></div>
       <section className="stats-grid">
-        <article><Flame /><strong>{streak}</strong><span>day streak</span></article>
-        <article><Target /><strong>{average || '—'}</strong><span>average score</span></article>
-        <article><Check /><strong>{attempts.length}</strong><span>attempts</span></article>
+        <article><Flame /><strong>{streak}</strong><span>{copy.progress.dayStreak}</span></article>
+        <article><Target /><strong>{average || '—'}</strong><span>{copy.progress.average}</span></article>
+        <article><Check /><strong>{attempts.length}</strong><span>{copy.progress.attempts}</span></article>
       </section>
       <section className="history-card">
-        <h2>Recent attempts</h2>
+        <h2>{copy.progress.recent}</h2>
         {attempts.length === 0 ? (
-          <div className="empty-state"><Mic /><p>Your first recording will appear here.</p><button onClick={() => setTab('practice')}>Start a drill</button></div>
+          <div className="empty-state"><Mic /><p>{copy.progress.empty}</p><button onClick={() => setTab('practice')}>{copy.progress.start}</button></div>
         ) : attempts.slice(0, 12).map((attempt) => {
           const item = exercises.find(({ id }) => id === attempt.exerciseId)
-          return <article key={`${attempt.exerciseId}-${attempt.createdAt}`}><div><strong>{item?.word ?? attempt.exerciseId}</strong><span>target /{item?.target.toLowerCase()}/ · detected {attempt.detectedSound}</span></div><b>{attempt.score}</b></article>
+          return <article key={`${attempt.exerciseId}-${attempt.createdAt}`}><div><strong>{item?.word ?? attempt.exerciseId}</strong><span>{copy.progress.target} /{item?.target.toLowerCase()}/ · {copy.progress.detected} {attempt.detectedSound}</span></div><b>{attempt.score}</b></article>
         })}
       </section>
-      <p className="clinical-note">Scores are coaching feedback, not diagnosis. They combine on-device recognition and acoustic cues, and should be validated with a speech-language professional for clinical use.</p>
+      <p className="clinical-note">{copy.progress.note}</p>
+      <div className="legal-links"><a href="/privacy.html" target="_blank">{copy.progress.privacy}</a><a href="/support.html" target="_blank">{copy.progress.support}</a></div>
     </main>
   )
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-testid="app-root" data-ui-language={uiLanguage} data-practice-language={language}>
       <header className="app-header">
         <button className="brand" onClick={() => setTab('practice')}><img src="/icons/icon-192.png" alt="" /><span>L–and–N</span></button>
-        <div className="streak"><Flame size={16} /> {streak}</div>
+        <div className="header-actions">
+          <label className="ui-language-picker">
+            <Globe2 size={16} aria-hidden="true" />
+            <span className="sr-only">{copy.uiLanguage}</span>
+            <select data-testid="ui-language-picker" value={uiLanguage} onChange={(event) => setUILanguage(event.target.value as UILanguage)} aria-label={copy.uiLanguage}>
+              {(Object.entries(uiLanguageLabels) as Array<[UILanguage, string]>).map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+            </select>
+          </label>
+          <div className="streak" aria-label={`${copy.streak}: ${streak}`}><Flame size={16} /> {streak}</div>
+        </div>
       </header>
       {tab === 'practice' && renderPractice()}
       {tab === 'learn' && renderLearn()}
       {tab === 'progress' && renderProgress()}
-      <nav className="bottom-nav" aria-label="Primary navigation">
-        <button className={tab === 'practice' ? 'active' : ''} onClick={() => setTab('practice')}><Mic /><span>Practice</span></button>
-        <button className={tab === 'learn' ? 'active' : ''} onClick={() => setTab('learn')}><BookOpen /><span>Learn</span></button>
-        <button className={tab === 'progress' ? 'active' : ''} onClick={() => setTab('progress')}><Activity /><span>Progress</span></button>
+      <nav className="bottom-nav" aria-label={copy.primaryNavigation}>
+        <button className={tab === 'practice' ? 'active' : ''} onClick={() => setTab('practice')}><Mic /><span>{copy.nav.practice}</span></button>
+        <button className={tab === 'learn' ? 'active' : ''} onClick={() => setTab('learn')}><BookOpen /><span>{copy.nav.learn}</span></button>
+        <button className={tab === 'progress' ? 'active' : ''} onClick={() => setTab('progress')}><Activity /><span>{copy.nav.progress}</span></button>
       </nav>
     </div>
   )
 }
 
-function SoundSpelling({ exercise }: { exercise: Exercise }) {
+function SoundSpelling({ exercise, copy }: { exercise: Exercise; copy: UICopy }) {
   if (exercise.language === 'en-US') {
     return (
-      <div className="sound-spelling" aria-label={`The first letter ${exercise.target} is the measured sound`}>
+      <div className="sound-spelling" aria-label={formatCopy(copy.practice.letterMeasured, { value: exercise.target })}>
         <span className={`focus ${exercise.target.toLowerCase()}`}>{exercise.word.slice(0, 1)}</span>
         <span>{exercise.word.slice(1)}</span>
-        <small>measured onset</small>
+        <small>{copy.practice.measuredOnset}</small>
       </div>
     )
   }
 
   const [character, romanization = ''] = exercise.word.split(' ')
   return (
-    <div className="sound-spelling chinese" aria-label={`The ${exercise.target} onset in the romanization is measured`}>
+    <div className="sound-spelling chinese" aria-label={formatCopy(copy.practice.onsetMeasured, { value: exercise.target })}>
       <span>{character}</span>
       <span className={`focus ${exercise.target.toLowerCase()}`}>{romanization.slice(0, 1)}</span>
       <span>{romanization.slice(1)}</span>
-      <small>onset · tone separate</small>
+      <small>{copy.practice.onsetToneSeparate}</small>
     </div>
   )
 }
 
-function ScoreCard({ score, onRetry, onNext }: { score: PronunciationScore; onRetry: () => void; onNext: () => void }) {
+function ScoreCard({ score, copy, onRetry, onNext }: { score: PronunciationScore; copy: UICopy; onRetry: () => void; onNext: () => void }) {
+  const metricLabels: Array<[
+    keyof Pick<PronunciationScore, 'recognition' | 'contrast' | 'acoustic' | 'delivery'>,
+    string,
+  ]> = [
+    ['recognition', copy.score.word],
+    ['contrast', copy.score.contrast],
+    ['acoustic', copy.score.soundCues],
+    ['delivery', copy.score.voice],
+  ]
+  const detected = score.detectedSound === 'uncertain' ? copy.score.uncertain : `/${score.detectedSound.toLowerCase()}/`
   return (
     <section className="score-card" aria-live="polite">
       <div className="score-summary">
         <div className="score-ring" style={{ '--score': `${score.overall * 3.6}deg` } as React.CSSProperties}><div><strong>{score.overall}</strong><span>/ 100</span></div></div>
-        <div><span className={`confidence ${score.confidence}`}>{score.confidence} confidence</span><h2>{score.overall >= 82 ? 'That contrast landed.' : score.overall >= 60 ? 'Close—shape the first sound.' : 'Build the sound slowly.'}</h2><p>Detected: <strong>/{score.detectedSound.toLowerCase()}/</strong></p></div>
+        <div><span className={`confidence ${score.confidence}`}>{copy.score.confidence[score.confidence]}</span><h2>{score.overall >= 82 ? copy.score.landed : score.overall >= 60 ? copy.score.close : copy.score.slowly}</h2><p>{copy.score.detected}: <strong>{detected}</strong></p></div>
       </div>
       <div className="metrics">
         {metricLabels.map(([key, label]) => <div key={key}><span>{label}</span><i><b style={{ width: `${score[key]}%` }} /></i><strong>{score[key]}</strong></div>)}
-        {score.tone !== null && <div><span>Tone</span><i><b style={{ width: `${score.tone}%` }} /></i><strong>{score.tone}</strong></div>}
+        {score.tone !== null && <div><span>{copy.score.tone}</span><i><b style={{ width: `${score.tone}%` }} /></i><strong>{score.tone}</strong></div>}
       </div>
-      <div className="feedback-list">{score.feedback.map((item) => <p key={item}><Check size={16} />{item}</p>)}</div>
+      <div className="feedback-list">{score.feedback.map((item, index) => <p key={`${item.code}-${index}`}><Check size={16} />{feedbackCopy(copy, item)}</p>)}</div>
       <details className="evidence-panel">
-        <summary>See the sound evidence</summary>
+        <summary>{copy.score.evidence}</summary>
         <div className="evidence-grid">
-          <div><span>L-like</span><strong>{score.evidence.lEvidence}</strong></div>
-          <div><span>N-like</span><strong>{score.evidence.nEvidence}</strong></div>
-          <div><span>Signal</span><strong>{score.evidence.signalQuality}%</strong></div>
-          <div><span>Nasal band</span><strong>{score.evidence.nasalEnergy}%</strong></div>
+          <div><span>{copy.score.lLike}</span><strong>{score.evidence.lEvidence}</strong></div>
+          <div><span>{copy.score.nLike}</span><strong>{score.evidence.nEvidence}</strong></div>
+          <div><span>{copy.score.signal}</span><strong>{score.evidence.signalQuality}%</strong></div>
+          <div><span>{copy.score.nasalBand}</span><strong>{score.evidence.nasalEnergy}%</strong></div>
         </div>
-        <p>A1–P0 proxy {score.evidence.nasalPeakContrastDb} dB · formant spacing ≈ {score.evidence.formantSpacingHz || '—'} Hz · tilt {score.evidence.spectralTiltDb} dB. These are microphone estimates, not a view of tongue motion.</p>
+        <p>{formatCopy(copy.score.evidenceDetail, { nasal: score.evidence.nasalPeakContrastDb, formant: score.evidence.formantSpacingHz || '—', tilt: score.evidence.spectralTiltDb })}</p>
       </details>
-      <div className="score-actions"><button onClick={onRetry}><RotateCcw size={17} /> Try again</button><button className="primary" onClick={onNext}>Next word <ChevronRight size={17} /></button></div>
+      <div className="score-actions"><button onClick={onRetry}><RotateCcw size={17} /> {copy.score.retry}</button><button className="primary" onClick={onNext}>{copy.score.next} <ChevronRight size={17} /></button></div>
     </section>
   )
 }

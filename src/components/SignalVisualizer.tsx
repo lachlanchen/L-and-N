@@ -6,9 +6,17 @@ interface SignalVisualizerProps {
   features: AcousticFeatures | null
   recording: boolean
   target: TargetSound
+  copy: {
+    aria: string
+    listeningLive: string
+    lastSound: string
+    soundLens: string
+    onsetSpectrum: string
+    note: string
+  }
 }
 
-export function SignalVisualizer({ analyser, features, recording, target }: SignalVisualizerProps) {
+export function SignalVisualizer({ analyser, features, recording, target, copy }: SignalVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -106,13 +114,13 @@ export function SignalVisualizer({ analyser, features, recording, target }: Sign
   }, [analyser, features, recording, target])
 
   return (
-    <section className="signal-studio" aria-label="Live waveform and onset spectrum">
+    <section className="signal-studio" aria-label={copy.aria}>
       <div className="signal-heading">
-        <div><span className={recording ? 'live-dot active' : 'live-dot'} />{recording ? 'Listening live' : features ? 'Last sound' : 'Sound lens'}</div>
-        <span>onset · spectrum</span>
+        <div><span className={recording ? 'live-dot active' : 'live-dot'} />{recording ? copy.listeningLive : features ? copy.lastSound : copy.soundLens}</div>
+        <span>{copy.onsetSpectrum}</span>
       </div>
       <canvas ref={canvasRef} />
-      <p>The shaded opening is where L/N evidence is measured. Wave height shows signal, not correctness.</p>
+      <p>{copy.note}</p>
     </section>
   )
 }
