@@ -12,7 +12,7 @@ export default defineConfig({
       manifest: {
         name: 'L-and-N Pronunciation Lab',
         short_name: 'L-and-N',
-        description: 'Scientific L and N pronunciation practice for English and Chinese.',
+        description: 'Evidence-aware L and N pronunciation practice for English, Mandarin, and Cantonese.',
         theme_color: '#081f4d',
         background_color: '#f8f5ee',
         display: 'standalone',
