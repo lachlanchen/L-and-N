@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://l-and-n.lazying.art/sitemap.xml

@@ -338,7 +338,14 @@ function App() {
       </section>
       <section className="source-card">
         <Headphones size={22} />
-        <div><strong>{copy.learn.source}</strong><p>{copy.learn.sourceBody}</p><a href="https://www.youtube.com/watch?v=78RQW1Kq_3A" target="_blank" rel="noreferrer">{copy.learn.sourceLink}</a></div>
+        <div>
+          <strong>{copy.learn.source}</strong>
+          <p>{copy.learn.sourceBody}</p>
+          <nav className="source-links" aria-label={copy.learn.source}>
+            <a href="/lessons/light-vs-night/">{copy.learn.lessonLink}</a>
+            <a href="https://www.youtube.com/watch?v=78RQW1Kq_3A" target="_blank" rel="noreferrer">{copy.learn.sourceLink}</a>
+          </nav>
+        </div>
       </section>
     </main>
   )

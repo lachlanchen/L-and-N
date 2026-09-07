@@ -6,7 +6,7 @@
 
 **A calm, evidence-aware pronunciation coach for hearing and producing L and N.**
 
-[Open the live PWA](https://l-and-n.lazying.art) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
+[Open the live PWA](https://l-and-n.lazying.art) · [Try the light/night mini-lesson](https://l-and-n.lazying.art/lessons/light-vs-night/) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
 
 [TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C) · [Google Play internal test](https://play.google.com/apps/internaltest/4701251861700553150) · [Signed Android build 3 APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk)
 

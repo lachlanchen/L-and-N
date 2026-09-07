@@ -60,6 +60,7 @@ export interface UICopy {
     source: string
     sourceBody: string
     sourceLink: string
+    lessonLink: string
   }
   model: {
     interactive: string
@@ -177,6 +178,7 @@ const copies: Record<UILanguage, UICopy> = {
       source: 'Lesson source',
       sourceBody: 'Built from the linked Pronunciation Snippets lesson, then extended with Mandarin and Cantonese minimal-pair practice.',
       sourceLink: 'Watch “The Difference Between L & N”',
+      lessonLink: 'Open the light/night mini-lesson',
     },
     model: {
       interactive: 'Interactive teaching model',
@@ -251,7 +253,7 @@ const copies: Record<UILanguage, UICopy> = {
         { title: 'N 是鼻音', body: '发 /n/ 时舌头封住口腔通道，软腭下降，气流改从鼻腔通过。' },
         { title: '先辨清，再加速', body: '先听辨、再发音，最后放进短语。清晰准确以后再提高会话速度。' },
       ],
-      source: '课程来源', sourceBody: '以 Pronunciation Snippets 视频课程为基础，并扩展了普通话和粤语最小对立词练习。', sourceLink: '观看《L 与 N 的区别》',
+      source: '课程来源', sourceBody: '以 Pronunciation Snippets 视频课程为基础，并扩展了普通话和粤语最小对立词练习。', sourceLink: '观看《L 与 N 的区别》', lessonLink: '打开 light/night 迷你课程',
     },
     model: {
       interactive: '交互式教学模型', lateral: '边音气流 /l/', nasal: '鼻音气流 /n/', soundPicker: '选择模型发音', ariaL: '可旋转的 L 边音发音教学模型', ariaN: '可旋转的 N 鼻音发音教学模型',
@@ -296,7 +298,7 @@ const copies: Record<UILanguage, UICopy> = {
         { title: 'N 是鼻音', body: '發 /n/ 時舌頭封住口腔通道，軟顎下降，氣流改從鼻腔通過。' },
         { title: '先辨清，再加速', body: '先聽辨、再發音，最後放進短語。清晰準確以後再提高會話速度。' },
       ],
-      source: '課程來源', sourceBody: '以 Pronunciation Snippets 影片課程為基礎，並延伸普通話和廣東話最小對立詞練習。', sourceLink: '觀看《L 與 N 的分別》',
+      source: '課程來源', sourceBody: '以 Pronunciation Snippets 影片課程為基礎，並延伸普通話和廣東話最小對立詞練習。', sourceLink: '觀看《L 與 N 的分別》', lessonLink: '開啟 light/night 迷你課程',
     },
     model: {
       interactive: '互動教學模型', lateral: '邊音氣流 /l/', nasal: '鼻音氣流 /n/', soundPicker: '選擇模型發音', ariaL: '可旋轉的 L 邊音發音教學模型', ariaN: '可旋轉的 N 鼻音發音教學模型',
@@ -341,7 +343,7 @@ const copies: Record<UILanguage, UICopy> = {
         { title: 'N 係鼻音', body: '講 /n/ 時舌頭封住口腔通道，軟顎降低，空氣改由鼻腔通過。' },
         { title: '先分得清，再講快', body: '先聽、再認、再講，之後先放入短句。清楚準確咗先加快。' },
       ],
-      source: '課程來源', sourceBody: '根據 Pronunciation Snippets 影片課程，再加普通話同廣東話最小對立詞練習。', sourceLink: '睇《L 同 N 嘅分別》',
+      source: '課程來源', sourceBody: '根據 Pronunciation Snippets 影片課程，再加普通話同廣東話最小對立詞練習。', sourceLink: '睇《L 同 N 嘅分別》', lessonLink: '開啟 light/night 迷你練習',
     },
     model: {
       interactive: '互動教學模型', lateral: '邊音氣流 /l/', nasal: '鼻音氣流 /n/', soundPicker: '揀模型發音', ariaL: '可以旋轉嘅 L 邊音發音教學模型', ariaN: '可以旋轉嘅 N 鼻音發音教學模型',

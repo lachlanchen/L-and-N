@@ -65,6 +65,14 @@ describe('language and sound controls', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'night' })).toBeTruthy()
     expect(screen.getByTestId('practice-sound-n').getAttribute('aria-pressed')).toBe('true')
   })
+
+  it('links the Learn view to the static light and night lesson', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Learn' }))
+
+    expect(screen.getByRole('link', { name: 'Open the light/night mini-lesson' }).getAttribute('href')).toBe('/lessons/light-vs-night/')
+  })
 })
 
 describe('recording lifecycle', () => {
