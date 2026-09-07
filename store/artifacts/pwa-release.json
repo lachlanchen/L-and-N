@@ -1,14 +1,30 @@
 {
-  "sourceCommit": "47b899c200dcf9b4f0c461beceaf638dae15dcc6",
-  "webSourceCommit": "d837c146eb0ff66b4ea4000a004f582f4c31ef5f",
-  "deployedAt": "2026-09-06",
+  "sourceCommit": "7b969e618bb870ab2f09fd4390215f092934ce32",
+  "webSourceCommit": "7b969e618bb870ab2f09fd4390215f092934ce32",
+  "deployedAt": "2026-09-07",
   "url": "https://l-and-n.lazying.art/",
-  "releasePath": "/opt/l-and-n-web/releases/970e7d97616fec213d52d0de957829225fd9c0f5811c816db6dcfe28ee009841",
-  "previousRelease": "/opt/l-and-n-web/releases/df5dfd247fa7927985702f5c102144033993874d8c99c0681e473cb6472a75c1",
-  "releaseTarSha256": "970e7d97616fec213d52d0de957829225fd9c0f5811c816db6dcfe28ee009841",
-  "distTreeSha256": "b2c41c3ec741d53252096e350abb36346f2d600ad6047ff78039fc34c61254da",
+  "releasePath": "/opt/l-and-n-web/releases/978c0b7a1c14a129dc2a1ce6e83612257f869b33c20bed62fab2bddf850a778e",
+  "previousRelease": "/opt/l-and-n-web/releases/970e7d97616fec213d52d0de957829225fd9c0f5811c816db6dcfe28ee009841",
+  "releaseTarSha256": "978c0b7a1c14a129dc2a1ce6e83612257f869b33c20bed62fab2bddf850a778e",
+  "distTreeSha256": "1321e7a2715296664fe0a6bd464b271e1069e546854e89a8e849837bc6686316",
   "distTreeFormat": "SHA-256 of the LC_ALL=C sorted relative-path GNU sha256sum manifest",
-  "mainAsset": "assets/index-DcVqO48w.js",
+  "mainAsset": "assets/index-DmEEpL1Y.js",
+  "ownedLesson": {
+    "url": "https://l-and-n.lazying.art/lessons/light-vs-night/",
+    "htmlBytes": 10598,
+    "htmlSha256": "62329cc584f9bb85a357047c3c2bc9b3987c2d4b5a883dd99882ff96a1c095ee",
+    "cssSha256": "3ff1ecf6153d861d91fd3f3ed6c5692f7820fc6d49c4b17a29c9dddcea480ecb",
+    "videoSha256": "da3962c6ce0a34db33d27ed1defa69e0ad6ea08e3f6f7c71f7e205024368f971",
+    "videoRange": "passed: bytes=0-1023 returned 206, video/mp4, and 1024 bytes",
+    "canonicalAndStructuredData": "passed",
+    "sitemap": "passed"
+  },
+  "gateway": {
+    "siteConfigSha256": "92b099d2983987a45a7b231876984604de01eae8cb3de34048be12ce2d8c426d",
+    "nestedStaticIndex": "passed",
+    "service": "lazyedge-caddy.service",
+    "rollbackConfigSha256": "20e52aa45d3d6d143dad43924860cd56d861c09042d8d52810934bf3f49d2381"
+  },
   "downloads": [
     {
       "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk",
@@ -39,6 +55,8 @@
     "apiNegativeMatrix": "passed",
     "certificateSan": "passed",
     "rollbackTarget": "verified",
+    "ownedLesson": "passed through the public URL with exact HTML, CSS, video, caption, image, and audio content types and hashes",
+    "otherGatewaySites": "passed after reload and cutover",
     "recordingLifecycleRegressionTests": "passed",
     "installedPwaUpdateReload": "passed",
     "liveRepeatedMicrophoneCapture": "passed",
