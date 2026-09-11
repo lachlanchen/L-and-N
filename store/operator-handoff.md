@@ -1,6 +1,6 @@
 # Store publication handoff
 
-Updated: 2026-09-07
+Updated: 2026-09-11
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
@@ -10,6 +10,7 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 - Recovery checkout retained from the disk repair: `/home/lachlan/L-And-N-audio-repair`
 - PWA: https://l-and-n.lazying.art/
 - Free pronunciation lesson: https://l-and-n.lazying.art/lessons/light-vs-night/
+- Custom tutor lesson: https://l-and-n.lazying.art/for-tutors/
 - Signed Android test APK: https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk
 - APK SHA-256: `89867c73d2ae3f3023a1e402e7c7fd21dd4337a409262aff3832f3c30efd1fb7`
 - Google package: `art.lazying.landn`
@@ -40,8 +41,9 @@ Build 2 IPA SHA-256: `eb2106916ab7b70ae0e800e5bafd2e87b66074450168b88e2690a413ef
 
 ## Web and audio repair operations
 
-- The live PWA/download release is `/opt/l-and-n-web/releases/978c0b7a1c14a129dc2a1ce6e83612257f869b33c20bed62fab2bddf850a778e` on `sshem`. Its rollback is `970e7d97616fec213d52d0de957829225fd9c0f5811c816db6dcfe28ee009841`. It was built from commit `7b969e618bb870ab2f09fd4390215f092934ce32` and serves `assets/index-DmEEpL1Y.js`.
+- The live PWA/download release is `/opt/l-and-n-web/releases/d8a06f278bb5e5f069fcc95fff0a159491e98c97026e54ef9a8ebf807f69d2fd` on `sshem`. Its rollback is `978c0b7a1c14a129dc2a1ce6e83612257f869b33c20bed62fab2bddf850a778e`. It was built from commit `0e4b45f849dbc4306b82d9e2cc982d72b214174a` and serves `assets/index-DmEEpL1Y.js`.
 - The same release publishes the project-owned **Light or night?** lesson at https://l-and-n.lazying.art/lessons/light-vs-night/. The public HTML, CSS, illustration, audio, caption, and 19.37-second video were verified by exact hash and content type; byte-range video delivery also passed.
+- The sample now leads interested tutors to a separate USD 250 custom bilingual pronunciation mini-lesson at https://l-and-n.lazying.art/for-tutors/. The live page uses the project-owned sample before one fit-check email, requires written scope acceptance before payment, and makes no clinical or certified-translation claim.
 - Caddy's L & N route now checks `{path}/index.html` before the SPA fallback so nested static lessons resolve normally. The live site-config SHA-256 is `92b099d2983987a45a7b231876984604de01eae8cb3de34048be12ce2d8c426d`; the owner-only rollback copy retains SHA-256 `20e52aa45d3d6d143dad43924860cd56d861c09042d8d52810934bf3f49d2381`. The gateway stayed available during validation and the other imported sites passed post-reload probes.
 - The private transient speech service is the enabled user unit `landn-speech-api.service`, listening only on `127.0.0.1:18063`. Its immutable source is LocalLLM commit `210cee1db473d77cad4de9f132f6ae2afe1b5f45`; it reuses the existing offline `faster-whisper-small` cache and deletes each inflight file after transcription.
 - Only LazyEdge service `local-llm-speech` targets that port. Protected live configuration is under `~/.config/lazyedge/`; the secret-free rollback location is described by the private operator state, not committed here.
