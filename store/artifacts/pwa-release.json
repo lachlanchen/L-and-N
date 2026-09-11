@@ -1,12 +1,12 @@
 {
-  "sourceCommit": "0e4b45f849dbc4306b82d9e2cc982d72b214174a",
-  "webSourceCommit": "0e4b45f849dbc4306b82d9e2cc982d72b214174a",
+  "sourceCommit": "72ded99680bd6c760fae5203f7c8f21a6f143721",
+  "webSourceCommit": "72ded99680bd6c760fae5203f7c8f21a6f143721",
   "deployedAt": "2026-09-11",
   "url": "https://l-and-n.lazying.art/",
-  "releasePath": "/opt/l-and-n-web/releases/d8a06f278bb5e5f069fcc95fff0a159491e98c97026e54ef9a8ebf807f69d2fd",
-  "previousRelease": "/opt/l-and-n-web/releases/978c0b7a1c14a129dc2a1ce6e83612257f869b33c20bed62fab2bddf850a778e",
-  "releaseTarSha256": "d8a06f278bb5e5f069fcc95fff0a159491e98c97026e54ef9a8ebf807f69d2fd",
-  "distTreeSha256": "d13debcd9bbc8a380e594a2851970a467534e101cb5450d2ea3fd9df2069178c",
+  "releasePath": "/opt/l-and-n-web/releases/95a8270571886f0431fad4be8f44358468f07da6545d30680f7ccd64a7c004b6",
+  "previousRelease": "/opt/l-and-n-web/releases/d8a06f278bb5e5f069fcc95fff0a159491e98c97026e54ef9a8ebf807f69d2fd",
+  "releaseTarSha256": "95a8270571886f0431fad4be8f44358468f07da6545d30680f7ccd64a7c004b6",
+  "distTreeSha256": "bd8577634cabf68556e5e9e1b07b8f8155ad0faa646cca10c753941d6252e1bb",
   "distTreeFormat": "SHA-256 of the LC_ALL=C sorted relative-path GNU sha256sum manifest",
   "mainAsset": "assets/index-DmEEpL1Y.js",
   "ownedLesson": {
@@ -21,13 +21,13 @@
   },
   "tutorService": {
     "url": "https://l-and-n.lazying.art/for-tutors/",
-    "htmlBytes": 7741,
-    "htmlSha256": "5d870b02bb436a85b4e6575b20a130f232d706f89d319480cd6bf0d930141f5d",
+    "htmlBytes": 7581,
+    "htmlSha256": "dafc21695c536071cc64814dadf439577190775d9799a8930227474862ba1958",
     "cssSha256": "31381e1df4646f6ee1e149ea5b84474dcbc9b8cb0e2a2449d8d6048b2714f067",
     "scope": "One USD 250 bilingual pronunciation mini-lesson after a fit check and written scope acceptance",
     "sample": "https://l-and-n.lazying.art/lessons/light-vs-night/",
     "paymentObjectCreated": false,
-    "liveVerification": "passed: exact HTML and CSS hashes, structured service data, sample route, sitemap, HTTPS, and security headers"
+    "liveVerification": "passed: exact HTML and CSS hashes, structured service data, sample route, encrypted fit-check route, email fallback, sitemap, HTTPS, and security headers"
   },
   "gateway": {
     "siteConfigSha256": "92b099d2983987a45a7b231876984604de01eae8cb3de34048be12ce2d8c426d",
@@ -66,7 +66,7 @@
     "certificateSan": "passed",
     "rollbackTarget": "verified",
     "ownedLesson": "passed through the public URL with the updated tutor route plus exact HTML, CSS, video, caption, image, and audio content types and hashes",
-    "tutorService": "passed through the public URL with exact HTML and CSS hashes, one sample-first route, one fit-check action, and no direct payment link",
+    "tutorService": "passed through the public URL with exact HTML and CSS hashes, one sample-first route, one encrypted fit-check action with email fallback, and no direct payment link",
     "otherGatewaySites": "passed after reload and cutover",
     "recordingLifecycleRegressionTests": "passed",
     "installedPwaUpdateReload": "passed",
