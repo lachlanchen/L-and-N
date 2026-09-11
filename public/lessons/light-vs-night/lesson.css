@@ -89,6 +89,8 @@ summary { cursor: pointer; color: var(--navy); font-weight: 800; }
 .feedback h2 { margin: 0 0 9px; color: white; font-size: clamp(1.8rem, 5vw, 3rem); }
 .feedback p:last-child { margin: 0; color: #c4d1e2; line-height: 1.55; }
 .feedback .button { flex: 0 0 auto; box-shadow: none; }
+.tutor-note { margin: -36px 0 54px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--muted); line-height: 1.6; }
+.tutor-note strong { color: var(--navy); }
 .sources { padding: 34px 0 64px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; line-height: 1.7; }
 .sources h2 { margin: 0 0 8px; font-size: 1.1rem; font-family: inherit; letter-spacing: 0; }
 .sources p { max-width: 760px; }
@@ -124,7 +126,7 @@ footer { width: min(100% - 36px, 920px); margin: auto; padding: 0 0 38px; color:
   :root { background: white; color: black; }
   body { background: white; }
   .site-header { min-height: 48px; }
-  .site-header .app-link, .hero-actions, audio, .watch, .feedback, footer { display: none; }
+  .site-header .app-link, .hero-actions, audio, .watch, .feedback, .tutor-note, footer { display: none; }
   main, .site-header { width: 100%; }
   .hero, .contrast, .drill { padding: 16px 0; }
   h1 { font-size: 54pt; }

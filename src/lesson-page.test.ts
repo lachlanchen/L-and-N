@@ -45,5 +45,6 @@ describe('light and night static lesson', () => {
     expect(drillLink?.textContent).toContain('free browser drill')
     expect(drillLink?.getAttribute('href')).toContain('utm_campaign=l_and_n_pronunciation_launch')
     expect(feedbackLink?.getAttribute('href')).toContain('Please%20do%20not%20attach%20a%20voice%20recording')
+    expect(lesson.querySelector<HTMLAnchorElement>('a[href="../../for-tutors/"]')).toBeTruthy()
   })
 })
