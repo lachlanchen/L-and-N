@@ -23,9 +23,12 @@ describe('tutor pronunciation mini-lesson service page', () => {
   it('uses the finished project sample and a fit check before payment', () => {
     const sampleLinks = [...service.querySelectorAll<HTMLAnchorElement>('a[href="../lessons/light-vs-night/"]')]
     expect(sampleLinks.length).toBeGreaterThanOrEqual(2)
-    const fitLink = service.querySelector<HTMLAnchorElement>('a[href^="mailto:"]')
-    expect(fitLink?.getAttribute('href')).toContain('Pronunciation%20mini-lesson%20fit%20check')
-    expect(fitLink?.getAttribute('href')).toContain('do%20not%20attach%20learner%20recordings')
+    const fitLink = service.querySelector<HTMLAnchorElement>('.fit-action a.button.primary')
+    expect(fitLink?.getAttribute('href')).toBe(
+      'https://lazying.art/pronunciation-mini-lesson/fit-check/?utm_source=l_and_n&utm_medium=owned_site&utm_campaign=pronunciation_mini_lesson_pilot&utm_content=for_tutors_fit_check',
+    )
+    expect(service.body.textContent).toContain('learner recordings are not needed')
+    expect(service.querySelector('a[href^="mailto:echomind@lazying.art"]')).not.toBeNull()
     expect(service.querySelector('a[href*="stripe.com"]')).toBeNull()
   })
 
