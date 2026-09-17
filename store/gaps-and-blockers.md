@@ -1,6 +1,6 @@
 # Store publication status
 
-Updated: 2026-09-06
+Updated: 2026-09-17
 
 ## Verified locally
 
@@ -17,7 +17,8 @@ Updated: 2026-09-06
 - App record created as `L & N: Speech Practice` for `art.lazying.landn`.
 - Production release `1.0 (3)` targets 177 countries/regions and uses a full rollout after approval.
 - The microphone-fixed build 3 AAB replaced build 1 and restarted the Google review on 2026-09-06. The store listing, privacy/content declarations, advertising-ID declaration, and release remain in the same submission.
-- Play Console currently reports **Changes in review** after its quick checks completed. Approval and public availability are not yet claimed.
+- Play Console now reports the production track as **Active**, latest release `3 (1.0)`, 177 countries/regions, and records the app update as published on 2026-09-09. The public listing is https://play.google.com/store/apps/details?id=art.lazying.landn.
+- Play Console's Android developer verification notice reports all apps as successfully registered ahead of the 2026-09-30 deadline.
 - The same `1.0 (3)` release is **Available to internal testers** at https://play.google.com/apps/internaltest/4701251861700553150. The signed APK is also available at https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk.
 
 ## Apple App Store
@@ -25,10 +26,10 @@ Updated: 2026-09-06
 - App record `6808872450` and the iOS/watchOS identifiers are registered.
 - Version `1.0 (2)` was signed, validated, uploaded once, and submitted to App Review on 2026-09-06 after replacing build 1 to include the microphone/transcription repair.
 - The iPhone, iPad, and Apple Watch screenshot sets, listing, review information, privacy response, age rating, content rights, medical-device response, pricing, and availability are complete.
-- App Store Connect currently reports **Waiting for Review**. Approval is not yet claimed.
-- Manual release is selected. After approval, public availability requires one explicit release action in App Store Connect.
+- App Review approved version 1.0 (build 2) on 2026-09-17 and the manual release was executed the same day via the App Store Connect API; the version now reports **Ready for Distribution**. The public page may take up to 24 hours to appear.
+- Apple's approval email includes the standard reminder to check Agreements, Tax, and Banking; that page requires a browser login and was not re-verified during the API release.
 - Availability is currently 146 countries or regions. EU/EEA storefronts remain excluded until the account-level Digital Services Act trader status is verified.
 - TestFlight build `1.0 (2)` is **Testing** in the internal group.
 - TestFlight build `1.0 (2)` is also **Testing** in the external group at https://testflight.apple.com/join/CpkT8m9C; automatic tester notification was enabled.
 
-The first Google Play production release uses a full rollout; staged rollout is reserved for later updates. Both provider reviews are now external dependencies.
+The first Google Play production release uses a full rollout; staged rollout is reserved for later updates. Both formal releases are now published. Remaining external items are the App Store page propagation window and the optional EU/EEA trader-status step.

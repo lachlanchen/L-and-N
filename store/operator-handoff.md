@@ -1,6 +1,6 @@
 # Store publication handoff
 
-Updated: 2026-09-11
+Updated: 2026-09-17
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
@@ -21,8 +21,8 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 
 Formal submission state:
 
-- Google Play Production `1.0 (3)`: **Changes in review** after restarting the review to replace build 1 with the microphone-fixed build 3. This is the initial full release, not a staged rollout.
-- Apple App Store iOS/watchOS `1.0 (2)`: **Waiting for Review**. Build 1 was removed from review and replaced after the microphone/transcription repair. The first release is manual, so approval must be followed by one explicit release action.
+- Google Play Production `1.0 (3)`: **Live**. Play Console shows the production track as Active with latest release 3 (1.0) in 177 countries/regions; the console's publishing overview records the app update as published on 2026-09-09. Public listing: https://play.google.com/store/apps/details?id=art.lazying.landn
+- Apple App Store iOS/watchOS `1.0 (2)`: **Ready for Distribution**. App Review approved the submission on 2026-09-17 (submission `68f4fd67-9bda-407e-bb0d-e5cf20c6ccb8`, build 2, delivery UUID `513ceb87-254e-4585-98aa-ee428f01e2b1`). The manual release was performed the same day through the App Store Connect API (`POST /v1/appStoreVersionReleaseRequests` for version `e48189a2-f0c7-4e65-9359-9fd4f3413f89`), after which the API reported `READY_FOR_SALE` / `READY_FOR_DISTRIBUTION`. Apple states the public page can take up to 24 hours: https://apps.apple.com/app/l-n-speech-practice/id6808872450
 
 Testing state:
 
@@ -64,7 +64,8 @@ The long-running EchoMind display `:94` / noVNC `6194` / CDP `9294` is currently
 
 ## Next provider actions
 
-1. Monitor Google Production build 3 until the review result is terminal; verify the public listing before claiming it is live.
+1. Confirm the public App Store page resolves (HTTP 200) within 24 hours of the 2026-09-17 release, then replace the README TestFlight link with the App Store link.
 2. Test build 2 on a physical iPhone from the internal or public TestFlight group, specifically microphone permission, live waveform motion, retained waveform after Stop, and recognized text before scoring.
-3. Monitor Apple App Review. When the version becomes approved/pending developer release, use the manual release control once, then verify the storefront.
-4. Update `store/release.yaml`, the two submission notes, evidence, and artifact manifests after every provider transition.
+3. Verify Agreements, Tax, and Banking in App Store Connect on the next browser login; the approval email carries Apple's standard reminder that contracts must be in effect. The API release succeeded, and the last authenticated Apps page showed only the Digital Services Act trader-status banner.
+4. Provide the account-level Digital Services Act trader status when EU/EEA availability is wanted; those storefronts stay excluded until then.
+5. Update `store/release.yaml`, the two submission notes, evidence, and artifact manifests after every provider transition.

@@ -16,7 +16,9 @@ identifiers:
 
 release:
   prepared_at: 2026-09-06
-  status: apple_and_google_play_in_review
+  status: live_on_google_play_and_app_store
+  google_play_published_at: 2026-09-09
+  app_store_released_at: 2026-09-17
   app_store_release: manual
   google_play_initial_rollout: full
   price: free
@@ -31,12 +33,14 @@ platforms:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/release/app-release.aab
-    status: build_3_submitted_for_restarted_review
+    status: production_live_build_3_full_rollout
+    store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0
     artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
     app_store_id: 6808872450
-    status: waiting_for_review
+    status: ready_for_distribution_build_2
+    store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
     embedded_in: ios
