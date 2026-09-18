@@ -24,7 +24,7 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Internal testing: **Available to internal testers** as `4 (1.0.1)` since 2026-09-18 14:50 HKT (same opt-in URL as below).
 - Direct APK: https://l-and-n.lazying.art/downloads/L-and-N-1.0.1-build4-test.apk, SHA-256 `b6a82b8cd3b12d07e7b624c81d9a2c5df8cf3b768b47dfc3d471de8fdf7583c4`.
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
-- Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Publishing overview shows **Your changes are now in review**. Build 3 stays live until Google approves build 4.
+- Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
 ## Internal testing
 

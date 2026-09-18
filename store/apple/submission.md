@@ -16,6 +16,8 @@ Resubmitted: 2026-09-06; approved and released: 2026-09-17
 
 The distribution-signed iOS archive contains the embedded Watch app, and both bundles report build 2. Apple server validation and the build 2 upload completed without errors. Build 1 was removed from review and build 2 was selected before resubmission. The submitted product page contains one verified simulator screenshot for each required iPhone, iPad, and Apple Watch set.
 
+Availability update 2026-09-18: the Digital Services Act trader declaration is **Active** (27 EU countries; address, +1 phone, and contact@lazying.art verified by the account holder), and the 29 previously excluded EU/EEA storefronts were enabled through the API, so the app is now offered in all 175 territories at the 0.99 USD tier (automatic local prices).
+
 The App Store declarations record a 4+ age rating, no third-party content, no regulated medical-device claim, and no non-exempt encryption. App Privacy is published as **Data Not Collected** under Apple's retention-based definition: attempts and progress stay on the device, and speech recognition uses operating-system services without app-controlled retention.
 
 The free app is configured for 146 countries or regions. EU/EEA storefronts were excluded from this submission because the account's Digital Services Act trader status has not been verified; they can be enabled after that account-level requirement is complete.
