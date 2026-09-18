@@ -45,6 +45,8 @@ export interface AcousticFeatures {
   onsetMs: number
   onsetDurationMs: number
   signalQuality: number
+  /** On-device CNN estimate that the onset is nasal (/n/) rather than lateral (/l/); null when the window could not be analysed. */
+  onsetNasalProbability?: number | null
   waveform: number[]
   spectrum: number[]
 }

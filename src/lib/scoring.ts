@@ -216,7 +216,14 @@ export function inferAcousticSound(
   const nCentroid = blendedCentroid(standard.N, calibration?.N, calibration?.counts.N ?? 0)
   const lDistance = distanceFromCentroid(features, lCentroid)
   const nDistance = distanceFromCentroid(features, nCentroid)
-  const nProbability = 1 / (1 + Math.exp((nDistance - lDistance) * 2.4))
+  const centroidProbability = 1 / (1 + Math.exp((nDistance - lDistance) * 2.4))
+  // The trained onset network is the primary acoustic judge; the hand-tuned
+  // centroids (and any personal calibration) only nudge it.
+  const modelProbability = features.onsetNasalProbability
+  const nProbability =
+    typeof modelProbability === 'number' && Number.isFinite(modelProbability)
+      ? modelProbability * 0.85 + centroidProbability * 0.15
+      : centroidProbability
   const qualityWeight = 0.38 + features.signalQuality * 0.62
   const nEvidence = clampScore(50 + (nProbability * 100 - 50) * qualityWeight)
   const lEvidence = clampScore(50 + ((1 - nProbability) * 100 - 50) * qualityWeight)

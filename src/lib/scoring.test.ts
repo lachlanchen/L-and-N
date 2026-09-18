@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { extractAcousticFeatures } from './acoustics'
 import { exercises } from '../data/curriculum'
+import onsetTokens from './__fixtures__/onset-tokens.json'
 import { detectSoundFromTranscript, editDistance, inferAcousticSound, normalizeSpeech, scorePronunciation } from './scoring'
 
 describe('speech normalization', () => {
@@ -26,9 +27,9 @@ describe('acoustic cue extraction', () => {
     expect(tone(250).lowBandRatio).toBeGreaterThan(tone(1500).lowBandRatio)
   })
 
-  it('leans N for low-frequency continuity and L for mid-frequency energy', () => {
-    expect(inferAcousticSound(tone(250)).detected).toBe('N')
-    expect(inferAcousticSound(tone(1500)).detected).toBe('L')
+  it('falls back to the spectral centroids when the onset network cannot score', () => {
+    expect(inferAcousticSound({ ...tone(250), onsetNasalProbability: null }).detected).toBe('N')
+    expect(inferAcousticSound({ ...tone(1500), onsetNasalProbability: null }).detected).toBe('L')
   })
 })
 
@@ -147,5 +148,19 @@ describe('score consistency with the recognized word', () => {
     const result = scorePronunciation(exercise, 'fight', nasalLeaningFeatures)
     expect(result.detectionSource).toBe('acoustic')
     expect(result.detectedSound).toBe('N')
+  })
+})
+
+describe('trained onset network on real speech', () => {
+  it('separates a recorded lateral onset from a recorded nasal onset', () => {
+    for (const [expected, token] of Object.entries(onsetTokens) as Array<[
+      'L' | 'N',
+      { word: string; samples: number[]; nasalProbability: number },
+    ]>) {
+      const features = extractAcousticFeatures(Float32Array.from(token.samples), 16_000)
+      expect(features.onsetNasalProbability).not.toBeNull()
+      expect(Math.abs((features.onsetNasalProbability ?? 0) - token.nasalProbability)).toBeLessThan(0.15)
+      expect(inferAcousticSound(features, 'en-US').detected).toBe(expected)
+    }
   })
 })

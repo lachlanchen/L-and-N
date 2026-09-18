@@ -27,6 +27,7 @@ import {
   type ActiveAudioCapture,
   type LiveSignal,
 } from './lib/audio-capture'
+import { analyserRms, EndOfWordDetector } from './lib/end-of-word'
 import { loadAttempts, saveAttempt, trainingStreak, type AttemptRecord } from './lib/progress'
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
 import { speakExample } from './lib/speech'
@@ -60,6 +61,8 @@ function App() {
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
   const sessionRef = useRef<RecordingSession | null>(null)
   const stopTimerRef = useRef<number | null>(null)
+  const meterTimerRef = useRef<number | null>(null)
+  const endOfWordRef = useRef<EndOfWordDetector | null>(null)
   const capturePhaseRef = useRef<CapturePhase>('idle')
   const operationRef = useRef(0)
   const copy = uiCopy(uiLanguage)
@@ -95,6 +98,9 @@ function App() {
       operationRef.current += 1
       if (stopTimerRef.current) window.clearTimeout(stopTimerRef.current)
       stopTimerRef.current = null
+      if (meterTimerRef.current) window.clearInterval(meterTimerRef.current)
+      meterTimerRef.current = null
+      endOfWordRef.current = null
       const session = sessionRef.current
       sessionRef.current = null
       if (session) void session.capture.cancel().catch(() => undefined)
@@ -159,6 +165,9 @@ function App() {
     updateCapturePhase('processing')
     if (stopTimerRef.current) window.clearTimeout(stopTimerRef.current)
     stopTimerRef.current = null
+    if (meterTimerRef.current) window.clearInterval(meterTimerRef.current)
+    meterTimerRef.current = null
+    endOfWordRef.current = null
 
     try {
       const captured = await session.capture.stop()
@@ -224,7 +233,10 @@ function App() {
         language,
         expectedWords: [exercise.word.split(' ')[0], exercise.pair.split(' ')[0]],
         onLiveSignal: (signal) => {
-          if (operationRef.current === operationId) setLiveSignal(signal)
+          if (operationRef.current !== operationId) return
+          setLiveSignal(signal)
+          // Native recorders report their own meter; stop as soon as the word is over.
+          if (endOfWordRef.current?.feed(signal.rms, performance.now())) void finishRecording()
         },
       })
       if (operationRef.current !== operationId) {
@@ -236,6 +248,16 @@ function App() {
       setAnalyser(capture.analyser)
       updateCapturePhase('recording')
       stopTimerRef.current = window.setTimeout(() => void finishRecording(), 5000)
+      const detector = new EndOfWordDetector()
+      endOfWordRef.current = detector
+      if (capture.analyser) {
+        const analyser = capture.analyser
+        const buffer = new Float32Array(analyser.fftSize) as Float32Array<ArrayBuffer>
+        meterTimerRef.current = window.setInterval(() => {
+          if (operationRef.current !== operationId || endOfWordRef.current !== detector) return
+          if (detector.feed(analyserRms(analyser, buffer), performance.now())) void finishRecording()
+        }, 50)
+      }
     } catch (caught) {
       console.warn('Microphone start failed', caught)
       await capture?.cancel().catch(() => undefined)

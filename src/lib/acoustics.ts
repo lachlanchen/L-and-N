@@ -1,4 +1,5 @@
 import type { AcousticFeatures } from '../types'
+import { scoreOnset } from './onset-model'
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value))
 
@@ -22,6 +23,7 @@ const emptyFeatures = (): AcousticFeatures => ({
   onsetMs: 0,
   onsetDurationMs: 0,
   signalQuality: 0,
+  onsetNasalProbability: null,
   waveform: [],
   spectrum: [],
 })
@@ -246,6 +248,7 @@ export function extractAcousticFeatures(samples: Float32Array, sampleRate: numbe
     onsetMs: (activeStart / sampleRate) * 1000,
     onsetDurationMs: ((onsetEnd - activeStart) / sampleRate) * 1000,
     signalQuality,
+    onsetNasalProbability: scoreOnset(samples, sampleRate, activeStart),
     waveform: downsampleWaveform(samples.slice(activeStart, activeEnd)),
     spectrum,
   }
