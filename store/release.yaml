@@ -21,8 +21,8 @@ release:
   app_store_released_at: 2026-09-17
   app_store_release: manual
   google_play_initial_rollout: full
-  price: apple_usd_0_99_google_free
-  apple_price_tier: USD 0.99 base (USA); automatic CNY 8, HKD 8, GBP 0.99; set 2026-09-18 via App Store Connect API
+  price: free
+  apple_price_note: USD 0.99 was set on 2026-09-18 and reverted to Free the same day because the Paid Apps Agreement is unsigned (App Store Connect warned the app could not be made available); re-apply the 0.99 tier (CNY 8, HKD 8) once the agreement is Active
   google_price: free (Play does not allow a published free app to become paid)
   ads: false
   in_app_purchases: false
@@ -45,7 +45,7 @@ platforms:
     minimum_os: 15.0
     artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
     app_store_id: 6808872450
-    status: ready_for_distribution_build_2; build_3_1_0_1_uploaded_testflight_beta_review_waiting_app_store_version_not_created
+    status: 1_0_ready_for_distribution_build_2; 1_0_1_build_3_waiting_for_review_auto_release
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
