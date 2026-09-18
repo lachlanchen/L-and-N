@@ -1,0 +1,49 @@
+{
+  "schema": "landn-native-release-v1",
+  "preparedAt": "2026-09-18",
+  "version": "1.0.1",
+  "sourceCommit": "c68bd8a3299627af87d0a2220f44e3ade168a70e",
+  "android": {
+    "versionCode": 4,
+    "versionName": "1.0.1",
+    "aab": {
+      "path": "android/app/build/outputs/bundle/release/app-release.aab",
+      "sha256": "1eccfbc47b8b9563f1568dfd91f0c24f2aa9fe7aaf861e326107ddee978eb298",
+      "bytes": 6981679
+    },
+    "apk": {
+      "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.1-build4-test.apk",
+      "sha256": "b6a82b8cd3b12d07e7b624c81d9a2c5df8cf3b768b47dfc3d471de8fdf7583c4",
+      "bytes": 6752036
+    },
+    "checks": [
+      "testReleaseUnitTest",
+      "lintRelease",
+      "assembleRelease",
+      "bundleRelease"
+    ],
+    "emulatorTested": false,
+    "play": {
+      "internalTrack": "4701251861700553150",
+      "internalState": "Available to internal testers (released 2026-09-18 14:50 HKT)",
+      "productionState": "see store/google-play/submission.md"
+    }
+  },
+  "ios": {
+    "build": 3,
+    "marketingVersion": "1.0.1",
+    "archive": "/Users/lachlanchen/Projects/L-And-N/release/LAndN-1.0.1-3.xcarchive",
+    "ipa": "/Users/lachlanchen/Projects/L-And-N/release/export-1.0.1-3/App.ipa",
+    "ipaSha256": "f29c1081efb9e7b5469679d0d3f8a6da7ec8961a72df5527c478d43748888009",
+    "ipaBytes": 10976773,
+    "validation": "altool VERIFY SUCCEEDED",
+    "deliveryUuid": "3f0d54ee-ecd1-429a-9c37-aca1173ea93d",
+    "processingState": "VALID",
+    "testflight": {
+      "internalGroup": "has access to all builds (build 3 listed)",
+      "externalGroup": "build 3 added; betaAppReviewSubmission WAITING_FOR_REVIEW",
+      "whatsNew": "set via betaBuildLocalizations"
+    },
+    "appStoreVersion": "1.0.1 not created: API returned 'You cannot create a new version of the App in the current state' (retried three times); needs App Store Connect web session"
+  }
+}

@@ -18,6 +18,14 @@ Build 3 replaces build 1 in the production submission. The review was deliberate
 
 Google approved the restarted review and published the full rollout on 2026-09-09. The state was re-verified in Play Console on 2026-09-17 (production track Active, 0 installs so far, no crashes or ANRs reported).
 
+## Update 1.0.1 (build 4), 2026-09-18
+
+- Bundle: `android/app/build/outputs/bundle/release/app-release.aab`, SHA-256 `1eccfbc47b8b9563f1568dfd91f0c24f2aa9fe7aaf861e326107ddee978eb298`, built from commit `c68bd8a` with the trained onset network, recognizer-anchored scoring, end-of-word auto-stop, and interface-language practice copy. Unit tests and release lint passed; it was not run on an emulator (no native code changed since build 3).
+- Internal testing: **Available to internal testers** as `4 (1.0.1)` since 2026-09-18 14:50 HKT (same opt-in URL as below).
+- Direct APK: https://l-and-n.lazying.art/downloads/L-and-N-1.0.1-build4-test.apk, SHA-256 `b6a82b8cd3b12d07e7b624c81d9a2c5df8cf3b768b47dfc3d471de8fdf7583c4`.
+- Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
+- Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Publishing overview shows **Your changes are now in review**. Build 3 stays live until Google approves build 4.
+
 ## Internal testing
 
 - Track ID: `4701251861700553150`

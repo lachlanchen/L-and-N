@@ -50,7 +50,7 @@ Build 2 IPA SHA-256: `eb2106916ab7b70ae0e800e5bafd2e87b66074450168b88e2690a413ef
 - Only LazyEdge service `local-llm-speech` targets that port. Protected live configuration is under `~/.config/lazyedge/`; the secret-free rollback location is described by the private operator state, not committed here.
 - Live browser evidence proved one microphone stream, a moving and retained waveform, recognized text, and a non-placeholder score. An empty transcript now produces no score and saves no progress.
 - Android build 3 additionally fixes the minified release permission crash and the non-resolving recorder Stop path. API-36.1 release-emulator evidence shows the live waveform and a clean no-score result for silence.
-- The store binaries (Android build 3, iOS build 2) still carry the old spectral-centroid scorer; the trained onset network and recognizer-anchored scoring are live only in the PWA until new native builds are uploaded.
+- Native update 1.0.1 (2026-09-18): Android build 4 is available to internal testers and its production release is in Google review; iOS build 3 is processed, in the internal TestFlight group, and waiting for Beta App Review in the public group. App Store version 1.0.1 still has to be created and submitted in App Store Connect (the API refused: "cannot create a new version of the App in the current state"). Details and hashes: `store/artifacts/native-release-1.0.1.json`.
 - No L & N noVNC stack is live after the workstation reboot. Relaunch one project-owned stack on demand and record it in the private runtime handoff; never reuse the personal browser.
 
 ## EchoMind reference

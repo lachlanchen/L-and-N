@@ -22,6 +22,12 @@ The free app is configured for 146 countries or regions. EU/EEA storefronts were
 
 Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review of your submission is complete" emails, both received 09:50 HKT). Because manual release was selected, the approved version was released once through the App Store Connect API with the project's existing API key; the API then reported `appStoreState: READY_FOR_SALE` and `appVersionState: READY_FOR_DISTRIBUTION` with build 2 attached. Apple's public page can take up to 24 hours after release.
 
+## Update 1.0.1 (build 3), 2026-09-18
+
+- Archive `LAndN-1.0.1-3.xcarchive` and IPA `export-1.0.1-3/App.ipa` (SHA-256 `f29c1081efb9e7b5469679d0d3f8a6da7ec8961a72df5527c478d43748888009`) were built on the Mac from commit `c68bd8a`, passed `altool --validate-app`, and uploaded with delivery UUID `3f0d54ee-ecd1-429a-9c37-aca1173ea93d`; App Store Connect reports the build as processed (`VALID`).
+- TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
+- App Store version 1.0.1 could not be created through the API ("You cannot create a new version of the App in the current state", three attempts over two hours after the 1.0 release). Creating version 1.0.1, attaching build 3, and submitting it needs the App Store Connect web session, which requires the account holder's login.
+
 ## TestFlight
 
 - Internal group: `L & N Internal Testers`
