@@ -1,6 +1,6 @@
 # Store publication handoff
 
-Updated: 2026-09-17
+Updated: 2026-09-18
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
@@ -41,7 +41,8 @@ Build 2 IPA SHA-256: `eb2106916ab7b70ae0e800e5bafd2e87b66074450168b88e2690a413ef
 
 ## Web and audio repair operations
 
-- The live PWA/download release is `/opt/l-and-n-web/releases/95a8270571886f0431fad4be8f44358468f07da6545d30680f7ccd64a7c004b6` on `sshem`. Its rollback is `d8a06f278bb5e5f069fcc95fff0a159491e98c97026e54ef9a8ebf807f69d2fd`. It was built from commit `72ded99680bd6c760fae5203f7c8f21a6f143721` and serves `assets/index-DmEEpL1Y.js`.
+- The live PWA/download release is `/opt/l-and-n-web/releases/71699f6db2798fdcb957741a6a9744c36a9a28fdd07e5c565c2ece6117de6501` on `sshem`, published 2026-09-18 with `tools/deploy-web.sh` from commit `c68bd8a3299627af87d0a2220f44e3ade168a70e`; it serves `assets/index-C5ww45p3.js` and carries the trained on-device onset network, recognizer-anchored scoring, end-of-word auto-stop, and interface-language practice copy. Its rollback is `95a8270571886f0431fad4be8f44358468f07da6545d30680f7ccd64a7c004b6` (commit `72ded99`, `assets/index-DmEEpL1Y.js`); the rollback path is recorded in the release's `.previous` file and printed by the deploy script.
+- App Store price: USD 0.99 base tier set on 2026-09-18 through `POST /v1/appPriceSchedules` (automatic CNY 8, HKD 8, GBP 0.99). Apple's public lookup still showed Free immediately afterwards; confirm on the storefront and confirm the Paid Applications agreement is active under Agreements, Tax, and Banking, which needs a browser login. Google Play stays free: Play Console states a published free app cannot be changed to paid; a one-time in-app product would need a Google Payments merchant account first.
 - The same release publishes the project-owned **Light or night?** lesson at https://l-and-n.lazying.art/lessons/light-vs-night/. The public HTML, CSS, illustration, audio, caption, and 19.37-second video were verified by exact hash and content type; byte-range video delivery also passed.
 - The sample now leads interested tutors to a separate USD 250 custom bilingual pronunciation mini-lesson at https://l-and-n.lazying.art/for-tutors/. The live page uses the project-owned sample before one encrypted fit check at https://lazying.art/pronunciation-mini-lesson/fit-check/, retains email as a fallback, requires written scope acceptance before payment, and makes no clinical or certified-translation claim.
 - Caddy's L & N route now checks `{path}/index.html` before the SPA fallback so nested static lessons resolve normally. The live site-config SHA-256 is `92b099d2983987a45a7b231876984604de01eae8cb3de34048be12ce2d8c426d`; the owner-only rollback copy retains SHA-256 `20e52aa45d3d6d143dad43924860cd56d861c09042d8d52810934bf3f49d2381`. The gateway stayed available during validation and the other imported sites passed post-reload probes.
@@ -49,6 +50,7 @@ Build 2 IPA SHA-256: `eb2106916ab7b70ae0e800e5bafd2e87b66074450168b88e2690a413ef
 - Only LazyEdge service `local-llm-speech` targets that port. Protected live configuration is under `~/.config/lazyedge/`; the secret-free rollback location is described by the private operator state, not committed here.
 - Live browser evidence proved one microphone stream, a moving and retained waveform, recognized text, and a non-placeholder score. An empty transcript now produces no score and saves no progress.
 - Android build 3 additionally fixes the minified release permission crash and the non-resolving recorder Stop path. API-36.1 release-emulator evidence shows the live waveform and a clean no-score result for silence.
+- The store binaries (Android build 3, iOS build 2) still carry the old spectral-centroid scorer; the trained onset network and recognizer-anchored scoring are live only in the PWA until new native builds are uploaded.
 - No L & N noVNC stack is live after the workstation reboot. Relaunch one project-owned stack on demand and record it in the private runtime handoff; never reuse the personal browser.
 
 ## EchoMind reference

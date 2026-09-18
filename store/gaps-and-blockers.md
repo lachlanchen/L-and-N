@@ -32,4 +32,6 @@ Updated: 2026-09-17
 - TestFlight build `1.0 (2)` is **Testing** in the internal group.
 - TestFlight build `1.0 (2)` is also **Testing** in the external group at https://testflight.apple.com/join/CpkT8m9C; automatic tester notification was enabled.
 
-The first Google Play production release uses a full rollout; staged rollout is reserved for later updates. Both formal releases are now published. Remaining external items are the App Store page propagation window and the optional EU/EEA trader-status step.
+The first Google Play production release uses a full rollout; staged rollout is reserved for later updates. The App Store price was changed to USD 0.99 on 2026-09-18 through the API; whether the Paid Applications agreement is in effect could not be verified without a browser login, and the public lookup still reported Free at the time. Google Play cannot switch this package from free to paid.
+
+Both formal releases are now published. Remaining external items are the App Store page propagation window and the optional EU/EEA trader-status step.

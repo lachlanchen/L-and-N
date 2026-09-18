@@ -52,6 +52,7 @@ and "detected /n/" on the same card.
 | Held-out | 4 whole lectures (2,062 tokens) never seen in training |
 | Accuracy on held-out lectures | 89.0 % (lateral recall 87.2 %, nasal recall 90.6 %) |
 | Accuracy on held-out tokens preceded by ≥150 ms silence | 73–76 % (about 200 tokens; see limits) |
+| Through the app's own feature path (600 held-out tokens, onset found by the app's energy detector) | network 84.8 % correct, 7.8 % uncertain; centroid heuristic 48.5 % correct, 10.3 % uncertain |
 | Old centroid heuristic on 300 real tokens | 43 % |
 
 Reproduce with the commands in `tools/onset-model/README.md`; the exact

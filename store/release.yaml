@@ -21,7 +21,9 @@ release:
   app_store_released_at: 2026-09-17
   app_store_release: manual
   google_play_initial_rollout: full
-  price: free
+  price: apple_usd_0_99_google_free
+  apple_price_tier: USD 0.99 base (USA); automatic CNY 8, HKD 8, GBP 0.99; set 2026-09-18 via App Store Connect API
+  google_price: free (Play does not allow a published free app to become paid)
   ads: false
   in_app_purchases: false
   accounts: false
@@ -29,6 +31,10 @@ release:
 platforms:
   pwa:
     status: production_live
+    release: /opt/l-and-n-web/releases/71699f6db2798fdcb957741a6a9744c36a9a28fdd07e5c565c2ece6117de6501
+    source_commit: c68bd8a3299627af87d0a2220f44e3ade168a70e
+    main_asset: assets/index-C5ww45p3.js
+    rollback: /opt/l-and-n-web/releases/95a8270571886f0431fad4be8f44358468f07da6545d30680f7ccd64a7c004b6
   android:
     min_sdk: 24
     target_sdk: 36

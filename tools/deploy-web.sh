@@ -54,7 +54,7 @@ ssh "$HOST" "set -e
   sudo -n chown -R root:root $ROOT/releases/$RELEASE
   sudo -n chmod -R a+rX $ROOT/releases/$RELEASE
   cd $ROOT/releases/$RELEASE/dist && LC_ALL=C sha256sum --quiet -c ../dist-manifest.sha256
-  readlink -f $ROOT/current > $ROOT/releases/$RELEASE/.previous 2>/dev/null || true
+  readlink -f $ROOT/current 2>/dev/null | sudo -n tee $ROOT/releases/$RELEASE/.previous >/dev/null || true
   echo uploaded and verified"
 
 if [[ $DRY_RUN == 1 ]]; then
