@@ -151,7 +151,10 @@ export function extractAcousticFeatures(samples: Float32Array, sampleRate: numbe
   const peakFrame = Math.max(...frameRms, 0)
   const edgeFrames = Math.max(1, Math.floor(frameRms.length * 0.12))
   const noiseFloor = percentile([...frameRms.slice(0, edgeFrames), ...frameRms.slice(-edgeFrames)], 0.5)
-  const threshold = Math.max(0.003, noiseFloor * 2.8, peakFrame * 0.14)
+  // A nasal murmur sits 10–20 dB below the following vowel. A 14 % peak
+  // threshold (−17 dB) skipped it and measured the vowel instead, so the
+  // onset window starts at 5 % of the peak (−26 dB) once the noise floor allows.
+  const threshold = Math.max(0.003, noiseFloor * 2.8, peakFrame * 0.05)
   let firstActiveFrame = frameRms.findIndex(
     (value, index) => value >= threshold && (frameRms[index + 1] ?? value) >= threshold,
   )

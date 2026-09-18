@@ -57,6 +57,24 @@ describe('language and sound controls', () => {
     await waitFor(() => expect(window.localStorage.getItem('landn.ui-language')).toBe('zh-Hans'))
   })
 
+  it('translates the practice-language tabs and coaching cue with the interface language', () => {
+    render(<App />)
+
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: 'zh-Hans' } })
+
+    expect(screen.getByTestId('practice-language-en-US').textContent).toBe('英语')
+    expect(screen.getByTestId('practice-language-yue-HK').textContent).toBe('粤语')
+    expect(screen.getByTestId('practice-language-switcher').textContent).not.toContain('English')
+    expect(screen.getByText(/舌尖收窄并放到前面/)).toBeTruthy()
+    expect(screen.queryByText(/Make the tongue tip narrow/)).toBeNull()
+
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: 'en' } })
+    fireEvent.click(screen.getByTestId('practice-language-zh-CN'))
+
+    expect(screen.getByTestId('practice-language-zh-CN').textContent).toBe('Mandarin')
+    expect(screen.getByText(/Touch the tongue tip lightly to the ridge/)).toBeTruthy()
+  })
+
   it('switches directly between paired L and N exercises', () => {
     render(<App />)
 

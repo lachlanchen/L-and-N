@@ -19,6 +19,10 @@ export interface Exercise {
   prompt: string
   cue: string
   tone?: number
+  /** Alternative spellings or homophone characters a recognizer may return for `word`. */
+  heardAs?: string[]
+  /** Alternative spellings or homophone characters a recognizer may return for `pair`. */
+  pairHeardAs?: string[]
 }
 
 export interface AcousticFeatures {
@@ -60,6 +64,8 @@ export type PronunciationFeedbackCode =
   | 'recognitionUnavailable'
   | 'recognitionUnclear'
   | 'recognitionClear'
+  | 'heardPair'
+  | 'cuesLean'
   | 'addNasal'
   | 'reduceNasal'
   | 'acousticSupports'
@@ -81,6 +87,8 @@ export interface PronunciationScore {
   delivery: number
   tone: number | null
   detectedSound: TargetSound | 'uncertain'
+  /** Whether the detected sound came from the word recognizer or only from acoustic cues. */
+  detectionSource: 'recognizer' | 'acoustic'
   transcript: string
   confidence: 'high' | 'medium' | 'low'
   feedback: PronunciationFeedback[]

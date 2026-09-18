@@ -66,18 +66,24 @@ interface CalibrationAttempt {
   features?: AcousticFeatures
 }
 
+// Reference centroids for the first ~240 ms of a word. Earlier values assumed
+// an /l/ onset carries almost no energy below 450 Hz, which is untrue for real
+// voiced speech (the fundamental and second harmonic always sit there), so
+// every recording looked nasal. These centroids are placed between the two
+// sounds as measured on the bundled studio recordings; the recognizer remains
+// the primary judge and these cues only shade the score.
 const defaultCentroids: Record<TrainingLanguage, Record<TargetSound, AcousticCentroid>> = {
   'en-US': {
-    L: { lowBandRatio: 0.14, spectralTiltDb: 0, formantSpacingHz: 720, spectralCentroidHz: 1450, midBandRatio: 0.46, firstFormantBandwidthHz: 170, nasalPeakContrastDb: 6 },
-    N: { lowBandRatio: 0.42, spectralTiltDb: 12, formantSpacingHz: 1320, spectralCentroidHz: 680, midBandRatio: 0.2, firstFormantBandwidthHz: 330, nasalPeakContrastDb: 0 },
+    L: { lowBandRatio: 0.38, spectralTiltDb: 8, formantSpacingHz: 900, spectralCentroidHz: 900, midBandRatio: 0.26, firstFormantBandwidthHz: 180, nasalPeakContrastDb: 6 },
+    N: { lowBandRatio: 0.62, spectralTiltDb: 15, formantSpacingHz: 1300, spectralCentroidHz: 560, midBandRatio: 0.12, firstFormantBandwidthHz: 320, nasalPeakContrastDb: 0 },
   },
   'zh-CN': {
-    L: { lowBandRatio: 0.18, spectralTiltDb: 3, formantSpacingHz: 920, spectralCentroidHz: 1320, midBandRatio: 0.4, firstFormantBandwidthHz: 180, nasalPeakContrastDb: 6 },
-    N: { lowBandRatio: 0.4, spectralTiltDb: 11, formantSpacingHz: 1310, spectralCentroidHz: 720, midBandRatio: 0.22, firstFormantBandwidthHz: 330, nasalPeakContrastDb: 0 },
+    L: { lowBandRatio: 0.4, spectralTiltDb: 8, formantSpacingHz: 950, spectralCentroidHz: 900, midBandRatio: 0.25, firstFormantBandwidthHz: 190, nasalPeakContrastDb: 6 },
+    N: { lowBandRatio: 0.62, spectralTiltDb: 14, formantSpacingHz: 1300, spectralCentroidHz: 580, midBandRatio: 0.12, firstFormantBandwidthHz: 320, nasalPeakContrastDb: 0 },
   },
   'yue-HK': {
-    L: { lowBandRatio: 0.2, spectralTiltDb: 5, formantSpacingHz: 1030, spectralCentroidHz: 1220, midBandRatio: 0.36, firstFormantBandwidthHz: 190, nasalPeakContrastDb: 5 },
-    N: { lowBandRatio: 0.4, spectralTiltDb: 11, formantSpacingHz: 1330, spectralCentroidHz: 700, midBandRatio: 0.21, firstFormantBandwidthHz: 340, nasalPeakContrastDb: 0 },
+    L: { lowBandRatio: 0.4, spectralTiltDb: 9, formantSpacingHz: 1000, spectralCentroidHz: 880, midBandRatio: 0.24, firstFormantBandwidthHz: 190, nasalPeakContrastDb: 5 },
+    N: { lowBandRatio: 0.62, spectralTiltDb: 14, formantSpacingHz: 1300, spectralCentroidHz: 580, midBandRatio: 0.12, firstFormantBandwidthHz: 330, nasalPeakContrastDb: 0 },
   },
 }
 
@@ -222,6 +228,55 @@ export function inferAcousticSound(
   }
 }
 
+function heardForms(word: string, alternatives: string[] | undefined): string[] {
+  const forms = new Set<string>([comparableWord(word), ...(alternatives ?? []).map(normalizeSpeech)])
+  return [...forms].filter(Boolean)
+}
+
+function initialSound(word: string): TargetSound | null {
+  if (/^(kn|n)/.test(word)) return 'N'
+  if (word.startsWith('l')) return 'L'
+  return null
+}
+
+function stripInitial(word: string): string {
+  return word.replace(/^(kn|n|l)/, '')
+}
+
+/**
+ * Decide which of the two minimal-pair sounds the recognizer heard.
+ * Returns null when the transcript names neither word or names both.
+ */
+export function detectSoundFromTranscript(exercise: Exercise, transcript: string): TargetSound | null {
+  const heard = normalizeSpeech(transcript)
+  if (!heard) return null
+  const pairSound: TargetSound = exercise.target === 'L' ? 'N' : 'L'
+  const targetForms = heardForms(exercise.word, exercise.heardAs)
+  const pairForms = heardForms(exercise.pair, exercise.pairHeardAs)
+  const words = heard.split(' ')
+  const spaced = exercise.language === 'en-US'
+  const contains = (forms: string[]) =>
+    forms.some((form) => (spaced ? words.includes(form) : heard.includes(form)))
+  const targetHit = contains(targetForms)
+  const pairHit = contains(pairForms)
+  if (targetHit && !pairHit) return exercise.target
+  if (pairHit && !targetHit) return pairSound
+  if (targetHit && pairHit) return null
+  if (!spaced) return null
+
+  // Fuzzy match for English recognizers that return near spellings such as
+  // "lite" or "nite": the initial letter names the sound, and the rest of the
+  // word must resemble the rhyme the pair shares.
+  const targetRhyme = stripInitial(targetForms[0])
+  const tolerance = Math.max(2, Math.ceil(targetRhyme.length * 0.75))
+  for (const word of words) {
+    const initial = initialSound(word)
+    if (!initial) continue
+    if (editDistance(stripInitial(word), targetRhyme) <= tolerance) return initial
+  }
+  return null
+}
+
 export function scorePronunciation(
   exercise: Exercise,
   transcript: string,
@@ -231,11 +286,22 @@ export function scorePronunciation(
   if (!normalizeSpeech(transcript)) {
     throw new Error('A recognized word is required before pronunciation can be scored.')
   }
-  const recognition = recognitionScore(exercise.word, transcript)
+  const pairSound: TargetSound = exercise.target === 'L' ? 'N' : 'L'
+  const recognizedSound = detectSoundFromTranscript(exercise, transcript)
+  const heardPair = recognizedSound === pairSound
+  const heardTarget = recognizedSound === exercise.target
+  const rawRecognition = recognitionScore(exercise.word, transcript)
+  // "night" is one edit away from "light", so string similarity alone would
+  // still award ~80 for the wrong word. When the recognizer clearly heard the
+  // paired word, the word score must say so.
+  const recognition = heardPair ? Math.min(rawRecognition, 30) : rawRecognition
   const pairRecognition = recognitionScore(exercise.pair, transcript)
-  const contrast = clampScore(recognition - pairRecognition * 0.55 + 38)
+  const contrast = heardPair ? clampScore(recognition - 30) : clampScore(recognition - pairRecognition * 0.55 + 38)
   const acousticInference = inferAcousticSound(features, exercise.language, calibration)
-  const acoustic = exercise.target === 'L' ? acousticInference.lEvidence : acousticInference.nEvidence
+  const targetEvidence = exercise.target === 'L' ? acousticInference.lEvidence : acousticInference.nEvidence
+  // Acoustic cues are a heuristic; once the recognizer has settled the word
+  // identity they shade the score instead of deciding it.
+  const acoustic = heardTarget ? clampScore(40 + targetEvidence * 0.6) : targetEvidence
   const delivery = clampScore(
     (features.signalQuality * 0.5 +
       features.voicedContinuity * 0.25 +
@@ -243,22 +309,36 @@ export function scorePronunciation(
       100,
   )
   const tone = scoreTone(exercise, features)
-  const soundOverall = clampScore(recognition * 0.38 + contrast * 0.2 + acoustic * 0.32 + delivery * 0.1)
-  const overall = tone === null ? soundOverall : clampScore(soundOverall * 0.88 + tone * 0.12)
+  const soundOverall = heardTarget
+    ? clampScore(recognition * 0.42 + contrast * 0.2 + acoustic * 0.23 + delivery * 0.15)
+    : clampScore(recognition * 0.38 + contrast * 0.2 + acoustic * 0.32 + delivery * 0.1)
+  const blended = tone === null ? soundOverall : clampScore(soundOverall * 0.88 + tone * 0.12)
+  // A recording in which the recognizer heard the other member of the pair
+  // cannot score as a success, whatever the acoustic cues say.
+  const overall = heardPair ? Math.min(blended, 45) : blended
+  const detectedSound: PronunciationScore['detectedSound'] = recognizedSound ?? acousticInference.detected
   const feedback: PronunciationScore['feedback'] = []
 
-  if (recognition < 70) {
-    feedback.push({ code: 'recognitionUnclear', value: transcript || '—' })
+  if (heardPair) {
+    feedback.push({ code: 'heardPair', value: transcript })
+    feedback.push({ code: exercise.target === 'N' ? 'addNasal' : 'reduceNasal' })
   } else {
-    feedback.push({ code: 'recognitionClear', value: exercise.word })
-  }
+    if (recognition < 70) {
+      feedback.push({ code: 'recognitionUnclear', value: transcript || '—' })
+    } else {
+      feedback.push({ code: 'recognitionClear', value: exercise.word })
+    }
 
-  if (exercise.target === 'N' && acousticInference.nEvidence < 58) {
-    feedback.push({ code: 'addNasal' })
-  } else if (exercise.target === 'L' && acousticInference.lEvidence < 58) {
-    feedback.push({ code: 'reduceNasal' })
-  } else {
-    feedback.push({ code: 'acousticSupports', value: exercise.target.toLowerCase() })
+    if (heardTarget) {
+      if (targetEvidence < 40) feedback.push({ code: 'cuesLean', value: pairSound.toLowerCase() })
+      else feedback.push({ code: 'acousticSupports', value: exercise.target.toLowerCase() })
+    } else if (exercise.target === 'N' && acousticInference.nEvidence < 58) {
+      feedback.push({ code: 'addNasal' })
+    } else if (exercise.target === 'L' && acousticInference.lEvidence < 58) {
+      feedback.push({ code: 'reduceNasal' })
+    } else {
+      feedback.push({ code: 'acousticSupports', value: exercise.target.toLowerCase() })
+    }
   }
 
   if (features.signalQuality < 0.4) feedback.push({ code: 'signalLimited' })
@@ -266,13 +346,15 @@ export function scorePronunciation(
   if (tone !== null && tone < 62) feedback.push({ code: 'toneShape', value: exercise.tone })
   if (calibration?.L || calibration?.N) feedback.push({ code: 'personalized' })
 
-  const confidence = features.signalQuality < 0.4
+  const confidence: PronunciationScore['confidence'] = features.signalQuality < 0.4
     ? 'low'
-    : overall >= 82 && acoustic >= 62
+    : heardTarget && overall >= 82
       ? 'high'
-      : overall >= 60
+      : recognizedSound !== null && overall >= 60
         ? 'medium'
-        : 'low'
+        : overall >= 60 && acoustic >= 62
+          ? 'medium'
+          : 'low'
 
   return {
     overall,
@@ -281,7 +363,8 @@ export function scorePronunciation(
     acoustic,
     delivery,
     tone,
-    detectedSound: acousticInference.detected,
+    detectedSound,
+    detectionSource: recognizedSound === null ? 'acoustic' : 'recognizer',
     transcript,
     confidence,
     feedback,

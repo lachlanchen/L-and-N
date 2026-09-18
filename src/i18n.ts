@@ -1,4 +1,4 @@
-import type { PronunciationFeedback, PronunciationFeedbackCode, UILanguage } from './types'
+import type { PronunciationFeedback, PronunciationFeedbackCode, TrainingLanguage, UILanguage } from './types'
 
 export const uiLanguageLabels: Record<UILanguage, string> = {
   en: 'English',
@@ -17,6 +17,7 @@ export interface UICopy {
   uiLanguage: string
   streak: string
   trainingLanguage: string
+  trainingLanguages: Record<TrainingLanguage, string>
   primaryNavigation: string
   nav: { practice: string; learn: string; progress: string }
   practice: {
@@ -130,6 +131,7 @@ const copies: Record<UILanguage, UICopy> = {
     uiLanguage: 'Interface language',
     streak: 'Practice streak',
     trainingLanguage: 'Practice language',
+    trainingLanguages: { 'en-US': 'English', 'zh-CN': 'Mandarin', 'yue-HK': 'Cantonese' },
     primaryNavigation: 'Primary navigation',
     nav: { practice: 'Practice', learn: 'Learn', progress: 'Progress' },
     practice: {
@@ -218,6 +220,8 @@ const copies: Record<UILanguage, UICopy> = {
       recognitionUnavailable: 'Word recognition was unavailable, so the score relies on the recorded onset and carries lower confidence.',
       recognitionUnclear: 'The recognizer heard “{value}”. Slow down and make the first sound clear before the vowel.',
       recognitionClear: 'The word identity was clear: “{value}”.',
+      heardPair: 'The recognizer heard “{value}”, the paired word, so this attempt did not count as the target sound.',
+      cuesLean: 'The word was recognized, but the acoustic cues leaned /{value}/-like. Exaggerate the first sound slightly next time.',
       addNasal: 'Add a brief nasal murmur at the start. Touch your nose lightly and check for vibration.',
       reduceNasal: 'Reduce nasal resonance. Keep the tongue tip up and release air around its sides.',
       acousticSupports: 'The acoustic pattern supports /{value}/.',
@@ -235,7 +239,7 @@ const copies: Record<UILanguage, UICopy> = {
     },
   },
   'zh-Hans': {
-    appTitle: 'L-and-N 发音教练', uiLanguage: '界面语言', streak: '连续练习', trainingLanguage: '练习语言', primaryNavigation: '主导航',
+    appTitle: 'L-and-N 发音教练', uiLanguage: '界面语言', streak: '连续练习', trainingLanguage: '练习语言', trainingLanguages: { 'en-US': '英语', 'zh-CN': '普通话', 'yue-HK': '粤语' }, primaryNavigation: '主导航',
     nav: { practice: '练习', learn: '学习', progress: '进度' },
     practice: {
       session: '4 分钟辨音练习', sessionHint: '听 · 感受 · 录音', previousWord: '上一个词', nextWord: '下一个词', soundPicker: '选择要练习的音',
@@ -268,6 +272,7 @@ const copies: Record<UILanguage, UICopy> = {
     },
     feedback: {
       recognitionUnavailable: '本次无法辨词，因此分数主要依据录音词首音，置信度较低。', recognitionUnclear: '识别器听到“{value}”。请放慢速度，在元音前把第一个音发清楚。', recognitionClear: '词语辨识清楚：“{value}”。',
+      heardPair: '识别器听到的是“{value}”，也就是对立词，所以这次没有算作目标音。', cuesLean: '词语已辨认出来，但声学线索偏向 /{value}/。下次把第一个音再稍微夸张一点。',
       addNasal: '词首增加短暂鼻腔共鸣。轻触鼻翼，检查是否有振动。', reduceNasal: '减少鼻腔共鸣。舌尖保持抬起，让气流从舌头两侧通过。', acousticSupports: '声学模式支持 /{value}/。',
       signalLimited: '信号质量有限；请靠近麦克风、减少背景噪声并避免爆音。', holdLonger: '把词稍微说长一点，才能更可靠地分析对立。', toneShape: '词首音和声调分开评分。请用更稳定的音高轮廓重复第 {value} 声。', personalized: '本次比较使用了保存在本设备上的个人声学基线。',
     },
@@ -280,7 +285,7 @@ const copies: Record<UILanguage, UICopy> = {
     },
   },
   'zh-Hant': {
-    appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', primaryNavigation: '主要導覽',
+    appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英語', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
     nav: { practice: '練習', learn: '學習', progress: '進度' },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄音', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '選擇要練習的音',
@@ -313,6 +318,7 @@ const copies: Record<UILanguage, UICopy> = {
     },
     feedback: {
       recognitionUnavailable: '本次無法辨詞，因此分數主要依據錄音詞首音，可信度較低。', recognitionUnclear: '辨識器聽到「{value}」。請放慢速度，在元音前把第一個音發清楚。', recognitionClear: '詞語辨識清楚：「{value}」。',
+      heardPair: '辨識器聽到的是「{value}」，也就是對立詞，所以這次沒有算作目標音。', cuesLean: '詞語已辨認出來，但聲學線索偏向 /{value}/。下次把第一個音再稍微誇張一點。',
       addNasal: '詞首增加短暫鼻腔共鳴。輕觸鼻翼，檢查是否有振動。', reduceNasal: '減少鼻腔共鳴。舌尖保持抬起，讓氣流從舌頭兩側通過。', acousticSupports: '聲學模式支持 /{value}/。',
       signalLimited: '訊號質素有限；請靠近咪高峰、減少背景噪音並避免爆音。', holdLonger: '把詞稍微說長一點，才能更可靠地分析對立。', toneShape: '詞首音和聲調分開評分。請用更穩定的音高輪廓重複第 {value} 聲。', personalized: '本次比較使用了保存在本裝置上的個人聲學基線。',
     },
@@ -325,7 +331,7 @@ const copies: Record<UILanguage, UICopy> = {
     },
   },
   yue: {
-    appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', primaryNavigation: '主要導覽',
+    appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英文', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
     nav: { practice: '練習', learn: '學原理', progress: '進度' },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄低', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '揀想練嘅音',
@@ -358,6 +364,7 @@ const copies: Record<UILanguage, UICopy> = {
     },
     feedback: {
       recognitionUnavailable: '今次辨唔到詞，所以分數主要根據錄音詞首音，可信度會低啲。', recognitionUnclear: '辨識器聽到「{value}」。講慢啲，喺元音之前講清楚第一個音。', recognitionClear: '詞語辨識清楚：「{value}」。',
+      heardPair: '辨識器聽到嘅係「{value}」，即係對立詞，所以今次唔算講中目標音。', cuesLean: '個詞辨認到，但聲學線索偏向 /{value}/。下次第一個音再誇張少少。',
       addNasal: '詞首加少少鼻腔共鳴。輕掂鼻翼，睇吓有冇震。', reduceNasal: '減少鼻腔共鳴。舌尖保持升起，等氣流由舌頭兩邊走。', acousticSupports: '聲學模式支持 /{value}/。',
       signalLimited: '訊號質素有限；行近咪高峰、減少背景聲，同埋避免爆音。', holdLonger: '個詞講長少少，先可以更可靠咁分析對立。', toneShape: '詞首音同聲調分開計。用穩定啲嘅音高走勢再講第 {value} 聲。', personalized: '今次比較用咗儲喺呢部機嘅個人聲學基線。',
     },

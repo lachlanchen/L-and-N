@@ -18,7 +18,8 @@ import {
 } from 'lucide-react'
 import './App.css'
 import { SignalVisualizer } from './components/SignalVisualizer'
-import { exercises, languageLabels } from './data/curriculum'
+import { exercises } from './data/curriculum'
+import { localizedExercise } from './data/curriculum-i18n'
 import { feedbackCopy, formatCopy, initialUILanguage, uiCopy, uiLanguageLabels, type UICopy } from './i18n'
 import {
   AudioCaptureError,
@@ -72,6 +73,7 @@ function App() {
     [language],
   )
   const exercise = languageExercises[exerciseIndex % languageExercises.length]
+  const exerciseText = localizedExercise(exercise, uiLanguage)
   const calibration = useMemo(() => buildAcousticCalibration(attempts, language), [attempts, language])
   const streak = trainingStreak(attempts)
   const average = attempts.length
@@ -254,7 +256,7 @@ function App() {
   const renderPractice = () => (
     <main className="practice-page">
       <div className="language-switcher" data-testid="practice-language-switcher" aria-label={copy.trainingLanguage}>
-        {(Object.entries(languageLabels) as Array<[TrainingLanguage, string]>).map(([code, label]) => (
+        {(Object.entries(copy.trainingLanguages) as Array<[TrainingLanguage, string]>).map(([code, label]) => (
           <button key={code} data-testid={`practice-language-${code}`} aria-pressed={language === code} className={language === code ? 'active' : ''} disabled={captureBusy} onClick={() => selectLanguage(code)}>{label}</button>
         ))}
       </div>
@@ -286,7 +288,7 @@ function App() {
         <div className="word-area">
           <span className="target-label">{copy.practice.target} /{exercise.target.toLowerCase()}/</span>
           <h2>{exercise.word}</h2>
-          <p className="ipa">{exercise.ipa} <span>· {exercise.translation}</span></p>
+          <p className="ipa">{exercise.ipa} <span>· {exerciseText.translation}</span></p>
           <SoundSpelling exercise={exercise} copy={copy} />
           <button className="listen-button" title={copy.practice.studioTitle} disabled={captureBusy} onClick={() => void speakExample(exercise)}>
             <Volume2 size={19} /> {copy.practice.hearModel}
@@ -299,7 +301,7 @@ function App() {
           <div className="avoid"><span>{copy.practice.not}</span><strong>{exercise.pair}</strong></div>
         </div>
 
-        <div className="cue"><Target size={18} /><p>{exercise.cue}</p></div>
+        <div className="cue"><Target size={18} /><p>{exerciseText.cue}</p></div>
 
         <SignalVisualizer analyser={analyser} liveSignal={liveSignal} features={lastFeatures} recording={recording} target={exercise.target} copy={copy.signal} />
 

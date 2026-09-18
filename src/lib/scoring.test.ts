@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { extractAcousticFeatures } from './acoustics'
 import { exercises } from '../data/curriculum'
-import { editDistance, inferAcousticSound, normalizeSpeech, scorePronunciation } from './scoring'
+import { detectSoundFromTranscript, editDistance, inferAcousticSound, normalizeSpeech, scorePronunciation } from './scoring'
 
 describe('speech normalization', () => {
   it('normalizes case, tone marks, and punctuation', () => {
@@ -70,5 +70,82 @@ describe('hybrid pronunciation score', () => {
     expect(() => scorePronunciation(exercise, '', lLikeFeatures)).toThrow(
       'A recognized word is required before pronunciation can be scored.',
     )
+  })
+})
+
+describe('recognizer-anchored sound detection', () => {
+  const light = exercises.find(({ id }) => id === 'en-light-night')!
+  const lan = exercises.find(({ id }) => id === 'zh-lan-nan')!
+  const nei = exercises.find(({ id }) => id === 'yue-nei-lei')!
+
+  it('reads the target or paired word from the transcript', () => {
+    expect(detectSoundFromTranscript(light, 'Light.')).toBe('L')
+    expect(detectSoundFromTranscript(light, 'night')).toBe('N')
+    expect(detectSoundFromTranscript(light, 'the practice word is light, light')).toBe('L')
+  })
+
+  it('accepts near spellings but not ambiguity', () => {
+    expect(detectSoundFromTranscript(light, 'lite')).toBe('L')
+    expect(detectSoundFromTranscript(light, 'nite')).toBe('N')
+    expect(detectSoundFromTranscript(light, 'light night')).toBeNull()
+    expect(detectSoundFromTranscript(light, 'fight')).toBeNull()
+  })
+
+  it('matches Chinese homophones in either script', () => {
+    expect(detectSoundFromTranscript(lan, '藍')).toBe('L')
+    expect(detectSoundFromTranscript(lan, '难')).toBe('N')
+    expect(detectSoundFromTranscript(nei, '尼')).toBe('N')
+    expect(detectSoundFromTranscript(nei, '李')).toBe('L')
+  })
+})
+
+describe('score consistency with the recognized word', () => {
+  const exercise = exercises.find(({ id }) => id === 'en-light-night')!
+  const nasalLeaningFeatures = {
+    rms: 0.08,
+    noiseFloor: 0.003,
+    zeroCrossingRate: 0.03,
+    lowBandRatio: 0.75,
+    midBandRatio: 0.08,
+    spectralCentroidHz: 480,
+    spectralTiltDb: 16,
+    pitchHz: 145,
+    pitchContour: [142, 144, 145, 146, 148],
+    firstFormantHz: 300,
+    secondFormantHz: 1600,
+    formantSpacingHz: 1300,
+    firstFormantBandwidthHz: 330,
+    nasalPeakContrastDb: 0,
+    voicedContinuity: 0.9,
+    durationMs: 900,
+    onsetMs: 35,
+    onsetDurationMs: 240,
+    signalQuality: 0.92,
+    waveform: [0, 0.2, -0.2, 0.12],
+    spectrum: [0.1, 0.35, 0.8, 0.5],
+  }
+
+  it('never reports the paired sound as detected when the target word was recognized', () => {
+    const result = scorePronunciation(exercise, 'light', nasalLeaningFeatures)
+    expect(inferAcousticSound(nasalLeaningFeatures).detected).toBe('N')
+    expect(result.detectedSound).toBe('L')
+    expect(result.detectionSource).toBe('recognizer')
+    expect(result.overall).toBeGreaterThanOrEqual(60)
+    expect(result.feedback.some((item) => item.code === 'cuesLean')).toBe(true)
+  })
+
+  it('caps the score when the recognizer heard the paired word', () => {
+    const result = scorePronunciation(exercise, 'night', nasalLeaningFeatures)
+    expect(result.detectedSound).toBe('N')
+    expect(result.overall).toBeLessThanOrEqual(45)
+    expect(result.recognition).toBeLessThanOrEqual(30)
+    expect(result.feedback[0]).toEqual({ code: 'heardPair', value: 'night' })
+    expect(result.feedback[1]).toEqual({ code: 'reduceNasal' })
+  })
+
+  it('falls back to acoustic cues when the transcript names neither word', () => {
+    const result = scorePronunciation(exercise, 'fight', nasalLeaningFeatures)
+    expect(result.detectionSource).toBe('acoustic')
+    expect(result.detectedSound).toBe('N')
   })
 })
