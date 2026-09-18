@@ -8,7 +8,7 @@
 
 [Open the live PWA](https://l-and-n.lazying.art) · [Try the light/night mini-lesson](https://l-and-n.lazying.art/lessons/light-vs-night/) · [Custom lessons for tutors](https://l-and-n.lazying.art/for-tutors/) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
 
-[Download on the App Store](https://apps.apple.com/app/l-n-speech-practice/id6808872450) · [TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C) · [Get it on Google Play](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Signed Android build 3 APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk)
+[Download on the App Store](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C) · [Get it on Google Play](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Signed Android build 3 APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk)
 
 L-and-N turns a small but frustrating speech contrast into a short practice loop: see the letter inside the word, hear a studio model, watch the signal, record, and receive an explained score. The same curriculum runs as an installable PWA, Android app, iPhone/iPad app, and a compact watchOS drill.
 
