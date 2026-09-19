@@ -4,6 +4,7 @@ import {
   ArrowRight,
   BookOpen,
   Check,
+  Ear,
   ChevronLeft,
   ChevronRight,
   Flame,
@@ -17,6 +18,7 @@ import {
   Waves,
 } from 'lucide-react'
 import './App.css'
+import { ListeningExam } from './components/ListeningExam'
 import { SignalVisualizer } from './components/SignalVisualizer'
 import { exercises } from './data/curriculum'
 import { localizedExercise } from './data/curriculum-i18n'
@@ -28,12 +30,21 @@ import {
   type LiveSignal,
 } from './lib/audio-capture'
 import { analyserRms, EndOfWordDetector } from './lib/end-of-word'
-import { loadAttempts, saveAttempt, trainingStreak, type AttemptRecord } from './lib/progress'
+import {
+  listeningAccuracy,
+  loadAttempts,
+  loadListeningResults,
+  saveAttempt,
+  saveListeningResult,
+  trainingStreak,
+  type AttemptRecord,
+  type ListeningResult,
+} from './lib/progress'
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
 import { speakExample } from './lib/speech'
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
 
-type Tab = 'practice' | 'learn' | 'progress'
+type Tab = 'practice' | 'listen' | 'learn' | 'progress'
 type CapturePhase = 'idle' | 'starting' | 'recording' | 'processing'
 
 const MouthModel3D = lazy(() =>
@@ -59,6 +70,7 @@ function App() {
   const [liveSignal, setLiveSignal] = useState<LiveSignal | null>(null)
   const [error, setError] = useState('')
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
+  const [listening, setListening] = useState<ListeningResult[]>([])
   const sessionRef = useRef<RecordingSession | null>(null)
   const stopTimerRef = useRef<number | null>(null)
   const meterTimerRef = useRef<number | null>(null)
@@ -78,13 +90,15 @@ function App() {
   const exercise = languageExercises[exerciseIndex % languageExercises.length]
   const exerciseText = localizedExercise(exercise, uiLanguage)
   const calibration = useMemo(() => buildAcousticCalibration(attempts, language), [attempts, language])
-  const streak = trainingStreak(attempts)
+  const streak = trainingStreak([...attempts, ...listening])
+  const aural = listeningAccuracy(listening)
   const average = attempts.length
     ? Math.round(attempts.reduce((sum, attempt) => sum + attempt.score, 0) / attempts.length)
     : 0
 
   useEffect(() => {
     void loadAttempts().then(setAttempts)
+    void loadListeningResults().then(setListening)
   }, [])
 
   useEffect(() => {
@@ -275,13 +289,37 @@ function App() {
     else if (capturePhaseRef.current === 'idle') void startRecording()
   }
 
+  const languageSwitcher = (
+    <div className="language-switcher" data-testid="practice-language-switcher" aria-label={copy.trainingLanguage}>
+      {(Object.entries(copy.trainingLanguages) as Array<[TrainingLanguage, string]>).map(([code, label]) => (
+        <button key={code} data-testid={`practice-language-${code}`} aria-pressed={language === code} className={language === code ? 'active' : ''} disabled={captureBusy} onClick={() => selectLanguage(code)}>{label}</button>
+      ))}
+    </div>
+  )
+
+  const renderListen = () => (
+    <div className="listen-shell">
+      {languageSwitcher}
+      <ListeningExam
+        key={language}
+        language={language}
+        copy={copy}
+        onResult={(result, exam) => {
+          void saveListeningResult({
+            pairId: exam.pairId,
+            language: exam.language,
+            total: result.total,
+            correct: result.correct,
+            createdAt: new Date().toISOString(),
+          }).then(setListening)
+        }}
+      />
+    </div>
+  )
+
   const renderPractice = () => (
     <main className="practice-page">
-      <div className="language-switcher" data-testid="practice-language-switcher" aria-label={copy.trainingLanguage}>
-        {(Object.entries(copy.trainingLanguages) as Array<[TrainingLanguage, string]>).map(([code, label]) => (
-          <button key={code} data-testid={`practice-language-${code}`} aria-pressed={language === code} className={language === code ? 'active' : ''} disabled={captureBusy} onClick={() => selectLanguage(code)}>{label}</button>
-        ))}
-      </div>
+      {languageSwitcher}
 
       <div className="practice-kicker">
         <span className="eyebrow"><Sparkles size={14} /> {copy.practice.session}</span>
@@ -381,6 +419,7 @@ function App() {
         <article><Flame /><strong>{streak}</strong><span>{copy.progress.dayStreak}</span></article>
         <article><Target /><strong>{average || '—'}</strong><span>{copy.progress.average}</span></article>
         <article><Check /><strong>{attempts.length}</strong><span>{copy.progress.attempts}</span></article>
+        <article><Ear /><strong>{aural === null ? '—' : `${aural}%`}</strong><span>{copy.nav.listen}</span></article>
       </section>
       <section className="history-card">
         <h2>{copy.progress.recent}</h2>
@@ -412,10 +451,12 @@ function App() {
         </div>
       </header>
       {tab === 'practice' && renderPractice()}
+      {tab === 'listen' && renderListen()}
       {tab === 'learn' && renderLearn()}
       {tab === 'progress' && renderProgress()}
       <nav className="bottom-nav" aria-label={copy.primaryNavigation}>
         <button className={tab === 'practice' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('practice')}><Mic /><span>{copy.nav.practice}</span></button>
+        <button className={tab === 'listen' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('listen')}><Ear /><span>{copy.nav.listen}</span></button>
         <button className={tab === 'learn' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('learn')}><BookOpen /><span>{copy.nav.learn}</span></button>
         <button className={tab === 'progress' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('progress')}><Activity /><span>{copy.nav.progress}</span></button>
       </nav>

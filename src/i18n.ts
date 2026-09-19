@@ -19,7 +19,7 @@ export interface UICopy {
   trainingLanguage: string
   trainingLanguages: Record<TrainingLanguage, string>
   primaryNavigation: string
-  nav: { practice: string; learn: string; progress: string }
+  nav: { practice: string; listen: string; learn: string; progress: string }
   practice: {
     session: string
     sessionHint: string
@@ -52,6 +52,32 @@ export interface UICopy {
     soundLens: string
     onsetSpectrum: string
     note: string
+  }
+  listen: {
+    eyebrow: string
+    title: string
+    hint: string
+    pairLabel: string
+    lengthLabel: string
+    play: string
+    loading: string
+    playing: string
+    replay: string
+    newExam: string
+    chooseHeard: string
+    answerProgress: string
+    undo: string
+    clear: string
+    submit: string
+    resultTitle: string
+    correctCount: string
+    perfect: string
+    keepGoing: string
+    played: string
+    yourAnswer: string
+    replayItem: string
+    unavailable: string
+    audioError: string
   }
   learn: {
     eyebrow: string
@@ -133,7 +159,7 @@ const copies: Record<UILanguage, UICopy> = {
     trainingLanguage: 'Practice language',
     trainingLanguages: { 'en-US': 'English', 'zh-CN': 'Mandarin', 'yue-HK': 'Cantonese' },
     primaryNavigation: 'Primary navigation',
-    nav: { practice: 'Practice', learn: 'Learn', progress: 'Progress' },
+    nav: { practice: 'Practice', listen: 'Listen', learn: 'Learn', progress: 'Progress' },
     practice: {
       session: '4-minute sound drill',
       sessionHint: 'Listen · feel · record',
@@ -166,6 +192,32 @@ const copies: Record<UILanguage, UICopy> = {
       soundLens: 'Sound lens',
       onsetSpectrum: 'onset · spectrum',
       note: 'The shaded opening is where L/N evidence is measured. Wave height shows signal, not correctness.',
+    },
+    listen: {
+      eyebrow: 'Ear training',
+      title: 'Hear the difference',
+      hint: 'Play the sequence, then tap the word you heard at each position and submit.',
+      pairLabel: 'Word pair',
+      lengthLabel: 'Words',
+      play: 'Play sequence',
+      loading: 'Loading audio…',
+      playing: 'Playing {index} of {total}',
+      replay: 'Play again',
+      newExam: 'New sequence',
+      chooseHeard: 'Tap what you heard, in order.',
+      answerProgress: '{done} of {total}',
+      undo: 'Undo',
+      clear: 'Clear',
+      submit: 'Submit answers',
+      resultTitle: 'Listening result',
+      correctCount: '{correct} of {total} correct',
+      perfect: 'Every word identified.',
+      keepGoing: 'Replay the ones you missed, then try a new sequence.',
+      played: 'Played',
+      yourAnswer: 'You chose',
+      replayItem: 'Play this word',
+      unavailable: 'Ear training needs two studio recordings that were both verified for this contrast. This practice language has none yet.',
+      audioError: 'The audio could not be played. Check the volume, then try again.',
     },
     learn: {
       eyebrow: 'The 60-second science',
@@ -240,7 +292,7 @@ const copies: Record<UILanguage, UICopy> = {
   },
   'zh-Hans': {
     appTitle: 'L-and-N 发音教练', uiLanguage: '界面语言', streak: '连续练习', trainingLanguage: '练习语言', trainingLanguages: { 'en-US': '英语', 'zh-CN': '普通话', 'yue-HK': '粤语' }, primaryNavigation: '主导航',
-    nav: { practice: '练习', learn: '学习', progress: '进度' },
+    nav: { practice: '练习', listen: '听辨', learn: '学习', progress: '进度' },
     practice: {
       session: '4 分钟辨音练习', sessionHint: '听 · 感受 · 录音', previousWord: '上一个词', nextWord: '下一个词', soundPicker: '选择要练习的音',
       target: '目标', measuredOnset: '分析词首音', onsetToneSeparate: '词首音 · 声调分开评分', hearModel: '听标准示范', say: '请说', not: '不要说成',
@@ -249,6 +301,15 @@ const copies: Record<UILanguage, UICopy> = {
       scoreHow: '评分方法', scoreHowBody: '综合辨词、最小对立词、鼻音/边音声学线索和发声稳定性。只有成功辨词后才会显示分数；浏览器无法辨词或没有返回结果时，可能使用 L & N 的私有 Whisper 服务，转写后即丢弃录音。',
     },
     signal: { aria: '实时波形与词首频谱', listeningLive: '实时聆听', lastSound: '上次录音', soundLens: '声音镜头', onsetSpectrum: '词首 · 频谱', note: '阴影区域是提取 L/N 线索的位置。波形高度表示信号强弱，不表示发音正确度。' },
+    listen: {
+      eyebrow: '听辨训练', title: '听出区别', hint: '先播放整段，然后按顺序点选每个位置听到的词，最后提交。',
+      pairLabel: '对立词', lengthLabel: '词数', play: '播放序列', loading: '正在加载音频…', playing: '正在播放第 {index} / {total} 个',
+      replay: '再播一次', newExam: '换一组', chooseHeard: '按顺序点选你听到的词。', answerProgress: '已选 {done} / {total}',
+      undo: '撤销', clear: '清空', submit: '提交答案', resultTitle: '听辨结果', correctCount: '答对 {correct} / {total}',
+      perfect: '全部听对了。', keepGoing: '重听听错的那几个，再换一组试试。', played: '播放', yourAnswer: '你选',
+      replayItem: '播放这个词', unavailable: '听辨训练需要这组对立词的两个示范录音都通过验证，当前练习语言暂时还没有。',
+      audioError: '无法播放音频。请检查音量后重试。',
+    },
     learn: {
       eyebrow: '60 秒发音原理', title: '同一接触点，两条气流通道', loading: '正在准备口腔模型…',
       principles: [
@@ -286,7 +347,7 @@ const copies: Record<UILanguage, UICopy> = {
   },
   'zh-Hant': {
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英語', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
-    nav: { practice: '練習', learn: '學習', progress: '進度' },
+    nav: { practice: '練習', listen: '聽辨', learn: '學習', progress: '進度' },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄音', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '選擇要練習的音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開評分', hearModel: '聽標準示範', say: '請說', not: '不要說成',
@@ -295,6 +356,15 @@ const copies: Record<UILanguage, UICopy> = {
       scoreHow: '評分方法', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索和發聲穩定性。只有成功辨詞後才會顯示分數；瀏覽器無法辨詞或沒有回傳結果時，可能使用 L & N 的私有 Whisper 服務，轉寫後即棄置錄音。',
     },
     signal: { aria: '即時波形與詞首頻譜', listeningLive: '即時聆聽', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影區域是提取 L/N 線索的位置。波形高度代表訊號強弱，不代表發音正確度。' },
+    listen: {
+      eyebrow: '聽辨訓練', title: '聽出分別', hint: '先播放整段，然後按順序點選每個位置聽到的詞，最後提交。',
+      pairLabel: '對立詞', lengthLabel: '詞數', play: '播放序列', loading: '正在載入音訊…', playing: '正在播放第 {index} / {total} 個',
+      replay: '再播一次', newExam: '換一組', chooseHeard: '按順序點選你聽到的詞。', answerProgress: '已選 {done} / {total}',
+      undo: '復原', clear: '清空', submit: '提交答案', resultTitle: '聽辨結果', correctCount: '答對 {correct} / {total}',
+      perfect: '全部聽對了。', keepGoing: '重聽聽錯的那幾個，再換一組試試。', played: '播放', yourAnswer: '你選',
+      replayItem: '播放這個詞', unavailable: '聽辨訓練需要這組對立詞的兩個示範錄音都通過驗證，目前的練習語言暫時還沒有。',
+      audioError: '無法播放音訊。請檢查音量後再試。',
+    },
     learn: {
       eyebrow: '60 秒發音原理', title: '同一接觸點，兩條氣流通道', loading: '正在準備口腔模型…',
       principles: [
@@ -332,7 +402,7 @@ const copies: Record<UILanguage, UICopy> = {
   },
   yue: {
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英文', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
-    nav: { practice: '練習', learn: '學原理', progress: '進度' },
+    nav: { practice: '練習', listen: '聽辨', learn: '學原理', progress: '進度' },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄低', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '揀想練嘅音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開計', hearModel: '聽標準示範', say: '講', not: '唔好講成',
@@ -341,6 +411,15 @@ const copies: Record<UILanguage, UICopy> = {
       scoreHow: '點樣評分', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索同發聲穩定性。成功辨到詞先會顯示分數；瀏覽器辨唔到或者冇結果時，可能會用 L & N 私有 Whisper 服務，轉寫完就丟棄錄音。',
     },
     signal: { aria: '即時波形同詞首頻譜', listeningLive: '即時聽緊', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影位置係提取 L/N 線索嘅範圍。波形高度只代表訊號強弱，唔代表啱唔啱。' },
+    listen: {
+      eyebrow: '聽辨練習', title: '聽出分別', hint: '先播成段，然後順住次序撳返你聽到嘅詞，最後交答案。',
+      pairLabel: '對立詞', lengthLabel: '詞數', play: '播放成段', loading: '載入緊音訊…', playing: '播緊第 {index} / {total} 個',
+      replay: '再播一次', newExam: '換一組', chooseHeard: '順住次序撳你聽到嘅詞。', answerProgress: '已揀 {done} / {total}',
+      undo: '復原', clear: '清空', submit: '交答案', resultTitle: '聽辨結果', correctCount: '啱咗 {correct} / {total}',
+      perfect: '全部聽啱晒。', keepGoing: '重聽錯咗嗰幾個，再換一組試下。', played: '播咗', yourAnswer: '你揀',
+      replayItem: '播呢個詞', unavailable: '聽辨練習要呢組對立詞兩個示範錄音都驗證過，宜家呢個練習語言仲未有。',
+      audioError: '播唔到音訊。檢查音量再試。',
+    },
     learn: {
       eyebrow: '60 秒發音原理', title: '同一接觸點，兩條氣流通道', loading: '準備緊口腔模型…',
       principles: [

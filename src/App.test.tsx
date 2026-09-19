@@ -27,7 +27,38 @@ vi.mock('./lib/audio-capture', () => {
 vi.mock('./lib/progress', () => ({
   loadAttempts: vi.fn(async () => []),
   saveAttempt: vi.fn(async () => []),
+  loadListeningResults: vi.fn(async () => []),
+  saveListeningResult: vi.fn(async () => []),
+  listeningAccuracy: vi.fn(() => null),
   trainingStreak: vi.fn(() => 0),
+}))
+
+const audioMocks = vi.hoisted(() => ({
+  playSequence: vi.fn((exerciseIds: string[], options?: { onItem?: (index: number | null) => void }) => {
+    options?.onItem?.(null)
+    return Promise.resolve({ finished: Promise.resolve(), stop: vi.fn(), played: exerciseIds })
+  }),
+  unlockAudio: vi.fn(),
+}))
+
+// Web Audio is unavailable in jsdom, so the exam's player is mocked; its own
+// behaviour is covered by src/lib/listening-exam.test.ts.
+vi.mock('./lib/word-audio', () => ({
+  playSequence: audioMocks.playSequence,
+  unlockAudio: audioMocks.unlockAudio,
+  preloadClips: vi.fn(async () => undefined),
+  releaseAudio: vi.fn(),
+  isVerifiedClip: () => true,
+  clipKeyForExercise: (id: string) => id.split('-').slice(0, 2).join('-'),
+  wordClip: (id: string) => ({
+    key: id.split('-').slice(0, 2).join('-'),
+    src: '',
+    start: 0,
+    end: 0.5,
+    expected: 'L',
+    verdict: 'clear',
+  }),
+  WordAudioError: class WordAudioError extends Error {},
 }))
 
 beforeAll(() => {
@@ -41,6 +72,8 @@ afterEach(() => {
   cleanup()
   window.localStorage.clear()
   audioCaptureMocks.startAudioCapture.mockReset()
+  audioMocks.playSequence.mockClear()
+  audioMocks.unlockAudio.mockClear()
 })
 
 describe('language and sound controls', () => {
@@ -183,5 +216,70 @@ describe('recording lifecycle', () => {
     expect(await screen.findByText(/I recorded your voice, but could not recognize a word/)).toBeTruthy()
     expect(screen.getByText('Last sound')).toBeTruthy()
     expect(screen.queryByText('/ 100')).toBeNull()
+  })
+})
+
+describe('listening exam', () => {
+  const openExam = async () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Listen' }))
+    return screen.getByTestId('exam-play')
+  }
+
+  it('plays a five-word sequence and collects answers in order', async () => {
+    const play = await openExam()
+    expect(screen.getByTestId('exam-length-5').getAttribute('aria-pressed')).toBe('true')
+
+    fireEvent.click(play)
+    await waitFor(() => expect(screen.getByTestId('exam-replay')).toBeTruthy())
+    expect(audioMocks.unlockAudio).toHaveBeenCalled()
+    const sequence = audioMocks.playSequence.mock.calls[0][0]
+    expect(sequence).toHaveLength(5)
+    expect(new Set(sequence).size).toBe(2)
+
+    expect(screen.getByTestId('exam-submit').hasAttribute('disabled')).toBe(true)
+    for (let index = 0; index < 5; index += 1) {
+      fireEvent.click(screen.getByTestId(index % 2 === 0 ? 'exam-choose-l' : 'exam-choose-n'))
+    }
+    const chips = screen.getByTestId('exam-answers')
+    expect(chips.textContent).toBe('lightnightlightnightlight')
+    expect(screen.getByTestId('exam-submit').hasAttribute('disabled')).toBe(false)
+  })
+
+  it('scores the submitted answers against what was played', async () => {
+    const play = await openExam()
+    fireEvent.click(play)
+    await waitFor(() => expect(screen.getByTestId('exam-replay')).toBeTruthy())
+    const sequence = audioMocks.playSequence.mock.calls[0][0]
+
+    for (const exerciseId of sequence) {
+      fireEvent.click(screen.getByTestId(exerciseId.startsWith('en-light') ? 'exam-choose-l' : 'exam-choose-n'))
+    }
+    fireEvent.click(screen.getByTestId('exam-submit'))
+
+    const result = screen.getByTestId('exam-result')
+    expect(screen.getByTestId('exam-score').textContent).toBe('5 of 5 correct')
+    expect(result.querySelectorAll('.result-rows li')).toHaveLength(5)
+    expect(result.querySelectorAll('.result-rows li.wrong')).toHaveLength(0)
+    expect(screen.getByTestId('exam-new')).toBeTruthy()
+  })
+
+  it('marks a wrong answer and keeps the interface language', async () => {
+    render(<App />)
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: 'zh-Hans' } })
+    fireEvent.click(screen.getByRole('button', { name: '听辨' }))
+    fireEvent.click(screen.getByTestId('exam-play'))
+    await waitFor(() => expect(screen.getByTestId('exam-replay')).toBeTruthy())
+    const sequence = audioMocks.playSequence.mock.calls[0][0]
+
+    sequence.forEach((exerciseId, index) => {
+      const heard = exerciseId.startsWith('en-light') ? 'exam-choose-l' : 'exam-choose-n'
+      const flipped = heard === 'exam-choose-l' ? 'exam-choose-n' : 'exam-choose-l'
+      fireEvent.click(screen.getByTestId(index === 0 ? flipped : heard))
+    })
+    fireEvent.click(screen.getByTestId('exam-submit'))
+
+    expect(screen.getByTestId('exam-score').textContent).toBe('答对 4 / 5')
+    expect(screen.getByTestId('exam-result').querySelectorAll('.result-rows li.wrong')).toHaveLength(1)
   })
 })

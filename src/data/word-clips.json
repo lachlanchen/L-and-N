@@ -1,0 +1,295 @@
+{
+  "clips": {
+    "en-knock": {
+      "end": 2.67,
+      "evidence": {
+        "nasalProbability": 0.986,
+        "origin": "final-segment",
+        "recognizedAs": "not"
+      },
+      "expected": "N",
+      "start": 2.18,
+      "verdict": "clear"
+    },
+    "en-lace": {
+      "end": 2.53,
+      "evidence": {
+        "nasalProbability": 0.018,
+        "origin": "final-segment",
+        "recognizedAs": "Lace."
+      },
+      "expected": "L",
+      "start": 2.12,
+      "verdict": "clear"
+    },
+    "en-lame": {
+      "end": 2.76,
+      "evidence": {
+        "nasalProbability": 0.002,
+        "origin": "final-segment",
+        "recognizedAs": "Waym."
+      },
+      "expected": "L",
+      "start": 2.15,
+      "verdict": "clear"
+    },
+    "en-lead": {
+      "end": 2.62,
+      "evidence": {
+        "nasalProbability": 0.922,
+        "origin": "final-segment",
+        "recognizedAs": "We..."
+      },
+      "expected": "L",
+      "start": 2.08,
+      "verdict": "bad"
+    },
+    "en-lever": {
+      "end": 2.68,
+      "evidence": {
+        "nasalProbability": 0.101,
+        "origin": "final-segment",
+        "recognizedAs": "Lover."
+      },
+      "expected": "L",
+      "start": 2.11,
+      "verdict": "clear"
+    },
+    "en-light": {
+      "end": 2.5,
+      "evidence": {
+        "nasalProbability": 0.008,
+        "origin": "final-segment",
+        "recognizedAs": "light."
+      },
+      "expected": "L",
+      "start": 1.92,
+      "verdict": "clear"
+    },
+    "en-lip": {
+      "end": 2.25,
+      "evidence": {
+        "nasalProbability": 0.004,
+        "origin": "final-segment",
+        "recognizedAs": "Limp."
+      },
+      "expected": "L",
+      "start": 1.86,
+      "verdict": "clear"
+    },
+    "en-lock": {
+      "end": 2.38,
+      "evidence": {
+        "nasalProbability": 0.122,
+        "origin": "final-segment",
+        "recognizedAs": "What?"
+      },
+      "expected": "L",
+      "start": 1.96,
+      "verdict": "clear"
+    },
+    "en-loon": {
+      "end": 2.75,
+      "evidence": {
+        "nasalProbability": 0.518,
+        "origin": "final-segment",
+        "recognizedAs": "Loon"
+      },
+      "expected": "L",
+      "start": 2.15,
+      "verdict": "weak"
+    },
+    "en-low": {
+      "end": 2.55,
+      "evidence": {
+        "nasalProbability": 0.982,
+        "origin": "final-segment",
+        "recognizedAs": "No."
+      },
+      "expected": "L",
+      "start": 1.92,
+      "verdict": "bad"
+    },
+    "en-lumber": {
+      "end": 2.52,
+      "evidence": {
+        "nasalProbability": 0.402,
+        "origin": "final-segment",
+        "recognizedAs": "lumbar"
+      },
+      "expected": "L",
+      "start": 1.96,
+      "verdict": "clear"
+    },
+    "en-name": {
+      "end": 2.71,
+      "evidence": {
+        "nasalProbability": 0.979,
+        "origin": "final-segment",
+        "recognizedAs": "Name."
+      },
+      "expected": "N",
+      "start": 2.08,
+      "verdict": "clear"
+    },
+    "en-need": {
+      "end": 2.43,
+      "evidence": {
+        "nasalProbability": 0.976,
+        "origin": "final-segment",
+        "recognizedAs": "me"
+      },
+      "expected": "N",
+      "start": 1.85,
+      "verdict": "clear"
+    },
+    "en-never": {
+      "end": 3.07,
+      "evidence": {
+        "nasalProbability": 0.989,
+        "origin": "final-segment",
+        "recognizedAs": "Never."
+      },
+      "expected": "N",
+      "start": 2.48,
+      "verdict": "clear"
+    },
+    "en-nice": {
+      "end": 2.5,
+      "evidence": {
+        "nasalProbability": 0.989,
+        "origin": "final-segment",
+        "recognizedAs": "Nice."
+      },
+      "expected": "N",
+      "start": 2.05,
+      "verdict": "clear"
+    },
+    "en-night": {
+      "end": 2.63,
+      "evidence": {
+        "nasalProbability": 0.987,
+        "origin": "final-segment",
+        "recognizedAs": "Night"
+      },
+      "expected": "N",
+      "start": 2.19,
+      "verdict": "clear"
+    },
+    "en-nip": {
+      "end": 2.58,
+      "evidence": {
+        "nasalProbability": 0.994,
+        "origin": "final-segment",
+        "recognizedAs": "Nip."
+      },
+      "expected": "N",
+      "start": 1.96,
+      "verdict": "clear"
+    },
+    "en-no": {
+      "end": 2.63,
+      "evidence": {
+        "nasalProbability": 0.901,
+        "origin": "final-segment",
+        "recognizedAs": "Now."
+      },
+      "expected": "N",
+      "start": 2.08,
+      "verdict": "clear"
+    },
+    "en-noon": {
+      "end": 2.65,
+      "evidence": {
+        "nasalProbability": 0.967,
+        "origin": "final-segment",
+        "recognizedAs": "Neum."
+      },
+      "expected": "N",
+      "start": 2.03,
+      "verdict": "clear"
+    },
+    "en-number": {
+      "end": 2.73,
+      "evidence": {
+        "nasalProbability": 0.987,
+        "origin": "final-segment",
+        "recognizedAs": "number"
+      },
+      "expected": "N",
+      "start": 2.12,
+      "verdict": "clear"
+    },
+    "yue-lei": {
+      "end": 2.168,
+      "evidence": {
+        "nasalProbability": 0.991,
+        "origin": "final-segment",
+        "recognizedAs": "\u96f7"
+      },
+      "expected": "L",
+      "start": 1.61,
+      "verdict": "clear"
+    },
+    "yue-nei": {
+      "end": 2.133,
+      "evidence": {
+        "nasalProbability": 0.872,
+        "origin": "final-segment",
+        "recognizedAs": "\u5185"
+      },
+      "expected": "N",
+      "start": 1.61,
+      "verdict": "clear"
+    },
+    "zh-lan": {
+      "end": 2.046,
+      "evidence": {
+        "nasalProbability": 0.611,
+        "origin": "final-segment",
+        "recognizedAs": "\u84dd"
+      },
+      "expected": "L",
+      "start": 1.57,
+      "verdict": "clear"
+    },
+    "zh-lao": {
+      "end": 1.942,
+      "evidence": {
+        "nasalProbability": 0.975,
+        "origin": "final-segment",
+        "recognizedAs": "\u8001"
+      },
+      "expected": "L",
+      "start": 1.53,
+      "verdict": "clear"
+    },
+    "zh-nan": {
+      "end": 2.012,
+      "evidence": {
+        "nasalProbability": 0.605,
+        "origin": "final-segment",
+        "recognizedAs": "\u7537"
+      },
+      "expected": "N",
+      "start": 1.55,
+      "verdict": "clear"
+    },
+    "zh-nao": {
+      "end": 1.919,
+      "evidence": {
+        "nasalProbability": 0.997,
+        "origin": "final-segment",
+        "recognizedAs": "\u8111"
+      },
+      "expected": "N",
+      "start": 1.51,
+      "verdict": "clear"
+    }
+  },
+  "note": "Isolated-word clips inside public/audio/models/<key>.mp3, chosen and verified by tools/audio/verify_word_clips.py",
+  "verifiedWith": {
+    "onsetModel": "2026-09-18-cnn1",
+    "recognizer": "large-v3-turbo"
+  }
+}

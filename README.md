@@ -19,6 +19,7 @@ L-and-N turns a small but frustrating speech contrast into a short practice loop
 - Trains 20 English words in 10 minimal pairs, plus original Mandarin and Cantonese L/N exercises.
 - Highlights the target letter or Han character and gives a plain-language tongue/airflow cue.
 - Bundles release-generated studio audio—GPT-SoVITS for English and native Mandarin/Cantonese voices—so listening does not depend on a live TTS service.
+- Trains the ear as well as the mouth: the Listen tab plays a random run of one minimal pair, such as “light night light light night”, and you tap the word you heard at each position before submitting. Method and limits: [docs/research/listening-exam.md](docs/research/listening-exam.md)
 - Shows a live waveform and onset spectrum for signal feedback—not as a decorative “correctness” meter.
 - Offers an interactive 3D mouth cutaway for L-side airflow and N-nasal airflow. It models the target gesture; it does not claim to reconstruct the learner's tongue.
 - Keeps attempts and cautious personal calibration on the device. Mandarin/Cantonese pitch shape is scored separately from consonant identity.
