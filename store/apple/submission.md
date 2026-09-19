@@ -30,6 +30,12 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 - TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
 - App Store version 1.0.1 (`6770f065-063a-4b4c-9613-9bc7680fc8c1`) was created through the API once the price was set back to Free (the pending paid price without a signed Paid Apps Agreement was the "current state" that blocked new versions). Build 3 is attached, What's New is set, and review submission `d749d4ae-4cba-43ae-a1ba-a4d2f19f9f39` is **Waiting for Review** with automatic release after approval.
 
+## Update 1.0.2 (build 4), 2026-09-19 — TestFlight internal
+
+- Adds the Listen tab. Archive `LAndN-1.0.2-4.xcarchive`, IPA SHA-256 `803b73d1105e1397a6eb1d97cb7db32ae3e1790bdd978d9711a36a3ae1bd91f4`, `altool --validate-app` clean, delivery UUID `64b63788-30c4-4d6c-b9b7-840233f3fe4e`, processing state `VALID`.
+- `L & N Internal Testers` has access to every build, so build 4 is already installable there; the What's New text was set through `PATCH /v1/betaBuildLocalizations`.
+- The public beta group still holds build 3, and App Store version 1.0.1 with build 3 remains **Waiting for Review**; this upload does not disturb it.
+
 ## TestFlight
 
 - Internal group: `L & N Internal Testers`

@@ -1,0 +1,52 @@
+{
+  "schema": "landn-native-release-v1",
+  "preparedAt": "2026-09-19",
+  "version": "1.0.2",
+  "sourceCommit": "8f2652bd7e99ac3c16819c904d7e4d9d43908902",
+  "feature": "Listening exam (Listen tab)",
+  "android": {
+    "versionCode": 5,
+    "versionName": "1.0.2",
+    "aab": {
+      "path": "android/app/build/outputs/bundle/release/app-release.aab",
+      "sha256": "a8891d8c0edf5341d61a044abd119e6095a44254790a02af40d980da817303e3",
+      "bytes": 6988073
+    },
+    "apk": {
+      "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build5-test.apk",
+      "sha256": "b6379bc09fe0e48052fe9259f85ad780cfcd7511272688a65cfb4eb32ea15ff2",
+      "bytes": 6758424
+    },
+    "checks": [
+      "testReleaseUnitTest",
+      "lintRelease",
+      "assembleRelease",
+      "bundleRelease"
+    ],
+    "play": {
+      "internalTrack": "4701251861700553150",
+      "internalState": "Available to internal testers as 5 (1.0.2), published 2026-09-19",
+      "production": "unchanged, still 4 (1.0.1) live"
+    }
+  },
+  "ios": {
+    "build": 4,
+    "marketingVersion": "1.0.2",
+    "archive": "/Users/lachlanchen/Projects/L-And-N/release/LAndN-1.0.2-4.xcarchive",
+    "ipa": "/Users/lachlanchen/Projects/L-And-N/release/export-1.0.2-4/App.ipa",
+    "ipaSha256": "803b73d1105e1397a6eb1d97cb7db32ae3e1790bdd978d9711a36a3ae1bd91f4",
+    "validation": "altool VERIFY SUCCEEDED",
+    "deliveryUuid": "64b63788-30c4-4d6c-b9b7-840233f3fe4e",
+    "processingState": "VALID",
+    "testflight": {
+      "internalGroup": "L & N Internal Testers sees build 4 (group has access to all builds); test notes set via API",
+      "externalGroup": "not submitted for this build; the public beta still holds build 3"
+    },
+    "appStore": "unchanged: version 1.0.1 with build 3 remains Waiting for Review"
+  },
+  "web": {
+    "release": "/opt/l-and-n-web/releases/e8370f68864f773c92135669b80dbf298135eab65cba611f6e94b139d0b289b3",
+    "mainAsset": "assets/index-BwxGR9ZI.js",
+    "rollback": "/opt/l-and-n-web/releases/71699f6db2798fdcb957741a6a9744c36a9a28fdd07e5c565c2ece6117de6501"
+  }
+}
