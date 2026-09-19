@@ -45,7 +45,7 @@ platforms:
     minimum_os: 15.0
     artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
     app_store_id: 6808872450
-    status: 1_0_ready_for_distribution_build_2; 1_0_1_build_3_waiting_for_review_auto_release; 1_0_2_build_4_in_internal_testflight; all_175_territories_enabled_dsa_active
+    status: 1_0_1_build_3_live_ready_for_sale_2026_09_19; 1_0_2_build_4_in_internal_testflight_public_beta_in_review; all_175_territories_enabled_dsa_active
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0

@@ -22,7 +22,7 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 Formal submission state:
 
 - Google Play Production `1.0 (3)`: **Live**. Play Console shows the production track as Active with latest release 3 (1.0) in 177 countries/regions; the console's publishing overview records the app update as published on 2026-09-09. Public listing: https://play.google.com/store/apps/details?id=art.lazying.landn
-- Apple App Store iOS/watchOS `1.0 (2)`: **Ready for Distribution**. App Review approved the submission on 2026-09-17 (submission `68f4fd67-9bda-407e-bb0d-e5cf20c6ccb8`, build 2, delivery UUID `513ceb87-254e-4585-98aa-ee428f01e2b1`). The manual release was performed the same day through the App Store Connect API (`POST /v1/appStoreVersionReleaseRequests` for version `e48189a2-f0c7-4e65-9359-9fd4f3413f89`), after which the API reported `READY_FOR_SALE` / `READY_FOR_DISTRIBUTION`. Apple states the public page can take up to 24 hours: https://apps.apple.com/app/l-n-speech-practice/id6808872450
+- Apple App Store iOS/watchOS `1.0.1 (3)`: **Ready for Sale**, approved and auto-released 2026-09-19, priced at USD 0.99. (Previous: `1.0 (2)` released 2026-09-17.) App Review approved the submission on 2026-09-17 (submission `68f4fd67-9bda-407e-bb0d-e5cf20c6ccb8`, build 2, delivery UUID `513ceb87-254e-4585-98aa-ee428f01e2b1`). The manual release was performed the same day through the App Store Connect API (`POST /v1/appStoreVersionReleaseRequests` for version `e48189a2-f0c7-4e65-9359-9fd4f3413f89`), after which the API reported `READY_FOR_SALE` / `READY_FOR_DISTRIBUTION`. Apple states the public page can take up to 24 hours: https://apps.apple.com/app/l-n-speech-practice/id6808872450
 
 Testing state:
 

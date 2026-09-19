@@ -1,6 +1,6 @@
 # Apple App Store submission
 
-Resubmitted: 2026-09-06; approved and released: 2026-09-17
+Resubmitted: 2026-09-06; 1.0 approved and released 2026-09-17; 1.0.1 approved and auto-released 2026-09-19
 
 - App: `L & N: Speech Practice`
 - Apple ID: `6808872450`
@@ -33,8 +33,8 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 ## Update 1.0.2 (build 4), 2026-09-19 — TestFlight internal
 
 - Adds the Listen tab. Archive `LAndN-1.0.2-4.xcarchive`, IPA SHA-256 `803b73d1105e1397a6eb1d97cb7db32ae3e1790bdd978d9711a36a3ae1bd91f4`, `altool --validate-app` clean, delivery UUID `64b63788-30c4-4d6c-b9b7-840233f3fe4e`, processing state `VALID`.
-- `L & N Internal Testers` has access to every build, so build 4 is already installable there; the What's New text was set through `PATCH /v1/betaBuildLocalizations`.
-- The public beta group still holds build 3, and App Store version 1.0.1 with build 3 remains **Waiting for Review**; this upload does not disturb it.
+- `L & N Internal Testers` has access to every build, so build 4 reached `IN_BETA_TESTING` there immediately; the What's New text was set through `PATCH /v1/betaBuildLocalizations`.
+- The account holder's internal tester record was still `INVITED`, never accepted, so their device was following the public link and kept showing build 3. The invitation was resent (`POST /v1/betaTesterInvitations`), and build 4 was also added to `L & N Public Beta` and submitted for Beta App Review on 2026-09-19 (`WAITING_FOR_BETA_REVIEW`). Internal testing needs no review; the public link updates once Apple approves the beta.
 
 ## TestFlight
 
