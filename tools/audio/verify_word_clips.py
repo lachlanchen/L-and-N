@@ -18,7 +18,13 @@ The best candidate per word is written to `src/data/word-clips.json` together
 with the evidence and a verdict. `createListeningExam` only offers pairs whose
 two clips are both `clear`.
 
+The chosen clip is also written out as its own small file under
+`public/audio/clips/<key>.mp3`, so the app never has to seek inside the
+carrier recording (media elements cannot seek without HTTP range support,
+which native asset handlers and simple static servers may not provide).
+
 usage: python3 tools/audio/verify_word_clips.py [--model large-v3-turbo]
+       python3 tools/audio/verify_word_clips.py --cut-only   # regenerate clip files from the JSON
 """
 from __future__ import annotations
 
@@ -39,6 +45,7 @@ from parity_fixture import numpy_forward  # noqa: E402
 
 AUDIO_DIR = ROOT / "public" / "audio" / "models"
 OUT_PATH = ROOT / "src" / "data" / "word-clips.json"
+CLIP_DIR = ROOT / "public" / "audio" / "clips"
 MODEL_PATH = ROOT / "src" / "lib" / "onset-model.json"
 FRAME = SAMPLE_RATE // 100
 LEAD_PAD = 0.08
@@ -155,10 +162,29 @@ def verdict_for(expected: str, probability: float, heard: str | None, language: 
 RANK = {"clear": 0, "weak": 1, "bad": 2}
 
 
+def cut_clip_files(clips: dict[str, dict]) -> None:
+    """Write each chosen clip as a standalone mp3 (re-encoded, so the cut is exact)."""
+    CLIP_DIR.mkdir(parents=True, exist_ok=True)
+    for key, clip in clips.items():
+        source = AUDIO_DIR / f"{key}.mp3"
+        target = CLIP_DIR / f"{key}.mp3"
+        subprocess.run(
+            ["ffmpeg", "-v", "error", "-y", "-ss", f"{clip['start']:.3f}", "-to", f"{clip['end']:.3f}", "-i", str(source),
+             "-ac", "1", "-ar", "44100", "-c:a", "libmp3lame", "-q:a", "3", "-map_metadata", "-1", str(target)],
+            check=True,
+        )
+    total = sum(path.stat().st_size for path in CLIP_DIR.glob("*.mp3"))
+    print(f"wrote {len(clips)} clip files to {CLIP_DIR.relative_to(ROOT)} ({total / 1024:.0f} KB)")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="large-v3-turbo")
+    parser.add_argument("--cut-only", action="store_true", help="only regenerate public/audio/clips from the JSON")
     args = parser.parse_args()
+    if args.cut_only:
+        cut_clip_files(json.loads(OUT_PATH.read_text())["clips"])
+        return
     import whisper
 
     onset_model = json.loads(MODEL_PATH.read_text())
@@ -245,6 +271,7 @@ def main() -> None:
         "clips": clips,
     }
     OUT_PATH.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    cut_clip_files(clips)
     counts: dict[str, int] = {}
     for clip in clips.values():
         counts[clip["verdict"]] = counts.get(clip["verdict"], 0) + 1

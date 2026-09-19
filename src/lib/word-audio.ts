@@ -2,11 +2,20 @@
  * Plays the isolated practice word out of a bundled studio recording.
  *
  * Each file in `public/audio/models/` is a carrier phrase followed by the word
- * on its own. `src/data/word-clips.json` holds the offsets of that isolated
- * repeat, chosen and graded by `tools/audio/verify_word_clips.py`. The
- * listening exam needs several words in a row with exact gaps, so playback
- * goes through Web Audio: the clips are decoded once and scheduled on the
- * audio clock instead of being chased with timers.
+ * on its own. `tools/audio/verify_word_clips.py` locates and grades that
+ * isolated repeat, records the verdict in `src/data/word-clips.json`, and
+ * writes the repeat out as a small standalone file under
+ * `public/audio/clips/`. Playback uses those files whole: nothing here seeks
+ * inside a recording, because media elements cannot seek without HTTP range
+ * support and native asset handlers do not always provide it.
+ *
+ * Two playback routes exist. Web Audio decodes the clips once and schedules
+ * them on the audio clock, which gives exact gaps. When a browser refuses to
+ * start the audio context (iOS after the native recorder held the session,
+ * a web view without a user gesture, or no Web Audio at all), the same
+ * sequence is played through one reusable `<audio>` element instead. The
+ * element is primed inside the tap with a silent clip, which is what lets
+ * iOS keep playing through it later.
  */
 import clipData from '../data/word-clips.json'
 import type { TargetSound } from '../types'
@@ -15,9 +24,10 @@ export type ClipVerdict = 'clear' | 'weak' | 'bad'
 
 export interface WordClip {
   key: string
+  /** Standalone clip file containing only the isolated word. */
   src: string
-  start: number
-  end: number
+  /** Nominal length of the clip, for scheduling estimates. */
+  seconds: number
   expected: TargetSound
   /** Whether both the recognizer and the onset model identified this clip. */
   verdict: ClipVerdict
@@ -43,10 +53,8 @@ export function wordClip(exerciseId: string): WordClip | null {
   if (!entry) return null
   return {
     key,
-    // The same URL the practice screen uses, so both share one cache entry.
-    src: `/audio/models/${key}.mp3?v=2`,
-    start: entry.start,
-    end: entry.end,
+    src: `/audio/clips/${key}.mp3`,
+    seconds: Math.max(0.05, entry.end - entry.start),
     expected: entry.expected === 'N' ? 'N' : 'L',
     verdict: entry.verdict === 'clear' ? 'clear' : entry.verdict === 'weak' ? 'weak' : 'bad',
   }
@@ -57,12 +65,39 @@ export function isVerifiedClip(exerciseId: string): boolean {
   return wordClip(exerciseId)?.verdict === 'clear'
 }
 
+export type WordAudioErrorCode = 'missing-clip' | 'web-audio' | 'element'
+
 export class WordAudioError extends Error {
-  constructor(message: string, options?: ErrorOptions) {
+  readonly code: WordAudioErrorCode
+
+  constructor(code: WordAudioErrorCode, message: string, options?: ErrorOptions) {
     super(message, options)
     this.name = 'WordAudioError'
+    this.code = code
   }
 }
+
+export interface SequencePlayback {
+  /**
+   * Resolves when the last word has finished or after `stop()`. Rejects with
+   * a `WordAudioError` if playback fails part-way through.
+   */
+  readonly finished: Promise<void>
+  stop: () => void
+  /** Which route is playing, for diagnostics. */
+  readonly route: 'web-audio' | 'element'
+}
+
+export interface SequenceOptions {
+  /** Silence between words, in milliseconds. */
+  gapMs?: number
+  /** Called with the index being played, then with null when the sequence ends. */
+  onItem?: (index: number | null) => void
+}
+
+const RESUME_TIMEOUT_MS = 1200
+/** One silent sample; playing it inside a tap unlocks the shared element on iOS. */
+const SILENT_WAV = 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA=='
 
 type AudioContextConstructor = typeof AudioContext
 
@@ -71,21 +106,30 @@ function contextConstructor(): AudioContextConstructor | undefined {
   return window.AudioContext ?? audioWindow.webkitAudioContext
 }
 
-const RESUME_TIMEOUT_MS = 1200
-
 let context: AudioContext | null = null
 /** Decoded clips, keyed by recording. Stores the in-flight promise so a
  * sequence that repeats a word downloads and decodes it only once. */
 const buffers = new Map<string, Promise<AudioBuffer>>()
+let element: HTMLAudioElement | null = null
+let elementKey = ''
 
 /**
- * Creates and resumes the audio context. Call this synchronously inside the
- * tap handler: iOS only unlocks audio from a user gesture, and an `await`
- * before this point loses the gesture.
+ * Prepares both playback routes. Call this synchronously inside the tap
+ * handler: iOS only unlocks audio from a user gesture, and an `await` before
+ * this point loses the gesture. Returns the audio context when Web Audio
+ * exists, otherwise null.
  */
-export function unlockAudio(): AudioContext {
+export function unlockAudio(): AudioContext | null {
+  if (typeof Audio !== 'undefined' && !element) {
+    element = new Audio()
+    element.preload = 'auto'
+    element.setAttribute('playsinline', '')
+    element.src = SILENT_WAV
+    elementKey = ''
+    void element.play().catch(() => undefined)
+  }
   const Constructor = contextConstructor()
-  if (!Constructor) throw new WordAudioError('This browser does not provide Web Audio.')
+  if (!Constructor) return null
   if (!context || context.state === 'closed') context = new Constructor()
   void context.resume().catch(() => undefined)
   return context
@@ -94,7 +138,7 @@ export function unlockAudio(): AudioContext {
 /**
  * Waits, briefly, for the context to start. `resume()` never settles when the
  * page has no audio output or no user gesture, so the wait is bounded and a
- * blocked context becomes a visible error instead of a stuck screen.
+ * blocked context becomes an error the caller can fall back from.
  */
 async function ensureRunning(active: AudioContext): Promise<void> {
   // Read through a function so the compiler does not assume the state is
@@ -106,18 +150,21 @@ async function ensureRunning(active: AudioContext): Promise<void> {
     new Promise((resolve) => window.setTimeout(resolve, RESUME_TIMEOUT_MS)),
   ])
   if (!running()) {
-    throw new WordAudioError('The audio output did not start; tap play again.')
+    throw new WordAudioError('web-audio', `audio context stayed ${active.state}`)
   }
 }
 
-function bufferFor(clip: WordClip): Promise<AudioBuffer> {
+function bufferFor(active: AudioContext, clip: WordClip): Promise<AudioBuffer> {
   const cached = buffers.get(clip.key)
   if (cached) return cached
-  const active = unlockAudio()
   const pending = (async () => {
     const response = await fetch(clip.src, { cache: 'force-cache' })
-    if (!response.ok) throw new WordAudioError(`Could not download ${clip.key} (${response.status}).`)
-    return active.decodeAudioData(await response.arrayBuffer())
+    if (!response.ok) throw new WordAudioError('web-audio', `download of ${clip.key} failed (${response.status})`)
+    try {
+      return await active.decodeAudioData(await response.arrayBuffer())
+    } catch (caught) {
+      throw new WordAudioError('web-audio', `decode of ${clip.key} failed`, { cause: caught })
+    }
   })()
   buffers.set(clip.key, pending)
   // A failed download must not be remembered, so the next tap can retry.
@@ -127,38 +174,26 @@ function bufferFor(clip: WordClip): Promise<AudioBuffer> {
 
 /** Downloads and decodes clips ahead of playback so a sequence starts without gaps. */
 export async function preloadClips(exerciseIds: string[]): Promise<void> {
+  const Constructor = contextConstructor()
+  if (!Constructor) return
+  if (!context || context.state === 'closed') context = new Constructor()
+  const active = context
   const clips = exerciseIds.map(wordClip).filter((clip): clip is WordClip => clip !== null)
-  await Promise.all(clips.map((clip) => bufferFor(clip).catch(() => undefined)))
+  await Promise.all(clips.map((clip) => bufferFor(active, clip).catch(() => undefined)))
 }
 
-export interface SequencePlayback {
-  /** Resolves when the last word has finished, or immediately after `stop()`. */
-  readonly finished: Promise<void>
-  stop: () => void
-}
-
-export interface SequenceOptions {
-  /** Silence between words, in milliseconds. */
-  gapMs?: number
-  /** Called with the index being played, then with null when the sequence ends. */
-  onItem?: (index: number | null) => void
-}
-
-/**
- * Schedules the given exercises as one sequence and returns a handle. Buffers
- * are decoded first, so call `unlockAudio()` in the tap handler beforehand.
- */
-export async function playSequence(
-  exerciseIds: string[],
-  { gapMs = 650, onItem }: SequenceOptions = {},
-): Promise<SequencePlayback> {
-  const clips = exerciseIds.map((id) => {
+function clipsFor(exerciseIds: string[]): WordClip[] {
+  return exerciseIds.map((id) => {
     const clip = wordClip(id)
-    if (!clip) throw new WordAudioError(`No studio clip for ${id}.`)
+    if (!clip) throw new WordAudioError('missing-clip', `no studio clip for ${id}`)
     return clip
   })
+}
+
+async function playWithWebAudio(clips: WordClip[], { gapMs = 650, onItem }: SequenceOptions): Promise<SequencePlayback> {
   const active = unlockAudio()
-  const decoded = await Promise.all(clips.map(bufferFor))
+  if (!active) throw new WordAudioError('web-audio', 'Web Audio is not available')
+  const decoded = await Promise.all(clips.map((clip) => bufferFor(active, clip)))
   await ensureRunning(active)
 
   const sources: AudioBufferSourceNode[] = []
@@ -175,9 +210,9 @@ export async function playSequence(
     const source = active.createBufferSource()
     source.buffer = decoded[index]
     source.connect(active.destination)
-    const duration = Math.max(0.05, clip.end - clip.start)
+    const duration = Math.max(0.05, decoded[index].duration || clip.seconds)
     const when = startAt + offset
-    source.start(when, clip.start, duration)
+    source.start(when)
     sources.push(source)
     timers.push(window.setTimeout(() => onItem?.(index), Math.max(0, (when - active.currentTime) * 1000)))
     offset += duration + gapMs / 1000
@@ -208,12 +243,144 @@ export async function playSequence(
     settle()
   }
 
-  return { finished, stop }
+  return { finished, stop, route: 'web-audio' }
 }
 
-/** Releases the shared audio context, for example when the view unmounts. */
+function waitForMetadata(media: HTMLAudioElement): Promise<void> {
+  if (media.readyState >= 1) return Promise.resolve()
+  return new Promise((resolve, reject) => {
+    const done = () => {
+      media.removeEventListener('loadedmetadata', done)
+      media.removeEventListener('error', fail)
+      resolve()
+    }
+    const fail = () => {
+      media.removeEventListener('loadedmetadata', done)
+      media.removeEventListener('error', fail)
+      reject(new WordAudioError('element', `media element could not load ${media.currentSrc || media.src}`))
+    }
+    media.addEventListener('loadedmetadata', done)
+    media.addEventListener('error', fail)
+  })
+}
+
+async function cueClip(media: HTMLAudioElement, clip: WordClip): Promise<void> {
+  if (elementKey !== clip.key) {
+    media.src = clip.src
+    elementKey = clip.key
+    media.load()
+    await waitForMetadata(media)
+  } else if (media.ended || media.currentTime > 0) {
+    // Replaying the same file: rewind without a fresh network load. This is
+    // the one seek in this module, and it is to zero, which every element
+    // supports even without range requests.
+    media.currentTime = 0
+  }
+}
+
+/**
+ * Plays the same sequence through the shared `<audio>` element. Each clip is
+ * its own file, so a word is simply played to its end.
+ */
+async function playWithElement(clips: WordClip[], { gapMs = 650, onItem }: SequenceOptions): Promise<SequencePlayback> {
+  unlockAudio()
+  const media = element
+  if (!media) throw new WordAudioError('element', 'no media element')
+  let stopped = false
+  const timers: number[] = []
+  const sleep = (ms: number) => new Promise<void>((resolve) => timers.push(window.setTimeout(resolve, ms)))
+
+  const playCued = async (clip: WordClip) => {
+    try {
+      await media.play()
+    } catch (caught) {
+      const name = caught instanceof Error ? caught.name : 'play failed'
+      throw new WordAudioError('element', `media element refused ${clip.key} (${name})`, { cause: caught })
+    }
+  }
+
+  const untilClipEnd = (clip: WordClip) =>
+    new Promise<void>((resolve) => {
+      let settled = false
+      const done = () => {
+        if (settled) return
+        settled = true
+        media.removeEventListener('ended', done)
+        media.pause()
+        resolve()
+      }
+      media.addEventListener('ended', done)
+      // Safety net in case the ended event never arrives.
+      const seconds = Number.isFinite(media.duration) && media.duration > 0 ? media.duration : clip.seconds
+      timers.push(window.setTimeout(done, seconds * 1000 + 300))
+    })
+
+  // Start the first word before returning so a refused play() surfaces as a
+  // rejection rather than a silent sequence.
+  await cueClip(media, clips[0])
+  await playCued(clips[0])
+  onItem?.(0)
+
+  const finished = (async () => {
+    for (let index = 0; index < clips.length; index += 1) {
+      if (stopped) return
+      if (index > 0) {
+        await cueClip(media, clips[index])
+        if (stopped) return
+        await playCued(clips[index])
+        onItem?.(index)
+      }
+      await untilClipEnd(clips[index])
+      if (stopped) return
+      if (index < clips.length - 1) await sleep(gapMs)
+    }
+    if (!stopped) onItem?.(null)
+  })()
+
+  const stop = () => {
+    if (stopped) return
+    stopped = true
+    timers.forEach((timer) => window.clearTimeout(timer))
+    media.pause()
+    onItem?.(null)
+  }
+
+  return { finished, stop, route: 'element' }
+}
+
+/**
+ * Plays the given exercises as one sequence and returns a handle once the
+ * first word is under way. Call `unlockAudio()` in the tap handler first.
+ * Web Audio is tried first; if the browser refuses it, the sequence is
+ * played through the primed `<audio>` element instead.
+ */
+export async function playSequence(exerciseIds: string[], options: SequenceOptions = {}): Promise<SequencePlayback> {
+  const clips = clipsFor(exerciseIds)
+  let webAudioFailure: WordAudioError
+  try {
+    return await playWithWebAudio(clips, options)
+  } catch (caught) {
+    if (!(caught instanceof WordAudioError) || caught.code === 'missing-clip') throw caught
+    webAudioFailure = caught
+  }
+  try {
+    return await playWithElement(clips, options)
+  } catch (caught) {
+    const detail = caught instanceof Error ? caught.message : String(caught)
+    throw new WordAudioError('element', `${webAudioFailure.message}; fallback: ${detail}`, { cause: caught })
+  }
+}
+
+/** Releases the shared audio resources, for example when the view unmounts. */
 export function releaseAudio(): void {
   buffers.clear()
   if (context && context.state !== 'closed') void context.close().catch(() => undefined)
   context = null
+  if (element) {
+    element.pause()
+    element.removeAttribute('src')
+    element.load()
+  }
+  element = null
+  elementKey = ''
 }

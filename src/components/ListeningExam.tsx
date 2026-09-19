@@ -50,6 +50,7 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
   const [playingIndex, setPlayingIndex] = useState<number | null>(null)
   const [result, setResult] = useState<ExamResult | null>(null)
   const [error, setError] = useState('')
+  const [errorDetail, setErrorDetail] = useState('')
   const playbackRef = useRef<SequencePlayback | null>(null)
   const operationRef = useRef(0)
 
@@ -65,6 +66,7 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
     setPlayingIndex(null)
     setPhase('idle')
     setError('')
+    setErrorDetail('')
   }, [])
 
   useEffect(() => () => {
@@ -82,6 +84,7 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
     operationRef.current = operation
     playbackRef.current?.stop()
     setError('')
+    setErrorDetail('')
     setPhase('loading')
     try {
       // Unlock inside the tap handler chain: iOS ignores audio started later.
@@ -111,6 +114,8 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
       setPlayingIndex(null)
       setPhase(result ? 'reviewed' : exam ? 'answering' : 'idle')
       setError(copy.listen.audioError)
+      // The technical reason stays in English: it is for reporting, not reading.
+      setErrorDetail(caught instanceof Error ? caught.message : String(caught))
     }
   }
 
@@ -148,7 +153,10 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
         }
         playbackRef.current = playback
       })
-      .catch(() => setError(copy.listen.audioError))
+      .catch((caught: unknown) => {
+        setError(copy.listen.audioError)
+        setErrorDetail(caught instanceof Error ? caught.message : String(caught))
+      })
   }
 
   const choose = (sound: TargetSound) => {
@@ -315,7 +323,12 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
           </>
         )}
 
-        {error && <p className="error-message">{error}</p>}
+        {error && (
+          <p className="error-message">
+            {error}
+            {errorDetail && <small className="error-detail">{errorDetail}</small>}
+          </p>
+        )}
       </section>
 
       {result && exam && (

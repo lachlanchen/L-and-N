@@ -129,7 +129,11 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         let session = AVAudioSession.sharedInstance()
 
         do {
-            try session.setCategory(.record, mode: .measurement, options: [])
+            // Record-only would leave the shared session with no playback
+            // route, which silences the web view's own audio (studio models,
+            // the listening exam) after the first recording. Keep playback
+            // possible and send it to the speaker rather than the earpiece.
+            try session.setCategory(.playAndRecord, mode: .measurement, options: [.defaultToSpeaker])
             try session.setPreferredSampleRate(48_000)
             try session.setPreferredIOBufferDuration(0.01)
             try session.setActive(true, options: .notifyOthersOnDeactivation)
@@ -261,7 +265,11 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         }
         isRecording = false
         recognitionRequest?.endAudio()
-        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        let session = AVAudioSession.sharedInstance()
+        try? session.setActive(false, options: .notifyOthersOnDeactivation)
+        // Hand the session back in a playback category so WKWebView audio
+        // works again once recording is over.
+        try? session.setCategory(.playback, mode: .default, options: [])
     }
 
     private func resolveStoppedCapture() {

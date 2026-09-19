@@ -4,8 +4,6 @@ import { playSequence, releaseAudio, unlockAudio, WordAudioError, wordClip } fro
 
 interface Started {
   when: number
-  offset: number
-  duration: number
 }
 
 class FakeSource {
@@ -21,8 +19,8 @@ class FakeSource {
   connect(): void {}
   disconnect(): void {}
 
-  start(when: number, offset: number, duration: number): void {
-    this.ctx.started.push({ when, offset, duration })
+  start(when: number): void {
+    this.ctx.started.push({ when })
   }
 
   stop(): void {
@@ -53,11 +51,53 @@ class FakeContext {
   }
 
   async decodeAudioData(): Promise<AudioBuffer> {
-    return { duration: 3 } as AudioBuffer
+    return { duration: 0.5 } as AudioBuffer
   }
 
   async close(): Promise<void> {
     this.state = 'closed'
+  }
+}
+
+class FakeAudio extends EventTarget {
+  static refuse = false
+  static instances: FakeAudio[] = []
+  src = ''
+  preload = ''
+  currentTime = 0
+  readyState = 0
+  paused = true
+  plays: string[] = []
+
+  constructor() {
+    super()
+    FakeAudio.instances.push(this)
+  }
+
+  setAttribute(): void {}
+  removeAttribute(): void {}
+
+  load(): void {
+    this.readyState = 0
+    // Metadata arrives asynchronously, as it does in a browser.
+    window.setTimeout(() => {
+      this.readyState = 1
+      this.dispatchEvent(new Event('loadedmetadata'))
+    }, 5)
+  }
+
+  async play(): Promise<void> {
+    if (FakeAudio.refuse) {
+      const error = new Error('play() failed because the user did not interact')
+      error.name = 'NotAllowedError'
+      throw error
+    }
+    this.paused = false
+    this.plays.push(`${this.src}@${this.currentTime.toFixed(2)}`)
+  }
+
+  pause(): void {
+    this.paused = true
   }
 }
 
@@ -66,7 +106,10 @@ const night = 'en-night-light'
 
 beforeEach(() => {
   FakeContext.autoResume = true
+  FakeAudio.refuse = false
+  FakeAudio.instances = []
   vi.stubGlobal('AudioContext', FakeContext)
+  vi.stubGlobal('Audio', FakeAudio)
   vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(8) })))
   vi.useFakeTimers()
 })
@@ -78,7 +121,7 @@ afterEach(() => {
 })
 
 describe('studio clip playback', () => {
-  it('schedules each word in order with the clip offsets and a gap', async () => {
+  it('schedules each word in order with a gap between them', async () => {
     const heard: Array<number | null> = []
     const pending = playSequence([light, night, light], { gapMs: 500, onItem: (index) => heard.push(index) })
     await vi.advanceTimersByTimeAsync(0)
@@ -86,16 +129,9 @@ describe('studio clip playback', () => {
     const context = unlockAudio() as unknown as FakeContext
 
     expect(context.started).toHaveLength(3)
-    const lightClip = wordClip(light)!
-    const nightClip = wordClip(night)!
-    expect(context.started[0].offset).toBeCloseTo(lightClip.start, 3)
-    expect(context.started[0].duration).toBeCloseTo(lightClip.end - lightClip.start, 3)
-    expect(context.started[1].offset).toBeCloseTo(nightClip.start, 3)
-    // Second word starts after the first word plus the gap.
-    expect(context.started[1].when - context.started[0].when).toBeCloseTo(
-      lightClip.end - lightClip.start + 0.5,
-      3,
-    )
+    expect(wordClip(light)!.src).toBe('/audio/clips/en-light.mp3')
+    // Second word starts after the decoded first word (0.5 s) plus the gap.
+    expect(context.started[1].when - context.started[0].when).toBeCloseTo(0.5 + 0.5, 3)
     expect(context.started[2].when).toBeGreaterThan(context.started[1].when)
 
     let done = false
@@ -114,12 +150,49 @@ describe('studio clip playback', () => {
     expect(vi.mocked(fetch)).toHaveBeenCalledTimes(2)
   })
 
-  it('reports an error instead of hanging when the audio output never starts', async () => {
+  it('falls back to the primed media element when the audio context never starts', async () => {
     FakeContext.autoResume = false
+    const heard: Array<number | null> = []
+    const pending = playSequence([light, night], { gapMs: 300, onItem: (index) => heard.push(index) })
+    await vi.advanceTimersByTimeAsync(1500) // the bounded resume wait
+    await vi.advanceTimersByTimeAsync(20) // metadata for the first clip
+    const playback = await pending
+    expect(playback.route).toBe('element')
+
+    const media = FakeAudio.instances[0]
+    // The silent unlock clip was played inside the tap, then the real word,
+    // from the start of its own file: no seeking is involved.
+    expect(media.plays[0]).toContain('data:audio/wav')
+    expect(media.plays[1]).toBe(`${wordClip(light)!.src}@0.00`)
+    expect(heard).toEqual([0])
+
+    await vi.advanceTimersByTimeAsync(6000)
+    await expect(playback.finished).resolves.toBeUndefined()
+    expect(media.plays).toHaveLength(3)
+    expect(media.plays[2]).toContain(wordClip(night)!.src)
+    expect(heard).toEqual([0, 1, null])
+    expect(media.paused).toBe(true)
+  })
+
+  it('reports both reasons when Web Audio and the media element both refuse', async () => {
+    FakeContext.autoResume = false
+    FakeAudio.refuse = true
     const pending = playSequence([light])
-    const assertion = expect(pending).rejects.toBeInstanceOf(WordAudioError)
+    const assertion = expect(pending).rejects.toMatchObject({
+      name: 'WordAudioError',
+      message: expect.stringMatching(/audio context stayed suspended; fallback: .*NotAllowedError/),
+    })
     await vi.advanceTimersByTimeAsync(1500)
+    await vi.advanceTimersByTimeAsync(20)
     await assertion
+  })
+
+  it('uses the media element when the browser has no Web Audio at all', async () => {
+    vi.stubGlobal('AudioContext', undefined)
+    const pending = playSequence([light])
+    await vi.advanceTimersByTimeAsync(20)
+    const playback = await pending
+    expect(playback.route).toBe('element')
   })
 
   it('stops every scheduled word and settles when cancelled', async () => {

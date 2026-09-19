@@ -49,8 +49,21 @@ only step needed afterwards.
 
 ## Playback
 
-Clips are decoded once and scheduled on the Web Audio clock, so the gaps
-between words are exact and a repeated word is fetched only once. The context
-is unlocked inside the tap, which iOS requires. If it still cannot start, the
-wait is bounded and the screen shows an error rather than sitting on
-"Loading audio…" forever.
+Each verified word is shipped as its own small file under
+`public/audio/clips/` (26 files, about 150 KB in total), cut by the verifier
+from the studio recording. Nothing seeks inside a recording at runtime: a
+media element cannot seek without HTTP range support, and neither the
+preview server nor every native asset handler provides it, which is exactly
+how the first version of the exam ended up playing the whole carrier phrase
+on a phone.
+
+Two routes play those files. Web Audio decodes them once and schedules them
+on the audio clock, so the gaps between words are exact and a repeated word
+is fetched only once. If the audio context cannot start within 1.2 seconds
+(iOS after the native recorder held the audio session, a web view with no
+gesture, or a browser without Web Audio), the same sequence plays through
+one `<audio>` element that was primed with a silent clip inside the tap. If
+both routes fail, the screen shows the localized error with the technical
+reason underneath so it can be reported. On iOS the native recorder now
+leaves the audio session in a playback-capable category, which was the
+original cause of the refusal.

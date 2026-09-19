@@ -265,3 +265,5 @@ button:disabled { cursor: not-allowed; }
   .exam-card, .exam-result { padding: 24px 28px 26px; }
   .exam-setup { flex-direction: row; gap: 24px; }
 }
+
+.error-detail { display: block; margin-top: 4px; font-size: 10px; opacity: .75; word-break: break-word; }

@@ -22,13 +22,13 @@ function seeded(seed: number): () => number {
 }
 
 describe('studio clips for the listening exam', () => {
-  it('knows the isolated-word offsets for a bundled recording', () => {
+  it('points at the standalone clip file for a bundled recording', () => {
     const clip = wordClip('en-light-night')
     expect(clip).not.toBeNull()
     expect(clip!.key).toBe('en-light')
-    expect(clip!.src).toBe('/audio/models/en-light.mp3?v=2')
-    expect(clip!.end).toBeGreaterThan(clip!.start)
-    expect(clip!.end - clip!.start).toBeLessThan(1.2)
+    expect(clip!.src).toBe('/audio/clips/en-light.mp3')
+    expect(clip!.seconds).toBeGreaterThan(0.2)
+    expect(clip!.seconds).toBeLessThan(1.2)
     expect(clip!.expected).toBe('L')
   })
 
