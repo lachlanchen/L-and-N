@@ -48,5 +48,34 @@
     "release": "/opt/l-and-n-web/releases/e8370f68864f773c92135669b80dbf298135eab65cba611f6e94b139d0b289b3",
     "mainAsset": "assets/index-BwxGR9ZI.js",
     "rollback": "/opt/l-and-n-web/releases/71699f6db2798fdcb957741a6a9744c36a9a28fdd07e5c565c2ece6117de6501"
+  },
+  "fixRelease": {
+    "preparedAt": "2026-09-19",
+    "sourceCommit": "775ebc15aaaec7e3bdb48bdcc29f239b65b97007",
+    "reason": "Listening playback failed on iPhone (record-only audio session) and relied on media seeking",
+    "web": {
+      "release": "/opt/l-and-n-web/releases/b131aa7bfe6ceaea8d95008b652d7447e4dd25c8d1d37e5a0621bf3e4f69c08c",
+      "mainAsset": "assets/index-BiLgWFqQ.js",
+      "rollback": "/opt/l-and-n-web/releases/e8370f68864f773c92135669b80dbf298135eab65cba611f6e94b139d0b289b3"
+    },
+    "android": {
+      "versionCode": 6,
+      "versionName": "1.0.2",
+      "aabSha256": "444361d025b9bdf3d49f9488ced5efee5c505bd09a056a55121dea996db265be",
+      "apk": {
+        "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build6-test.apk",
+        "sha256": "823090f75da7f985adbd9e7dd56cbe5f88819b17788c2773749434c54052aa93"
+      },
+      "play": "internal track 6 (1.0.2) published 2026-09-19; production unchanged"
+    },
+    "ios": {
+      "build": 5,
+      "ipaSha256": "9e54ed08df4b9889962b5c52c25206837b3049e98776296f7751d712ad1accb9",
+      "deliveryUuid": "ebd710fb-ea04-488c-85ea-0f6cd7266707",
+      "processingState": "VALID",
+      "internalBuildState": "IN_BETA_TESTING",
+      "publicBeta": "added to L & N Public Beta; beta review submission refused while build 4 of the same train is still in review; resubmit build 5 once build 4 clears",
+      "accountHolderTester": "internal tester state INSTALLED on 2026-09-19 (invitation accepted)"
+    }
   }
 }

@@ -30,6 +30,12 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 - TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
 - App Store version 1.0.1 (`6770f065-063a-4b4c-9613-9bc7680fc8c1`) was created through the API once the price was set back to Free (the pending paid price without a signed Paid Apps Agreement was the "current state" that blocked new versions). Build 3 is attached, What's New is set, and review submission `d749d4ae-4cba-43ae-a1ba-a4d2f19f9f39` is **Waiting for Review** with automatic release after approval.
 
+## Update 1.0.2 (build 5), 2026-09-19 — TestFlight internal, playback fix
+
+- The native recorder now uses the play-and-record session category through the speaker and hands the session back as playback, which was why the Listen tab reported an audio error on iPhone. IPA SHA-256 `9e54ed08df4b9889962b5c52c25206837b3049e98776296f7751d712ad1accb9`, delivery UUID `ebd710fb-ea04-488c-85ea-0f6cd7266707`, processed `VALID`, internal state `IN_BETA_TESTING`, notes set.
+- The account holder accepted the internal invitation (tester state `INSTALLED`), so internal builds now reach their device directly.
+- Build 5 was added to `L & N Public Beta`; Apple refused a second beta review while build 4 of the same train is still in review. Resubmit build 5 for beta review once build 4 clears.
+
 ## Update 1.0.2 (build 4), 2026-09-19 — TestFlight internal
 
 - Adds the Listen tab. Archive `LAndN-1.0.2-4.xcarchive`, IPA SHA-256 `803b73d1105e1397a6eb1d97cb7db32ae3e1790bdd978d9711a36a3ae1bd91f4`, `altool --validate-app` clean, delivery UUID `64b63788-30c4-4d6c-b9b7-840233f3fe4e`, processing state `VALID`.

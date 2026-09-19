@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Update 1.0.2 (build 6), 2026-09-19 — internal testing, playback fix
+
+- Fixes listening playback on devices that refuse Web Audio and stops relying on media seeking (standalone word clips). Bundle SHA-256 `444361d025b9bdf3d49f9488ced5efee5c505bd09a056a55121dea996db265be`; internal track shows `6 (1.0.2)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build6-test.apk (`823090f75da7f985adbd9e7dd56cbe5f88819b17788c2773749434c54052aa93`). Production still `4 (1.0.1)`.
+
 ## Update 1.0.2 (build 5), 2026-09-19 — internal testing
 
 - Adds the Listen tab (ear training). Built from commit `8f2652b`; bundle SHA-256 `a8891d8c0edf5341d61a044abd119e6095a44254790a02af40d980da817303e3`, unit tests and release lint passed.
