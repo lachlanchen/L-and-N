@@ -11,7 +11,7 @@ import { exercises } from '../data/curriculum'
 import type { Exercise, TargetSound, TrainingLanguage } from '../types'
 import { isVerifiedClip } from './word-audio'
 
-export const EXAM_LENGTHS = [5, 8, 12] as const
+export const EXAM_LENGTHS = [3, 5, 7] as const
 export const DEFAULT_EXAM_LENGTH = 5
 /** Never play more than this many identical words in a row. */
 const MAX_RUN = 3

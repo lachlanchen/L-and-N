@@ -143,6 +143,15 @@ describe('studio clip playback', () => {
     expect(heard).toEqual([0, 1, 2, null])
   })
 
+  it('leaves a longer pause before a repeated word', async () => {
+    const pending = playSequence([night, night, light], { gapMs: 500, repeatGapMs: 300 })
+    await vi.advanceTimersByTimeAsync(0)
+    await pending
+    const context = unlockAudio() as unknown as FakeContext
+    expect(context.started[1].when - context.started[0].when).toBeCloseTo(0.5 + 0.5 + 0.3, 3)
+    expect(context.started[2].when - context.started[1].when).toBeCloseTo(0.5 + 0.5, 3)
+  })
+
   it('downloads each distinct word once', async () => {
     const pending = playSequence([light, night, light, light])
     await vi.advanceTimersByTimeAsync(0)

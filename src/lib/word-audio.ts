@@ -91,11 +91,21 @@ export interface SequencePlayback {
 export interface SequenceOptions {
   /** Silence between words, in milliseconds. */
   gapMs?: number
+  /** Extra silence before a word that repeats the previous one, so "night night" is heard as two. */
+  repeatGapMs?: number
   /** Called with the index being played, then with null when the sequence ends. */
   onItem?: (index: number | null) => void
 }
 
 const RESUME_TIMEOUT_MS = 1200
+const DEFAULT_GAP_MS = 800
+const DEFAULT_REPEAT_GAP_MS = 350
+
+/** Silence to leave after `clips[index]` before the next word. */
+function gapAfter(clips: WordClip[], index: number, gapMs: number, repeatGapMs: number): number {
+  const next = clips[index + 1]
+  return gapMs + (next && next.key === clips[index].key ? repeatGapMs : 0)
+}
 /** One silent sample; playing it inside a tap unlocks the shared element on iOS. */
 const SILENT_WAV = 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA=='
 
@@ -111,7 +121,6 @@ let context: AudioContext | null = null
  * sequence that repeats a word downloads and decodes it only once. */
 const buffers = new Map<string, Promise<AudioBuffer>>()
 let element: HTMLAudioElement | null = null
-let elementKey = ''
 
 /**
  * Prepares both playback routes. Call this synchronously inside the tap
@@ -125,7 +134,6 @@ export function unlockAudio(): AudioContext | null {
     element.preload = 'auto'
     element.setAttribute('playsinline', '')
     element.src = SILENT_WAV
-    elementKey = ''
     void element.play().catch(() => undefined)
   }
   const Constructor = contextConstructor()
@@ -190,7 +198,10 @@ function clipsFor(exerciseIds: string[]): WordClip[] {
   })
 }
 
-async function playWithWebAudio(clips: WordClip[], { gapMs = 650, onItem }: SequenceOptions): Promise<SequencePlayback> {
+async function playWithWebAudio(
+  clips: WordClip[],
+  { gapMs = DEFAULT_GAP_MS, repeatGapMs = DEFAULT_REPEAT_GAP_MS, onItem }: SequenceOptions,
+): Promise<SequencePlayback> {
   const active = unlockAudio()
   if (!active) throw new WordAudioError('web-audio', 'Web Audio is not available')
   const decoded = await Promise.all(clips.map((clip) => bufferFor(active, clip)))
@@ -215,10 +226,10 @@ async function playWithWebAudio(clips: WordClip[], { gapMs = 650, onItem }: Sequ
     source.start(when)
     sources.push(source)
     timers.push(window.setTimeout(() => onItem?.(index), Math.max(0, (when - active.currentTime) * 1000)))
-    offset += duration + gapMs / 1000
+    offset += duration + (index < clips.length - 1 ? gapAfter(clips, index, gapMs, repeatGapMs) / 1000 : 0)
   })
 
-  const totalMs = Math.max(0, (startAt + offset - gapMs / 1000 - active.currentTime) * 1000)
+  const totalMs = Math.max(0, (startAt + offset - active.currentTime) * 1000)
   timers.push(
     window.setTimeout(() => {
       if (stopped) return
@@ -265,24 +276,22 @@ function waitForMetadata(media: HTMLAudioElement): Promise<void> {
 }
 
 async function cueClip(media: HTMLAudioElement, clip: WordClip): Promise<void> {
-  if (elementKey !== clip.key) {
-    media.src = clip.src
-    elementKey = clip.key
-    media.load()
-    await waitForMetadata(media)
-  } else if (media.ended || media.currentTime > 0) {
-    // Replaying the same file: rewind without a fresh network load. This is
-    // the one seek in this module, and it is to zero, which every element
-    // supports even without range requests.
-    media.currentTime = 0
-  }
+  // Reload for every word, including a repeat of the previous one. The files
+  // are a few kilobytes and cached, and a fresh load avoids any seek, which
+  // some web views cannot perform reliably even to zero.
+  media.src = clip.src
+  media.load()
+  await waitForMetadata(media)
 }
 
 /**
  * Plays the same sequence through the shared `<audio>` element. Each clip is
  * its own file, so a word is simply played to its end.
  */
-async function playWithElement(clips: WordClip[], { gapMs = 650, onItem }: SequenceOptions): Promise<SequencePlayback> {
+async function playWithElement(
+  clips: WordClip[],
+  { gapMs = DEFAULT_GAP_MS, repeatGapMs = DEFAULT_REPEAT_GAP_MS, onItem }: SequenceOptions,
+): Promise<SequencePlayback> {
   unlockAudio()
   const media = element
   if (!media) throw new WordAudioError('element', 'no media element')
@@ -332,7 +341,7 @@ async function playWithElement(clips: WordClip[], { gapMs = 650, onItem }: Seque
       }
       await untilClipEnd(clips[index])
       if (stopped) return
-      if (index < clips.length - 1) await sleep(gapMs)
+      if (index < clips.length - 1) await sleep(gapAfter(clips, index, gapMs, repeatGapMs))
     }
     if (!stopped) onItem?.(null)
   })()
@@ -382,5 +391,4 @@ export function releaseAudio(): void {
     element.load()
   }
   element = null
-  elementKey = ''
 }

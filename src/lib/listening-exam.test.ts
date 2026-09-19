@@ -87,7 +87,7 @@ describe('exam sequences', () => {
 
   it('always plays both words and never repeats one more than three times', () => {
     for (let seed = 0; seed < 300; seed += 1) {
-      for (const length of [5, 8, 12]) {
+      for (const length of [3, 5, 7]) {
         const sounds = createListeningExam(pair, length, seeded(seed)).items.map((item) => item.sound)
         expect(sounds).toHaveLength(length)
         expect(new Set(sounds).size).toBe(2)

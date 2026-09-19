@@ -10,9 +10,9 @@ measures perception across the sequence rather than memory of the last word.
 
 ## How a sequence is built
 
-- One minimal pair per exam, chosen by the learner; five words by default, or eight or twelve.
+- One minimal pair per exam, chosen by the learner; five words by default, or three or seven. Longer runs were dropped because they test memory more than hearing.
 - Positions are independent coin flips, so repeats happen; telling "light light" from "light night" is the point.
-- Two guards keep a sequence usable: both words always appear, and no word repeats more than three times in a row.
+- Two guards keep a sequence usable: both words always appear, and no word repeats more than three times in a row. Words are separated by 0.8 s of silence, plus 0.35 s more before a repeat of the same word, so "night night" is heard as two words rather than one long one.
 - The answer sheet is ordered. Tapping a word appends it, undo removes the last, and submit is enabled only when every position has an answer.
 - Scoring is per position, with the played word, the chosen word, and a replay button for each row. Results feed a listening accuracy figure on the Progress tab and count towards the practice streak.
 
