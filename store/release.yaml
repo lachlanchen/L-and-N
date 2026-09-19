@@ -1,7 +1,7 @@
 app:
   name: L & N
   version: 1.0.2
-  build: 6
+  build: 7
   owner: LazyingArt LLC
   support_email: echomind@lazying.art
   marketing_url: https://l-and-n.lazying.art
@@ -31,21 +31,21 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: /opt/l-and-n-web/releases/b131aa7bfe6ceaea8d95008b652d7447e4dd25c8d1d37e5a0621bf3e4f69c08c
+    release: /opt/l-and-n-web/releases/428b118f8a9c13f469addb1dd0c6a77dfcee8cc384f52310d326abcb39a9cf8c
     source_commit: 775ebc15aaaec7e3bdb48bdcc29f239b65b97007
-    main_asset: assets/index-BiLgWFqQ.js
-    rollback: /opt/l-and-n-web/releases/e8370f68864f773c92135669b80dbf298135eab65cba611f6e94b139d0b289b3
+    main_asset: assets/index-BxPDYutY.js
+    rollback: /opt/l-and-n-web/releases/b131aa7bfe6ceaea8d95008b652d7447e4dd25c8d1d37e5a0621bf3e4f69c08c
   android:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/release/app-release.aab
-    status: production_live_build_4_1_0_1_full_rollout_2026_09_18; internal_testing_build_6_1_0_2
+    status: production_live_build_4_1_0_1_full_rollout_2026_09_18; internal_testing_build_7_1_0_2
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0
     artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
     app_store_id: 6808872450
-    status: 1_0_1_build_3_live_ready_for_sale_2026_09_19; 1_0_2_build_5_in_internal_testflight_build_4_public_beta_in_review; all_175_territories_enabled_dsa_active
+    status: 1_0_1_build_3_live_ready_for_sale_2026_09_19; 1_0_2_build_6_in_internal_testflight_build_4_public_beta_in_review; all_175_territories_enabled_dsa_active
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
@@ -54,17 +54,17 @@ platforms:
 
 testing:
   android:
-    version: 1.0
-    build: 6
+    version: 1.0.2
+    build: 7
     track: internal
     status: available_to_internal_testers
     url: https://play.google.com/apps/internaltest/4701251861700553150
-    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build6-test.apk
-    direct_apk_sha256: 823090f75da7f985adbd9e7dd56cbe5f88819b17788c2773749434c54052aa93
+    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build7-test.apk
+    direct_apk_sha256: fdbf2bf917cbda1c358ac14b69a4f3cc03826e7de326b7af9f6ffcd02b7163cb
     artifact_manifest: store/artifacts/native-release-1.0.2.json
   ios_watchos:
     version: 1.0.2
-    build: 5
+    build: 6
     internal_group: L & N Internal Testers
     internal_status: testing
     public_group: L & N Public Beta

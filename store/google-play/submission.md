@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Update 1.0.2 (build 7), 2026-09-19 — internal testing, exam lengths
+
+- Listening exam offers 3, 5 or 7 words and leaves a longer pause before a repeated word, so "night night" is heard as two words; the media-element fallback reloads every clip. Built from commit `142f875` (feature commit `6861d2e`); bundle SHA-256 `24bad69c71ae52474c84f4cfa97f5b28dcae78512e1fd1625c2bed78efb438e1`; internal track shows `7 (1.0.2)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build7-test.apk (`fdbf2bf917cbda1c358ac14b69a4f3cc03826e7de326b7af9f6ffcd02b7163cb`). Production still `4 (1.0.1)`.
+
 ## Update 1.0.2 (build 6), 2026-09-19 — internal testing, playback fix
 
 - Fixes listening playback on devices that refuse Web Audio and stops relying on media seeking (standalone word clips). Bundle SHA-256 `444361d025b9bdf3d49f9488ced5efee5c505bd09a056a55121dea996db265be`; internal track shows `6 (1.0.2)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build6-test.apk (`823090f75da7f985adbd9e7dd56cbe5f88819b17788c2773749434c54052aa93`). Production still `4 (1.0.1)`.

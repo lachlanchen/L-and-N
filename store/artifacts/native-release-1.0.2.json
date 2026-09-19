@@ -77,5 +77,36 @@
       "publicBeta": "added to L & N Public Beta; beta review submission refused while build 4 of the same train is still in review; resubmit build 5 once build 4 clears",
       "accountHolderTester": "internal tester state INSTALLED on 2026-09-19 (invitation accepted)"
     }
+  },
+  "lengthsRelease": {
+    "preparedAt": "2026-09-19",
+    "sourceCommit": "142f875",
+    "featureCommit": "6861d2e",
+    "reason": "Listening exam lengths 3/5/7 and a longer pause before a repeated word (users heard fewer words than played); element fallback reloads each clip",
+    "web": {
+      "release": "/opt/l-and-n-web/releases/428b118f8a9c13f469addb1dd0c6a77dfcee8cc384f52310d326abcb39a9cf8c",
+      "mainAsset": "assets/index-BxPDYutY.js",
+      "rollback": "/opt/l-and-n-web/releases/b131aa7bfe6ceaea8d95008b652d7447e4dd25c8d1d37e5a0621bf3e4f69c08c"
+    },
+    "android": {
+      "versionCode": 7,
+      "versionName": "1.0.2",
+      "aabSha256": "24bad69c71ae52474c84f4cfa97f5b28dcae78512e1fd1625c2bed78efb438e1",
+      "apk": {
+        "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build7-test.apk",
+        "sha256": "fdbf2bf917cbda1c358ac14b69a4f3cc03826e7de326b7af9f6ffcd02b7163cb",
+        "bytes": 6918230
+      },
+      "play": "internal track 7 (1.0.2) published 2026-09-19; production unchanged"
+    },
+    "ios": {
+      "build": 6,
+      "ipaSha256": "f0fad75b5dcb5a3838e588ec25a9b72a9d5516cc9eba98045061dd5da2c2ee16",
+      "deliveryUuid": "ca832a05-213c-4c71-a73f-738f4c12fc7f",
+      "processingState": "VALID",
+      "publicBeta": "added to L & N Public Beta (READY_FOR_BETA_SUBMISSION); beta review refused while build 4 of the same train is in review; resubmit once build 4 clears",
+      "internalBuildState": "IN_BETA_TESTING",
+      "whatsNew": "set via PATCH /v1/betaBuildLocalizations"
+    }
   }
 }
