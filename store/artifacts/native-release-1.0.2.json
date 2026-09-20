@@ -141,5 +141,34 @@
       "whatsNew": "set via PATCH /v1/betaBuildLocalizations",
       "appStore": "version 1.0.2 (6090c35d-b0fe-449b-a983-5e8dad5b6220) created via API with build 7, What's New set (en-US), review submission ecefffc1-f8f6-4ba9-9ea3-c85ff24361b7 WAITING_FOR_REVIEW on 2026-09-20, automatic release after approval"
     }
+  },
+  "iapRelease": {
+    "preparedAt": "2026-09-20",
+    "sourceCommit": "7d4ee90",
+    "featureCommit": "1b22973",
+    "reason": "Google Play cannot make the published free app paid, so Android gates content: first 3 pairs per language free, one non-consumable product unlocks all 31 pairs",
+    "android": {
+      "versionCode": 10,
+      "versionName": "1.0.2",
+      "aabSha256": "cd82924a1057814ad6201cb0c3a3797e20a68663980b9b597edbb9548f2deea0",
+      "apkSha256": "89e37f8258a4a5ff0fe7eb97808bf1fc8d58642428d6cd985abad38d110d823d",
+      "billingLibrary": "8.0.0",
+      "play": "internal track 10 (1.0.2) published 2026-09-20; build 9 (Billing Library 7.1.1) was rejected by Play's pre-publish check and discarded; production unchanged (8 in review)",
+      "product": {
+        "productId": "full_access",
+        "purchaseOptionId": "full-access",
+        "type": "one-time, Buy",
+        "name": "Full curriculum: all 31 pairs",
+        "basePrice": "USD 0.99 (all regions, Play conversion: EUR 0.99, HKD 8.00, JPY 170)",
+        "state": "active since 2026-09-20"
+      }
+    },
+    "merchant": {
+      "paymentsProfile": "LazyingArt LLC organization profile (existing), merchant profile created 2026-09-20: category Computer Software, statement name LAZYINGART, website lazying.art, support contact@lazying.art",
+      "payout": "Mercury checking (…3208) added as primary; Google test deposit under USD 0.25 expected within 2-3 days, amount must be entered under Payments > payment methods",
+      "tax": "US tax info (W-9) not yet filed; the form requires the account holder to re-sign in to Google in the store browser",
+      "serviceFee": "15 % service-fee enrolment (account group) not yet done"
+    },
+    "webAndIos": "unchanged: web free, iOS paid up front; neither is gated"
   }
 }
