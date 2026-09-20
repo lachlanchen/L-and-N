@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { App as CapacitorApp } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import { Activity, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Ear, Flame, Globe2, Headphones, Mic, RotateCcw, Sparkles, Square, Target, Volume2, Waves } from 'lucide-react'
@@ -180,14 +180,14 @@ function App() {
     setError('')
   }
 
-  const stopTakePlayback = () => {
+  const stopTakePlayback = useCallback(() => {
     takePlaybackRef.current?.stop()
     takePlaybackRef.current = null
     setPlayingTakeId(null)
-  }
+  }, [])
 
   /** Plays a kept take, optionally after the studio model of its word. */
-  const playTake = async (takeId: string, withModel: boolean) => {
+  const playTake = useCallback(async (takeId: string, withModel: boolean) => {
     if (playingTakeId) {
       stopTakePlayback()
       return
@@ -221,7 +221,7 @@ function App() {
         setPlayingTakeId(null)
       }
     }
-  }
+  }, [playingTakeId, stopTakePlayback, copy.takes.missing])
 
   const finishRecording = async () => {
     const session = sessionRef.current
