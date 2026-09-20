@@ -41,6 +41,19 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
 
     static final String PRODUCT_ID = "full_access";
 
+    /** The paid Pro listing (package suffix .pro) ships everything unlocked and never talks to Play Billing. */
+    private boolean isProEdition() {
+        return getContext().getPackageName().endsWith(".pro");
+    }
+
+    private JSObject proStatus() {
+        JSObject out = new JSObject();
+        out.put("available", false);
+        out.put("owned", true);
+        out.put("productId", PRODUCT_ID);
+        return out;
+    }
+
     private BillingClient client;
     private ProductDetails product;
     private PluginCall purchaseCall;
@@ -139,6 +152,10 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
 
     @PluginMethod
     public void getStatus(PluginCall call) {
+        if (isProEdition()) {
+            call.resolve(proStatus());
+            return;
+        }
         connect((connected, message) -> {
             if (!connected) {
                 call.resolve(status(false, false));
@@ -151,6 +168,10 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
 
     @PluginMethod
     public void restore(PluginCall call) {
+        if (isProEdition()) {
+            call.resolve(proStatus());
+            return;
+        }
         connect((connected, message) -> {
             if (!connected) {
                 call.resolve(status(false, false));
@@ -162,6 +183,10 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
 
     @PluginMethod
     public void purchase(PluginCall call) {
+        if (isProEdition()) {
+            call.resolve(proStatus());
+            return;
+        }
         connect((connected, message) -> {
             if (!connected) {
                 call.reject("billing unavailable: " + message);

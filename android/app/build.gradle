@@ -31,6 +31,18 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    flavorDimensions += "edition"
+    productFlavors {
+        // The free listing: first three pairs per language free, one-time unlock for the rest.
+        free {
+            dimension "edition"
+        }
+        // The paid listing (USD 0.99 up front): same app, nothing gated, no billing product.
+        pro {
+            dimension "edition"
+            applicationId "art.lazying.landn.pro"
+        }
+    }
     signingConfigs {
         if (releaseSigningReady) {
             release {
@@ -77,7 +89,7 @@ tasks.register("verifyStoreReleaseConfiguration") {
     }
 }
 
-tasks.matching { it.name in ["assembleRelease", "bundleRelease"] }.configureEach {
+tasks.matching { it.name ==~ /(assemble|bundle)\w*Release/ }.configureEach {
     dependsOn(tasks.named("verifyStoreReleaseConfiguration"))
 }
 
