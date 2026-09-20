@@ -28,7 +28,7 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 
 - Archive `LAndN-1.0.1-3.xcarchive` and IPA `export-1.0.1-3/App.ipa` (SHA-256 `f29c1081efb9e7b5469679d0d3f8a6da7ec8961a72df5527c478d43748888009`) were built on the Mac from commit `c68bd8a`, passed `altool --validate-app`, and uploaded with delivery UUID `3f0d54ee-ecd1-429a-9c37-aca1173ea93d`; App Store Connect reports the build as processed (`VALID`).
 - TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
-- App Store version 1.0.1 (`6770f065-063a-4b4c-9613-9bc7680fc8c1`) was created through the API once the price was set back to Free (the pending paid price without a signed Paid Apps Agreement was the "current state" that blocked new versions). Build 3 is attached, What's New is set, and review submission `d749d4ae-4cba-43ae-a1ba-a4d2f19f9f39` is **Waiting for Review** with automatic release after approval.
+- App Store version 1.0.1 (build 3) was submitted on 2026-09-18, then approved and auto-released on 2026-09-19 at USD 0.99. The price was temporarily reverted to Free on 2026-09-18 before USD 0.99 was re-applied. Account onboarding details are retained only in the ignored, access-restricted `.runtime/store/handoff.md`.
 
 ## App Store 1.0.2 (build 7), 2026-09-20 — Waiting for Review
 

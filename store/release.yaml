@@ -23,7 +23,7 @@ release:
   app_store_release: manual
   google_play_initial_rollout: full
   price: apple_usd_0_99_google_free
-  apple_price_note: USD 0.99 base tier (automatic CNY 8, HKD 8) re-applied on 2026-09-18 evening after the Paid Apps Agreement, the Mercury bank account, and the W-9 all became Active; Google Play stays free by platform rule
+  apple_price_note: USD 0.99 (CNY 8, HKD 8); iOS 1.0.1 (build 3) approved and auto-released 2026-09-19. Google Play stays free to install.
   google_price: free (Play does not allow a published free app to become paid)
   ads: false
   in_app_purchases: false
