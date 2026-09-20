@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Capacitor } from '@capacitor/core'
 import App from './App'
 import { AudioCaptureError } from './lib/audio-capture'
 
@@ -74,6 +75,46 @@ afterEach(() => {
   audioCaptureMocks.startAudioCapture.mockReset()
   audioMocks.playSequence.mockClear()
   audioMocks.unlockAudio.mockClear()
+  vi.restoreAllMocks()
+})
+
+describe('web store links', () => {
+  it.each([
+    ['en', 'Progress', 'Also available as an app', 'View on the App Store', 'View on Google Play'],
+    ['zh-Hans', '进度', '也可以使用手机应用', '在 App Store 查看', '在 Google Play 查看'],
+    ['zh-Hant', '進度', '也可以使用手機應用程式', '在 App Store 查看', '在 Google Play 查看'],
+    ['yue', '進度', '亦可以用手機 App', '去 App Store 睇', '去 Google Play 睇'],
+  ])('offers the existing store listings in the %s Progress view', (locale, progress, title, apple, google) => {
+    render(<App />)
+    expect(screen.queryByRole('link', { name: /App Store/ })).toBeNull()
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: locale } })
+    fireEvent.click(screen.getByRole('button', { name: progress }))
+
+    expect(screen.getByRole('navigation', { name: title })).toBeTruthy()
+    const appStore = screen.getByRole('link', { name: apple })
+    const googlePlay = screen.getByRole('link', { name: google })
+    expect(appStore.getAttribute('href')).toBe('https://apps.apple.com/us/app/l-n-speech-practice/id6808872450')
+    expect(googlePlay.getAttribute('href')).toBe('https://play.google.com/store/apps/details?id=art.lazying.landn')
+    for (const link of [appStore, googlePlay]) {
+      expect(link.getAttribute('target')).toBe('_blank')
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer')
+    }
+    // Changing the interface language must not change the practice language.
+    expect(screen.getByTestId('app-root').getAttribute('data-practice-language')).toBe('en-US')
+  })
+
+  it.each(['ios', 'android'])('excludes store links from the %s native UI', (platform) => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue(platform)
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Progress' }))
+
+    expect(screen.getByRole('heading', { name: 'Your sound map' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Privacy' })).toBeTruthy()
+    expect(screen.queryByRole('link', { name: /App Store/ })).toBeNull()
+    expect(screen.queryByRole('link', { name: /Google Play/ })).toBeNull()
+    expect(screen.queryByRole('navigation', { name: 'Also available as an app' })).toBeNull()
+  })
 })
 
 describe('language and sound controls', () => {

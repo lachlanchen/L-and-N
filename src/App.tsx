@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Capacitor } from '@capacitor/core'
 import {
   Activity,
   ArrowRight,
@@ -431,6 +432,16 @@ function App() {
         })}
       </section>
       <p className="clinical-note">{copy.progress.note}</p>
+      {!Capacitor.isNativePlatform() && (
+        <nav className="store-links" aria-label={copy.storeLinks.title}>
+          <p className="store-links-title">{copy.storeLinks.title}</p>
+          <div>
+            <a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450" target="_blank" rel="noopener noreferrer">{copy.storeLinks.appStore}</a>
+            <a href="https://play.google.com/store/apps/details?id=art.lazying.landn" target="_blank" rel="noopener noreferrer">{copy.storeLinks.googlePlay}</a>
+          </div>
+          <p>{copy.storeLinks.note}</p>
+        </nav>
+      )}
       <div className="legal-links"><a href="/privacy.html" target="_blank">{copy.progress.privacy}</a><a href="/support.html" target="_blank">{copy.progress.support}</a></div>
     </main>
   )

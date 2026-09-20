@@ -20,6 +20,7 @@ export interface UICopy {
   trainingLanguages: Record<TrainingLanguage, string>
   primaryNavigation: string
   nav: { practice: string; listen: string; learn: string; progress: string }
+  storeLinks: { title: string; note: string; appStore: string; googlePlay: string }
   practice: {
     session: string
     sessionHint: string
@@ -160,6 +161,12 @@ const copies: Record<UILanguage, UICopy> = {
     trainingLanguages: { 'en-US': 'English', 'zh-CN': 'Mandarin', 'yue-HK': 'Cantonese' },
     primaryNavigation: 'Primary navigation',
     nav: { practice: 'Practice', listen: 'Listen', learn: 'Learn', progress: 'Progress' },
+    storeLinks: {
+      title: 'Also available as an app',
+      note: 'The browser version remains free. See each store for pricing and availability.',
+      appStore: 'View on the App Store',
+      googlePlay: 'View on Google Play',
+    },
     practice: {
       session: '4-minute sound drill',
       sessionHint: 'Listen · feel · record',
@@ -293,6 +300,12 @@ const copies: Record<UILanguage, UICopy> = {
   'zh-Hans': {
     appTitle: 'L-and-N 发音教练', uiLanguage: '界面语言', streak: '连续练习', trainingLanguage: '练习语言', trainingLanguages: { 'en-US': '英语', 'zh-CN': '普通话', 'yue-HK': '粤语' }, primaryNavigation: '主导航',
     nav: { practice: '练习', listen: '听辨', learn: '学习', progress: '进度' },
+    storeLinks: {
+      title: '也可以使用手机应用',
+      note: '网页版仍可免费使用。价格及上架地区请查看各应用商店。',
+      appStore: '在 App Store 查看',
+      googlePlay: '在 Google Play 查看',
+    },
     practice: {
       session: '4 分钟辨音练习', sessionHint: '听 · 感受 · 录音', previousWord: '上一个词', nextWord: '下一个词', soundPicker: '选择要练习的音',
       target: '目标', measuredOnset: '分析词首音', onsetToneSeparate: '词首音 · 声调分开评分', hearModel: '听标准示范', say: '请说', not: '不要说成',
@@ -348,6 +361,12 @@ const copies: Record<UILanguage, UICopy> = {
   'zh-Hant': {
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英語', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
     nav: { practice: '練習', listen: '聽辨', learn: '學習', progress: '進度' },
+    storeLinks: {
+      title: '也可以使用手機應用程式',
+      note: '網頁版仍可免費使用。價格及上架地區請查看各應用程式商店。',
+      appStore: '在 App Store 查看',
+      googlePlay: '在 Google Play 查看',
+    },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄音', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '選擇要練習的音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開評分', hearModel: '聽標準示範', say: '請說', not: '不要說成',
@@ -403,6 +422,12 @@ const copies: Record<UILanguage, UICopy> = {
   yue: {
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英文', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
     nav: { practice: '練習', listen: '聽辨', learn: '學原理', progress: '進度' },
+    storeLinks: {
+      title: '亦可以用手機 App',
+      note: '網頁版仍然免費。價錢同上架地區可以去各個應用程式商店睇。',
+      appStore: '去 App Store 睇',
+      googlePlay: '去 Google Play 睇',
+    },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄低', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '揀想練嘅音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開計', hearModel: '聽標準示範', say: '講', not: '唔好講成',

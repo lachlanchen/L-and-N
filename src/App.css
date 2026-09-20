@@ -189,6 +189,11 @@ button:disabled { cursor: not-allowed; }
 .clinical-note { color: var(--muted); font-size: 11px; line-height: 1.6; padding: 14px 5px; }
 .legal-links { display: flex; justify-content: center; gap: 20px; padding: 0 0 10px; }
 .legal-links a { color: var(--teal); font-size: 11px; font-weight: 800; }
+.store-links { margin: 0 0 20px; padding: 16px 0; border-top: 1px solid var(--line); text-align: center; }
+.store-links p { margin: 4px 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.store-links .store-links-title { color: var(--ink); font-weight: 700; }
+.store-links > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; }
+.store-links a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; color: var(--navy); font-size: 13px; font-weight: 700; text-underline-offset: 3px; }
 .bottom-nav { position: fixed; z-index: 10; bottom: max(12px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(calc(100% - 24px), 440px); height: 68px; display: grid; grid-template-columns: repeat(4, 1fr); padding: 5px; background: rgba(8,31,77,.94); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; box-shadow: 0 15px 38px rgba(8,31,77,.28); }
 .bottom-nav button { border: 0; border-radius: 17px; color: #aebbd1; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 9px; font-weight: 750; cursor: pointer; }
 .bottom-nav svg { width: 20px; }
