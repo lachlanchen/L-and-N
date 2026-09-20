@@ -5,6 +5,7 @@ import {
   transcribeWithAllowedFallback,
   type SpeechSession,
 } from './speech'
+import { wavFromFloat32 } from './takes'
 import type { AcousticFeatures, TrainingLanguage } from '../types'
 
 export type AudioCaptureErrorCode =
@@ -37,6 +38,8 @@ export interface CapturedAudio {
   transcript: string
   rawBytes: number
   source: 'native-ios' | 'web'
+  /** The attempt's audio, so it can be kept on the device and replayed. */
+  recording?: { blob: Blob; mimeType: string }
 }
 
 export interface ActiveAudioCapture {
@@ -182,11 +185,13 @@ async function startNativeIOSCapture(options: StartCaptureOptions): Promise<Acti
         }
         const features = extractAcousticFeatures(samples, result.sampleRate)
         validateCapturedAudio(features, samples.byteLength)
+        const wav = wavFromFloat32(samples, result.sampleRate)
         return {
           features,
           transcript: result.transcript?.trim() ?? '',
           rawBytes: samples.byteLength,
           source: 'native-ios',
+          recording: { blob: wav, mimeType: 'audio/wav' },
         }
       } finally {
         await removeListener()
@@ -311,6 +316,7 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
             transcript,
             rawBytes: blob.size,
             source: 'web',
+            recording: { blob, mimeType: blob.type || 'audio/webm' },
           }
         } catch (error) {
           if (error instanceof AudioCaptureError) throw error

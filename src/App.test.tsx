@@ -3,6 +3,7 @@ import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Capacitor } from '@capacitor/core'
 import App from './App'
+import { saveAttempt } from './lib/progress'
 import { AudioCaptureError } from './lib/audio-capture'
 
 const audioCaptureMocks = vi.hoisted(() => ({
@@ -383,5 +384,54 @@ describe('Android full-curriculum unlock', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Listen' }))
     expect(screen.queryByTestId('unlock-card')).toBeNull()
     expect((screen.getByTestId('exam-pair-en-line-nine|en-nine-line') as HTMLButtonElement).disabled).toBe(false)
+  })
+})
+
+describe('kept takes', () => {
+  const features = {
+    rms: 0.08, noiseFloor: 0.003, zeroCrossingRate: 0.05, lowBandRatio: 0.08, midBandRatio: 0.52, spectralCentroidHz: 1500,
+    spectralTiltDb: 0, pitchHz: 145, pitchContour: [142, 145, 148], firstFormantHz: 500, secondFormantHz: 1250, formantSpacingHz: 750,
+    firstFormantBandwidthHz: 160, nasalPeakContrastDb: 7, voicedContinuity: 0.9, durationMs: 900, onsetMs: 35, onsetDurationMs: 240,
+    signalQuality: 0.92, waveform: [0, 0.2, -0.2, 0.12, 0.08, -0.1, 0.04, 0], spectrum: [0.1, 0.35, 0.8, 0.5],
+  }
+
+  it('offers to replay the scored attempt and lists it in the history', async () => {
+    const played: string[] = []
+    class FakeAudio extends EventTarget {
+      src: string
+      preload = ''
+      constructor(src: string) { super(); this.src = src }
+      async play(): Promise<void> { played.push(this.src); this.dispatchEvent(new Event('ended')) }
+      pause(): void {}
+    }
+    vi.stubGlobal('Audio', FakeAudio)
+    vi.stubGlobal('URL', { ...URL, createObjectURL: () => 'blob:my-take', revokeObjectURL: vi.fn() })
+    vi.mocked(saveAttempt).mockImplementationOnce(async (attempt) => [attempt])
+    audioCaptureMocks.startAudioCapture.mockResolvedValueOnce({
+      analyser: null,
+      stop: vi.fn(async () => ({
+        transcript: 'light',
+        rawBytes: 32_000,
+        source: 'web' as const,
+        features,
+        recording: { blob: new Blob([new Uint8Array(16)], { type: 'audio/webm' }), mimeType: 'audio/webm' },
+      })),
+      cancel: vi.fn(async () => undefined),
+    })
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Stop and score recording' })).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Stop and score recording' }))
+
+    const replay = await screen.findByTestId('take-replay')
+    expect(replay.textContent).toContain('Replay my take')
+    expect(screen.getByTestId('take-compare')).toBeTruthy()
+    fireEvent.click(replay)
+    await waitFor(() => expect(played).toEqual(['blob:my-take']))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Progress' }))
+    expect(screen.getByTestId('history-play')).toBeTruthy()
+    vi.unstubAllGlobals()
   })
 })

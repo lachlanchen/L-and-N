@@ -9,6 +9,8 @@ export interface AttemptRecord {
   target?: TargetSound
   language?: TrainingLanguage
   features?: AcousticFeatures
+  /** Id of the stored audio take (see lib/takes.ts), when one was kept. */
+  takeId?: string
 }
 
 export interface ListeningResult {

@@ -122,6 +122,7 @@ export interface UICopy {
     drag: string
     disclaimer: string
   }
+  takes: { replay: string; compare: string; stop: string; missing: string; keptNote: string }
   progress: {
     eyebrow: string
     title: string
@@ -285,6 +286,7 @@ const copies: Record<UILanguage, UICopy> = {
       drag: 'Drag for an oblique view.',
       disclaimer: 'This is an explanatory target model—not a scan or measurement of your tongue.',
     },
+    takes: { replay: 'Replay my take', compare: 'Studio model, then me', stop: 'Stop', missing: 'This attempt has no kept recording.', keptNote: 'Your takes stay on this device only.' },
     progress: {
       eyebrow: 'Private on this device', title: 'Your sound map', hint: 'Short, frequent practice beats one long session.',
       dayStreak: 'day streak', average: 'average score', attempts: 'attempts', recent: 'Recent attempts',
@@ -374,6 +376,7 @@ const copies: Record<UILanguage, UICopy> = {
       tongue: '舌头', ridge: '上齿龈', velum: '软腭', airPath: '气流', lContact: '较窄的舌尖接触', lVelum: '软腭抬起', lAir: '气流从舌侧通过', nContact: '较宽的舌面封闭', nVelum: '软腭下降', nAir: '气流从鼻腔通过',
       drag: '拖动可查看斜侧面。', disclaimer: '这是用于解释目标动作的模型，不是对您舌头的扫描或测量。',
     },
+    takes: { replay: '回放我的录音', compare: '先听示范，再听我', stop: '停止', missing: '这次尝试没有保留录音。', keptNote: '录音只保存在本机。' },
     progress: { eyebrow: '仅保存在本设备', title: '你的发音地图', hint: '短时、频繁的练习胜过一次练很久。', dayStreak: '连续天数', average: '平均分', attempts: '练习次数', recent: '最近练习', empty: '第一次录音会显示在这里。', start: '开始练习', target: '目标', detected: '检测为', note: '分数只用于发音辅导，不是医学诊断。如用于临床，请与言语治疗专业人员共同验证。', privacy: '隐私政策', support: '帮助与支持' },
     score: {
       word: '辨词', contrast: 'L/N 对立', soundCues: '声音线索', voice: '发声', tone: '声调', confidence: { high: '高置信度', medium: '中等置信度', low: '低置信度' },
@@ -447,6 +450,7 @@ const copies: Record<UILanguage, UICopy> = {
       tongue: '舌頭', ridge: '上齒齦', velum: '軟顎', airPath: '氣流', lContact: '較窄的舌尖接觸', lVelum: '軟顎抬起', lAir: '氣流從舌側通過', nContact: '較寬的舌面封閉', nVelum: '軟顎下降', nAir: '氣流從鼻腔通過',
       drag: '拖動可查看斜側面。', disclaimer: '這是用來解釋目標動作的模型，並非對你的舌頭進行掃描或測量。',
     },
+    takes: { replay: '回放我的錄音', compare: '先聽示範，再聽我', stop: '停止', missing: '這次嘗試沒有保留錄音。', keptNote: '錄音只保存在本機。' },
     progress: { eyebrow: '只保存在本裝置', title: '你的發音地圖', hint: '短時間、頻密的練習勝過一次練很久。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '最近練習', empty: '第一次錄音會顯示在這裡。', start: '開始練習', target: '目標', detected: '偵測為', note: '分數只用於發音輔導，並非醫學診斷。如用於臨床，請與言語治療專業人員共同驗證。', privacy: '私隱政策', support: '幫助與支援' },
     score: {
       word: '辨詞', contrast: 'L/N 對立', soundCues: '聲音線索', voice: '發聲', tone: '聲調', confidence: { high: '高可信度', medium: '中等可信度', low: '低可信度' },
@@ -520,6 +524,7 @@ const copies: Record<UILanguage, UICopy> = {
       tongue: '舌頭', ridge: '上齒齦', velum: '軟顎', airPath: '氣流', lContact: '較窄嘅舌尖接觸', lVelum: '軟顎升起', lAir: '氣流由舌側通過', nContact: '較闊嘅舌面封閉', nVelum: '軟顎降低', nAir: '氣流由鼻腔通過',
       drag: '拖動可以睇斜側面。', disclaimer: '呢個係解釋目標動作嘅模型，唔係掃描或者量度你條脷。',
     },
+    takes: { replay: '重播我嘅錄音', compare: '先聽示範，再聽我', stop: '停止', missing: '呢次冇保留錄音。', keptNote: '錄音只會留喺部機度。' },
     progress: { eyebrow: '只保存在呢部機', title: '你嘅發音地圖', hint: '短時間、密啲練，好過一次練好耐。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '最近練習', empty: '第一次錄音會喺度出現。', start: '開始練習', target: '目標', detected: '聽落似', note: '分數只係發音輔導，唔係醫學診斷。如果用作臨床用途，請搵言語治療師一齊驗證。', privacy: '私隱政策', support: '幫助同支援' },
     score: {
       word: '辨詞', contrast: 'L/N 對立', soundCues: '聲音線索', voice: '發聲', tone: '聲調', confidence: { high: '高可信度', medium: '中等可信度', low: '低可信度' },

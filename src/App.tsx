@@ -1,24 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { App as CapacitorApp } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
-import {
-  Activity,
-  ArrowRight,
-  BookOpen,
-  Check,
-  Ear,
-  ChevronLeft,
-  ChevronRight,
-  Flame,
-  Globe2,
-  Headphones,
-  Mic,
-  RotateCcw,
-  Sparkles,
-  Target,
-  Volume2,
-  Waves,
-} from 'lucide-react'
+import { Activity, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Ear, Flame, Globe2, Headphones, Mic, RotateCcw, Sparkles, Square, Target, Volume2, Waves } from 'lucide-react'
 import './App.css'
 import { ListeningExam } from './components/ListeningExam'
 import { UnlockCard } from './components/UnlockCard'
@@ -46,6 +29,8 @@ import {
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
 import { loadEntitlement, UNGATED, unlockedExercises, type Entitlement } from './lib/purchases'
 import { speakExample } from './lib/speech'
+import { loadTake, playTakeBlob, saveTake, type TakePlayback } from './lib/takes'
+import { playSequence } from './lib/word-audio'
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
 
 type Tab = 'practice' | 'listen' | 'learn' | 'progress'
@@ -75,6 +60,9 @@ function App() {
   const [liveSignal, setLiveSignal] = useState<LiveSignal | null>(null)
   const [error, setError] = useState('')
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
+  const [lastTakeId, setLastTakeId] = useState<string | null>(null)
+  const [playingTakeId, setPlayingTakeId] = useState<string | null>(null)
+  const takePlaybackRef = useRef<{ stop: () => void } | null>(null)
   const [listening, setListening] = useState<ListeningResult[]>([])
   const sessionRef = useRef<RecordingSession | null>(null)
   const stopTimerRef = useRef<number | null>(null)
@@ -115,7 +103,8 @@ function App() {
   }, [])
 
   useEffect(() => {
-    void loadAttempts().then(setAttempts)
+    // Merge rather than replace: a very quick first attempt may already be in state.
+    void loadAttempts().then((loaded) => setAttempts((current) => (current.length ? current : loaded)))
     void loadListeningResults().then(setListening)
   }, [])
 
@@ -191,6 +180,49 @@ function App() {
     setError('')
   }
 
+  const stopTakePlayback = () => {
+    takePlaybackRef.current?.stop()
+    takePlaybackRef.current = null
+    setPlayingTakeId(null)
+  }
+
+  /** Plays a kept take, optionally after the studio model of its word. */
+  const playTake = async (takeId: string, withModel: boolean) => {
+    if (playingTakeId) {
+      stopTakePlayback()
+      return
+    }
+    const take = await loadTake(takeId).catch(() => null)
+    if (!take) {
+      setError(copy.takes.missing)
+      return
+    }
+    setPlayingTakeId(takeId)
+    let current: TakePlayback | { stop: () => void } | null = null
+    const cancelled = () => takePlaybackRef.current !== current
+    try {
+      if (withModel) {
+        const model = await playSequence([take.exerciseId], { gapMs: 0 })
+        current = model
+        takePlaybackRef.current = model
+        await model.finished
+        if (cancelled()) return
+        await new Promise((resolve) => window.setTimeout(resolve, 350))
+      }
+      const own = playTakeBlob(take.blob)
+      current = own
+      takePlaybackRef.current = own
+      await own.finished
+    } catch (caught) {
+      console.warn('Take playback failed', caught)
+    } finally {
+      if (takePlaybackRef.current === current) {
+        takePlaybackRef.current = null
+        setPlayingTakeId(null)
+      }
+    }
+  }
+
   const finishRecording = async () => {
     const session = sessionRef.current
     if (!session || capturePhaseRef.current !== 'recording') return
@@ -217,16 +249,40 @@ function App() {
         session.calibration,
       )
       setScore(result)
+      const createdAt = new Date().toISOString()
+      let takeId: string | undefined
+      if (captured.recording) {
+        // Keep the take on this device so the learner can replay it. Losing it
+        // must never lose the score, so storage failures are only logged.
+        try {
+          await saveTake({
+            id: createdAt,
+            exerciseId: session.exercise.id,
+            createdAt,
+            score: result.overall,
+            detectedSound: result.detectedSound,
+            mimeType: captured.recording.mimeType,
+            blob: captured.recording.blob,
+          })
+          takeId = createdAt
+        } catch (caught) {
+          console.warn('Could not keep the take', caught)
+        }
+      }
       const next = await saveAttempt({
         exerciseId: session.exercise.id,
         score: result.overall,
         detectedSound: result.detectedSound,
-        createdAt: new Date().toISOString(),
+        createdAt,
         target: session.exercise.target,
         language: session.exercise.language,
         features: captured.features,
+        takeId,
       })
-      if (operationRef.current === session.operationId) setAttempts(next)
+      if (operationRef.current === session.operationId) {
+        setAttempts(next)
+        setLastTakeId(takeId ?? null)
+      }
     } catch (caught) {
       console.warn('Pronunciation scoring failed', caught)
       if (operationRef.current !== session.operationId) return
@@ -399,7 +455,17 @@ function App() {
       </section>
       <UnlockCard copy={copy} entitlement={entitlement} onChange={setEntitlement} />
 
-      {score && <ScoreCard score={score} copy={copy} onRetry={() => setScore(null)} onNext={() => moveExercise(1)} />}
+      {score && (
+        <ScoreCard
+          score={score}
+          copy={copy}
+          onRetry={() => setScore(null)}
+          onNext={() => moveExercise(1)}
+          takeId={lastTakeId}
+          playing={playingTakeId !== null && playingTakeId === lastTakeId}
+          onReplay={(withModel) => lastTakeId && void playTake(lastTakeId, withModel)}
+        />
+      )}
 
       <section className="science-note">
         <Waves size={22} />
@@ -446,7 +512,23 @@ function App() {
           <div className="empty-state"><Mic /><p>{copy.progress.empty}</p><button onClick={() => setTab('practice')}>{copy.progress.start}</button></div>
         ) : attempts.slice(0, 12).map((attempt) => {
           const item = exercises.find(({ id }) => id === attempt.exerciseId)
-          return <article key={`${attempt.exerciseId}-${attempt.createdAt}`}><div><strong>{item?.word ?? attempt.exerciseId}</strong><span>{copy.progress.target} /{item?.target.toLowerCase()}/ · {copy.progress.detected} {attempt.detectedSound}</span></div><b>{attempt.score}</b></article>
+          return (
+            <article key={`${attempt.exerciseId}-${attempt.createdAt}`}>
+              <div><strong>{item?.word ?? attempt.exerciseId}</strong><span>{copy.progress.target} /{item?.target.toLowerCase()}/ · {copy.progress.detected} {attempt.detectedSound}</span></div>
+              {attempt.takeId && (
+                <button
+                  type="button"
+                  className={`take-play${playingTakeId === attempt.takeId ? ' playing' : ''}`}
+                  aria-label={playingTakeId === attempt.takeId ? copy.takes.stop : copy.takes.replay}
+                  data-testid="history-play"
+                  onClick={() => void playTake(attempt.takeId!, false)}
+                >
+                  {playingTakeId === attempt.takeId ? <Square size={15} /> : <Volume2 size={15} />}
+                </button>
+              )}
+              <b>{attempt.score}</b>
+            </article>
+          )
         })}
       </section>
       <p className="clinical-note">{copy.progress.note}</p>
@@ -515,7 +597,18 @@ function SoundSpelling({ exercise, copy }: { exercise: Exercise; copy: UICopy })
   )
 }
 
-function ScoreCard({ score, copy, onRetry, onNext }: { score: PronunciationScore; copy: UICopy; onRetry: () => void; onNext: () => void }) {
+interface ScoreCardProps {
+  score: PronunciationScore
+  copy: UICopy
+  onRetry: () => void
+  onNext: () => void
+  /** The kept audio of this attempt, when storage succeeded. */
+  takeId: string | null
+  playing: boolean
+  onReplay: (withModel: boolean) => void
+}
+
+function ScoreCard({ score, copy, onRetry, onNext, takeId, playing, onReplay }: ScoreCardProps) {
   const metricLabels: Array<[
     keyof Pick<PronunciationScore, 'recognition' | 'contrast' | 'acoustic' | 'delivery'>,
     string,
@@ -548,6 +641,17 @@ function ScoreCard({ score, copy, onRetry, onNext }: { score: PronunciationScore
         </div>
         <p>{formatCopy(copy.score.evidenceDetail, { nasal: score.evidence.nasalPeakContrastDb, formant: score.evidence.formantSpacingHz || '—', tilt: score.evidence.spectralTiltDb })}</p>
       </details>
+      {takeId && (
+        <div className="take-actions">
+          <button type="button" data-testid="take-replay" onClick={() => onReplay(false)}>
+            {playing ? <Square size={16} /> : <Volume2 size={16} />} {playing ? copy.takes.stop : copy.takes.replay}
+          </button>
+          <button type="button" data-testid="take-compare" disabled={playing} onClick={() => onReplay(true)}>
+            <Ear size={16} /> {copy.takes.compare}
+          </button>
+          <small>{copy.takes.keptNote}</small>
+        </div>
+      )}
       <div className="score-actions"><button onClick={onRetry}><RotateCcw size={17} /> {copy.score.retry}</button><button className="primary" onClick={onNext}>{copy.score.next} <ChevronRight size={17} /></button></div>
     </section>
   )
