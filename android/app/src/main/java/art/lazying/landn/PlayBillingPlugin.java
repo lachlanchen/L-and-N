@@ -9,6 +9,7 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -56,7 +57,7 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
         if (client == null) {
             client = BillingClient.newBuilder(getContext())
                 .setListener(this)
-                .enablePendingPurchases()
+                .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
                 .build();
         }
         client.startConnection(new BillingClientStateListener() {
@@ -85,7 +86,8 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
                     .setProductType(BillingClient.ProductType.INAPP)
                     .build()))
             .build();
-        client.queryProductDetailsAsync(params, (result, list) -> {
+        client.queryProductDetailsAsync(params, (result, queryResult) -> {
+            List<ProductDetails> list = queryResult.getProductDetailsList();
             if (result.getResponseCode() == BillingClient.BillingResponseCode.OK && !list.isEmpty()) {
                 product = list.get(0);
                 ready.run(true, null);
