@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { App as CapacitorApp } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import {
   Activity,
@@ -102,6 +103,15 @@ function App() {
 
   useEffect(() => {
     void loadEntitlement().then(setEntitlement)
+    if (!Capacitor.isNativePlatform()) return
+    // A purchase can finish outside the app (pending payment, refund, another
+    // device), so re-read the entitlement whenever the app comes back.
+    const listener = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (isActive) void loadEntitlement().then(setEntitlement)
+    })
+    return () => {
+      void listener.then((handle) => handle.remove())
+    }
   }, [])
 
   useEffect(() => {
