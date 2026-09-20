@@ -166,9 +166,21 @@
     "merchant": {
       "paymentsProfile": "LazyingArt LLC organization profile (existing), merchant profile created 2026-09-20: category Computer Software, statement name LAZYINGART, website lazying.art, support contact@lazying.art",
       "payout": "Mercury checking (…3208) added as primary; Google test deposit under USD 0.25 expected within 2-3 days, amount must be entered under Payments > payment methods",
-      "tax": "US tax info (W-9) not yet filed; the form requires the account holder to re-sign in to Google in the store browser",
-      "serviceFee": "15 % service-fee enrolment (account group) not yet done"
+      "tax": "W-8BEN for the owner (non-US individual, Hong Kong citizenship/residence, ITIN, no treaty) submitted 2026-09-20 with a Hong Kong bank statement as proof of address; status In review",
+      "serviceFee": "15 % service-fee tier: account group 'LazyingArt LLC' created (no other developer accounts declared), terms accepted, enrolled 2026-09-20"
     },
-    "webAndIos": "unchanged: web free, iOS paid up front; neither is gated"
+    "webAndIos": "unchanged: web free, iOS paid up front; neither is gated",
+    "testing": {
+      "licenseTesterLists": [
+        "L & N license testers (owner Gmail)",
+        "L & N phone testers (the MIX 2S Play account)"
+      ],
+      "internalTrackLists": [
+        "EchoMind Internal Testers",
+        "L & N license testers",
+        "L & N phone testers"
+      ],
+      "deviceCheck": "MIX 2S installed 10 (1.0.2) from the internal track on 2026-09-20; unlock card shows the live Play price US$0.99; purchase sheet still offered only the real card (test-card status not yet propagated), so the purchase was not completed"
+    }
   }
 }
