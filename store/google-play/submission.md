@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Update 1.0.3 (build 11), 2026-09-20 — kept takes
+
+- Every scored attempt's audio is now kept on the device with replay and a studio-then-me comparison (commit `44a23ff`). Free bundle SHA-256 `7c061e98918b670c43c37487f77bc1b08be6b14421fb05f41a7f61350b165884`, Pro bundle `ccea9a44913e4696ddc7cc4d3ebcc4f3b539bac350e7b7eb61febe6517b0ae2d`. Internal track shows `11 (1.0.3)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.3-build11-test.apk. Production release 11 was created for both the free app and L & N Pro and sent for review once Play's quick checks completed, superseding the build 10 submissions.
+
 ## L & N Pro (art.lazying.landn.pro), 2026-09-20 — new paid listing
 
 - A second Play app for the paid edition: `L & N Pro: Speech Practice`, package `art.lazying.landn.pro` (console app id `4976381008764842239`), created as a **paid** app at the USD 0.99 base price for all 172 targeted countries. It is the `pro` product flavor of the same code (commit `72ccac3`): the billing plugin reports everything as owned for the `.pro` package, so nothing is gated and no product exists.

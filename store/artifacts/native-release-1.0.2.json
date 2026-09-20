@@ -204,5 +204,36 @@
       "graphics": "icon, feature graphic, 4 phone screenshots reused for 7-inch and 10-inch tablets (from store/assets)"
     },
     "release": "production release 10 (1.0.2), 172 countries; 10 changes (release, countries, listing, all declarations, pricing) sent for review on 2026-09-20 after the advertising-ID declaration (No) cleared the quick checks"
+  },
+  "takesRelease": {
+    "preparedAt": "2026-09-20",
+    "version": "1.0.3",
+    "sourceCommit": "1eeb10a",
+    "featureCommit": "44a23ff",
+    "reason": "Kept takes: each scored attempt's audio stays on the device (IndexedDB, 60 most recent) with replay and studio-then-me comparison",
+    "web": {
+      "release": "/opt/l-and-n-web/releases/eac4139f3aadc2ec0c0b0628909c8a7f10932563db187527bb3dc201fcab8d56",
+      "mainAsset": "assets/index-hpaTSd_S.js"
+    },
+    "android": {
+      "versionCode": 11,
+      "versionName": "1.0.3",
+      "freeAabSha256": "7c061e98918b670c43c37487f77bc1b08be6b14421fb05f41a7f61350b165884",
+      "proAabSha256": "ccea9a44913e4696ddc7cc4d3ebcc4f3b539bac350e7b7eb61febe6517b0ae2d",
+      "apk": {
+        "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.3-build11-test.apk",
+        "sha256": "74f929d8b34814533690eb14150093aad1c2d3b2dfdc8fdd0bcaa92c4bbe8351"
+      },
+      "play": "internal track 11 (1.0.3) published; production release 11 (1.0.3) saved for the free app and for L & N Pro, to be sent for review once Play's quick checks finish (supersedes the build 10 submissions)"
+    },
+    "ios": {
+      "build": 8,
+      "marketingVersion": "1.0.3",
+      "deliveryUuid": "see release/upload8.log on the Mac",
+      "buildId": "18a122a5-5c82-4848-a732-213650cc603e",
+      "processingState": "VALID",
+      "testflight": "internal group; public group added, beta review WAITING_FOR_REVIEW",
+      "appStore": "version 1.0.3 (7c199d8c-4994-4ee3-9937-1550c7bec37b) submitted, review submission e4064880-a3c9-45e4-a9c1-d39c177fef30 WAITING_FOR_REVIEW, automatic release"
+    }
   }
 }
