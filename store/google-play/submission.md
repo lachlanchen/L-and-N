@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Update 1.0.2 (build 8), 2026-09-20 — internal testing, 18 more pairs
+
+- Adds six minimal pairs each for English, Mandarin and Cantonese (31 pairs in total), makes the practice-tab studio example say the word twice with no sentence, and regenerates every recording with one Microsoft neural voice per language, verified by Whisper and the onset model (60 of 62 clear). Built from commit `3b2a169` (feature `29ac574`); bundle SHA-256 `1c19178f14864e52d9bf515d81cd9990ecab727e5e4cb7722f439bcef8bd92cf`; internal track shows `8 (1.0.2)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build8-test.apk (`d9e822fb7af4f5a9d5dd7213fef1c69e68319a9e8eecba158fff489b08d2e8b4`). Production still `4 (1.0.1)`.
+
 ## Update 1.0.2 (build 7), 2026-09-19 — internal testing, exam lengths
 
 - Listening exam offers 3, 5 or 7 words and leaves a longer pause before a repeated word, so "night night" is heard as two words; the media-element fallback reloads every clip. Built from commit `142f875` (feature commit `6861d2e`); bundle SHA-256 `24bad69c71ae52474c84f4cfa97f5b28dcae78512e1fd1625c2bed78efb438e1`; internal track shows `7 (1.0.2)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build7-test.apk (`fdbf2bf917cbda1c358ac14b69a4f3cc03826e7de326b7af9f6ffcd02b7163cb`). Production still `4 (1.0.1)`.

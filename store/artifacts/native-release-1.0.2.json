@@ -108,5 +108,34 @@
       "internalBuildState": "IN_BETA_TESTING",
       "whatsNew": "set via PATCH /v1/betaBuildLocalizations"
     }
+  },
+  "pairsRelease": {
+    "preparedAt": "2026-09-20",
+    "sourceCommit": "3b2a169",
+    "featureCommit": "29ac574",
+    "reason": "18 more minimal pairs (6 English, 6 Mandarin, 6 Cantonese); practice-tab studio file is now the word twice; all 62 recordings regenerated with one Microsoft neural voice per language and verified (60 clear, 蘭/農 weak)",
+    "web": {
+      "release": "/opt/l-and-n-web/releases/14fff03ea1cf54a7c5ae1861834f1f3c56cf1ab4875492abeb173c7049f9dea2",
+      "mainAsset": "assets/index-Dh9FnC1B.js",
+      "rollback": "/opt/l-and-n-web/releases/428b118f8a9c13f469addb1dd0c6a77dfcee8cc384f52310d326abcb39a9cf8c"
+    },
+    "android": {
+      "versionCode": 8,
+      "versionName": "1.0.2",
+      "aabSha256": "1c19178f14864e52d9bf515d81cd9990ecab727e5e4cb7722f439bcef8bd92cf",
+      "apk": {
+        "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build8-test.apk",
+        "sha256": "d9e822fb7af4f5a9d5dd7213fef1c69e68319a9e8eecba158fff489b08d2e8b4",
+        "bytes": 7227014
+      },
+      "play": "internal track 8 (1.0.2) published 2026-09-20; production unchanged"
+    },
+    "ios": {
+      "build": 7,
+      "ipaSha256": "fd6d763064afbc8a6775b3234a3561ec20c0784c46bfc4bccdeea4f12ddc15aa",
+      "deliveryUuid": "pending",
+      "processingState": "uploading 2026-09-20",
+      "publicBeta": "to be added once processed; beta review still queued behind build 4"
+    }
   }
 }
