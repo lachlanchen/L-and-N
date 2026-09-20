@@ -133,9 +133,12 @@
     "ios": {
       "build": 7,
       "ipaSha256": "fd6d763064afbc8a6775b3234a3561ec20c0784c46bfc4bccdeea4f12ddc15aa",
-      "deliveryUuid": "pending",
-      "processingState": "uploading 2026-09-20",
-      "publicBeta": "to be added once processed; beta review still queued behind build 4"
+      "deliveryUuid": "11b98708-bc9b-4576-894c-53e5eb31d7bd",
+      "processingState": "VALID",
+      "publicBeta": "added to L & N Public Beta and submitted for beta review on 2026-09-20; Apple approved it the same day (build 4's review had cleared), so the public TestFlight link now serves build 7",
+      "internalBuildState": "IN_BETA_TESTING",
+      "externalBuildState": "BETA_APPROVED",
+      "whatsNew": "set via PATCH /v1/betaBuildLocalizations"
     }
   }
 }

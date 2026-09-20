@@ -32,7 +32,7 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 
 ## Update 1.0.2 (build 7), 2026-09-20 — TestFlight internal, 18 more pairs
 
-- Six more minimal pairs per language, word-twice studio examples, all recordings regenerated with native neural voices and verified (commit `3b2a169`, feature `29ac574`). IPA SHA-256 `fd6d763064afbc8a6775b3234a3561ec20c0784c46bfc4bccdeea4f12ddc15aa`, `altool` validate and upload from the Mac. Processing state, delivery UUID and the public-group step are in `store/artifacts/native-release-1.0.2.json` (`pairsRelease.ios`). Beta review for the public link stays queued behind build 4.
+- Six more minimal pairs per language, word-twice studio examples, all recordings regenerated with native neural voices and verified (commit `3b2a169`, feature `29ac574`). IPA SHA-256 `fd6d763064afbc8a6775b3234a3561ec20c0784c46bfc4bccdeea4f12ddc15aa`, `altool` validate and upload from the Mac. Delivery UUID `11b98708-bc9b-4576-894c-53e5eb31d7bd`, processed `VALID`, internal state `IN_BETA_TESTING`, notes set. Build 4's beta review had cleared (`BETA_APPROVED`), so build 7 was added to `L & N Public Beta`, submitted for beta review and approved the same day; the public TestFlight link now serves build 7.
 - Build note: a repo sync with `--delete` had removed the Mac-only Xcode workspace definition, the App scheme and `Podfile.lock`; all three are now tracked in Git (`ios/App/App.xcworkspace/contents.xcworkspacedata`, `ios/App/App.xcodeproj/xcshareddata/xcschemes/App.xcscheme`, `ios/App/Podfile.lock`).
 
 ## Update 1.0.2 (build 6), 2026-09-19 — TestFlight internal, exam lengths
