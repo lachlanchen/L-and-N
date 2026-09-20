@@ -12,6 +12,8 @@ L-and-N 把容易混淆的声音变成一个短练习循环：看清单词中的
 
 ![练习界面](../docs/images/pwa-practice.png)
 
+<p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
+
 ## 功能
 
 - 英语含 10 组最小对立、20 个词，并有原创普通话和粤语练习。

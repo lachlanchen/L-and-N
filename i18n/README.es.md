@@ -12,6 +12,8 @@ L-and-N convierte un contraste difícil en un ciclo breve: ver la letra o carác
 
 ![Pantalla de práctica](../docs/images/pwa-practice.png)
 
+<p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
+
 ## Qué hace
 
 - Entrena 20 palabras inglesas en diez pares mínimos, además de ejercicios originales de mandarín y cantonés.

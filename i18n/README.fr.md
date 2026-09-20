@@ -12,6 +12,8 @@ L-and-N transforme un contraste difficile en une boucle courte : voir la lettre 
 
 ![Écran d’entraînement](../docs/images/pwa-practice.png)
 
+<p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
+
 ## Fonctionnalités
 
 - Entraîne 20 mots anglais en dix paires minimales, avec des exercices originaux en mandarin et cantonais.

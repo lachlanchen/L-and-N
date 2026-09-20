@@ -12,6 +12,8 @@ L-and-N macht aus einem schwierigen Lautkontrast eine kurze Übungsschleife: Zie
 
 ![Übungsansicht](../docs/images/pwa-practice.png)
 
+<p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
+
 ## Funktionen
 
 - 20 englische Wörter in zehn Minimalpaaren sowie eigene Übungen für Mandarin und Kantonesisch.

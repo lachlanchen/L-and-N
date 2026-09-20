@@ -12,6 +12,8 @@ L-and-N biến một cặp âm dễ nhầm thành vòng luyện tập ngắn: nh
 
 ![Màn hình luyện tập](../docs/images/pwa-practice.png)
 
+<p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
+
 ## Tính năng
 
 - Luyện 20 từ tiếng Anh trong mười cặp tối thiểu, cùng bài tập Quan thoại và Quảng Đông nguyên bản.

@@ -12,6 +12,8 @@ L-and-N は、難しい音の対立を短い練習サイクルにします。単
 
 ![練習画面](../docs/images/pwa-practice.png)
 
+<p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
+
 ## できること
 
 - 英語 10 組・20 語のミニマルペアと、独自の普通話・広東語練習を収録しています。

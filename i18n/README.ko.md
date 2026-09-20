@@ -12,6 +12,8 @@ L-and-N은 어려운 소리 대조를 짧은 연습 순환으로 바꿉니다. �
 
 ![연습 화면](../docs/images/pwa-practice.png)
 
+<p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
+
 ## 주요 기능
 
 - 영어 최소 대립쌍 10개와 20단어, 독자적인 표준중국어 및 광둥어 연습을 제공합니다.
