@@ -30,7 +30,7 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 
 - A second Play app for the paid edition: `L & N Pro: Speech Practice`, package `art.lazying.landn.pro` (console app id `4976381008764842239`), created as a **paid** app at the USD 0.99 base price for all 172 targeted countries. It is the `pro` product flavor of the same code (commit `72ccac3`): the billing plugin reports everything as owned for the `.pro` package, so nothing is gated and no product exists.
 - Setup completed through the console: privacy policy, no ads, no restricted access, IARC content rating (Everyone / PEGI 3), target audience 18+, data safety (ephemeral voice recordings for app functionality, encrypted in transit, no account, not shared), no government/financial/health features, category Education, contact details, store listing (descriptions from this file's Pro text, icon, feature graphic, phone and tablet screenshots from `store/assets`), pricing.
-- Production release `10 (1.0.2)` uploaded (bundle SHA-256 `29def28594723d3008705ef4ba929b18a49c84a14843cea0ac8126920424ac09`), countries added, release saved; the submission state is recorded in `store/artifacts/native-release-1.0.2.json` (`proRelease`).
+- Production release `10 (1.0.2)` uploaded (bundle SHA-256 `29def28594723d3008705ef4ba929b18a49c84a14843cea0ac8126920424ac09`), countries added, release saved, and all 10 changes **sent for review** on 2026-09-20 (Google quotes up to 7 days). The quick checks first demanded the advertising-ID declaration, answered No.
 
 ## Production 1.0.2 (build 10), 2026-09-20 — in review, in-app purchase
 
