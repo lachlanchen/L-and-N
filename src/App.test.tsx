@@ -42,6 +42,26 @@ const audioMocks = vi.hoisted(() => ({
   unlockAudio: vi.fn(),
 }))
 
+const entitlementMocks = vi.hoisted(() => ({
+  next: null as null | { gated: boolean; owned: boolean; available: boolean; price?: string },
+  buy: vi.fn(),
+}))
+
+// Google Play billing only exists inside the Android app; tests set the
+// entitlement they want and assert what the UI does with it.
+vi.mock('./lib/purchases', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./lib/purchases')>()
+  return {
+    ...actual,
+    loadEntitlement: vi.fn(async () => entitlementMocks.next ?? actual.UNGATED),
+    buyFullAccess: vi.fn(async () => {
+      entitlementMocks.buy()
+      return { gated: true, owned: true, available: true }
+    }),
+    restorePurchases: vi.fn(async () => entitlementMocks.next ?? actual.UNGATED),
+  }
+})
+
 // Web Audio is unavailable in jsdom, so the exam's player is mocked; its own
 // behaviour is covered by src/lib/listening-exam.test.ts.
 vi.mock('./lib/word-audio', () => ({
@@ -71,6 +91,8 @@ beforeAll(() => {
 
 afterEach(() => {
   cleanup()
+  entitlementMocks.next = null
+  entitlementMocks.buy.mockClear()
   window.localStorage.clear()
   audioCaptureMocks.startAudioCapture.mockReset()
   audioMocks.playSequence.mockClear()
@@ -322,5 +344,44 @@ describe('listening exam', () => {
 
     expect(screen.getByTestId('exam-score').textContent).toBe('答对 4 / 5')
     expect(screen.getByTestId('exam-result').querySelectorAll('.result-rows li.wrong')).toHaveLength(1)
+  })
+})
+
+describe('Android full-curriculum unlock', () => {
+  it('shows only the free pairs and the unlock card until the purchase completes', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('android')
+    entitlementMocks.next = { gated: true, owned: false, available: true, price: 'US$0.99' }
+    render(<App />)
+
+    const card = await screen.findByTestId('unlock-card')
+    expect(card.textContent).toContain('US$0.99')
+    // Six free exercises: cycling forward six times returns to the first word.
+    const word = () => document.querySelector('.word-area h2')?.textContent
+    const first = word()
+    fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
+    expect(word()).not.toBe(first)
+    for (let step = 1; step < 6; step += 1) fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
+    expect(word()).toBe(first)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Listen' }))
+    const locked = screen.getByTestId('exam-pair-en-line-nine|en-nine-line') as HTMLButtonElement
+    expect(locked.disabled).toBe(true)
+    const free = screen.getByTestId('exam-pair-en-light-night|en-night-light') as HTMLButtonElement
+    expect(free.disabled).toBe(false)
+
+    fireEvent.click(screen.getByTestId('unlock-buy'))
+    await waitFor(() => expect(entitlementMocks.buy).toHaveBeenCalledTimes(1))
+    await waitFor(() => expect(screen.queryByTestId('unlock-card')).toBeNull())
+    expect((screen.getByTestId('exam-pair-en-line-nine|en-nine-line') as HTMLButtonElement).disabled).toBe(false)
+  })
+
+  it('never gates the web or iOS builds', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(false)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('web')
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Listen' }))
+    expect(screen.queryByTestId('unlock-card')).toBeNull()
+    expect((screen.getByTestId('exam-pair-en-line-nine|en-nine-line') as HTMLButtonElement).disabled).toBe(false)
   })
 })

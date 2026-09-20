@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import './App.css'
 import { ListeningExam } from './components/ListeningExam'
+import { UnlockCard } from './components/UnlockCard'
 import { SignalVisualizer } from './components/SignalVisualizer'
 import { exercises } from './data/curriculum'
 import { localizedExercise } from './data/curriculum-i18n'
@@ -42,6 +43,7 @@ import {
   type ListeningResult,
 } from './lib/progress'
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
+import { loadEntitlement, UNGATED, unlockedExercises, type Entitlement } from './lib/purchases'
 import { speakExample } from './lib/speech'
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
 
@@ -64,6 +66,7 @@ function App() {
   const [uiLanguage, setUILanguage] = useState<UILanguage>(initialUILanguage)
   const [language, setLanguage] = useState<TrainingLanguage>('en-US')
   const [exerciseIndex, setExerciseIndex] = useState(0)
+  const [entitlement, setEntitlement] = useState<Entitlement>(UNGATED)
   const [capturePhase, setCapturePhase] = useState<CapturePhase>('idle')
   const [score, setScore] = useState<PronunciationScore | null>(null)
   const [lastFeatures, setLastFeatures] = useState<AcousticFeatures | null>(null)
@@ -85,8 +88,8 @@ function App() {
   const captureBusy = capturePhase !== 'idle'
 
   const languageExercises = useMemo(
-    () => exercises.filter((item) => item.language === language),
-    [language],
+    () => unlockedExercises(exercises, language, entitlement),
+    [language, entitlement],
   )
   const exercise = languageExercises[exerciseIndex % languageExercises.length]
   const exerciseText = localizedExercise(exercise, uiLanguage)
@@ -96,6 +99,10 @@ function App() {
   const average = attempts.length
     ? Math.round(attempts.reduce((sum, attempt) => sum + attempt.score, 0) / attempts.length)
     : 0
+
+  useEffect(() => {
+    void loadEntitlement().then(setEntitlement)
+  }, [])
 
   useEffect(() => {
     void loadAttempts().then(setAttempts)
@@ -301,7 +308,7 @@ function App() {
   const renderListen = () => (
     <div className="listen-shell">
       {languageSwitcher}
-      <ListeningExam
+      <ListeningExam entitlement={entitlement} onEntitlementChange={setEntitlement}
         key={language}
         language={language}
         copy={copy}
@@ -380,6 +387,7 @@ function App() {
 
         {error && <p className="error-message">{error}</p>}
       </section>
+      <UnlockCard copy={copy} entitlement={entitlement} onChange={setEntitlement} />
 
       {score && <ScoreCard score={score} copy={copy} onRetry={() => setScore(null)} onNext={() => moveExercise(1)} />}
 

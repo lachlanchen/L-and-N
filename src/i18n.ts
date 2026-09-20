@@ -21,6 +21,18 @@ export interface UICopy {
   primaryNavigation: string
   nav: { practice: string; listen: string; learn: string; progress: string }
   storeLinks: { title: string; note: string; appStore: string; googlePlay: string }
+  unlock: {
+    title: string
+    body: string
+    buy: string
+    restore: string
+    restored: string
+    notRestored: string
+    unavailable: string
+    failed: string
+    lockedPair: string
+    thanks: string
+  }
   practice: {
     session: string
     sessionHint: string
@@ -167,6 +179,18 @@ const copies: Record<UILanguage, UICopy> = {
       appStore: 'View on the App Store',
       googlePlay: 'View on Google Play',
     },
+    unlock: {
+      title: 'Unlock all 31 pairs',
+      body: 'The first {free} pairs of each language are free. One purchase unlocks every English, Mandarin and Cantonese pair in Practice and Listen, forever, on this Google account.',
+      buy: 'Unlock for {price}',
+      restore: 'Restore purchase',
+      restored: 'Purchase restored. Everything is unlocked.',
+      notRestored: 'No purchase found on this Google account.',
+      unavailable: 'Google Play billing is not available right now.',
+      failed: 'The purchase did not complete.',
+      lockedPair: 'Locked pair. Unlock all pairs to practise it.',
+      thanks: 'Thank you. Every pair is unlocked.',
+    },
     practice: {
       session: '4-minute sound drill',
       sessionHint: 'Listen · feel · record',
@@ -306,6 +330,18 @@ const copies: Record<UILanguage, UICopy> = {
       appStore: '在 App Store 查看',
       googlePlay: '在 Google Play 查看',
     },
+    unlock: {
+      title: '解锁全部 31 组易混词',
+      body: '每种语言的前 {free} 组免费。一次购买即可在“练习”和“听辨”中永久解锁全部英语、普通话和粤语词组（绑定当前 Google 账号）。',
+      buy: '{price} 解锁',
+      restore: '恢复购买',
+      restored: '已恢复购买，全部解锁。',
+      notRestored: '当前 Google 账号没有找到购买记录。',
+      unavailable: '暂时无法连接 Google Play 支付。',
+      failed: '购买未完成。',
+      lockedPair: '此词组已锁定。解锁全部词组后即可练习。',
+      thanks: '谢谢，已解锁全部词组。',
+    },
     practice: {
       session: '4 分钟辨音练习', sessionHint: '听 · 感受 · 录音', previousWord: '上一个词', nextWord: '下一个词', soundPicker: '选择要练习的音',
       target: '目标', measuredOnset: '分析词首音', onsetToneSeparate: '词首音 · 声调分开评分', hearModel: '听标准示范', say: '请说', not: '不要说成',
@@ -367,6 +403,18 @@ const copies: Record<UILanguage, UICopy> = {
       appStore: '在 App Store 查看',
       googlePlay: '在 Google Play 查看',
     },
+    unlock: {
+      title: '解鎖全部 31 組易混詞',
+      body: '每種語言的前 {free} 組免費。一次購買即可在「練習」和「聽辨」中永久解鎖全部英語、普通話和粵語詞組（綁定目前的 Google 帳號）。',
+      buy: '{price} 解鎖',
+      restore: '恢復購買',
+      restored: '已恢復購買，全部解鎖。',
+      notRestored: '目前的 Google 帳號沒有找到購買紀錄。',
+      unavailable: '暫時無法連接 Google Play 付款。',
+      failed: '購買未完成。',
+      lockedPair: '此詞組已鎖定。解鎖全部詞組後即可練習。',
+      thanks: '謝謝，已解鎖全部詞組。',
+    },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄音', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '選擇要練習的音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開評分', hearModel: '聽標準示範', say: '請說', not: '不要說成',
@@ -427,6 +475,18 @@ const copies: Record<UILanguage, UICopy> = {
       note: '網頁版仍然免費。價錢同上架地區可以去各個應用程式商店睇。',
       appStore: '去 App Store 睇',
       googlePlay: '去 Google Play 睇',
+    },
+    unlock: {
+      title: '解鎖全部 31 組易混字',
+      body: '每種語言頭 {free} 組免費。買一次就可以喺「練習」同「聽辨」永久解鎖全部英語、普通話同粵語字組（綁定而家嘅 Google 帳號）。',
+      buy: '{price} 解鎖',
+      restore: '恢復購買',
+      restored: '已經恢復購買，全部解鎖。',
+      notRestored: '呢個 Google 帳號搵唔到購買紀錄。',
+      unavailable: '而家連接唔到 Google Play 付款。',
+      failed: '購買未完成。',
+      lockedPair: '呢組已經鎖住。解鎖全部字組先可以練。',
+      thanks: '多謝，已經解鎖全部字組。',
     },
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄低', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '揀想練嘅音',

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Check, Ear, Play, RotateCcw, Square, Undo2, Volume2, X } from 'lucide-react'
+import { Check, Ear, Lock, Play, RotateCcw, Square, Undo2, Volume2, X } from 'lucide-react'
 import { formatCopy, type UICopy } from '../i18n'
 import {
   createListeningExam,
@@ -12,7 +12,10 @@ import {
   type ListeningExam as Exam,
   type MinimalPair,
 } from '../lib/listening-exam'
+import { isLocked, UNGATED, type Entitlement } from '../lib/purchases'
 import { playSequence, preloadClips, unlockAudio, type SequencePlayback } from '../lib/word-audio'
+import { exercises } from '../data/curriculum'
+import { UnlockCard } from './UnlockCard'
 import type { TargetSound, TrainingLanguage } from '../types'
 
 type Phase = 'idle' | 'loading' | 'playing' | 'answering' | 'reviewed'
@@ -21,6 +24,8 @@ interface ListeningExamProps {
   language: TrainingLanguage
   copy: UICopy
   onResult?: (result: ExamResult, exam: Exam) => void
+  entitlement?: Entitlement
+  onEntitlementChange?: (entitlement: Entitlement) => void
 }
 
 function WordLabel({ word, sound }: { word: string; sound: TargetSound }) {
@@ -40,8 +45,12 @@ function WordLabel({ word, sound }: { word: string; sound: TargetSound }) {
 }
 
 /** Remount this component when the practice language changes (keyed by language). */
-export function ListeningExam({ language, copy, onResult }: ListeningExamProps) {
+export function ListeningExam({ language, copy, onResult, entitlement = UNGATED, onEntitlementChange }: ListeningExamProps) {
   const pairs = useMemo(() => listeningPairs(language), [language])
+  const lockedIds = useMemo(
+    () => new Set(pairs.filter((item) => isLocked(exercises, item.lateral, entitlement)).map((item) => item.id)),
+    [pairs, entitlement],
+  )
   const [pairId, setPairId] = useState<string | null>(pairs[0]?.id ?? null)
   const [length, setLength] = useState<number>(DEFAULT_EXAM_LENGTH)
   const [exam, setExam] = useState<Exam | null>(null)
@@ -54,7 +63,8 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
   const playbackRef = useRef<SequencePlayback | null>(null)
   const operationRef = useRef(0)
 
-  const pair: MinimalPair | undefined = pairs.find((item) => item.id === pairId) ?? pairs[0]
+  const pair: MinimalPair | undefined =
+    pairs.find((item) => item.id === pairId && !lockedIds.has(item.id)) ?? pairs.find((item) => !lockedIds.has(item.id)) ?? pairs[0]
 
   const reset = useCallback(() => {
     operationRef.current += 1
@@ -207,13 +217,15 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
                   type="button"
                   data-testid={`exam-pair-${item.id}`}
                   aria-pressed={item.id === pair.id}
-                  className={item.id === pair.id ? 'active' : ''}
-                  disabled={busy}
+                  className={`${item.id === pair.id ? 'active' : ''}${lockedIds.has(item.id) ? ' locked' : ''}`}
+                  disabled={busy || lockedIds.has(item.id)}
+                  title={lockedIds.has(item.id) ? copy.unlock.lockedPair : undefined}
                   onClick={() => {
                     setPairId(item.id)
                     reset()
                   }}
                 >
+                  {lockedIds.has(item.id) && <Lock size={11} aria-hidden="true" />}
                   {item.lateral.word.split(' ')[0]} · {item.nasal.word.split(' ')[0]}
                 </button>
               ))}
@@ -330,6 +342,10 @@ export function ListeningExam({ language, copy, onResult }: ListeningExamProps) 
           </p>
         )}
       </section>
+
+      {lockedIds.size > 0 && onEntitlementChange && (
+        <UnlockCard copy={copy} entitlement={entitlement} onChange={onEntitlementChange} compact />
+      )}
 
       {result && exam && (
         <section className="exam-result" aria-live="polite" data-testid="exam-result">
