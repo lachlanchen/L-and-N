@@ -8,7 +8,9 @@
 
 [Open the live PWA](https://l-and-n.lazying.art) · [Try the light/night mini-lesson](https://l-and-n.lazying.art/lessons/light-vs-night/) · [Custom lessons for tutors](https://l-and-n.lazying.art/for-tutors/) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
 
-[Download on the App Store](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C) · [Get it on Google Play](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Signed Android build 3 APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0-build3-test.apk)
+[Download on the App Store](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C) · [Get it on Google Play](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Signed Android test APK, build 8](https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build8-test.apk)
+
+The web app is free and needs no account; the Google Play app is free; the App Store app is US$0.99 (CNY 8, HKD 8) after the same free web version.
 
 L-and-N turns a small but frustrating speech contrast into a short practice loop: see the letter inside the word, hear a studio model, watch the signal, record, and receive an explained score. The same curriculum runs as an installable PWA, Android app, iPhone/iPad app, and a compact watchOS drill.
 
@@ -16,10 +18,10 @@ L-and-N turns a small but frustrating speech contrast into a short practice loop
 
 ## What it does
 
-- Trains 20 English words in 10 minimal pairs, plus original Mandarin and Cantonese L/N exercises.
+- Trains 31 minimal pairs: 16 English (light/night, line/nine, lead/need …), 8 Mandarin (蓝/南, 里/你, 龙/农 …) and 7 Cantonese (你/理, 男/藍, 腦/老 …), each with cues in every interface language.
 - Highlights the target letter or Han character and gives a plain-language tongue/airflow cue.
-- Bundles release-generated studio audio—GPT-SoVITS for English and native Mandarin/Cantonese voices—so listening does not depend on a live TTS service.
-- Trains the ear as well as the mouth: the Listen tab plays a random run of one minimal pair, such as “light night light light night”, and you tap the word you heard at each position before submitting. Method and limits: [docs/research/listening-exam.md](docs/research/listening-exam.md)
+- Bundles studio audio generated at release time with one native neural voice per language and verified by a recognizer and the app's own onset model (`tools/audio/synthesize_word_clips.py`), so listening never depends on a live TTS service. The studio example says the word twice; the exam concatenates verified single-word clips.
+- Trains the ear as well as the mouth: the Listen tab plays a random run of one minimal pair, such as “light night light light night”, in rounds of 3, 5 or 7 words, and you tap the word you heard at each position before submitting. Method and limits: [docs/research/listening-exam.md](docs/research/listening-exam.md)
 - Shows a live waveform and onset spectrum for signal feedback—not as a decorative “correctness” meter.
 - Offers an interactive 3D mouth cutaway for L-side airflow and N-nasal airflow. It models the target gesture; it does not claim to reconstruct the learner's tongue.
 - Keeps attempts and cautious personal calibration on the device. Mandarin/Cantonese pitch shape is scored separately from consonant identity.
