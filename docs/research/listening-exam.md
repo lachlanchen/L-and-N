@@ -16,42 +16,67 @@ measures perception across the sequence rather than memory of the last word.
 - The answer sheet is ordered. Tapping a word appends it, undo removes the last, and submit is enabled only when every position has an answer.
 - Scoring is per position, with the played word, the chosen word, and a replay button for each row. Results feed a listening accuracy figure on the Progress tab and count towards the practice streak.
 
-## Why some words are missing from the exam
+## Studio recordings and why a few words stay out of the exam
 
-The prompts are the bundled studio recordings, which are carrier phrases
-("The practice word is light. Light."). Only the trailing repeat is usable,
-because it is surrounded by silence; a clip cut from inside the carrier picks
-up the previous word, and Whisper transcribed such clips as "clever" for
-*lever* and "It's nice" for *nice*.
+Updated 2026-09-20. Every exercise ships two synthesized files, built and
+verified by `tools/audio/synthesize_word_clips.py`:
 
-`tools/audio/verify_word_clips.py` therefore cuts the trailing repeat from
-every recording and grades it with two independent checks: Whisper must
-transcribe it with the expected lateral or nasal initial, and the app's own
-trained onset network must agree. For Mandarin and Cantonese the recognizer
-decides, because the onset network was trained on English speech only.
+- `public/audio/clips/<key>.mp3`: the isolated word, played by the exam
+  (words are concatenated at playback time, so no phrase is synthesized live);
+- `public/audio/models/<key>.mp3`: the practice-tab "Hear studio model"
+  file, which is now the word twice with a 0.6 s pause. The earlier carrier
+  phrase ("The practice word is light. Light.") was dropped at the
+  maintainer's request so the learner hears only the pronunciation.
+
+The voice is one Microsoft neural voice per language through `edge-tts`
+(`en-US-JennyNeural`, `zh-CN-XiaoxiaoNeural`, `zh-HK-HiuGaaiNeural`), a
+native speaker for each language. One voice per language matters: if the two
+words of a pair came from different voices, the exam could be answered by
+timbre instead of by the consonant. The first recordings came from the local
+GPT-SoVITS server; that voice (a Mandarin reference) mangled Cantonese
+completely (老 came out as "hello", 男 as "lam") and nasalized several
+English laterals (lead as "read", let as "wet"), so it is kept only as the
+`--engine sovits` option.
+
+Each clip passes four checks before it is `clear`:
+
+1. Whisper (large-v3-turbo) transcribes the isolated clip and its first
+   consonant must be the expected lateral or nasal.
+2. The app's own onset network scores the clip as the app would (English
+   decides with it; for Chinese it is advisory, since it was trained on
+   English speech).
+3. Whisper transcribes the finished word-twice file and must hear the word
+   itself, or
+4. Whisper transcribes the same voice saying the carrier phrase and must hear
+   the word, or at least the right l/n initial, twice, while the word-twice
+   file still starts with the right consonant.
+
+Whisper is unreliable on a lone Chinese syllable (it wrote 拿 for 南 and
+"NAM" for 男), which is why the carrier phrase is still synthesized for
+verification even though it is no longer shipped.
 
 | Verdict | Words |
 | --- | --- |
-| clear, used in the exam | 23 of 26 |
-| bad, excluded | *lead*, *low* |
-| weak, excluded | *loon* |
+| clear, used in the exam | 60 of 62 |
+| weak, excluded | 蘭 laan4, 農 nung4 |
 
-Both checks agree that the synthesized repeats of *low* and *lead* are nasal:
-Whisper hears "No" and "me", and the onset network gives them 0.98 and 0.92
-nasal probability. *Loon* sits on the fence at 0.52. A listening test built
-on those clips would train the wrong contrast, so the pairs low/no,
-need/lead, and loon/noon are left out of ear training. They still appear in
-the practice tab, where the carrier phrase supplies context.
+For those two Cantonese words Whisper hears the opposite initial in context
+(難 for 蘭, 弄 for 農), which is the Hong Kong n/l merger showing up in the
+recognizer rather than a fault in the voice, but the pipeline cannot prove
+that, so the pairs 難/蘭 and 農/龍 are left out of ear training. They stay
+in the practice tab. Rerunning the generator with a different voice or
+recognizer is all that is needed to bring them in.
 
-Regenerating those three recordings with a better voice would return them to
-the exam; the offsets and verdicts are data, so rerunning the verifier is the
-only step needed afterwards.
+The curriculum has 31 pairs: 16 English, 8 Mandarin and 7 Cantonese
+(`src/data/curriculum.ts`); the 2026-09-20 additions are line/nine, let/net,
+lap/nap, lot/not, life/knife, lit/knit, 里/你, 流/牛, 旅/女, 连/年, 路/怒,
+龙/农, 男/藍, 女/旅, 年/連, 腦/老, 難/蘭 and 農/龍.
 
 ## Playback
 
 Each verified word is shipped as its own small file under
-`public/audio/clips/` (26 files, about 150 KB in total), cut by the verifier
-from the studio recording. Nothing seeks inside a recording at runtime: a
+`public/audio/clips/` (62 files, about 500 KB in total), written by the
+generator. Nothing seeks inside a recording at runtime: a
 media element cannot seek without HTTP range support, and neither the
 preview server nor every native asset handler provides it, which is exactly
 how the first version of the exam ended up playing the whole carrier phrase

@@ -1,293 +1,1061 @@
 {
   "clips": {
-    "en-knock": {
-      "end": 2.67,
+    "en-knife": {
       "evidence": {
-        "nasalProbability": 0.986,
-        "origin": "final-segment",
-        "recognizedAs": "not"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is knife. Knife.",
+        "heardWord": true,
+        "modelRecognizedAs": "knife knife",
+        "nasalProbability": 0.993,
+        "origin": "edge",
+        "recognizedAs": "knife",
+        "source": "en-knife-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.18,
+      "seconds": 0.5,
+      "verdict": "clear"
+    },
+    "en-knit": {
+      "evidence": {
+        "attempts": 2,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is knit. Knit.",
+        "heardWord": false,
+        "modelRecognizedAs": "net net",
+        "nasalProbability": 0.857,
+        "origin": "edge",
+        "recognizedAs": "net",
+        "source": "en-knit-edge-carrier-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "N",
+      "seconds": 0.57,
+      "verdict": "clear"
+    },
+    "en-knock": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "the practice word is knock knock",
+        "heardWord": true,
+        "modelRecognizedAs": "Knock. Knock.",
+        "nasalProbability": 0.974,
+        "origin": "edge",
+        "recognizedAs": "Knock.",
+        "source": "en-knock-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "N",
+      "seconds": 0.48,
       "verdict": "clear"
     },
     "en-lace": {
-      "end": 2.53,
       "evidence": {
-        "nasalProbability": 0.018,
-        "origin": "final-segment",
-        "recognizedAs": "Lace."
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lace. Lace.",
+        "heardWord": true,
+        "modelRecognizedAs": "Lace. Lace.",
+        "nasalProbability": 0.153,
+        "origin": "edge",
+        "recognizedAs": "Lace",
+        "source": "en-lace-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 2.12,
+      "seconds": 0.57,
       "verdict": "clear"
     },
     "en-lame": {
-      "end": 2.76,
       "evidence": {
-        "nasalProbability": 0.002,
-        "origin": "final-segment",
-        "recognizedAs": "Waym."
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lame. Lame.",
+        "heardWord": true,
+        "modelRecognizedAs": "LAME LAME",
+        "nasalProbability": 0.514,
+        "origin": "edge",
+        "recognizedAs": "Lame.",
+        "source": "en-lame-edge-word-rm30.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 2.15,
+      "seconds": 0.74,
+      "verdict": "clear"
+    },
+    "en-lap": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lap. Lap.",
+        "heardWord": true,
+        "modelRecognizedAs": "lap lap",
+        "nasalProbability": 0.028,
+        "origin": "edge",
+        "recognizedAs": "lap.",
+        "source": "en-lap-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "L",
+      "seconds": 0.44,
       "verdict": "clear"
     },
     "en-lead": {
-      "end": 2.62,
       "evidence": {
-        "nasalProbability": 0.922,
-        "origin": "final-segment",
-        "recognizedAs": "We..."
+        "attempts": 4,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lead. Lead.",
+        "heardWord": true,
+        "modelRecognizedAs": "lead, lead",
+        "nasalProbability": 0.179,
+        "origin": "edge",
+        "recognizedAs": "Lead.",
+        "source": "en-lead-edge-carrier-rm15.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 2.08,
-      "verdict": "bad"
+      "seconds": 0.58,
+      "verdict": "clear"
+    },
+    "en-let": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is let. Let.",
+        "heardWord": true,
+        "modelRecognizedAs": "let let",
+        "nasalProbability": 0.045,
+        "origin": "edge",
+        "recognizedAs": "Let.",
+        "source": "en-let-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "L",
+      "seconds": 0.46,
+      "verdict": "clear"
     },
     "en-lever": {
-      "end": 2.68,
       "evidence": {
-        "nasalProbability": 0.101,
-        "origin": "final-segment",
-        "recognizedAs": "Lover."
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lever. Lever.",
+        "heardWord": true,
+        "modelRecognizedAs": "lever lever",
+        "nasalProbability": 0.123,
+        "origin": "edge",
+        "recognizedAs": "Lever.",
+        "source": "en-lever-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 2.11,
+      "seconds": 0.61,
+      "verdict": "clear"
+    },
+    "en-life": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is life. Life.",
+        "heardWord": true,
+        "modelRecognizedAs": "Life. Life.",
+        "nasalProbability": 0.157,
+        "origin": "edge",
+        "recognizedAs": "Life",
+        "source": "en-life-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "L",
+      "seconds": 0.5,
       "verdict": "clear"
     },
     "en-light": {
-      "end": 2.5,
       "evidence": {
-        "nasalProbability": 0.008,
-        "origin": "final-segment",
-        "recognizedAs": "light."
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is light. Light.",
+        "heardWord": true,
+        "modelRecognizedAs": "light light",
+        "nasalProbability": 0.027,
+        "origin": "edge",
+        "recognizedAs": "Light.",
+        "source": "en-light-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 1.92,
+      "seconds": 0.63,
+      "verdict": "clear"
+    },
+    "en-line": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is line. Line.",
+        "heardWord": true,
+        "modelRecognizedAs": "line, line.",
+        "nasalProbability": 0.016,
+        "origin": "edge",
+        "recognizedAs": "Line.",
+        "source": "en-line-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "L",
+      "seconds": 0.62,
       "verdict": "clear"
     },
     "en-lip": {
-      "end": 2.25,
       "evidence": {
-        "nasalProbability": 0.004,
-        "origin": "final-segment",
-        "recognizedAs": "Limp."
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lip. Lip.",
+        "heardWord": true,
+        "modelRecognizedAs": "Lip. Lip.",
+        "nasalProbability": 0.002,
+        "origin": "edge",
+        "recognizedAs": "Lip.",
+        "source": "en-lip-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 1.86,
+      "seconds": 0.4,
+      "verdict": "clear"
+    },
+    "en-lit": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "the practice word is lit lit",
+        "heardWord": true,
+        "modelRecognizedAs": "Lit. Lit.",
+        "nasalProbability": 0.015,
+        "origin": "edge",
+        "recognizedAs": "lit",
+        "source": "en-lit-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "L",
+      "seconds": 0.44,
       "verdict": "clear"
     },
     "en-lock": {
-      "end": 2.38,
       "evidence": {
-        "nasalProbability": 0.122,
-        "origin": "final-segment",
-        "recognizedAs": "What?"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is luck. Luck.",
+        "heardWord": true,
+        "modelRecognizedAs": "Lock. Lock.",
+        "nasalProbability": 0.012,
+        "origin": "edge",
+        "recognizedAs": "Lock.",
+        "source": "en-lock-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 1.96,
+      "seconds": 0.46,
       "verdict": "clear"
     },
     "en-loon": {
-      "end": 2.75,
       "evidence": {
-        "nasalProbability": 0.518,
-        "origin": "final-segment",
-        "recognizedAs": "Loon"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is loon. Loon.",
+        "heardWord": true,
+        "modelRecognizedAs": "Loon. Loon.",
+        "nasalProbability": 0.052,
+        "origin": "edge",
+        "recognizedAs": "Lung",
+        "source": "en-loon-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 2.15,
-      "verdict": "weak"
+      "seconds": 0.62,
+      "verdict": "clear"
+    },
+    "en-lot": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lot. Lot.",
+        "heardWord": true,
+        "modelRecognizedAs": "lot lot",
+        "nasalProbability": 0.01,
+        "origin": "edge",
+        "recognizedAs": "lot",
+        "source": "en-lot-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "L",
+      "seconds": 0.59,
+      "verdict": "clear"
     },
     "en-low": {
-      "end": 2.55,
       "evidence": {
-        "nasalProbability": 0.982,
-        "origin": "final-segment",
-        "recognizedAs": "No."
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is low. Low.",
+        "heardWord": true,
+        "modelRecognizedAs": "low, low.",
+        "nasalProbability": 0.649,
+        "origin": "edge",
+        "recognizedAs": "low",
+        "source": "en-low-edge-carrier-rm15.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 1.92,
-      "verdict": "bad"
+      "seconds": 0.67,
+      "verdict": "clear"
     },
     "en-lumber": {
-      "end": 2.52,
       "evidence": {
-        "nasalProbability": 0.402,
-        "origin": "final-segment",
-        "recognizedAs": "lumbar"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is lumber. Lumber.",
+        "heardWord": true,
+        "modelRecognizedAs": "Lumber. Lumber.",
+        "nasalProbability": 0.154,
+        "origin": "edge",
+        "recognizedAs": "Lumber.",
+        "source": "en-lumber-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "L",
-      "start": 1.96,
+      "seconds": 0.62,
       "verdict": "clear"
     },
     "en-name": {
-      "end": 2.71,
       "evidence": {
-        "nasalProbability": 0.979,
-        "origin": "final-segment",
-        "recognizedAs": "Name."
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is name. Name.",
+        "heardWord": true,
+        "modelRecognizedAs": "name, name",
+        "nasalProbability": 0.73,
+        "origin": "edge",
+        "recognizedAs": "Name",
+        "source": "en-name-edge-word-rm30.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.08,
+      "seconds": 0.72,
+      "verdict": "clear"
+    },
+    "en-nap": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is nap. Nap.",
+        "heardWord": true,
+        "modelRecognizedAs": "nap nap",
+        "nasalProbability": 0.916,
+        "origin": "edge",
+        "recognizedAs": "nap",
+        "source": "en-nap-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "N",
+      "seconds": 0.45,
       "verdict": "clear"
     },
     "en-need": {
-      "end": 2.43,
       "evidence": {
-        "nasalProbability": 0.976,
-        "origin": "final-segment",
-        "recognizedAs": "me"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is need. Need.",
+        "heardWord": false,
+        "modelRecognizedAs": "mead mead",
+        "nasalProbability": 0.831,
+        "origin": "edge",
+        "recognizedAs": "need",
+        "source": "en-need-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 1.85,
+      "seconds": 0.57,
+      "verdict": "clear"
+    },
+    "en-net": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is net. Net.",
+        "heardWord": true,
+        "modelRecognizedAs": "net net",
+        "nasalProbability": 0.681,
+        "origin": "edge",
+        "recognizedAs": "Net.",
+        "source": "en-net-edge-word-rm30.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "N",
+      "seconds": 0.61,
       "verdict": "clear"
     },
     "en-never": {
-      "end": 3.07,
       "evidence": {
-        "nasalProbability": 0.989,
-        "origin": "final-segment",
-        "recognizedAs": "Never."
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is never. Never.",
+        "heardWord": true,
+        "modelRecognizedAs": "Never. Never.",
+        "nasalProbability": 0.9,
+        "origin": "edge",
+        "recognizedAs": "Never.",
+        "source": "en-never-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.48,
+      "seconds": 0.6,
       "verdict": "clear"
     },
     "en-nice": {
-      "end": 2.5,
       "evidence": {
-        "nasalProbability": 0.989,
-        "origin": "final-segment",
-        "recognizedAs": "Nice."
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is nice. Nice.",
+        "heardWord": true,
+        "modelRecognizedAs": "Nice. Nice.",
+        "nasalProbability": 0.88,
+        "origin": "edge",
+        "recognizedAs": "Nice.",
+        "source": "en-nice-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.05,
+      "seconds": 0.69,
       "verdict": "clear"
     },
     "en-night": {
-      "end": 2.63,
       "evidence": {
-        "nasalProbability": 0.987,
-        "origin": "final-segment",
-        "recognizedAs": "Night"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is night. Night.",
+        "heardWord": true,
+        "modelRecognizedAs": "night night",
+        "nasalProbability": 0.982,
+        "origin": "edge",
+        "recognizedAs": "Night",
+        "source": "en-night-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.19,
+      "seconds": 0.61,
+      "verdict": "clear"
+    },
+    "en-nine": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is 9. 9.",
+        "heardWord": true,
+        "modelRecognizedAs": "9. 9.",
+        "nasalProbability": 0.982,
+        "origin": "edge",
+        "recognizedAs": "9.",
+        "source": "en-nine-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "N",
+      "seconds": 0.62,
       "verdict": "clear"
     },
     "en-nip": {
-      "end": 2.58,
       "evidence": {
-        "nasalProbability": 0.994,
-        "origin": "final-segment",
-        "recognizedAs": "Nip."
+        "attempts": 4,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is nip. Nip.",
+        "heardWord": false,
+        "modelRecognizedAs": "net net",
+        "nasalProbability": 0.84,
+        "origin": "edge",
+        "recognizedAs": "Nip.",
+        "source": "en-nip-edge-carrier-rm15.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 1.96,
+      "seconds": 0.45,
       "verdict": "clear"
     },
     "en-no": {
-      "end": 2.63,
       "evidence": {
-        "nasalProbability": 0.901,
-        "origin": "final-segment",
-        "recognizedAs": "Now."
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is no, no.",
+        "heardWord": true,
+        "modelRecognizedAs": "No. No.",
+        "nasalProbability": 0.953,
+        "origin": "edge",
+        "recognizedAs": "No.",
+        "source": "en-no-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.08,
+      "seconds": 0.59,
       "verdict": "clear"
     },
     "en-noon": {
-      "end": 2.65,
       "evidence": {
-        "nasalProbability": 0.967,
-        "origin": "final-segment",
-        "recognizedAs": "Neum."
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is noon. Noon.",
+        "heardWord": true,
+        "modelRecognizedAs": "noon noon",
+        "nasalProbability": 0.746,
+        "origin": "edge",
+        "recognizedAs": "Noon",
+        "source": "en-noon-edge-word-rm30.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.03,
+      "seconds": 0.76,
+      "verdict": "clear"
+    },
+    "en-not": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is not. Not.",
+        "heardWord": true,
+        "modelRecognizedAs": "not not",
+        "nasalProbability": 0.991,
+        "origin": "edge",
+        "recognizedAs": "not",
+        "source": "en-not-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
+      },
+      "expected": "N",
+      "seconds": 0.6,
       "verdict": "clear"
     },
     "en-number": {
-      "end": 2.73,
       "evidence": {
-        "nasalProbability": 0.987,
-        "origin": "final-segment",
-        "recognizedAs": "number"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "The practice word is number. Number.",
+        "heardWord": true,
+        "modelRecognizedAs": "number number",
+        "nasalProbability": 0.96,
+        "origin": "edge",
+        "recognizedAs": "number",
+        "source": "en-number-edge-word-r0.mp3",
+        "voice": "en-US-JennyNeural"
       },
       "expected": "N",
-      "start": 2.12,
+      "seconds": 0.6,
       "verdict": "clear"
     },
-    "yue-lei": {
-      "end": 2.168,
+    "yue-laam": {
       "evidence": {
-        "nasalProbability": 0.991,
-        "origin": "final-segment",
-        "recognizedAs": "\u96f7"
+        "attempts": 4,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系藍藍藍藍藍藍",
+        "heardWord": false,
+        "modelRecognizedAs": "LÀM LÀM",
+        "nasalProbability": 0.737,
+        "origin": "edge",
+        "recognizedAs": "LÀM",
+        "source": "yue-laam-edge-carrier-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
       },
       "expected": "L",
-      "start": 1.61,
+      "seconds": 0.6,
+      "verdict": "clear"
+    },
+    "yue-laan": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞係難 難",
+        "heardWord": false,
+        "modelRecognizedAs": "LAN, LAN.",
+        "nasalProbability": 0.814,
+        "origin": "edge",
+        "recognizedAs": "LAN",
+        "source": "yue-laan-edge-word-rm30.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.71,
+      "verdict": "weak"
+    },
+    "yue-lei": {
+      "evidence": {
+        "attempts": 3,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞是你,你。",
+        "heardWord": true,
+        "modelRecognizedAs": "里",
+        "nasalProbability": 0.414,
+        "origin": "edge",
+        "recognizedAs": "雷",
+        "source": "yue-lei-edge-word-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.57,
+      "verdict": "clear"
+    },
+    "yue-leoi": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞系女 女",
+        "heardWord": true,
+        "modelRecognizedAs": "雷 雷",
+        "nasalProbability": 0.927,
+        "origin": "edge",
+        "recognizedAs": "LOW",
+        "source": "yue-leoi-edge-word-rm30.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.67,
+      "verdict": "clear"
+    },
+    "yue-lin": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞是連 練",
+        "heardWord": false,
+        "modelRecognizedAs": "LEAN LEAN LEAN",
+        "nasalProbability": 0.571,
+        "origin": "edge",
+        "recognizedAs": "LEAN",
+        "source": "yue-lin-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.54,
+      "verdict": "clear"
+    },
+    "yue-lou": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习习是老 老",
+        "heardWord": true,
+        "modelRecognizedAs": "老 老",
+        "nasalProbability": 0.963,
+        "origin": "edge",
+        "recognizedAs": "老",
+        "source": "yue-lou-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.53,
+      "verdict": "clear"
+    },
+    "yue-lung": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係龍 龍",
+        "heardWord": true,
+        "modelRecognizedAs": "隆!隆!",
+        "nasalProbability": 0.883,
+        "origin": "edge",
+        "recognizedAs": "隆",
+        "source": "yue-lung-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.5,
+      "verdict": "clear"
+    },
+    "yue-naam": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係南 南",
+        "heardWord": false,
+        "modelRecognizedAs": "NAM NAM",
+        "nasalProbability": 0.94,
+        "origin": "edge",
+        "recognizedAs": "NAM",
+        "source": "yue-naam-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.55,
+      "verdict": "clear"
+    },
+    "yue-naan": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係難! 難!",
+        "heardWord": true,
+        "modelRecognizedAs": "難 難",
+        "nasalProbability": 0.903,
+        "origin": "edge",
+        "recognizedAs": "NAN",
+        "source": "yue-naan-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.57,
       "verdict": "clear"
     },
     "yue-nei": {
-      "end": 2.133,
       "evidence": {
-        "nasalProbability": 0.872,
-        "origin": "final-segment",
-        "recognizedAs": "\u5185"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係你! 你!",
+        "heardWord": false,
+        "modelRecognizedAs": "Nấy. Nấy.",
+        "nasalProbability": 0.781,
+        "origin": "edge",
+        "recognizedAs": "Nei",
+        "source": "yue-nei-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
       },
       "expected": "N",
-      "start": 1.61,
+      "seconds": 0.49,
       "verdict": "clear"
     },
-    "zh-lan": {
-      "end": 2.046,
+    "yue-neoi": {
       "evidence": {
-        "nasalProbability": 0.611,
-        "origin": "final-segment",
-        "recognizedAs": "\u84dd"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系女、女、女。",
+        "heardWord": false,
+        "modelRecognizedAs": "Nöi! Nöi!",
+        "nasalProbability": 0.996,
+        "origin": "edge",
+        "recognizedAs": "N",
+        "source": "yue-neoi-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.51,
+      "verdict": "clear"
+    },
+    "yue-nin": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係係年年年年年年年年年年年年年年年年年年年年年年",
+        "heardWord": false,
+        "modelRecognizedAs": "Nien. Nien.",
+        "nasalProbability": 0.614,
+        "origin": "edge",
+        "recognizedAs": "Nien.",
+        "source": "yue-nin-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.53,
+      "verdict": "clear"
+    },
+    "yue-nou": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係腦腦",
+        "heardWord": false,
+        "modelRecognizedAs": "Nấu! Nấu!",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "Nấu",
+        "source": "yue-nou-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "yue-nung": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞係弄 弄",
+        "heardWord": false,
+        "modelRecognizedAs": "Nồng Nồng",
+        "nasalProbability": 0.998,
+        "origin": "edge",
+        "recognizedAs": "Nồng",
+        "source": "yue-nung-edge-word-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.57,
+      "verdict": "weak"
+    },
+    "zh-lan": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是蓝蓝",
+        "heardWord": false,
+        "modelRecognizedAs": "拉拉",
+        "nasalProbability": 0.389,
+        "origin": "edge",
+        "recognizedAs": "来",
+        "source": "zh-lan-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
       },
       "expected": "L",
-      "start": 1.57,
+      "seconds": 0.47,
       "verdict": "clear"
     },
     "zh-lao": {
-      "end": 1.942,
       "evidence": {
-        "nasalProbability": 0.975,
-        "origin": "final-segment",
-        "recognizedAs": "\u8001"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是老。老。",
+        "heardWord": true,
+        "modelRecognizedAs": "老!老!",
+        "nasalProbability": 0.939,
+        "origin": "edge",
+        "recognizedAs": "老",
+        "source": "zh-lao-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
       },
       "expected": "L",
-      "start": 1.53,
+      "seconds": 0.46,
+      "verdict": "clear"
+    },
+    "zh-li": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是礼。礼。",
+        "heardWord": true,
+        "modelRecognizedAs": "李李",
+        "nasalProbability": 0.518,
+        "origin": "edge",
+        "recognizedAs": "离",
+        "source": "zh-li-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-lian": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是连连",
+        "heardWord": true,
+        "modelRecognizedAs": "連!連!",
+        "nasalProbability": 0.22,
+        "origin": "edge",
+        "recognizedAs": "連",
+        "source": "zh-lian-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-liu": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是流。流?",
+        "heardWord": true,
+        "modelRecognizedAs": "流?流?",
+        "nasalProbability": 0.995,
+        "origin": "edge",
+        "recognizedAs": "流",
+        "source": "zh-liu-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-long": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是龙。龙?",
+        "heardWord": false,
+        "modelRecognizedAs": "囉?囉?",
+        "nasalProbability": 0.992,
+        "origin": "edge",
+        "recognizedAs": "囉?",
+        "source": "zh-long-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.46,
+      "verdict": "clear"
+    },
+    "zh-lu": {
+      "evidence": {
+        "attempts": 3,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词试录录",
+        "heardWord": false,
+        "modelRecognizedAs": "老老",
+        "nasalProbability": 0.876,
+        "origin": "edge",
+        "recognizedAs": "路",
+        "source": "zh-lu-edge-word-rm15.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-lv": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是吕吕",
+        "heardWord": false,
+        "modelRecognizedAs": "李李",
+        "nasalProbability": 0.767,
+        "origin": "edge",
+        "recognizedAs": "李",
+        "source": "zh-lv-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.47,
       "verdict": "clear"
     },
     "zh-nan": {
-      "end": 2.012,
       "evidence": {
-        "nasalProbability": 0.605,
-        "origin": "final-segment",
-        "recognizedAs": "\u7537"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是难。难。",
+        "heardWord": false,
+        "modelRecognizedAs": "拿拿",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "那",
+        "source": "zh-nan-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
       },
       "expected": "N",
-      "start": 1.55,
+      "seconds": 0.45,
       "verdict": "clear"
     },
     "zh-nao": {
-      "end": 1.919,
       "evidence": {
-        "nasalProbability": 0.997,
-        "origin": "final-segment",
-        "recognizedAs": "\u8111"
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是脑脑",
+        "heardWord": false,
+        "modelRecognizedAs": "哪哪",
+        "nasalProbability": 1.0,
+        "origin": "edge",
+        "recognizedAs": "那",
+        "source": "zh-nao-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
       },
       "expected": "N",
-      "start": 1.51,
+      "seconds": 0.45,
+      "verdict": "clear"
+    },
+    "zh-ni": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是你你",
+        "heardWord": true,
+        "modelRecognizedAs": "你你",
+        "nasalProbability": 0.912,
+        "origin": "edge",
+        "recognizedAs": "你",
+        "source": "zh-ni-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.46,
+      "verdict": "clear"
+    },
+    "zh-nian": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是年。年。",
+        "heardWord": true,
+        "modelRecognizedAs": "黏 黏",
+        "nasalProbability": 0.574,
+        "origin": "edge",
+        "recognizedAs": "黏",
+        "source": "zh-nian-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-niu": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习瓷是牛。牛。",
+        "heardWord": false,
+        "modelRecognizedAs": "娘娘",
+        "nasalProbability": 0.922,
+        "origin": "edge",
+        "recognizedAs": "娘",
+        "source": "zh-niu-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.48,
+      "verdict": "clear"
+    },
+    "zh-nong": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是能?能?",
+        "heardWord": false,
+        "modelRecognizedAs": "no no",
+        "nasalProbability": 0.998,
+        "origin": "edge",
+        "recognizedAs": "呢",
+        "source": "zh-nong-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.46,
+      "verdict": "clear"
+    },
+    "zh-nu": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是怒怒",
+        "heardWord": false,
+        "modelRecognizedAs": "NONO",
+        "nasalProbability": 0.975,
+        "origin": "edge",
+        "recognizedAs": "NO",
+        "source": "zh-nu-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-nv": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "练习词是你你",
+        "heardWord": false,
+        "modelRecognizedAs": "你你",
+        "nasalProbability": 0.957,
+        "origin": "edge",
+        "recognizedAs": "你",
+        "source": "zh-nv-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.48,
       "verdict": "clear"
     }
   },
-  "note": "Isolated-word clips inside public/audio/models/<key>.mp3, chosen and verified by tools/audio/verify_word_clips.py",
+  "note": "Isolated-word clips in public/audio/clips/<key>.mp3 and word-twice model files in public/audio/models/<key>.mp3, synthesized and verified by tools/audio/synthesize_word_clips.py (see evidence.origin and evidence.voice per clip)",
   "verifiedWith": {
     "onsetModel": "2026-09-18-cnn1",
     "recognizer": "large-v3-turbo"

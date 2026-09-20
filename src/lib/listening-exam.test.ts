@@ -8,6 +8,7 @@ import {
   scoreListeningExam,
 } from './listening-exam'
 import { isVerifiedClip, wordClip } from './word-audio'
+import clipData from '../data/word-clips.json'
 import type { TargetSound } from '../types'
 
 /** Deterministic RNG so a sequence can be reproduced in a failing test. */
@@ -33,19 +34,33 @@ describe('studio clips for the listening exam', () => {
   })
 
   it('refuses clips the verifier could not confirm', () => {
-    // tools/audio/verify_word_clips.py graded these studio takes as
-    // ambiguous: the recognizer and the onset model disagree with the label.
-    expect(isVerifiedClip('en-low-no')).toBe(false)
-    expect(isVerifiedClip('en-lead-need')).toBe(false)
-    expect(isVerifiedClip('en-loon-noon')).toBe(false)
+    // tools/audio/synthesize_word_clips.py records a verdict per clip; only
+    // `clear` ones (recognizer and onset model agree with the label, and the
+    // word itself was heard) may be used as exam prompts.
+    const verdicts = Object.entries(clipData.clips).map(([key, clip]) => [key, clip.verdict] as const)
+    const unverified = verdicts.filter(([, verdict]) => verdict !== 'clear').map(([key]) => key)
+    for (const key of unverified) {
+      const exercise = exercises.find((item) => item.id.startsWith(`${key}-`))!
+      expect(isVerifiedClip(exercise.id)).toBe(false)
+    }
+    expect(verdicts.length).toBe(exercises.length)
     expect(isVerifiedClip('en-light-night')).toBe(true)
+  })
+
+  it('ships a word-twice studio file and an isolated clip for every exercise', () => {
+    for (const exercise of exercises) {
+      const clip = wordClip(exercise.id)!
+      expect(clip.verdict).toMatch(/^(clear|weak|bad)$/)
+      expect(clip.seconds).toBeGreaterThan(0.15)
+      expect(clip.seconds).toBeLessThan(1.7)
+    }
   })
 })
 
 describe('minimal pairs offered for ear training', () => {
   it('pairs each word with its partner and verifies both clips', () => {
     const pairs = listeningPairs('en-US')
-    expect(pairs.length).toBeGreaterThanOrEqual(5)
+    expect(pairs.length).toBeGreaterThanOrEqual(10)
     for (const pair of pairs) {
       expect(pair.lateral.target).toBe('L')
       expect(pair.nasal.target).toBe('N')
@@ -57,17 +72,26 @@ describe('minimal pairs offered for ear training', () => {
   })
 
   it('lists every pair once and leaves out unverified recordings', () => {
-    const words = listeningPairs('en-US').map((pair) => pair.lateral.word)
+    const pairs = listeningPairs('en-US')
+    const words = pairs.map((pair) => pair.lateral.word)
     expect(new Set(words).size).toBe(words.length)
     expect(words).toContain('light')
-    expect(words).not.toContain('low')
-    expect(words).not.toContain('lead')
-    expect(words).not.toContain('loon')
+    expect(words).toContain('line')
+    for (const pair of pairs) {
+      expect(isVerifiedClip(pair.lateral.id)).toBe(true)
+      expect(isVerifiedClip(pair.nasal.id)).toBe(true)
+    }
   })
 
-  it('covers the Chinese practice languages', () => {
-    expect(listeningPairs('zh-CN').map((pair) => pair.lateral.word)).toEqual(['蓝 lán', '老 lǎo'])
-    expect(listeningPairs('yue-HK').map((pair) => pair.nasal.word)).toEqual(['你 nei5'])
+  it('covers the Chinese practice languages with several pairs each', () => {
+    const mandarin = listeningPairs('zh-CN').map((pair) => pair.lateral.word)
+    expect(mandarin.length).toBeGreaterThanOrEqual(5)
+    expect(mandarin).toContain('蓝 lán')
+    expect(mandarin).toContain('里 lǐ')
+    const cantonese = listeningPairs('yue-HK').map((pair) => pair.nasal.word)
+    expect(cantonese.length).toBeGreaterThanOrEqual(4)
+    expect(cantonese).toContain('你 nei5')
+    expect(cantonese).toContain('男 naam4')
   })
 })
 

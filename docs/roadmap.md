@@ -6,6 +6,7 @@ Recorded 2026-09-18 from the maintainer's requests, so later sessions build the 
 
 - Keep the recognizer as the primary judge of which word was said; the on-device onset network shades the score and explains the cue. Never let a hand-tuned acoustic heuristic overrule a clear recognizer result.
 - Retrain the onset network whenever new labelled speech is available (`tools/onset-model/`), and add Mandarin and Cantonese lecture audio when a YouTube download route works again from the workstation; the current model is trained on English lectures only.
+- Studio audio is generated and verified by `tools/audio/synthesize_word_clips.py` (one Microsoft neural voice per language via `edge-tts`, Whisper plus the onset network as judges). Regenerate with that script when adding pairs; the practice-tab file is the word twice, never a carrier sentence. If the app must not depend on the Edge read-aloud service, the same voice names are available through a paid Azure Speech key.
 - Cut the fixed five-second recording short as soon as the word is over (energy-based end-of-word detection) to make scoring feel immediate.
 - Offer an on-device Whisper option for the PWA (transformers.js `whisper-tiny`/`base` with WebGPU, cached after the first download) so browsers that lack the Web Speech API do not depend on the private transcription service. Native iOS and Android already use the operating-system recognizers, which run on-device when a language pack is installed.
 

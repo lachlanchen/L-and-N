@@ -170,7 +170,7 @@ function browserVoice(text: string, language: TrainingLanguage): void {
 
 function exampleAudioPath(exercise: Exercise): string {
   const key = exercise.id.split('-').slice(0, 2).join('-')
-  return `/audio/models/${key}.mp3?v=2`
+  return `/audio/models/${key}.mp3?v=3`
 }
 
 export async function speakExample(exercise: Exercise): Promise<void> {

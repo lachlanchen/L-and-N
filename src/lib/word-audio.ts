@@ -34,8 +34,11 @@ export interface WordClip {
 }
 
 interface RawClip {
-  start: number
-  end: number
+  /** Length of the standalone clip file. */
+  seconds?: number
+  /** Older entries: the span cut out of the carrier recording. */
+  start?: number
+  end?: number
   expected: string
   verdict: string
 }
@@ -54,7 +57,7 @@ export function wordClip(exerciseId: string): WordClip | null {
   return {
     key,
     src: `/audio/clips/${key}.mp3`,
-    seconds: Math.max(0.05, entry.end - entry.start),
+    seconds: Math.max(0.05, entry.seconds ?? (entry.end ?? 0) - (entry.start ?? 0)),
     expected: entry.expected === 'N' ? 'N' : 'L',
     verdict: entry.verdict === 'clear' ? 'clear' : entry.verdict === 'weak' ? 'weak' : 'bad',
   }
