@@ -10,6 +10,7 @@ app:
 
 identifiers:
   android: art.lazying.landn
+  android_pro: art.lazying.landn.pro  # paid edition, Play app id 4976381008764842239, USD 0.99
   ios: art.lazying.landn
   watchos: art.lazying.landn.watchkitapp
   apple_team: Q8M2S2FY77
@@ -39,7 +40,7 @@ platforms:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/release/app-release.aab
-    status: production_live_build_4_1_0_1; production_build_8_1_0_2_in_review_2026_09_20; internal_testing_build_10_1_0_2_with_in_app_purchase
+    status: production_live_build_4_1_0_1; production_build_10_1_0_2_with_in_app_purchase_in_review_2026_09_20; internal_testing_build_10_1_0_2_with_in_app_purchase
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0

@@ -26,6 +26,16 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## L & N Pro (art.lazying.landn.pro), 2026-09-20 — new paid listing
+
+- A second Play app for the paid edition: `L & N Pro: Speech Practice`, package `art.lazying.landn.pro` (console app id `4976381008764842239`), created as a **paid** app at the USD 0.99 base price for all 172 targeted countries. It is the `pro` product flavor of the same code (commit `72ccac3`): the billing plugin reports everything as owned for the `.pro` package, so nothing is gated and no product exists.
+- Setup completed through the console: privacy policy, no ads, no restricted access, IARC content rating (Everyone / PEGI 3), target audience 18+, data safety (ephemeral voice recordings for app functionality, encrypted in transit, no account, not shared), no government/financial/health features, category Education, contact details, store listing (descriptions from this file's Pro text, icon, feature graphic, phone and tablet screenshots from `store/assets`), pricing.
+- Production release `10 (1.0.2)` uploaded (bundle SHA-256 `29def28594723d3008705ef4ba929b18a49c84a14843cea0ac8126920424ac09`), countries added, release saved; the submission state is recorded in `store/artifacts/native-release-1.0.2.json` (`proRelease`).
+
+## Production 1.0.2 (build 10), 2026-09-20 — in review, in-app purchase
+
+- Production release `10 (1.0.2)` (Billing Library 8, `full_access` unlock) was created from the library bundle with a 100 % rollout and sent for review on 2026-09-20, superseding the queued build 8 submission. The account holder chose to ship before a completed device test purchase; the purchase sheet was reached on a device and showed the live price.
+
 ## Monetization: one-time in-app purchase, 2026-09-20
 
 - Play does not allow a published free app to become paid, so Android charges through a **one-time product**: `full_access` (purchase option `full-access`, name "Full curriculum: all 31 pairs"), base price USD 0.99 applied to all regions (Play converted it, e.g. EUR 0.99, HKD 8.00, JPY 170), active. The first three pairs of each language stay free; the product unlocks the rest in Practice and Listen. Web stays free; iOS stays paid up front.
