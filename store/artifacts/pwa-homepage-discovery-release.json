@@ -1,0 +1,23 @@
+{
+  "verifiedAt": "2026-09-20T08:46:59Z",
+  "status": "deployed-and-verified",
+  "url": "https://l-and-n.lazying.art/",
+  "sourceCommit": "75883a49157c02fd5e87a76022bafa52647e1e9b",
+  "releaseId": "819cb55602982f811696188dc71cd9008fdcb094bd2c855241bee377a6d03fba",
+  "rollbackReleaseId": "c4af6e092888e8cc4fded4d73a4e3f5610d0d6daae1d4239b3265e02cb5412c6",
+  "distManifestSha256": "4968267179e639a7a1c296f765be01f50b2105cef2d99e6bbd55ca987a1f1d84",
+  "publicFiles": {
+    "index.html": "20d0756f6fbaedddb25cdfb5491c4fec324357c00fd8829d97e06a4c091d5158",
+    "assets/index-DZiUdOSI.js": "400cf0775460bc233a53058706def0a0c12a334b1f750f5a282abeda483d5e7b",
+    "noscript.css": "201a4749547a4cfa561c43f5f98b81fe89d41afed598fba4d14e5f4181c68ef6",
+    "icons/icon-512.png": "1943c466833e3fd2c0176157b9d8f6d36f91bdbda73bbda6eb086982878c5328"
+  },
+  "validation": {
+    "check": "npm run check: lint, 86 tests in 13 files, production build passed",
+    "newRegressionTests": 4,
+    "browser": "Local and live Chromium: JavaScript-disabled fallback at 320, 390, 1280px; no horizontal overflow; visible keyboard focus; existing static lesson opens without JavaScript",
+    "interactive": "Fallback and its stylesheet absent with JavaScript enabled; campaign UTM parameters retained; English, Mandarin and Cantonese listening pairs unlocked; existing Progress store links present",
+    "preserved": "Existing audio, lesson, tutor and APK files compared unchanged; gateway code/config unchanged and not restarted; original tracked dist manifest unchanged",
+    "scope": "No React, audio/scoring, native, IAP, store, pricing, campaign or Postiz changes. No indexing, ranking, social-preview cache refresh or sales claim."
+  }
+}
