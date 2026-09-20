@@ -28,7 +28,7 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 
 ## Update 1.0.3 (build 11), 2026-09-20 — kept takes
 
-- Every scored attempt's audio is now kept on the device with replay and a studio-then-me comparison (commit `44a23ff`). Free bundle SHA-256 `7c061e98918b670c43c37487f77bc1b08be6b14421fb05f41a7f61350b165884`, Pro bundle `ccea9a44913e4696ddc7cc4d3ebcc4f3b539bac350e7b7eb61febe6517b0ae2d`. Internal track shows `11 (1.0.3)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.3-build11-test.apk. Production release 11 was created for both the free app and L & N Pro and sent for review once Play's quick checks completed, superseding the build 10 submissions.
+- Every scored attempt's audio is now kept on the device with replay and a studio-then-me comparison (commit `44a23ff`). Free bundle SHA-256 `7c061e98918b670c43c37487f77bc1b08be6b14421fb05f41a7f61350b165884`, Pro bundle `ccea9a44913e4696ddc7cc4d3ebcc4f3b539bac350e7b7eb61febe6517b0ae2d`. Internal track shows `11 (1.0.3)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.3-build11-test.apk. Free app: production release 11 sent for review (Changes in review; Play forwards it once its quick checks pass), superseding the approved build 10. L & N Pro: production release 11 is saved but **not sent**, because the Pro listing's first review (build 10) is still in progress and Play warned that sending now would cancel and restart that review; send it from Publishing overview after the build 10 review completes.
 
 ## L & N Pro (art.lazying.landn.pro), 2026-09-20 — new paid listing
 

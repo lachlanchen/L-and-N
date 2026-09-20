@@ -224,7 +224,7 @@
         "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.3-build11-test.apk",
         "sha256": "74f929d8b34814533690eb14150093aad1c2d3b2dfdc8fdd0bcaa92c4bbe8351"
       },
-      "play": "internal track 11 (1.0.3) published; production release 11 (1.0.3) saved for the free app and for L & N Pro, to be sent for review once Play's quick checks finish (supersedes the build 10 submissions)"
+      "play": "internal track 11 (1.0.3) published; free app production release 11 (1.0.3) sent for review 2026-09-20 (Changes in review); L & N Pro production release 11 saved but not sent, because Play would cancel and restart the Pro listing's first review (build 10 still in review) — send it after that review completes"
     },
     "ios": {
       "build": 8,
