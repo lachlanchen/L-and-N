@@ -1,0 +1,30 @@
+{
+  "sourceCommit": "cfe8efe169acd18da13f0c6908eedbaab4496d76",
+  "deployedAt": "2026-09-20T10:07:00+08:00",
+  "url": "https://l-and-n.lazying.art/",
+  "scope": "Localized web-only links to existing stores in Progress, above Privacy and Support",
+  "releaseTarSha256": "c4af6e092888e8cc4fded4d73a4e3f5610d0d6daae1d4239b3265e02cb5412c6",
+  "releasePath": "/opt/l-and-n-web/releases/c4af6e092888e8cc4fded4d73a4e3f5610d0d6daae1d4239b3265e02cb5412c6",
+  "previousRelease": "/opt/l-and-n-web/releases/14fff03ea1cf54a7c5ae1861834f1f3c56cf1ab4875492abeb173c7049f9dea2",
+  "distManifestSha256": "489afc88ba5f0b58b3eee876ea82d154621e9a31533eaf388069f5667427e0ce",
+  "mainAsset": "assets/index-zHLbJcBO.js",
+  "mainAssetSha256": "5c0b1ef00a906b57604cf3fe36774e64c21ba6e3d67293389466f0018c65c3a0",
+  "storeLinks": [
+    "https://apps.apple.com/us/app/l-n-speech-practice/id6808872450",
+    "https://play.google.com/store/apps/details?id=art.lazying.landn"
+  ],
+  "verification": {
+    "check": "npm run check passed: lint, 76 tests in 11 files, TypeScript, Vite and PWA generation",
+    "nativeExclusion": "App rendering tests for both iOS and Android exclude the store navigation and links",
+    "locales": ["en", "zh-Hans", "zh-Hant", "yue"],
+    "browser": "Local build and live site passed all four locales at widths 320, 390 and 1280; links were visible, unobstructed, at least 44px tall, and caused no horizontal overflow",
+    "keyboard": "Tab showed visible focus and Enter opened each exact existing listing on both the local build and live site",
+    "practice": "Practice remained accessible with recording control enabled and no store links in its view",
+    "destinations": "Both public listings returned HTTP 200 with the expected L & N product identity",
+    "assets": "Public entry asset SHA-256 matches the tested local build and staged release",
+    "preserved": "Audio, static lessons, tutor page, downloads and gateway code compared identical to the previous release; native projects unchanged",
+    "http": "PWA, privacy, support, lesson, signed APK and service worker passed public checks",
+    "gateway": "Active throughout; web symlink promotion required no gateway restart",
+    "rollback": "Previous release retained and verified before promotion"
+  }
+}
