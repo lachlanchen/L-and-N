@@ -30,6 +30,10 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 - TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
 - App Store version 1.0.1 (`6770f065-063a-4b4c-9613-9bc7680fc8c1`) was created through the API once the price was set back to Free (the pending paid price without a signed Paid Apps Agreement was the "current state" that blocked new versions). Build 3 is attached, What's New is set, and review submission `d749d4ae-4cba-43ae-a1ba-a4d2f19f9f39` is **Waiting for Review** with automatic release after approval.
 
+## App Store 1.0.2 (build 7), 2026-09-20 — Waiting for Review
+
+- Version 1.0.2 (`6090c35d-b0fe-449b-a983-5e8dad5b6220`, release type AFTER_APPROVAL) was created through the API, build 7 attached, the en-US What's New set (Listen tab, 18 more pairs, word-twice studio examples, auto-stop), and review submission `ecefffc1-f8f6-4ba9-9ea3-c85ff24361b7` submitted: **WAITING_FOR_REVIEW**. Nothing was queued ahead of it (1.0.1's submission `d749d4ae…` is COMPLETE and 1.0.1 is Ready for Distribution), so no wait was needed before submitting.
+
 ## Update 1.0.2 (build 7), 2026-09-20 — TestFlight internal, 18 more pairs
 
 - Six more minimal pairs per language, word-twice studio examples, all recordings regenerated with native neural voices and verified (commit `3b2a169`, feature `29ac574`). IPA SHA-256 `fd6d763064afbc8a6775b3234a3561ec20c0784c46bfc4bccdeea4f12ddc15aa`, `altool` validate and upload from the Mac. Delivery UUID `11b98708-bc9b-4576-894c-53e5eb31d7bd`, processed `VALID`, internal state `IN_BETA_TESTING`, notes set. Build 4's beta review had cleared (`BETA_APPROVED`), so build 7 was added to `L & N Public Beta`, submitted for beta review and approved the same day; the public TestFlight link now serves build 7.

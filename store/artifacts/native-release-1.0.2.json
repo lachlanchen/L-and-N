@@ -128,7 +128,7 @@
         "sha256": "d9e822fb7af4f5a9d5dd7213fef1c69e68319a9e8eecba158fff489b08d2e8b4",
         "bytes": 7227014
       },
-      "play": "internal track 8 (1.0.2) published 2026-09-20; production unchanged"
+      "play": "internal track 8 (1.0.2) published 2026-09-20; production release 8 (1.0.2) saved with 100 % rollout and sent for review on 2026-09-20 (queued behind Play's quick checks)"
     },
     "ios": {
       "build": 7,
@@ -138,7 +138,8 @@
       "publicBeta": "added to L & N Public Beta and submitted for beta review on 2026-09-20; Apple approved it the same day (build 4's review had cleared), so the public TestFlight link now serves build 7",
       "internalBuildState": "IN_BETA_TESTING",
       "externalBuildState": "BETA_APPROVED",
-      "whatsNew": "set via PATCH /v1/betaBuildLocalizations"
+      "whatsNew": "set via PATCH /v1/betaBuildLocalizations",
+      "appStore": "version 1.0.2 (6090c35d-b0fe-449b-a983-5e8dad5b6220) created via API with build 7, What's New set (en-US), review submission ecefffc1-f8f6-4ba9-9ea3-c85ff24361b7 WAITING_FOR_REVIEW on 2026-09-20, automatic release after approval"
     }
   }
 }

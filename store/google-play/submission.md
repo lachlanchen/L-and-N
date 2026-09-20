@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Production 1.0.2 (build 8), 2026-09-20 — in review
+
+- Production release `8 (1.0.2)` was created from the library bundle (Production > Create new release > Add from library, checkbox on the `App bundle 8` row, Add to release), release notes entered, rollout left at 100 %, saved, then sent from Publishing overview with **Submit 1 change for review** and the **Send changes for review** confirmation (trusted click at the dialog button). Publishing overview shows **Changes in review**; Google sends it once its quick checks finish. Production keeps serving `4 (1.0.1)` until approval.
+
 ## Update 1.0.2 (build 8), 2026-09-20 — internal testing, 18 more pairs
 
 - Adds six minimal pairs each for English, Mandarin and Cantonese (31 pairs in total), makes the practice-tab studio example say the word twice with no sentence, and regenerates every recording with one Microsoft neural voice per language, verified by Whisper and the onset model (60 of 62 clear). Built from commit `3b2a169` (feature `29ac574`); bundle SHA-256 `1c19178f14864e52d9bf515d81cd9990ecab727e5e4cb7722f439bcef8bd92cf`; internal track shows `8 (1.0.2)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.2-build8-test.apk (`d9e822fb7af4f5a9d5dd7213fef1c69e68319a9e8eecba158fff489b08d2e8b4`). Production still `4 (1.0.1)`.
