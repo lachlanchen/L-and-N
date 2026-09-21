@@ -20,7 +20,7 @@ L-and-N turns a small but frustrating speech contrast into a short practice loop
 
 ## What it does
 
-- Trains 31 minimal pairs: 16 English (light/night, line/nine, lead/need …), 8 Mandarin (蓝/南, 里/你, 龙/农 …) and 7 Cantonese (你/理, 男/藍, 腦/老 …), each with cues in every interface language.
+- Trains 59 minimal pairs: 16 English (light/night, line/nine, lead/need …), 22 Mandarin covering every final (韵母) that takes both l- and n- (蓝/南, 里/你, 辣/纳, 类/内, 零/宁, 略/虐 …) and 21 Cantonese finals (你/理, 男/藍, 犁/泥, 立/納, 落/諾, 亂/嫩 …), each with cues in every interface language.
 - Highlights the target letter or Han character and gives a plain-language tongue/airflow cue.
 - Bundles studio audio generated at release time with one native neural voice per language and verified by a recognizer and the app's own onset model (`tools/audio/synthesize_word_clips.py`), so listening never depends on a live TTS service. The studio example says the word twice; the exam concatenates verified single-word clips.
 - Trains the ear as well as the mouth: the Listen tab plays a random run of one minimal pair, such as “light night light light night”, in rounds of 3, 5 or 7 words, and you tap the word you heard at each position before submitting. Method and limits: [docs/research/listening-exam.md](docs/research/listening-exam.md)

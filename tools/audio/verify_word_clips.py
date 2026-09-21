@@ -87,6 +87,10 @@ def energy_segments(samples: np.ndarray) -> list[tuple[float, float]]:
     return [(a * FRAME / SAMPLE_RATE, b * FRAME / SAMPLE_RATE) for a, b in merged if b - a >= 12]
 
 
+# Standard readings where the pycantonese dictionary lists the colloquial n/l-merged form.
+JYUTPING_OVERRIDES = {"粒": "nap1", "凹": "nap1", "零": "ling4"}
+
+
 def initial_sound(text: str, language: str) -> str | None:
     """Lateral or nasal initial of a transcription, or None when undecidable."""
     cleaned = text.strip().strip(".,!?;:\"'“”‘’()[]…。，！？").strip()
@@ -101,7 +105,7 @@ def initial_sound(text: str, language: str) -> str | None:
             if language == "yue":
                 import pycantonese
 
-                jyutping = pycantonese.characters_to_jyutping(cleaned)[0][1] or ""
+                jyutping = JYUTPING_OVERRIDES.get(head) or pycantonese.characters_to_jyutping(cleaned)[0][1] or ""
             if not jyutping:
                 # Jyutping and pinyin agree on the l/n initial for these
                 # characters, so pinyin covers anything the Cantonese

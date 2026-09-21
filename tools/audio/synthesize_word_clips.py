@@ -53,6 +53,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from verify_word_clips import (  # noqa: E402
     CLIP_DIR,
+    JYUTPING_OVERRIDES,
     LEAD_PAD,
     MODEL_PATH,
     OUT_PATH,
@@ -168,7 +169,7 @@ def syllable(char: str, language: str) -> str | None:
         if language == "yue":
             import pycantonese
 
-            jyutping = pycantonese.characters_to_jyutping(char)[0][1]
+            jyutping = JYUTPING_OVERRIDES.get(char) or pycantonese.characters_to_jyutping(char)[0][1]
             if jyutping:
                 return re.sub(r"\d", "", jyutping)
         from pypinyin import Style, lazy_pinyin
@@ -311,6 +312,7 @@ def main() -> None:
     onset_model = json.loads(MODEL_PATH.read_text())
     asr = whisper.load_model(args.model, device="cuda")
     words = curriculum_words()
+    failures: list[str] = []
     existing = json.loads(OUT_PATH.read_text())["clips"] if OUT_PATH.exists() else {}
     only = {key for key in args.only.split(",") if key}
     WORK_DIR.mkdir(parents=True, exist_ok=True)
@@ -371,7 +373,12 @@ def main() -> None:
             if not source.exists():
                 if args.engine == "edge":
                     text = word_only(word, language) if mode == "word" else PHRASES[language][0].format(w=word)
-                    synthesize_edge(text, language, rate, source)
+                    try:
+                        synthesize_edge(text, language, rate, source)
+                    except Exception as error:  # noqa: BLE001 - a voice that yields no audio for a rare character
+                        print(f"  {file_name}: no synthesis ({type(error).__name__}), trying the next framing", flush=True)
+                        evaluated.append({"source": file_name, "verdict": "unusable"})
+                        continue
                 else:
                     synthesize(PHRASES[language][sovits[0]].format(w=word), language, sovits[1], source)
             samples = decode(source)
@@ -397,7 +404,9 @@ def main() -> None:
                 break
 
         if best is None:
-            raise SystemExit(f"{key}: no usable candidate from {len(evaluated)} attempts")
+            print(f"{key:<12} bad   no usable candidate from {len(evaluated)} attempts; the word keeps its practice entry without studio audio", flush=True)
+            failures.append(key)
+            continue
         write_clip(WORK_DIR / best["source"], best["start"], best["end"], clip_path)
         write_model(clip_path, model_path)
         model_heard = best["modelHeardAs"]
@@ -434,6 +443,8 @@ def main() -> None:
     counts: dict[str, int] = {}
     for clip in merged.values():
         counts[clip["verdict"]] = counts.get(clip["verdict"], 0) + 1
+    if failures:
+        print("no studio audio for:", ", ".join(failures), flush=True)
     print(f"wrote {OUT_PATH.relative_to(ROOT)}: {counts}")
 
 

@@ -57,25 +57,39 @@ verification even though it is no longer shipped.
 
 | Verdict | Words |
 | --- | --- |
-| clear, used in the exam | 60 of 62 |
-| weak, excluded | 蘭 laan4, 農 nung4 |
+| clear, used in the exam | 107 of 118 |
+| weak, practice tab only | 蘭 laan4, 農 nung4, 廉 lim4, 亂 lyun6, 嫩 nyun6, 腍 nam4, 諾 nok6, 捺 naat6, 溺 nik6, 聶 nip6, 尿 niào |
 
-For those two Cantonese words Whisper hears the opposite initial in context
-(難 for 蘭, 弄 for 農), which is the Hong Kong n/l merger showing up in the
-recognizer rather than a fault in the voice, but the pipeline cannot prove
-that, so the pairs 難/蘭 and 農/龍 are left out of ear training. They stay
-in the practice tab. Rerunning the generator with a different voice or
-recognizer is all that is needed to bring them in.
+For the weak words Whisper either hears the opposite initial in context (難
+for 蘭, 弄 for 農), which is the Hong Kong n/l merger showing up in the
+recognizer rather than a fault in the voice, or cannot settle on a word at
+all for a lone checked-tone syllable (聶, 捺, 溺, 諾). The pipeline cannot
+prove those clips, so their pairs are left out of ear training but stay in
+the practice tab; the isolated clip still starts with the right consonant in
+every case. One Cantonese pair, 笠 lap1 / 粒 nap1, was dropped altogether
+because the neural voice itself says 粒 with the merged l- initial, and a
+studio model must not teach the merger. Rerunning the generator with a
+different voice or recognizer is all that is needed to bring the weak words
+in.
 
-The curriculum has 31 pairs: 16 English, 8 Mandarin and 7 Cantonese
-(`src/data/curriculum.ts`); the 2026-09-20 additions are line/nine, let/net,
-lap/nap, lot/not, life/knife, lit/knit, 里/你, 流/牛, 旅/女, 连/年, 路/怒,
-龙/农, 男/藍, 女/旅, 年/連, 腦/老, 難/蘭 and 農/龍.
+The curriculum has 59 pairs: 16 English, 22 Mandarin and 21 Cantonese
+(`src/data/curriculum.ts`). The 2026-09-21 additions cover every remaining
+final (韵母) that takes both l- and n- with a same-tone pair. Mandarin now
+has a, e, ai, ei, ao, an, ang, eng, ong, i, ie, iao, iu, ian, in, iang, ing,
+u, uo, uan, ü and üe (辣/纳, 乐/讷, 赖/耐, 类/内, 狼/囊, 棱/能, 裂/镍,
+料/尿, 林/您, 凉/娘, 零/宁, 落/诺, 卵/暖, 略/虐 …); ou has no common
+same-tone n- word (耨 nòu) and en/un have no l- syllable, so they are left
+out. Cantonese now has aam, aan, aap, aat, ai, am, ei, eoi, im, in, ing, ip,
+ik, iu, o, oi-less ou, ok, ong, oeng, ung and yun (犁/泥, 林/腍, 廉/黏,
+靈/寧, 獵/聶, 料/尿, 羅/挪, 落/諾, 郎/囊, 亂/嫩, 立/納, 辣/捺, 力/溺,
+良/娘 …); finals such as aa, au, oi and eon only pair across different
+tones, which would let a learner answer by tone instead of by consonant, so
+they are not used.
 
 ## Playback
 
 Each verified word is shipped as its own small file under
-`public/audio/clips/` (62 files, about 500 KB in total), written by the
+`public/audio/clips/` (118 files, about 1 MB in total), written by the
 generator. Nothing seeks inside a recording at runtime: a
 media element cannot seek without HTTP range support, and neither the
 preview server nor every native asset handler provides it, which is exactly

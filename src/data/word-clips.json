@@ -578,6 +578,74 @@
       "seconds": 0.71,
       "verdict": "weak"
     },
+    "yue-laap": {
+      "evidence": {
+        "attempts": 3,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系 立 立",
+        "heardWord": false,
+        "modelRecognizedAs": "老 老",
+        "nasalProbability": 0.97,
+        "origin": "edge",
+        "recognizedAs": "老",
+        "source": "yue-laap-edge-word-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.46,
+      "verdict": "clear"
+    },
+    "yue-laat": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係辣!辣!",
+        "heardWord": true,
+        "modelRecognizedAs": "辣 辣",
+        "nasalProbability": 0.956,
+        "origin": "edge",
+        "recognizedAs": "辣",
+        "source": "yue-laat-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.44,
+      "verdict": "clear"
+    },
+    "yue-lai": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係黎黎",
+        "heardWord": true,
+        "modelRecognizedAs": "例 例",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "LAY",
+        "source": "yue-lai-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.51,
+      "verdict": "clear"
+    },
+    "yue-lam": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係林 林",
+        "heardWord": false,
+        "modelRecognizedAs": "Lầm Lầm",
+        "nasalProbability": 0.923,
+        "origin": "edge",
+        "recognizedAs": "Lầm.",
+        "source": "yue-lam-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.52,
+      "verdict": "clear"
+    },
     "yue-lei": {
       "evidence": {
         "attempts": 3,
@@ -612,6 +680,40 @@
       "seconds": 0.67,
       "verdict": "clear"
     },
+    "yue-lik": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係力力力彌",
+        "heardWord": false,
+        "modelRecognizedAs": "Like... Like...",
+        "nasalProbability": 0.972,
+        "origin": "edge",
+        "recognizedAs": "Like...",
+        "source": "yue-lik-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.36,
+      "verdict": "clear"
+    },
+    "yue-lim": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞系念念念念念念念念念念念念念念念念",
+        "heardWord": false,
+        "modelRecognizedAs": "LIM",
+        "nasalProbability": 0.72,
+        "origin": "edge",
+        "recognizedAs": "LIM",
+        "source": "yue-lim-edge-word-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.58,
+      "verdict": "weak"
+    },
     "yue-lin": {
       "evidence": {
         "attempts": 1,
@@ -627,6 +729,125 @@
       },
       "expected": "L",
       "seconds": 0.54,
+      "verdict": "clear"
+    },
+    "yue-ling": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係零。零。",
+        "heardWord": false,
+        "modelRecognizedAs": "LÀNH! LÀNH!",
+        "nasalProbability": 0.705,
+        "origin": "edge",
+        "recognizedAs": "LÀNH",
+        "source": "yue-ling-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.51,
+      "verdict": "clear"
+    },
+    "yue-lip": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系列列",
+        "heardWord": false,
+        "modelRecognizedAs": "LEAP, LEAP.",
+        "nasalProbability": 0.72,
+        "origin": "edge",
+        "recognizedAs": "LIIP.",
+        "source": "yue-lip-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.42,
+      "verdict": "clear"
+    },
+    "yue-liu": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係療 療",
+        "heardWord": false,
+        "modelRecognizedAs": "Liu Liu",
+        "nasalProbability": 0.885,
+        "origin": "edge",
+        "recognizedAs": "Liu",
+        "source": "yue-liu-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.54,
+      "verdict": "clear"
+    },
+    "yue-lo": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係羅 羅",
+        "heardWord": false,
+        "modelRecognizedAs": "了 了",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "LAW",
+        "source": "yue-lo-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.48,
+      "verdict": "clear"
+    },
+    "yue-loeng": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系量量",
+        "heardWord": false,
+        "modelRecognizedAs": "LÀNG! LÀNG!",
+        "nasalProbability": 0.99,
+        "origin": "edge",
+        "recognizedAs": "Lạng",
+        "source": "yue-loeng-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.54,
+      "verdict": "clear"
+    },
+    "yue-lok": {
+      "evidence": {
+        "attempts": 3,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係樂 樂",
+        "heardWord": false,
+        "modelRecognizedAs": "了 了",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "落",
+        "source": "yue-lok-edge-word-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.48,
+      "verdict": "clear"
+    },
+    "yue-long": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系郎 郎",
+        "heardWord": false,
+        "modelRecognizedAs": "隆 隆",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "廖",
+        "source": "yue-long-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.53,
       "verdict": "clear"
     },
     "yue-lou": {
@@ -663,6 +884,23 @@
       "seconds": 0.5,
       "verdict": "clear"
     },
+    "yue-lyun": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係亂 亂",
+        "heardWord": false,
+        "modelRecognizedAs": "韌 韌",
+        "nasalProbability": 0.462,
+        "origin": "edge",
+        "recognizedAs": "韌",
+        "source": "yue-lyun-edge-carrier-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "L",
+      "seconds": 0.59,
+      "verdict": "weak"
+    },
     "yue-naam": {
       "evidence": {
         "attempts": 1,
@@ -696,6 +934,74 @@
       "expected": "N",
       "seconds": 0.57,
       "verdict": "clear"
+    },
+    "yue-naap": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係 納 納",
+        "heardWord": false,
+        "modelRecognizedAs": "NAP NAP",
+        "nasalProbability": 0.995,
+        "origin": "edge",
+        "recognizedAs": "NAP.",
+        "source": "yue-naap-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.43,
+      "verdict": "clear"
+    },
+    "yue-naat": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞係 辣 辣",
+        "heardWord": false,
+        "modelRecognizedAs": "纏 纏 纏",
+        "nasalProbability": 0.994,
+        "origin": "edge",
+        "recognizedAs": "NAD",
+        "source": "yue-naat-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.43,
+      "verdict": "weak"
+    },
+    "yue-nai": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系 泥 泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥泥",
+        "heardWord": false,
+        "modelRecognizedAs": "Này! Này!",
+        "nasalProbability": 1.0,
+        "origin": "edge",
+        "recognizedAs": "NAY",
+        "source": "yue-nai-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "yue-nam": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系 南 南",
+        "heardWord": false,
+        "modelRecognizedAs": "5.",
+        "nasalProbability": 0.995,
+        "origin": "edge",
+        "recognizedAs": "5.",
+        "source": "yue-nam-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.51,
+      "verdict": "weak"
     },
     "yue-nei": {
       "evidence": {
@@ -731,6 +1037,40 @@
       "seconds": 0.51,
       "verdict": "clear"
     },
+    "yue-nik": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞是匿 匿",
+        "heardWord": false,
+        "modelRecognizedAs": "Nei nei nei",
+        "nasalProbability": 0.888,
+        "origin": "edge",
+        "recognizedAs": "Nait",
+        "source": "yue-nik-edge-word-rm30.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.45,
+      "verdict": "weak"
+    },
+    "yue-nim": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係念念念念念念念念念念念念念念念念念念念念念念念念念念念",
+        "heardWord": false,
+        "modelRecognizedAs": "NIM NIM",
+        "nasalProbability": 0.769,
+        "origin": "edge",
+        "recognizedAs": "NIM",
+        "source": "yue-nim-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.55,
+      "verdict": "clear"
+    },
     "yue-nin": {
       "evidence": {
         "attempts": 1,
@@ -742,6 +1082,125 @@
         "origin": "edge",
         "recognizedAs": "Nien.",
         "source": "yue-nin-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.53,
+      "verdict": "clear"
+    },
+    "yue-ning": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係寧 寧寧寧寧寧",
+        "heardWord": false,
+        "modelRecognizedAs": "0. 0.",
+        "nasalProbability": 0.87,
+        "origin": "edge",
+        "recognizedAs": "Ninh.",
+        "source": "yue-ning-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.52,
+      "verdict": "clear"
+    },
+    "yue-nip": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞是",
+        "heardWord": false,
+        "modelRecognizedAs": "NEEP. NEEP.",
+        "nasalProbability": 0.538,
+        "origin": "edge",
+        "recognizedAs": "NEEP",
+        "source": "yue-nip-edge-word-rm15.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.45,
+      "verdict": "weak"
+    },
+    "yue-niu": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿尿",
+        "heardWord": false,
+        "modelRecognizedAs": "Niu Niu",
+        "nasalProbability": 0.718,
+        "origin": "edge",
+        "recognizedAs": "Niu",
+        "source": "yue-niu-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.53,
+      "verdict": "clear"
+    },
+    "yue-no": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞係 呢? 呢?",
+        "heardWord": false,
+        "modelRecognizedAs": "Nō Nō",
+        "nasalProbability": 1.0,
+        "origin": "edge",
+        "recognizedAs": "Nō",
+        "source": "yue-no-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.46,
+      "verdict": "clear"
+    },
+    "yue-noeng": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞是娘。娘。",
+        "heardWord": false,
+        "modelRecognizedAs": "Nàng! Nàng!",
+        "nasalProbability": 0.998,
+        "origin": "edge",
+        "recognizedAs": "Nàng",
+        "source": "yue-noeng-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.56,
+      "verdict": "clear"
+    },
+    "yue-nok": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞係樂 、樂 、樂 。",
+        "heardWord": false,
+        "modelRecognizedAs": "NO NO",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "Nō",
+        "source": "yue-nok-edge-word-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.43,
+      "verdict": "weak"
+    },
+    "yue-nong": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "練習詞系囊囊",
+        "heardWord": false,
+        "modelRecognizedAs": "Nòn. Nòn.",
+        "nasalProbability": 1.0,
+        "origin": "edge",
+        "recognizedAs": "Nòn",
+        "source": "yue-nong-edge-word-r0.mp3",
         "voice": "zh-HK-HiuGaaiNeural"
       },
       "expected": "N",
@@ -782,6 +1241,57 @@
       "seconds": 0.57,
       "verdict": "weak"
     },
+    "yue-nyun": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": false,
+        "carrierRecognizedAs": "練習詞係嫌 嫌",
+        "heardWord": false,
+        "modelRecognizedAs": "9. 9.",
+        "nasalProbability": 0.085,
+        "origin": "edge",
+        "recognizedAs": "Nuen",
+        "source": "yue-nyun-edge-carrier-r0.mp3",
+        "voice": "zh-HK-HiuGaaiNeural"
+      },
+      "expected": "N",
+      "seconds": 0.56,
+      "verdict": "weak"
+    },
+    "zh-la": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "這個詞是辣!辣!",
+        "heardWord": true,
+        "modelRecognizedAs": "啦啦",
+        "nasalProbability": 0.143,
+        "origin": "edge",
+        "recognizedAs": "啦",
+        "source": "zh-la-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-lai": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是赖赖",
+        "heardWord": true,
+        "modelRecognizedAs": "赖!赖!",
+        "nasalProbability": 0.409,
+        "origin": "edge",
+        "recognizedAs": "赖",
+        "source": "zh-lai-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
     "zh-lan": {
       "evidence": {
         "attempts": 1,
@@ -799,6 +1309,23 @@
       "seconds": 0.47,
       "verdict": "clear"
     },
+    "zh-lang": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是狼。狼?",
+        "heardWord": false,
+        "modelRecognizedAs": "拉拉",
+        "nasalProbability": 0.369,
+        "origin": "edge",
+        "recognizedAs": "了",
+        "source": "zh-lang-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.45,
+      "verdict": "clear"
+    },
     "zh-lao": {
       "evidence": {
         "attempts": 1,
@@ -810,6 +1337,57 @@
         "origin": "edge",
         "recognizedAs": "老",
         "source": "zh-lao-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.46,
+      "verdict": "clear"
+    },
+    "zh-le": {
+      "evidence": {
+        "attempts": 3,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是乐。乐。",
+        "heardWord": true,
+        "modelRecognizedAs": "了了",
+        "nasalProbability": 1.0,
+        "origin": "edge",
+        "recognizedAs": "了",
+        "source": "zh-le-edge-word-rm15.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.56,
+      "verdict": "clear"
+    },
+    "zh-lei": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是累累",
+        "heardWord": true,
+        "modelRecognizedAs": "累累",
+        "nasalProbability": 0.939,
+        "origin": "edge",
+        "recognizedAs": "累",
+        "source": "zh-lei-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.5,
+      "verdict": "clear"
+    },
+    "zh-leng": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是冷。冷。",
+        "heardWord": false,
+        "modelRecognizedAs": "了?了?",
+        "nasalProbability": 0.509,
+        "origin": "edge",
+        "recognizedAs": "了",
+        "source": "zh-leng-edge-word-r0.mp3",
         "voice": "zh-CN-XiaoxiaoNeural"
       },
       "expected": "L",
@@ -848,6 +1426,91 @@
       },
       "expected": "L",
       "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-liang": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是聊。聊。",
+        "heardWord": true,
+        "modelRecognizedAs": "量量",
+        "nasalProbability": 0.65,
+        "origin": "edge",
+        "recognizedAs": "量",
+        "source": "zh-liang-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-liao": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是料料",
+        "heardWord": true,
+        "modelRecognizedAs": "料料",
+        "nasalProbability": 0.945,
+        "origin": "edge",
+        "recognizedAs": "料",
+        "source": "zh-liao-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-lie": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是恋恋",
+        "heardWord": true,
+        "modelRecognizedAs": "列列",
+        "nasalProbability": 0.939,
+        "origin": "edge",
+        "recognizedAs": "列",
+        "source": "zh-lie-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.5,
+      "verdict": "clear"
+    },
+    "zh-lin": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是林林",
+        "heardWord": true,
+        "modelRecognizedAs": "林!林!",
+        "nasalProbability": 0.755,
+        "origin": "edge",
+        "recognizedAs": "林",
+        "source": "zh-lin-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.48,
+      "verdict": "clear"
+    },
+    "zh-ling": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是零零",
+        "heardWord": true,
+        "modelRecognizedAs": "零零",
+        "nasalProbability": 0.702,
+        "origin": "edge",
+        "recognizedAs": "零",
+        "source": "zh-ling-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.48,
       "verdict": "clear"
     },
     "zh-liu": {
@@ -901,6 +1564,40 @@
       "seconds": 0.49,
       "verdict": "clear"
     },
+    "zh-luan": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是卵。卵。",
+        "heardWord": true,
+        "modelRecognizedAs": "鸾鸾",
+        "nasalProbability": 0.957,
+        "origin": "edge",
+        "recognizedAs": "卵",
+        "source": "zh-luan-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-luo": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "這個詞是落落",
+        "heardWord": false,
+        "modelRecognizedAs": "露露",
+        "nasalProbability": 0.998,
+        "origin": "edge",
+        "recognizedAs": "路",
+        "source": "zh-luo-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.47,
+      "verdict": "clear"
+    },
     "zh-lv": {
       "evidence": {
         "attempts": 1,
@@ -916,6 +1613,57 @@
       },
       "expected": "L",
       "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-lve": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是猎猎",
+        "heardWord": false,
+        "modelRecognizedAs": "裂裂",
+        "nasalProbability": 0.827,
+        "origin": "edge",
+        "recognizedAs": "练",
+        "source": "zh-lve-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "L",
+      "seconds": 0.48,
+      "verdict": "clear"
+    },
+    "zh-na": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是那那",
+        "heardWord": true,
+        "modelRecognizedAs": "那那",
+        "nasalProbability": 0.671,
+        "origin": "edge",
+        "recognizedAs": "那",
+        "source": "zh-na-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.5,
+      "verdict": "clear"
+    },
+    "zh-nai": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是耐。耐。",
+        "heardWord": false,
+        "modelRecognizedAs": "那那",
+        "nasalProbability": 0.951,
+        "origin": "edge",
+        "recognizedAs": "那",
+        "source": "zh-nai-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.49,
       "verdict": "clear"
     },
     "zh-nan": {
@@ -935,6 +1683,23 @@
       "seconds": 0.45,
       "verdict": "clear"
     },
+    "zh-nang": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是脑。脑。",
+        "heardWord": false,
+        "modelRecognizedAs": "那那",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "那",
+        "source": "zh-nang-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.44,
+      "verdict": "clear"
+    },
     "zh-nao": {
       "evidence": {
         "attempts": 1,
@@ -950,6 +1715,57 @@
       },
       "expected": "N",
       "seconds": 0.45,
+      "verdict": "clear"
+    },
+    "zh-ne": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是呢。呢。",
+        "heardWord": false,
+        "modelRecognizedAs": "那啊那啊",
+        "nasalProbability": 1.0,
+        "origin": "edge",
+        "recognizedAs": "那",
+        "source": "zh-ne-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.5,
+      "verdict": "clear"
+    },
+    "zh-nei": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是内内",
+        "heardWord": false,
+        "modelRecognizedAs": "呢呢",
+        "nasalProbability": 0.998,
+        "origin": "edge",
+        "recognizedAs": "呢",
+        "source": "zh-nei-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-neng": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是能。能。",
+        "heardWord": false,
+        "modelRecognizedAs": "呢呢",
+        "nasalProbability": 0.997,
+        "origin": "edge",
+        "recognizedAs": "呢",
+        "source": "zh-neng-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.46,
       "verdict": "clear"
     },
     "zh-ni": {
@@ -984,6 +1800,91 @@
       },
       "expected": "N",
       "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-niang": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是娘。娘。",
+        "heardWord": true,
+        "modelRecognizedAs": "娘 娘",
+        "nasalProbability": 0.593,
+        "origin": "edge",
+        "recognizedAs": "娘",
+        "source": "zh-niang-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.45,
+      "verdict": "clear"
+    },
+    "zh-niao": {
+      "evidence": {
+        "attempts": 5,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是尿。尿。",
+        "heardWord": false,
+        "modelRecognizedAs": "妙妙",
+        "nasalProbability": 0.779,
+        "origin": "edge",
+        "recognizedAs": "妙",
+        "source": "zh-niao-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.51,
+      "verdict": "weak"
+    },
+    "zh-nie": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "這個詞是念!念!",
+        "heardWord": false,
+        "modelRecognizedAs": "念念",
+        "nasalProbability": 0.497,
+        "origin": "edge",
+        "recognizedAs": "念",
+        "source": "zh-nie-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.5,
+      "verdict": "clear"
+    },
+    "zh-nin": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是您。您。",
+        "heardWord": false,
+        "modelRecognizedAs": "你 你",
+        "nasalProbability": 0.97,
+        "origin": "edge",
+        "recognizedAs": "你",
+        "source": "zh-nin-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.47,
+      "verdict": "clear"
+    },
+    "zh-ning": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是宁宁",
+        "heardWord": true,
+        "modelRecognizedAs": "凝凝",
+        "nasalProbability": 0.934,
+        "origin": "edge",
+        "recognizedAs": "您",
+        "source": "zh-ning-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.48,
       "verdict": "clear"
     },
     "zh-niu": {
@@ -1037,6 +1938,40 @@
       "seconds": 0.49,
       "verdict": "clear"
     },
+    "zh-nuan": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是暖。暖。",
+        "heardWord": true,
+        "modelRecognizedAs": "暖暖",
+        "nasalProbability": 1.0,
+        "origin": "edge",
+        "recognizedAs": "暖",
+        "source": "zh-nuan-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.49,
+      "verdict": "clear"
+    },
+    "zh-nuo": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是诺。诺。",
+        "heardWord": false,
+        "modelRecognizedAs": "NONO",
+        "nasalProbability": 0.999,
+        "origin": "edge",
+        "recognizedAs": "NO",
+        "source": "zh-nuo-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.51,
+      "verdict": "clear"
+    },
     "zh-nv": {
       "evidence": {
         "attempts": 1,
@@ -1052,6 +1987,23 @@
       },
       "expected": "N",
       "seconds": 0.48,
+      "verdict": "clear"
+    },
+    "zh-nve": {
+      "evidence": {
+        "attempts": 1,
+        "carrierOk": true,
+        "carrierRecognizedAs": "这个词是念念",
+        "heardWord": false,
+        "modelRecognizedAs": "念念",
+        "nasalProbability": 0.725,
+        "origin": "edge",
+        "recognizedAs": "念",
+        "source": "zh-nve-edge-word-r0.mp3",
+        "voice": "zh-CN-XiaoxiaoNeural"
+      },
+      "expected": "N",
+      "seconds": 0.51,
       "verdict": "clear"
     }
   },

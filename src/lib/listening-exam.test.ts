@@ -85,11 +85,11 @@ describe('minimal pairs offered for ear training', () => {
 
   it('covers the Chinese practice languages with several pairs each', () => {
     const mandarin = listeningPairs('zh-CN').map((pair) => pair.lateral.word)
-    expect(mandarin.length).toBeGreaterThanOrEqual(5)
+    expect(mandarin.length).toBeGreaterThanOrEqual(18)
     expect(mandarin).toContain('蓝 lán')
     expect(mandarin).toContain('里 lǐ')
     const cantonese = listeningPairs('yue-HK').map((pair) => pair.nasal.word)
-    expect(cantonese.length).toBeGreaterThanOrEqual(4)
+    expect(cantonese.length).toBeGreaterThanOrEqual(12)
     expect(cantonese).toContain('你 nei5')
     expect(cantonese).toContain('男 naam4')
   })

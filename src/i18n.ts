@@ -181,7 +181,7 @@ const copies: Record<UILanguage, UICopy> = {
       googlePlay: 'View on Google Play',
     },
     unlock: {
-      title: 'Unlock all 31 pairs',
+      title: 'Unlock all 59 pairs',
       body: 'The first {free} pairs of each language are free. One purchase unlocks every English, Mandarin and Cantonese pair in Practice and Listen, forever, on this Google account.',
       buy: 'Unlock for {price}',
       restore: 'Restore purchase',
@@ -333,7 +333,7 @@ const copies: Record<UILanguage, UICopy> = {
       googlePlay: '在 Google Play 查看',
     },
     unlock: {
-      title: '解锁全部 31 组易混词',
+      title: '解锁全部 59 组易混词',
       body: '每种语言的前 {free} 组免费。一次购买即可在“练习”和“听辨”中永久解锁全部英语、普通话和粤语词组（绑定当前 Google 账号）。',
       buy: '{price} 解锁',
       restore: '恢复购买',
@@ -407,7 +407,7 @@ const copies: Record<UILanguage, UICopy> = {
       googlePlay: '在 Google Play 查看',
     },
     unlock: {
-      title: '解鎖全部 31 組易混詞',
+      title: '解鎖全部 59 組易混詞',
       body: '每種語言的前 {free} 組免費。一次購買即可在「練習」和「聽辨」中永久解鎖全部英語、普通話和粵語詞組（綁定目前的 Google 帳號）。',
       buy: '{price} 解鎖',
       restore: '恢復購買',
@@ -481,7 +481,7 @@ const copies: Record<UILanguage, UICopy> = {
       googlePlay: '去 Google Play 睇',
     },
     unlock: {
-      title: '解鎖全部 31 組易混字',
+      title: '解鎖全部 59 組易混字',
       body: '每種語言頭 {free} 組免費。買一次就可以喺「練習」同「聽辨」永久解鎖全部英語、普通話同粵語字組（綁定而家嘅 Google 帳號）。',
       buy: '{price} 解鎖',
       restore: '恢復購買',
