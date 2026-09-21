@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Payments profile, 2026-09-21 — bank account verified
+
+- Google's micro-deposit reached the Mercury checking account and the amount was confirmed in Play Console → Settings → Payments profile; Google now shows the account as verified, so Play earnings can be paid out.
+
 ## Production release 13 (1.0.4), 2026-09-21 — free app
 
 - Release 11 (1.0.3) was approved and went live on 2026-09-21. Production release 13 (bundle `19fc7921…`, the same build as the internal track) was created from the artifact library with release notes and sent for review; Play forwards it once its quick checks pass. L & N Pro still waits for its first review (build 10); its release 11 and listing text stay saved.
