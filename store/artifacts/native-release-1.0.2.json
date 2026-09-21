@@ -285,7 +285,7 @@
         "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build13-test.apk",
         "sha256": "04b884711552ebd2faef6d0dacc2cdcd8c61b348a4ecccc7e665636f8abd3d50"
       },
-      "play": "internal track 13 (1.0.4) published on the free app and on L & N Pro; production untouched (free 11 and Pro 10 still in review)"
+      "play": "internal track 13 (1.0.4) on both apps; free app production release 13 sent for review 2026-09-21 after release 11 went live; Pro production untouched (first review of build 10 still pending, release 11 + listing text saved)"
     },
     "ios": {
       "build": 10,
@@ -293,7 +293,7 @@
       "deliveryUuid": "81bcab6a-069f-4dfe-85ed-853004b04e62",
       "ipaSha256": "234384c809709e27c3a04fe5d92c6cbcd70e83ba1228754d87ce2a7e90793bba",
       "processingState": "VALID",
-      "testflight": "internal group; added to L & N Public Beta with beta review submitted",
+      "testflight": "internal group; L & N Public Beta: build 9 beta review approved 2026-09-21, build 10 beta review submitted right after",
       "appStore": "not attached; the 1.0.4 review submission keeps build 9"
     }
   }

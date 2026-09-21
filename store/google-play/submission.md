@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Production release 13 (1.0.4), 2026-09-21 — free app
+
+- Release 11 (1.0.3) was approved and went live on 2026-09-21. Production release 13 (bundle `19fc7921…`, the same build as the internal track) was created from the artifact library with release notes and sent for review; Play forwards it once its quick checks pass. L & N Pro still waits for its first review (build 10); its release 11 and listing text stay saved.
+
 ## Internal build 13 (1.0.4), 2026-09-21 — hear-each-word buttons
 
 - Test channels only, at the user's request: internal track `13 (1.0.4)` on the free app and on L & N Pro (free bundle SHA-256 `19fc7921f222408118eb16f70a5f968a02461b0d681cc0ca2ee15d8c38acf961`, Pro `7b043797de30be2ac245ebed5734efb8d5b4448aa9351ded4f50c9e651f08ae8`), APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build13-test.apk. Adds two buttons under the Listen exam answers that play each word of the pair on its own (commit `c02d05f`). Production still holds until the pending reviews finish; release 13 is what will go to production then.
