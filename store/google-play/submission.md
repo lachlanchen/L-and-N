@@ -30,6 +30,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 
 - Google's micro-deposit reached the Mercury checking account and the amount was confirmed in Play Console → Settings → Payments profile; Google now shows the account as verified, so Play earnings can be paid out.
 
+## Store listing screenshots, 2026-09-21
+
+- Both main store listings (free app and L & N Pro) now carry the seven 2026-09-21 phone screenshots from `store/assets/google-play-phone-01..07.png` (the AI-backdrop disclosure stays). The free app's listing change is saved and will be sent after the release 13 review completes (sending now would restart it); the Pro change is saved with the other pending Pro changes.
+
 ## Production release 13 (1.0.4), 2026-09-21 — free app
 
 - Release 11 (1.0.3) was approved and went live on 2026-09-21. Production release 13 (bundle `19fc7921…`, the same build as the internal track) was created from the artifact library with release notes and sent for review; Play forwards it once its quick checks pass. L & N Pro still waits for its first review (build 10); its release 11 and listing text stay saved.

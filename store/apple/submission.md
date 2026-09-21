@@ -30,6 +30,10 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 - TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
 - App Store version 1.0.1 (build 3) was submitted on 2026-09-18, then approved and auto-released on 2026-09-19 at USD 0.99. The price was temporarily reverted to Free on 2026-09-18 before USD 0.99 was re-applied. Account onboarding details are retained only in the ignored, access-restricted `.runtime/store/handoff.md`.
 
+## App Store 1.0.5 (build 10), 2026-09-21 — new screenshots, Waiting for Review
+
+- 1.0.4 (build 9) was approved the same day it was submitted and is live. Because Apple locks screenshots on a submitted version, the refreshed listing went out as version 1.0.5 on build 10 (hear-each-word buttons, WebGL fallback): 7 iPhone 6.5" and 7 iPad 13" screenshots uploaded through the API (`store/assets/`), What's New set, review submission `639729e6-b9e4-4118-801d-d3fd6038c9fa` **WAITING_FOR_REVIEW**, automatic release.
+
 ## TestFlight build 10 (1.0.4), 2026-09-21 — hear-each-word buttons
 
 - Test channel only, at the user's request. IPA SHA-256 `234384c809709e27c3a04fe5d92c6cbcd70e83ba1228754d87ce2a7e90793bba`, delivery `81bcab6a-069f-4dfe-85ed-853004b04e62`, processed `VALID`, internal group, added to `L & N Public Beta` with beta review submitted. The App Store 1.0.4 review submission keeps build 9; build 10 (or a later one) goes to the App Store with the next submission.

@@ -266,7 +266,7 @@
       "ipaSha256": "b028a0381ef148cd1d35c82739d5494942524bad5f46646c63fa6b8f4adaa44e",
       "processingState": "VALID",
       "testflight": "internal group IN_BETA_TESTING; added to L & N Public Beta, beta app review submitted",
-      "appStore": "version 1.0.4 (d3e42041-09c1-480f-8ba9-c91834c62705) with build 9, What's New set, review submission 72749e0c-d8c7-4cdb-ae29-51c6754cf7d3 WAITING_FOR_REVIEW, automatic release"
+      "appStore": "version 1.0.4 (d3e42041-09c1-480f-8ba9-c91834c62705) approved and READY_FOR_SALE 2026-09-21 (review submission 72749e0c COMPLETE)"
     },
     "playListing": "2026-09-21: L & N Pro short and full descriptions updated to 59 pairs (saved; goes out with the next Pro submission); free app in-app product full_access renamed 'Full curriculum: all 59 pairs'"
   },
@@ -295,6 +295,24 @@
       "processingState": "VALID",
       "testflight": "internal group; L & N Public Beta: build 9 beta review approved 2026-09-21, build 10 beta review submitted right after",
       "appStore": "not attached; the 1.0.4 review submission keeps build 9"
+    }
+  },
+  "screenshotsRelease": {
+    "preparedAt": "2026-09-21",
+    "version": "1.0.5",
+    "sourceCommit": "4c6bc04",
+    "reason": "Refreshed store listing screenshots (7 per store: practice en/zh/yue, listen answering with hear buttons, listen result, 3D learn, progress with kept takes); iOS build 10 carries the hear-word buttons and a WebGL fallback for the Learn tab",
+    "web": {
+      "release": "/opt/l-and-n-web/releases/002a36c89439b5a9b2889c278a494624f86c18740dc6a6d03037b5a5a49dc5ec",
+      "mainAsset": "assets/index-Wa7fbg9p.js"
+    },
+    "ios": {
+      "build": 10,
+      "marketingVersion": "1.0.5",
+      "appStore": "version 1.0.5 (1f1149c9-69a1-47a6-a274-5645fe1f7738) with build 10, What's New, 7 iPhone 6.5\" and 7 iPad 13\" screenshots; review submission 639729e6-b9e4-4118-801d-d3fd6038c9fa WAITING_FOR_REVIEW"
+    },
+    "android": {
+      "play": "free and Pro main store listings now carry the 7 new phone screenshots (saved; the free app's change waits behind the release 13 review, the Pro change behind its first review)"
     }
   }
 }
