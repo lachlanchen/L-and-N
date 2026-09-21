@@ -235,5 +235,37 @@
       "testflight": "internal group; public group added, beta review WAITING_FOR_REVIEW",
       "appStore": "version 1.0.3 (7c199d8c-4994-4ee3-9937-1550c7bec37b) approved 2026-09-21; review submission e4064880-a3c9-45e4-a9c1-d39c177fef30 COMPLETE, appStoreState READY_FOR_SALE"
     }
+  },
+  "finalsRelease": {
+    "preparedAt": "2026-09-21",
+    "version": "1.0.4",
+    "sourceCommit": "09aaec6",
+    "featureCommit": "467ed3a",
+    "reason": "28 new same-tone minimal pairs so every Mandarin and Cantonese final that takes both l- and n- is covered (59 pairs, 118 verified studio clips)",
+    "web": {
+      "release": "/opt/l-and-n-web/releases/29bf6ad873bd56a9480a590fdacab62c308e819b2758fa1f57ec19a632d65c2e",
+      "mainAsset": "assets/index-5iWkZj1v.js"
+    },
+    "android": {
+      "versionCode": 12,
+      "versionName": "1.0.4",
+      "freeAabSha256": "a67bd86a78f1ecca702c3a4624e5c828e273087bf1f320873de6b500b537f884",
+      "proAabSha256": "5c35eab29dd82dc5df7acdf575e8cf62ad329d33fe3522d296961a1e53053cd4",
+      "apk": {
+        "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build12-test.apk",
+        "sha256": "d097447cd3c3e1463b7733681e6207825049d01df3ed30dbae9269cf6c16ac27"
+      },
+      "play": "internal track 12 (1.0.4) published for the free app and for L & N Pro; production not touched because the free app's release 11 and the Pro listing's first review (build 10) are still in review, and sending 12 now would restart them"
+    },
+    "ios": {
+      "build": 9,
+      "marketingVersion": "1.0.4",
+      "deliveryUuid": "6922c99f-4900-4570-8317-d9db6b63a1bd",
+      "buildId": "6922c99f-4900-4570-8317-d9db6b63a1bd",
+      "ipaSha256": "b028a0381ef148cd1d35c82739d5494942524bad5f46646c63fa6b8f4adaa44e",
+      "processingState": "VALID",
+      "testflight": "internal group IN_BETA_TESTING; added to L & N Public Beta, beta app review submitted",
+      "appStore": "version 1.0.4 (d3e42041-09c1-480f-8ba9-c91834c62705) with build 9, What's New set, review submission 72749e0c-d8c7-4cdb-ae29-51c6754cf7d3 WAITING_FOR_REVIEW, automatic release"
+    }
   }
 }

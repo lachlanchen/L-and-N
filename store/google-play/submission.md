@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Update 1.0.4 (build 12), 2026-09-21 — every Mandarin and Cantonese final
+
+- 28 new same-tone minimal pairs (commit `467ed3a`): Mandarin now covers 22 finals and Cantonese 21, 59 pairs in total, each word with a verified studio clip. Free bundle SHA-256 `a67bd86a78f1ecca702c3a4624e5c828e273087bf1f320873de6b500b537f884`, Pro bundle `5c35eab29dd82dc5df7acdf575e8cf62ad329d33fe3522d296961a1e53053cd4`. Internal track shows `12 (1.0.4)` on both apps; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build12-test.apk. Production was left alone: the free app's release 11 and the Pro listing's first review (build 10) are still in review and Play would restart them, so release 12 goes to production after those reviews complete.
+
 ## Update 1.0.3 (build 11), 2026-09-20 — kept takes
 
 - Every scored attempt's audio is now kept on the device with replay and a studio-then-me comparison (commit `44a23ff`). Free bundle SHA-256 `7c061e98918b670c43c37487f77bc1b08be6b14421fb05f41a7f61350b165884`, Pro bundle `ccea9a44913e4696ddc7cc4d3ebcc4f3b539bac350e7b7eb61febe6517b0ae2d`. Internal track shows `11 (1.0.3)`; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.3-build11-test.apk. Free app: production release 11 sent for review (Changes in review; Play forwards it once its quick checks pass), superseding the approved build 10. L & N Pro: production release 11 is saved but **not sent**, because the Pro listing's first review (build 10) is still in progress and Play warned that sending now would cancel and restart that review; send it from Publishing overview after the build 10 review completes.
