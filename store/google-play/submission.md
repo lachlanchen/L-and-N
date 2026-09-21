@@ -28,7 +28,7 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 
 ## Update 1.0.4 (build 12), 2026-09-21 — every Mandarin and Cantonese final
 
-- 28 new same-tone minimal pairs (commit `467ed3a`): Mandarin now covers 22 finals and Cantonese 21, 59 pairs in total, each word with a verified studio clip. Free bundle SHA-256 `a67bd86a78f1ecca702c3a4624e5c828e273087bf1f320873de6b500b537f884`, Pro bundle `5c35eab29dd82dc5df7acdf575e8cf62ad329d33fe3522d296961a1e53053cd4`. Internal track shows `12 (1.0.4)` on both apps; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build12-test.apk. Production was left alone: the free app's release 11 and the Pro listing's first review (build 10) are still in review and Play would restart them, so release 12 goes to production after those reviews complete.
+- 28 new same-tone minimal pairs (commit `467ed3a`): Mandarin now covers 22 finals and Cantonese 21, 59 pairs in total, each word with a verified studio clip. Free bundle SHA-256 `a67bd86a78f1ecca702c3a4624e5c828e273087bf1f320873de6b500b537f884`, Pro bundle `5c35eab29dd82dc5df7acdf575e8cf62ad329d33fe3522d296961a1e53053cd4`. Internal track shows `12 (1.0.4)` on both apps; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build12-test.apk. Production was left alone: the free app's release 11 and the Pro listing's first review (build 10) are still in review and Play would restart them, so release 12 goes to production after those reviews complete. The Pro listing's short and full descriptions now say 59 pairs (saved with the pending changes) and the free app's `full_access` product is named "Full curriculum: all 59 pairs".
 
 ## Update 1.0.3 (build 11), 2026-09-20 — kept takes
 

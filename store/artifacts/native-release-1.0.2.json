@@ -266,6 +266,7 @@
       "processingState": "VALID",
       "testflight": "internal group IN_BETA_TESTING; added to L & N Public Beta, beta app review submitted",
       "appStore": "version 1.0.4 (d3e42041-09c1-480f-8ba9-c91834c62705) with build 9, What's New set, review submission 72749e0c-d8c7-4cdb-ae29-51c6754cf7d3 WAITING_FOR_REVIEW, automatic release"
-    }
+    },
+    "playListing": "2026-09-21: L & N Pro short and full descriptions updated to 59 pairs (saved; goes out with the next Pro submission); free app in-app product full_access renamed 'Full curriculum: all 59 pairs'"
   }
 }
