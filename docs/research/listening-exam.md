@@ -80,7 +80,7 @@ u, uo, uan, ü and üe (辣/纳, 乐/讷, 赖/耐, 类/内, 狼/囊, 棱/能, �
 料/尿, 林/您, 凉/娘, 零/宁, 落/诺, 卵/暖, 略/虐 …); ou has no common
 same-tone n- word (耨 nòu) and en/un have no l- syllable, so they are left
 out. Cantonese now has aam, aan, aap, aat, ai, am, ei, eoi, im, in, ing, ip,
-ik, iu, o, oi-less ou, ok, ong, oeng, ung and yun (犁/泥, 林/腍, 廉/黏,
+ik, iu, o, ou, ok, ong, oeng, ung and yun (犁/泥, 林/腍, 廉/黏,
 靈/寧, 獵/聶, 料/尿, 羅/挪, 落/諾, 郎/囊, 亂/嫩, 立/納, 辣/捺, 力/溺,
 良/娘 …); finals such as aa, au, oi and eon only pair across different
 tones, which would let a learner answer by tone instead of by consonant, so
