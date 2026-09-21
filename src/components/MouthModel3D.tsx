@@ -50,6 +50,7 @@ function ellipsoid(
 export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [sound, setSound] = useState<TargetSound>('L')
+  const [unsupported, setUnsupported] = useState(false)
 
   useEffect(() => {
     const host = hostRef.current
@@ -58,7 +59,16 @@ export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100)
     camera.position.set(0.05, 0.55, 6.8)
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    let renderer: THREE.WebGLRenderer
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    } catch (error) {
+      // Some WebViews and headless browsers cannot create a WebGL context; the
+      // rest of the app must keep working, so show the callouts without the model.
+      console.warn('3D mouth model unavailable', error)
+      setUnsupported(true)
+      return
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.setClearColor(0x000000, 0)
@@ -257,7 +267,11 @@ export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
           ))}
         </div>
       </div>
-      <div ref={hostRef} className="mouth-model-canvas" role="img" aria-label={sound === 'L' ? copy.ariaL : copy.ariaN} />
+      {unsupported ? (
+        <p className="mouth-model-fallback" data-testid="mouth-model-fallback">{copy.unavailable}</p>
+      ) : (
+        <div ref={hostRef} className="mouth-model-canvas" role="img" aria-label={sound === 'L' ? copy.ariaL : copy.ariaN} />
+      )}
       <div className="model-callouts">
         {callouts.map((callout, index) => <span key={callout}><b>{index + 1}</b>{callout}</span>)}
       </div>

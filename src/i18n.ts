@@ -111,6 +111,7 @@ export interface UICopy {
     soundPicker: string
     ariaL: string
     ariaN: string
+    unavailable: string
     tongue: string
     ridge: string
     velum: string
@@ -277,6 +278,7 @@ const copies: Record<UILanguage, UICopy> = {
       soundPicker: 'Choose model sound',
       ariaL: 'Rotatable teaching model of lateral L articulation',
       ariaN: 'Rotatable teaching model of nasal N articulation',
+      unavailable: 'The 3D model needs WebGL, which this browser does not provide. The callouts below still describe the tongue, soft palate and airflow.',
       tongue: 'tongue',
       ridge: 'alveolar ridge',
       velum: 'velum',
@@ -376,7 +378,7 @@ const copies: Record<UILanguage, UICopy> = {
       source: '课程来源', sourceBody: '以 Pronunciation Snippets 视频课程为基础，并扩展了普通话和粤语最小对立词练习。', sourceLink: '观看《L 与 N 的区别》', lessonLink: '打开 light/night 迷你课程',
     },
     model: {
-      interactive: '交互式教学模型', lateral: '边音气流 /l/', nasal: '鼻音气流 /n/', soundPicker: '选择模型发音', ariaL: '可旋转的 L 边音发音教学模型', ariaN: '可旋转的 N 鼻音发音教学模型',
+      interactive: '交互式教学模型', lateral: '边音气流 /l/', nasal: '鼻音气流 /n/', soundPicker: '选择模型发音', ariaL: '可旋转的 L 边音发音教学模型', ariaN: '可旋转的 N 鼻音发音教学模型', unavailable: '3D 模型需要 WebGL，这个浏览器不支持。下面的说明仍然描述舌位、软腭和气流。',
       tongue: '舌头', ridge: '上齿龈', velum: '软腭', airPath: '气流', lContact: '较窄的舌尖接触', lVelum: '软腭抬起', lAir: '气流从舌侧通过', nContact: '较宽的舌面封闭', nVelum: '软腭下降', nAir: '气流从鼻腔通过',
       drag: '拖动可查看斜侧面。', disclaimer: '这是用于解释目标动作的模型，不是对您舌头的扫描或测量。',
     },
@@ -450,7 +452,7 @@ const copies: Record<UILanguage, UICopy> = {
       source: '課程來源', sourceBody: '以 Pronunciation Snippets 影片課程為基礎，並延伸普通話和廣東話最小對立詞練習。', sourceLink: '觀看《L 與 N 的分別》', lessonLink: '開啟 light/night 迷你課程',
     },
     model: {
-      interactive: '互動教學模型', lateral: '邊音氣流 /l/', nasal: '鼻音氣流 /n/', soundPicker: '選擇模型發音', ariaL: '可旋轉的 L 邊音發音教學模型', ariaN: '可旋轉的 N 鼻音發音教學模型',
+      interactive: '互動教學模型', lateral: '邊音氣流 /l/', nasal: '鼻音氣流 /n/', soundPicker: '選擇模型發音', ariaL: '可旋轉的 L 邊音發音教學模型', ariaN: '可旋轉的 N 鼻音發音教學模型', unavailable: '3D 模型需要 WebGL，這個瀏覽器不支援。下面的說明仍然描述舌位、軟顎和氣流。',
       tongue: '舌頭', ridge: '上齒齦', velum: '軟顎', airPath: '氣流', lContact: '較窄的舌尖接觸', lVelum: '軟顎抬起', lAir: '氣流從舌側通過', nContact: '較寬的舌面封閉', nVelum: '軟顎下降', nAir: '氣流從鼻腔通過',
       drag: '拖動可查看斜側面。', disclaimer: '這是用來解釋目標動作的模型，並非對你的舌頭進行掃描或測量。',
     },
@@ -524,7 +526,7 @@ const copies: Record<UILanguage, UICopy> = {
       source: '課程來源', sourceBody: '根據 Pronunciation Snippets 影片課程，再加普通話同廣東話最小對立詞練習。', sourceLink: '睇《L 同 N 嘅分別》', lessonLink: '開啟 light/night 迷你練習',
     },
     model: {
-      interactive: '互動教學模型', lateral: '邊音氣流 /l/', nasal: '鼻音氣流 /n/', soundPicker: '揀模型發音', ariaL: '可以旋轉嘅 L 邊音發音教學模型', ariaN: '可以旋轉嘅 N 鼻音發音教學模型',
+      interactive: '互動教學模型', lateral: '邊音氣流 /l/', nasal: '鼻音氣流 /n/', soundPicker: '揀模型發音', ariaL: '可以旋轉嘅 L 邊音發音教學模型', ariaN: '可以旋轉嘅 N 鼻音發音教學模型', unavailable: '3D 模型要 WebGL，呢個瀏覽器唔支援。下面嘅說明照樣講舌位、軟顎同氣流。',
       tongue: '舌頭', ridge: '上齒齦', velum: '軟顎', airPath: '氣流', lContact: '較窄嘅舌尖接觸', lVelum: '軟顎升起', lAir: '氣流由舌側通過', nContact: '較闊嘅舌面封閉', nVelum: '軟顎降低', nAir: '氣流由鼻腔通過',
       drag: '拖動可以睇斜側面。', disclaimer: '呢個係解釋目標動作嘅模型，唔係掃描或者量度你條脷。',
     },

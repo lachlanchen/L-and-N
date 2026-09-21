@@ -138,6 +138,7 @@ button:disabled { cursor: not-allowed; }
 .model-switch button.active.n { background: var(--teal); }
 .mouth-model-canvas { width: 100%; height: 292px; margin: -3px 0 -4px; cursor: grab; }
 .mouth-model-canvas:active { cursor: grabbing; }
+.mouth-model-fallback { margin: 8px 0 12px; padding: 14px 16px; border-radius: 14px; background: var(--teal-soft); color: var(--navy); font-size: 14px; line-height: 1.5; }
 .mouth-model-canvas canvas { display: block; width: 100% !important; height: 100% !important; }
 .model-callouts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 0 0 10px; }
 .model-callouts span { min-height: 42px; display: flex; align-items: center; gap: 6px; padding: 7px; border: 1px solid rgba(255,255,255,.09); border-radius: 10px; background: rgba(255,255,255,.055); color: #dce9f6; font-size: 8px; font-weight: 750; line-height: 1.3; }
