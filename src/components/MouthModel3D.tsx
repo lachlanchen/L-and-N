@@ -47,28 +47,29 @@ function ellipsoid(
   return mesh
 }
 
+/** Some WebViews and headless browsers cannot create a WebGL context; the rest of the app must keep working. */
+function supportsWebGL(): boolean {
+  try {
+    const probe = document.createElement('canvas')
+    return Boolean(probe.getContext('webgl2') ?? probe.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
+
 export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [sound, setSound] = useState<TargetSound>('L')
-  const [unsupported, setUnsupported] = useState(false)
+  const [unsupported] = useState(() => !supportsWebGL())
 
   useEffect(() => {
     const host = hostRef.current
-    if (!host) return
+    if (!host || unsupported) return
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100)
     camera.position.set(0.05, 0.55, 6.8)
-    let renderer: THREE.WebGLRenderer
-    try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    } catch (error) {
-      // Some WebViews and headless browsers cannot create a WebGL context; the
-      // rest of the app must keep working, so show the callouts without the model.
-      console.warn('3D mouth model unavailable', error)
-      setUnsupported(true)
-      return
-    }
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.setClearColor(0x000000, 0)
@@ -253,7 +254,7 @@ export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
       renderer.dispose()
       renderer.domElement.remove()
     }
-  }, [sound])
+  }, [sound, unsupported])
 
   const callouts = sound === 'L' ? [copy.lContact, copy.lVelum, copy.lAir] : [copy.nContact, copy.nVelum, copy.nAir]
 
