@@ -269,5 +269,32 @@
       "appStore": "version 1.0.4 (d3e42041-09c1-480f-8ba9-c91834c62705) with build 9, What's New set, review submission 72749e0c-d8c7-4cdb-ae29-51c6754cf7d3 WAITING_FOR_REVIEW, automatic release"
     },
     "playListing": "2026-09-21: L & N Pro short and full descriptions updated to 59 pairs (saved; goes out with the next Pro submission); free app in-app product full_access renamed 'Full curriculum: all 59 pairs'"
+  },
+  "hearWordsTestRelease": {
+    "preparedAt": "2026-09-21",
+    "version": "1.0.4",
+    "sourceCommit": "0404a0e",
+    "featureCommit": "c02d05f",
+    "reason": "Two hear-each-word buttons under the Listen exam answers; test channels only, at the user's request",
+    "android": {
+      "versionCode": 13,
+      "versionName": "1.0.4",
+      "freeAabSha256": "19fc7921f222408118eb16f70a5f968a02461b0d681cc0ca2ee15d8c38acf961",
+      "proAabSha256": "7b043797de30be2ac245ebed5734efb8d5b4448aa9351ded4f50c9e651f08ae8",
+      "apk": {
+        "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build13-test.apk",
+        "sha256": "04b884711552ebd2faef6d0dacc2cdcd8c61b348a4ecccc7e665636f8abd3d50"
+      },
+      "play": "internal track 13 (1.0.4) published on the free app and on L & N Pro; production untouched (free 11 and Pro 10 still in review)"
+    },
+    "ios": {
+      "build": 10,
+      "marketingVersion": "1.0.4",
+      "deliveryUuid": "81bcab6a-069f-4dfe-85ed-853004b04e62",
+      "ipaSha256": "234384c809709e27c3a04fe5d92c6cbcd70e83ba1228754d87ce2a7e90793bba",
+      "processingState": "VALID",
+      "testflight": "internal group; added to L & N Public Beta with beta review submitted",
+      "appStore": "not attached; the 1.0.4 review submission keeps build 9"
+    }
   }
 }

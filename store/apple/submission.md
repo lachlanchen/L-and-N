@@ -30,6 +30,10 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 - TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
 - App Store version 1.0.1 (build 3) was submitted on 2026-09-18, then approved and auto-released on 2026-09-19 at USD 0.99. The price was temporarily reverted to Free on 2026-09-18 before USD 0.99 was re-applied. Account onboarding details are retained only in the ignored, access-restricted `.runtime/store/handoff.md`.
 
+## TestFlight build 10 (1.0.4), 2026-09-21 — hear-each-word buttons
+
+- Test channel only, at the user's request. IPA SHA-256 `234384c809709e27c3a04fe5d92c6cbcd70e83ba1228754d87ce2a7e90793bba`, delivery `81bcab6a-069f-4dfe-85ed-853004b04e62`, processed `VALID`, internal group, added to `L & N Public Beta` with beta review submitted. The App Store 1.0.4 review submission keeps build 9; build 10 (or a later one) goes to the App Store with the next submission.
+
 ## App Store 1.0.4 (build 9), 2026-09-21 — Waiting for Review, every Mandarin and Cantonese final
 
 - Build 9 (marketing version 1.0.4) ships the 28 new same-tone pairs with verified studio audio (59 pairs). IPA SHA-256 `b028a0381ef148cd1d35c82739d5494942524bad5f46646c63fa6b8f4adaa44e`, delivery/build id `6922c99f-4900-4570-8317-d9db6b63a1bd`, processed `VALID`, in the internal group, added to `L & N Public Beta` with beta review submitted. App Store version 1.0.4 (`d3e42041-09c1-480f-8ba9-c91834c62705`) created with build 9 and What's New in en-US; review submission `72749e0c-d8c7-4cdb-ae29-51c6754cf7d3` **WAITING_FOR_REVIEW**, automatic release. 1.0.3 was already live, so nothing was displaced.

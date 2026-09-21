@@ -26,6 +26,10 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Internal build 13 (1.0.4), 2026-09-21 — hear-each-word buttons
+
+- Test channels only, at the user's request: internal track `13 (1.0.4)` on the free app and on L & N Pro (free bundle SHA-256 `19fc7921f222408118eb16f70a5f968a02461b0d681cc0ca2ee15d8c38acf961`, Pro `7b043797de30be2ac245ebed5734efb8d5b4448aa9351ded4f50c9e651f08ae8`), APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build13-test.apk. Adds two buttons under the Listen exam answers that play each word of the pair on its own (commit `c02d05f`). Production still holds until the pending reviews finish; release 13 is what will go to production then.
+
 ## Update 1.0.4 (build 12), 2026-09-21 — every Mandarin and Cantonese final
 
 - 28 new same-tone minimal pairs (commit `467ed3a`): Mandarin now covers 22 finals and Cantonese 21, 59 pairs in total, each word with a verified studio clip. Free bundle SHA-256 `a67bd86a78f1ecca702c3a4624e5c828e273087bf1f320873de6b500b537f884`, Pro bundle `5c35eab29dd82dc5df7acdf575e8cf62ad329d33fe3522d296961a1e53053cd4`. Internal track shows `12 (1.0.4)` on both apps; APK https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build12-test.apk. Production was left alone: the free app's release 11 and the Pro listing's first review (build 10) are still in review and Play would restart them, so release 12 goes to production after those reviews complete. The Pro listing's short and full descriptions now say 59 pairs (saved with the pending changes) and the free app's `full_access` product is named "Full curriculum: all 59 pairs".
