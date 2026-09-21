@@ -73,3 +73,7 @@ Gmail is authenticated in the store profile. Read provider mail through CDP: ope
 ## 6. Web release
 
 `npm run check`, deterministic tarball of `dist` + `ops/landn_gateway.py`, `scp` to the admin host, extract into `/opt/l-and-n-web/releases/<sha>` (root, `a+rX`), atomic `current` symlink swap, restart `l-and-n-gateway.service`. Caddy site `/etc/lazyedge/l-and-n.caddy`: `caddy validate` then reload. Keep current + one rollback release.
+
+## Lesson 2026-09-22: a version's build must carry the same marketing version
+
+App Store Connect marks a version **Invalid Binary** (review item REJECTED, submission UNRESOLVED_ISSUES) when the attached build's `CFBundleShortVersionString` differs from the version string. 1.0.5 was created on build 10, which had been built as 1.0.4. Before creating a new App Store version, bump `MARKETING_VERSION` in `ios/App/App.xcodeproj/project.pbxproj` together with `CURRENT_PROJECT_VERSION`, archive and upload, and only then create the version with that build. A build uploaded for TestFlight under the previous marketing version cannot be reused for the next App Store version.
