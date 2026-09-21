@@ -307,9 +307,12 @@
       "mainAsset": "assets/index-Wa7fbg9p.js"
     },
     "ios": {
-      "build": 10,
+      "build": 11,
       "marketingVersion": "1.0.5",
-      "appStore": "version 1.0.5 (1f1149c9-69a1-47a6-a274-5645fe1f7738) with build 10, What's New, 7 iPhone 6.5\" and 7 iPad 13\" screenshots; review submission 639729e6-b9e4-4118-801d-d3fd6038c9fa WAITING_FOR_REVIEW"
+      "buildId": "c2ee7ee4-9350-4a73-812d-c85f4fa2f237",
+      "ipaSha256": "da3888c87d5c894aee060853b09b1ce6e2296aed2ee6c4ffd7c2dac6de71449d",
+      "appStore": "version 1.0.5 (1f1149c9-69a1-47a6-a274-5645fe1f7738) on build 11 after build 10 was rejected as Invalid Binary (marketing-version mismatch); review submission 6a136111-63a6-45bf-92dd-9ea0063fdd82 submitted 2026-09-22",
+      "testflight": "internal group; public beta group added"
     },
     "android": {
       "play": "free and Pro main store listings now carry the 7 new phone screenshots (saved; the free app's change waits behind the release 13 review, the Pro change behind its first review)"

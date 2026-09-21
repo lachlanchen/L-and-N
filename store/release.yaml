@@ -46,7 +46,7 @@ platforms:
     minimum_os: 15.0
     artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
     app_store_id: 6808872450
-    status: 1_0_1_build_3_live_ready_for_sale_2026_09_19; 1_0_2_build_7_live_ready_for_sale; 1_0_3_build_8_live_ready_for_sale_2026_09_21; 1_0_4_build_9_live_ready_for_sale_2026_09_21; 1_0_5_build_10_new_screenshots_waiting_for_review_2026_09_21; build_10_in_internal_testflight_public_beta_review_submitted_2026_09_21; all_175_territories_enabled_dsa_active
+    status: 1_0_1_build_3_live_ready_for_sale_2026_09_19; 1_0_2_build_7_live_ready_for_sale; 1_0_3_build_8_live_ready_for_sale_2026_09_21; 1_0_4_build_9_live_ready_for_sale_2026_09_21; 1_0_5_build_10_invalid_binary_version_mismatch; 1_0_5_build_11_resubmitted_2026_09_22; build_10_in_internal_testflight_public_beta_review_submitted_2026_09_21; all_175_territories_enabled_dsa_active
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
@@ -64,8 +64,8 @@ testing:
     direct_apk_sha256: 04b884711552ebd2faef6d0dacc2cdcd8c61b348a4ecccc7e665636f8abd3d50
     artifact_manifest: store/artifacts/native-release-1.0.2.json
   ios_watchos:
-    version: 1.0.4
-    build: 10
+    version: 1.0.5
+    build: 11
     internal_group: L & N Internal Testers
     internal_status: testing
     public_group: L & N Public Beta
