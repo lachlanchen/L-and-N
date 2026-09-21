@@ -30,7 +30,9 @@ Apple approved the review on 2026-09-17 ("Welcome to the App Store" and "Review 
 - TestFlight: the internal group sees every build, so build 3 is available there; build 3 was added to `L & N Public Beta` and its Beta App Review submission is **Waiting for Review**. Test notes were set through the API.
 - App Store version 1.0.1 (build 3) was submitted on 2026-09-18, then approved and auto-released on 2026-09-19 at USD 0.99. The price was temporarily reverted to Free on 2026-09-18 before USD 0.99 was re-applied. Account onboarding details are retained only in the ignored, access-restricted `.runtime/store/handoff.md`.
 
-## App Store 1.0.3 (build 8), 2026-09-20 — Waiting for Review, kept takes
+## App Store 1.0.3 (build 8), 2026-09-20 — approved 2026-09-21, kept takes
+
+- 2026-09-21: App Review approved; the API reports `READY_FOR_SALE` / review submission `COMPLETE`, so 1.0.3 is live on the App Store.
 
 - Build 8 (marketing version 1.0.3) adds kept takes with replay; the native recorder's PCM is packaged as WAV for playback. Uploaded from the Mac, processed `VALID`, notes set, in the internal group, added to `L & N Public Beta` (beta review waiting). App Store version 1.0.3 (`7c199d8c-4994-4ee3-9937-1550c7bec37b`) created with build 8, What's New in en-US, review submission `e4064880-a3c9-45e4-a9c1-d39c177fef30` **WAITING_FOR_REVIEW**, automatic release. 1.0.2 had already been approved and is live, so nothing was displaced.
 

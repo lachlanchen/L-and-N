@@ -233,7 +233,7 @@
       "buildId": "18a122a5-5c82-4848-a732-213650cc603e",
       "processingState": "VALID",
       "testflight": "internal group; public group added, beta review WAITING_FOR_REVIEW",
-      "appStore": "version 1.0.3 (7c199d8c-4994-4ee3-9937-1550c7bec37b) submitted, review submission e4064880-a3c9-45e4-a9c1-d39c177fef30 WAITING_FOR_REVIEW, automatic release"
+      "appStore": "version 1.0.3 (7c199d8c-4994-4ee3-9937-1550c7bec37b) approved 2026-09-21; review submission e4064880-a3c9-45e4-a9c1-d39c177fef30 COMPLETE, appStoreState READY_FOR_SALE"
     }
   }
 }
