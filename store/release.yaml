@@ -32,9 +32,9 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: /opt/l-and-n-web/releases/29bf6ad873bd56a9480a590fdacab62c308e819b2758fa1f57ec19a632d65c2e
+    release: /opt/l-and-n-web/releases/78dbab9488ea354d121c5123b615e08e2f831ffd5dff5c4ed7a96af314b678a1
     source_commit: 775ebc15aaaec7e3bdb48bdcc29f239b65b97007
-    main_asset: assets/index-5iWkZj1v.js
+    main_asset: assets/index-2ygRNK_V.js
     rollback: /opt/l-and-n-web/releases/428b118f8a9c13f469addb1dd0c6a77dfcee8cc384f52310d326abcb39a9cf8c
   android:
     min_sdk: 24

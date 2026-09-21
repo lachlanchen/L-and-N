@@ -243,8 +243,9 @@
     "featureCommit": "467ed3a",
     "reason": "28 new same-tone minimal pairs so every Mandarin and Cantonese final that takes both l- and n- is covered (59 pairs, 118 verified studio clips)",
     "web": {
-      "release": "/opt/l-and-n-web/releases/29bf6ad873bd56a9480a590fdacab62c308e819b2758fa1f57ec19a632d65c2e",
-      "mainAsset": "assets/index-5iWkZj1v.js"
+      "release": "/opt/l-and-n-web/releases/78dbab9488ea354d121c5123b615e08e2f831ffd5dff5c4ed7a96af314b678a1",
+      "mainAsset": "assets/index-2ygRNK_V.js",
+      "note": "2026-09-21 second web release (commit c02d05f): two hear-each-word buttons under the exam answers; goes into the next native build"
     },
     "android": {
       "versionCode": 12,
