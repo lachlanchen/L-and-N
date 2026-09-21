@@ -89,6 +89,8 @@ export interface UICopy {
     played: string
     yourAnswer: string
     replayItem: string
+    hearWord: string
+    hearWords: string
     unavailable: string
     audioError: string
   }
@@ -248,6 +250,8 @@ const copies: Record<UILanguage, UICopy> = {
       played: 'Played',
       yourAnswer: 'You chose',
       replayItem: 'Play this word',
+      hearWord: 'Hear {word}',
+      hearWords: 'Hear each word on its own',
       unavailable: 'Ear training needs two studio recordings that were both verified for this contrast. This practice language has none yet.',
       audioError: 'The audio could not be played. Check the volume, then try again.',
     },
@@ -358,7 +362,7 @@ const copies: Record<UILanguage, UICopy> = {
       replay: '再播一次', newExam: '换一组', chooseHeard: '按顺序点选你听到的词。', answerProgress: '已选 {done} / {total}',
       undo: '撤销', clear: '清空', submit: '提交答案', resultTitle: '听辨结果', correctCount: '答对 {correct} / {total}',
       perfect: '全部听对了。', keepGoing: '重听听错的那几个，再换一组试试。', played: '播放', yourAnswer: '你选',
-      replayItem: '播放这个词', unavailable: '听辨训练需要这组对立词的两个示范录音都通过验证，当前练习语言暂时还没有。',
+      replayItem: '播放这个词', hearWord: '听 {word}', hearWords: '单独听听这两个词', unavailable: '听辨训练需要这组对立词的两个示范录音都通过验证，当前练习语言暂时还没有。',
       audioError: '无法播放音频。请检查音量后重试。',
     },
     learn: {
@@ -432,7 +436,7 @@ const copies: Record<UILanguage, UICopy> = {
       replay: '再播一次', newExam: '換一組', chooseHeard: '按順序點選你聽到的詞。', answerProgress: '已選 {done} / {total}',
       undo: '復原', clear: '清空', submit: '提交答案', resultTitle: '聽辨結果', correctCount: '答對 {correct} / {total}',
       perfect: '全部聽對了。', keepGoing: '重聽聽錯的那幾個，再換一組試試。', played: '播放', yourAnswer: '你選',
-      replayItem: '播放這個詞', unavailable: '聽辨訓練需要這組對立詞的兩個示範錄音都通過驗證，目前的練習語言暫時還沒有。',
+      replayItem: '播放這個詞', hearWord: '聽 {word}', hearWords: '單獨聽聽這兩個詞', unavailable: '聽辨訓練需要這組對立詞的兩個示範錄音都通過驗證，目前的練習語言暫時還沒有。',
       audioError: '無法播放音訊。請檢查音量後再試。',
     },
     learn: {
@@ -506,7 +510,7 @@ const copies: Record<UILanguage, UICopy> = {
       replay: '再播一次', newExam: '換一組', chooseHeard: '順住次序撳你聽到嘅詞。', answerProgress: '已揀 {done} / {total}',
       undo: '復原', clear: '清空', submit: '交答案', resultTitle: '聽辨結果', correctCount: '啱咗 {correct} / {total}',
       perfect: '全部聽啱晒。', keepGoing: '重聽錯咗嗰幾個，再換一組試下。', played: '播咗', yourAnswer: '你揀',
-      replayItem: '播呢個詞', unavailable: '聽辨練習要呢組對立詞兩個示範錄音都驗證過，宜家呢個練習語言仲未有。',
+      replayItem: '播呢個詞', hearWord: '聽 {word}', hearWords: '分開聽下呢兩個詞', unavailable: '聽辨練習要呢組對立詞兩個示範錄音都驗證過，宜家呢個練習語言仲未有。',
       audioError: '播唔到音訊。檢查音量再試。',
     },
     learn: {

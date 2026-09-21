@@ -310,6 +310,19 @@ describe('listening exam', () => {
     expect(screen.getByTestId('exam-submit').hasAttribute('disabled')).toBe(false)
   })
 
+  it('lets the learner hear each word of the pair on its own while answering', async () => {
+    const play = await openExam()
+    fireEvent.click(play)
+    await waitFor(() => expect(screen.getByTestId('exam-replay')).toBeTruthy())
+    audioMocks.playSequence.mockClear()
+    fireEvent.click(screen.getByTestId('exam-hear-l'))
+    expect(audioMocks.playSequence.mock.calls[0][0]).toEqual(['en-light-night'])
+    fireEvent.click(screen.getByTestId('exam-hear-n'))
+    expect(audioMocks.playSequence.mock.calls[1][0]).toEqual(['en-night-light'])
+    expect(screen.getByTestId('exam-hear-l').textContent).toContain('light')
+    expect(screen.getByTestId('exam-hear-n').textContent).toContain('night')
+  })
+
   it('scores the submitted answers against what was played', async () => {
     const play = await openExam()
     fireEvent.click(play)

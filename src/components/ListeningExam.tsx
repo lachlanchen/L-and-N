@@ -315,6 +315,20 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
                 </button>
               ))}
             </div>
+            <div className="hear-words" role="group" aria-label={copy.listen.hearWords}>
+              {([pair.lateral, pair.nasal] as const).map((exercise) => (
+                <button
+                  key={exercise.id}
+                  type="button"
+                  className={`hear ${exercise.target.toLowerCase()}`}
+                  data-testid={`exam-hear-${exercise.target.toLowerCase()}`}
+                  disabled={busy}
+                  onClick={() => playOne(exercise.id)}
+                >
+                  <Volume2 size={16} /> {formatCopy(copy.listen.hearWord, { word: exercise.word.split(' ')[0] })}
+                </button>
+              ))}
+            </div>
             <div className="exam-secondary">
               <button type="button" disabled={!answered || busy} onClick={() => setAnswers((current) => current.slice(0, -1))}>
                 <Undo2 size={16} /> {copy.listen.undo}

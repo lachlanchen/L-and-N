@@ -249,6 +249,11 @@ button:disabled { cursor: not-allowed; }
 .exam-word-head { margin-right: 4px; }
 .exam-word .focus.l { color: var(--coral); }
 .exam-word .focus.n { color: var(--teal); }
+.hear-words { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.hear-words .hear { min-height: 40px; border-radius: 12px; border: 1px dashed var(--line); background: white; color: var(--navy); font-size: 13px; font-weight: 750; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
+.hear-words .hear.l { color: #c8432f; }
+.hear-words .hear.n { color: #0f8a7e; }
+.hear-words .hear:disabled { opacity: .45; cursor: default; }
 .exam-secondary { display: flex; gap: 8px; margin-top: 14px; }
 .exam-secondary button { flex: 1; min-height: 44px; border: 1px solid var(--line); background: white; color: var(--muted); border-radius: 14px; font-size: 13px; font-weight: 750; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
 .exam-secondary button.primary { flex: 1.4; background: var(--teal); border-color: var(--teal); color: white; font-weight: 850; }
