@@ -3,6 +3,7 @@ import { extractAcousticFeatures } from './acoustics'
 import { exercises } from '../data/curriculum'
 import onsetTokens from './__fixtures__/onset-tokens.json'
 import { detectSoundFromTranscript, editDistance, inferAcousticSound, normalizeSpeech, scorePronunciation } from './scoring'
+import { syllableOf } from './han-readings'
 
 describe('speech normalization', () => {
   it('normalizes case, tone marks, and punctuation', () => {
@@ -162,5 +163,62 @@ describe('trained onset network on real speech', () => {
       expect(Math.abs((features.onsetNasalProbability ?? 0) - token.nasalProbability)).toBeLessThan(0.15)
       expect(inferAcousticSound(features, 'en-US').detected).toBe(expected)
     }
+  })
+})
+
+describe('Chinese attempts are judged by sound, not by character', () => {
+  const features = {
+    rms: 0.08,
+    noiseFloor: 0.003,
+    zeroCrossingRate: 0.05,
+    lowBandRatio: 0.08,
+    midBandRatio: 0.52,
+    spectralCentroidHz: 1500,
+    spectralTiltDb: 0,
+    pitchHz: 145,
+    pitchContour: [142, 144, 145, 146, 148],
+    firstFormantHz: 500,
+    secondFormantHz: 1250,
+    formantSpacingHz: 750,
+    firstFormantBandwidthHz: 160,
+    nasalPeakContrastDb: 7,
+    voicedContinuity: 0.9,
+    durationMs: 900,
+    onsetMs: 35,
+    onsetDurationMs: 240,
+    signalQuality: 0.92,
+    waveform: [0, 0.2, -0.2, 0.12],
+    spectrum: [0.1, 0.35, 0.8, 0.5],
+  }
+
+  const mandarin = exercises.find((item) => item.id === 'zh-nan-lan')!
+  const cantonese = exercises.find((item) => item.id === 'yue-naam-laam')!
+
+  it('accepts a homophone of the Mandarin target', () => {
+    // The recognizer writes 男 when the learner said 南: same syllable.
+    expect(detectSoundFromTranscript(mandarin, '男')).toBe('N')
+    expect(detectSoundFromTranscript(mandarin, '楠')).toBe('N')
+  })
+
+  it('accepts a homophone of the Cantonese target', () => {
+    expect(detectSoundFromTranscript(cantonese, '南')).toBe('N')
+  })
+
+  it('still hears the paired word as the other sound', () => {
+    expect(detectSoundFromTranscript(mandarin, '蓝')).toBe('L')
+    expect(detectSoundFromTranscript(mandarin, '兰')).toBe('L')
+    expect(detectSoundFromTranscript(cantonese, '藍')).toBe('L')
+  })
+
+  it('scores the word as recognized when a homophone comes back', () => {
+    const score = scorePronunciation(mandarin, '男', features)
+    expect(score.detectedSound).toBe('N')
+    expect(score.recognition).toBe(100)
+  })
+
+  it('reads ü as the v the table uses', () => {
+    expect(syllableOf('旅 lǚ')).toBe('lv')
+    expect(syllableOf('南 nán')).toBe('nan')
+    expect(syllableOf('男 naam4')).toBe('naam')
   })
 })

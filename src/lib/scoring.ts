@@ -1,4 +1,5 @@
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage } from '../types'
+import { homophonesOf, soundsLike } from './han-readings'
 
 const clampScore = (value: number) => Math.round(Math.min(100, Math.max(0, value)))
 
@@ -33,11 +34,13 @@ function comparableWord(value: string): string {
   return normalizeSpeech(value).split(' ')[0] ?? ''
 }
 
-function recognitionScore(expected: string, transcript: string): number {
+function recognitionScore(language: TrainingLanguage, expected: string, transcript: string): number {
   const target = comparableWord(expected)
   const heard = normalizeSpeech(transcript)
   if (!target || !heard) return 20
   if (heard.split(' ').includes(target)) return 100
+  // A Chinese homophone is the word, spelled with another character.
+  if (soundsLike(language, expected, heard)) return 100
   const best = Math.min(...heard.split(' ').map((word) => editDistance(target, word)))
   return clampScore(100 * (1 - best / Math.max(target.length, 1)))
 }
@@ -235,8 +238,18 @@ export function inferAcousticSound(
   }
 }
 
-function heardForms(word: string, alternatives: string[] | undefined): string[] {
-  const forms = new Set<string>([comparableWord(word), ...(alternatives ?? []).map(normalizeSpeech)])
+function heardForms(
+  language: TrainingLanguage,
+  word: string,
+  alternatives: string[] | undefined,
+): string[] {
+  // For Chinese the homophone table decides, so a recognizer that writes 男
+  // for 南 still counts: same syllable, same initial, same attempt.
+  const forms = new Set<string>([
+    comparableWord(word),
+    ...(alternatives ?? []).map(normalizeSpeech),
+    ...homophonesOf(language, word),
+  ])
   return [...forms].filter(Boolean)
 }
 
@@ -258,8 +271,8 @@ export function detectSoundFromTranscript(exercise: Exercise, transcript: string
   const heard = normalizeSpeech(transcript)
   if (!heard) return null
   const pairSound: TargetSound = exercise.target === 'L' ? 'N' : 'L'
-  const targetForms = heardForms(exercise.word, exercise.heardAs)
-  const pairForms = heardForms(exercise.pair, exercise.pairHeardAs)
+  const targetForms = heardForms(exercise.language, exercise.word, exercise.heardAs)
+  const pairForms = heardForms(exercise.language, exercise.pair, exercise.pairHeardAs)
   const words = heard.split(' ')
   const spaced = exercise.language === 'en-US'
   const contains = (forms: string[]) =>
@@ -297,12 +310,12 @@ export function scorePronunciation(
   const recognizedSound = detectSoundFromTranscript(exercise, transcript)
   const heardPair = recognizedSound === pairSound
   const heardTarget = recognizedSound === exercise.target
-  const rawRecognition = recognitionScore(exercise.word, transcript)
+  const rawRecognition = recognitionScore(exercise.language, exercise.word, transcript)
   // "night" is one edit away from "light", so string similarity alone would
   // still award ~80 for the wrong word. When the recognizer clearly heard the
   // paired word, the word score must say so.
   const recognition = heardPair ? Math.min(rawRecognition, 30) : rawRecognition
-  const pairRecognition = recognitionScore(exercise.pair, transcript)
+  const pairRecognition = recognitionScore(exercise.language, exercise.pair, transcript)
   const contrast = heardPair ? clampScore(recognition - 30) : clampScore(recognition - pairRecognition * 0.55 + 38)
   const acousticInference = inferAcousticSound(features, exercise.language, calibration)
   const targetEvidence = exercise.target === 'L' ? acousticInference.lEvidence : acousticInference.nEvidence
