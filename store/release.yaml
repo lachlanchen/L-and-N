@@ -1,7 +1,7 @@
 app:
   name: L & N
-  version: 1.0.7
-  build: 16
+  version: 1.0.8
+  build: 17
   owner: LazyingArt LLC
   support_email: echomind@lazying.art
   marketing_url: https://l-and-n.lazying.art
@@ -32,15 +32,15 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: /opt/l-and-n-web/releases/287ac56f43040998dd382a5d599e25488ba7d6951f62a98ed9c7256cdbdbda0d
+    release: /opt/l-and-n-web/releases/9591f2413cc752bc495fa46f16d02e09c9be2ba7355f81f2324bdfb887aeb687
     source_commit: 775ebc15aaaec7e3bdb48bdcc29f239b65b97007
-    main_asset: assets/index-UKSCHkPi.js
+    main_asset: assets/index-NfvsP63s.js
     rollback: /opt/l-and-n-web/releases/428b118f8a9c13f469addb1dd0c6a77dfcee8cc384f52310d326abcb39a9cf8c
   android:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/release/app-release.aab
-    status: production_live_build_4_1_0_1; production_build_11_1_0_3_live_2026_09_21; production_build_13_1_0_4_submitted_2026_09_21; internal_testing_build_16_1_0_7_cantonese_2026_09_23
+    status: production_live_build_4_1_0_1; production_build_11_1_0_3_live_2026_09_21; production_build_13_1_0_4_submitted_2026_09_21; internal_testing_build_17_1_0_8_cantonese_2026_09_23
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0
