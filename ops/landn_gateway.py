@@ -157,6 +157,9 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_header("Content-Length", str(len(body)))
                 self.send_header("Cache-Control", "no-store, private")
                 self.send_header("X-Content-Type-Options", "nosniff")
+                if self.cors_origin:
+                    self.send_header("Access-Control-Allow-Origin", self.cors_origin)
+                    self.send_header("Vary", "Origin")
                 self.end_headers()
                 self.wfile.write(body)
         except KeyError:

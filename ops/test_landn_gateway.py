@@ -21,3 +21,14 @@ class GatewayTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_native_app_origins_are_allowed() -> None:
+    # The packaged apps load from their own local origin, so they must be
+    # allowed or Android has no word recognition at all.
+    allowed = landn_gateway.allowed_origins()
+    assert "https://l-and-n.lazying.art" in allowed
+    assert "https://localhost" in allowed
+    assert "capacitor://localhost" in allowed
+    assert landn_gateway.exact_origin_allowed("capacitor://localhost", allowed)
+    assert not landn_gateway.exact_origin_allowed("https://evil.example", allowed)
