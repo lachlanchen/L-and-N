@@ -41,11 +41,26 @@ rate_window = RateWindow()
 upstream_slot = threading.BoundedSemaphore(1)
 
 
-def exact_origin_allowed(value: str | None, allowed_origin: str) -> bool:
+# The packaged Android and iOS apps are not served from the site, so their
+# WebView origin has to be allowed as well or they have no transcription at
+# all: Android's system WebView has no speech recognizer, and Apple's
+# dictation returns nothing for some languages.
+NATIVE_APP_ORIGINS = ("https://localhost", "capacitor://localhost", "ionic://localhost")
+
+
+def allowed_origins() -> tuple[str, ...]:
+    configured = os.environ.get("LANDN_ALLOWED_ORIGIN", "https://l-and-n.lazying.art")
+    return tuple(part.strip() for part in configured.split(",") if part.strip()) + NATIVE_APP_ORIGINS
+
+
+def exact_origin_allowed(value: str | None, allowed_origin: str | tuple[str, ...]) -> bool:
     if not value:
         return False
     parsed = urlsplit(value)
-    return f"{parsed.scheme}://{parsed.netloc}" == allowed_origin
+    candidate = f"{parsed.scheme}://{parsed.netloc}"
+    if isinstance(allowed_origin, str):
+        return candidate == allowed_origin
+    return candidate in allowed_origin
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -58,8 +73,25 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
+        cors_origin = getattr(self, "cors_origin", None)
+        if cors_origin:
+            self.send_header("Access-Control-Allow-Origin", cors_origin)
+            self.send_header("Vary", "Origin")
         self.end_headers()
         self.wfile.write(body)
+
+    def do_OPTIONS(self) -> None:  # noqa: N802
+        origin = self.headers.get("Origin")
+        if self.path == "/api/pronunciation/transcriptions" and exact_origin_allowed(origin, allowed_origins()):
+            self.send_response(204)
+            self.send_header("Access-Control-Allow-Origin", origin or "")
+            self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Access-Control-Max-Age", "600")
+            self.send_header("Vary", "Origin")
+            self.end_headers()
+            return
+        self._json(404, {"error": "not_found"})
 
     def do_GET(self) -> None:  # noqa: N802
         if self.path != "/healthz":
@@ -72,12 +104,14 @@ class Handler(BaseHTTPRequestHandler):
             self._json(404, {"error": "not_found"})
             return
 
-        allowed_origin = os.environ.get("LANDN_ALLOWED_ORIGIN", "https://l-and-n.lazying.art")
+        allowed = allowed_origins()
         origin = self.headers.get("Origin")
         referer = self.headers.get("Referer")
-        if not (exact_origin_allowed(origin, allowed_origin) or exact_origin_allowed(referer, allowed_origin)):
+        if not (exact_origin_allowed(origin, allowed) or exact_origin_allowed(referer, allowed)):
             self._json(403, {"error": "origin_denied"})
             return
+        # A WebView reads the response only when the origin is echoed back.
+        self.cors_origin = origin if exact_origin_allowed(origin, allowed) else None
 
         client = self.headers.get("X-LAndN-Client-Address", self.client_address[0])
         if not rate_window.allow(client):

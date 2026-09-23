@@ -198,25 +198,43 @@ interface WhisperResponse {
   text?: string
 }
 
-export async function transcribeWithWhisper(
+/**
+ * Where the transcription request goes.
+ *
+ * A packaged app is served from its own local origin, so a relative path
+ * reaches the bundle rather than the site and the request simply fails. The
+ * native builds therefore call the public endpoint, which now allows the
+ * WebView origins. Android needs this to have any word recognition at all,
+ * and it gives iOS a second chance when Apple's dictation returns nothing.
+ */
+function transcriptionEndpoint(): string {
+  const local = /^(capacitor|ionic):/.test(window.location.protocol) || window.location.hostname === 'localhost'
+  return local ? 'https://l-and-n.lazying.art/api/pronunciation/transcriptions' : '/api/pronunciation/transcriptions'
+}
+
+/** The language hint for one transcription attempt. */
+function whisperLanguage(language: TrainingLanguage): string {
+  // The service recognizes `yue`, and asking for it keeps short Cantonese
+  // clips from being read as Mandarin.
+  return language === 'en-US' ? 'en' : language === 'yue-HK' ? 'yue' : 'zh'
+}
+
+async function postTranscription(
   blob: Blob,
-  language: TrainingLanguage,
-  timeoutMs = 15000,
+  language: string,
+  timeoutMs: number,
 ): Promise<string> {
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
   const body = new FormData()
   const extension = blob.type.includes('mp4') ? 'm4a' : 'webm'
   body.append('file', blob, `practice.${extension}`)
-  // The transcription service recognizes `yue`, and asking for it keeps short
-  // Cantonese clips from being read as Mandarin.
-  body.append('language', language === 'en-US' ? 'en' : language === 'yue-HK' ? 'yue' : 'zh')
+  body.append('language', language)
   try {
-    const response = await fetch('/api/pronunciation/transcriptions', {
+    const response = await fetch(transcriptionEndpoint(), {
       method: 'POST',
       body,
       cache: 'no-store',
-      credentials: 'same-origin',
       signal: controller.signal,
     })
     if (!response.ok) return ''
@@ -227,6 +245,24 @@ export async function transcribeWithWhisper(
   } finally {
     window.clearTimeout(timeout)
   }
+}
+
+/** True when a transcript carries no letters or characters, only punctuation. */
+function isEmptyTranscript(value: string): boolean {
+  return !/[\p{L}\p{N}]/u.test(value)
+}
+
+export async function transcribeWithWhisper(
+  blob: Blob,
+  language: TrainingLanguage,
+  timeoutMs = 15000,
+): Promise<string> {
+  const first = await postTranscription(blob, whisperLanguage(language), timeoutMs)
+  if (!isEmptyTranscript(first)) return first
+  // A short clip often comes back as punctuation under a forced language.
+  // Letting the service detect the language itself recovers many of those.
+  const second = await postTranscription(blob, 'auto', timeoutMs)
+  return isEmptyTranscript(second) ? '' : second
 }
 
 export function transcribeWithAllowedFallback(
