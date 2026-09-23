@@ -216,6 +216,21 @@ describe('Chinese attempts are judged by sound, not by character', () => {
     expect(score.recognition).toBe(100)
   })
 
+  it('accepts the romanized text the transcription service returns', () => {
+    // Whisper writes short Cantonese clips in Latin letters, never in Han.
+    expect(detectSoundFromTranscript(cantonese, 'Nam.')).toBe('N')
+    expect(detectSoundFromTranscript(cantonese, 'naam4')).toBe('N')
+    expect(detectSoundFromTranscript(cantonese, 'Lam')).toBe('L')
+    expect(detectSoundFromTranscript(mandarin, 'nan')).toBe('N')
+    expect(detectSoundFromTranscript(mandarin, 'lan')).toBe('L')
+  })
+
+  it('scores a romanized transcript as the word', () => {
+    const score = scorePronunciation(cantonese, 'Nam.', features)
+    expect(score.detectedSound).toBe('N')
+    expect(score.recognition).toBe(100)
+  })
+
   it('reads ü as the v the table uses', () => {
     expect(syllableOf('旅 lǚ')).toBe('lv')
     expect(syllableOf('南 nán')).toBe('nan')

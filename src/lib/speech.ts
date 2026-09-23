@@ -54,6 +54,16 @@ export function isIOSWebBrowser(): boolean {
   return iOSDevice || iPadDesktopMode
 }
 
+/**
+ * The tag the browser speech recognizer expects. Chrome has no `yue-HK`; its
+ * Cantonese voice is `yue-Hant-HK`, and an unknown tag makes the recognizer
+ * end with no result at all, which is why Cantonese attempts reported that no
+ * word could be recognized.
+ */
+export function recognitionLocale(language: TrainingLanguage): string {
+  return language === 'yue-HK' ? 'yue-Hant-HK' : language
+}
+
 function beginBrowserRecognition(language: TrainingLanguage): SpeechSession {
   // iOS WebKit cannot reliably keep MediaRecorder/Web Audio and the browser
   // speech recognizer on the microphone at the same time. Capture once, show
@@ -69,7 +79,7 @@ function beginBrowserRecognition(language: TrainingLanguage): SpeechSession {
   } catch {
     return sameOriginFallbackSession()
   }
-  recognition.lang = language
+  recognition.lang = recognitionLocale(language)
   recognition.continuous = false
   recognition.interimResults = false
   recognition.maxAlternatives = 3
@@ -198,9 +208,9 @@ export async function transcribeWithWhisper(
   const body = new FormData()
   const extension = blob.type.includes('mp4') ? 'm4a' : 'webm'
   body.append('file', blob, `practice.${extension}`)
-  // Whisper uses its Chinese model for both Mandarin and Cantonese; `yue` is
-  // not a supported language code on every backend.
-  body.append('language', language === 'en-US' ? 'en' : 'zh')
+  // The transcription service recognizes `yue`, and asking for it keeps short
+  // Cantonese clips from being read as Mandarin.
+  body.append('language', language === 'en-US' ? 'en' : language === 'yue-HK' ? 'yue' : 'zh')
   try {
     const response = await fetch('/api/pronunciation/transcriptions', {
       method: 'POST',

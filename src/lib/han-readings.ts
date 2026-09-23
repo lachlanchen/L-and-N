@@ -55,6 +55,16 @@ export function homophonesOf(language: TrainingLanguage, word: string): string[]
   return forLanguage[syllable] ?? []
 }
 
+/**
+ * The recognizer's own spelling of a syllable, stripped of tone digits and
+ * spacing, or an empty string when the token is not plain Latin letters.
+ * Whisper writes Cantonese as romanized text, so `男 naam4` comes back as
+ * "Nam." rather than as a Han character.
+ */
+export function latinSyllable(token: string): string {
+  return token.replace(/[0-9]/g, '').replace(/[^a-z]/g, '')
+}
+
 /** True when the recognizer's text contains a character pronounced like `word`. */
 export function soundsLike(language: TrainingLanguage, word: string, transcript: string): boolean {
   if (!transcript) return false

@@ -1,5 +1,5 @@
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage } from '../types'
-import { homophonesOf, soundsLike } from './han-readings'
+import { homophonesOf, latinSyllable, soundsLike, syllableOf } from './han-readings'
 
 const clampScore = (value: number) => Math.round(Math.min(100, Math.max(0, value)))
 
@@ -39,8 +39,17 @@ function recognitionScore(language: TrainingLanguage, expected: string, transcri
   const heard = normalizeSpeech(transcript)
   if (!target || !heard) return 20
   if (heard.split(' ').includes(target)) return 100
-  // A Chinese homophone is the word, spelled with another character.
+  // A Chinese homophone is the word, spelled with another character, and a
+  // romanized transcript is the word spelled without characters at all.
   if (soundsLike(language, expected, heard)) return 100
+  const syllable = syllableOf(expected)
+  if (syllable) {
+    const tolerance = Math.max(1, Math.floor(syllable.length / 3))
+    for (const raw of heard.split(' ')) {
+      const token = latinSyllable(raw)
+      if (token && token[0] === syllable[0] && editDistance(token, syllable) <= tolerance) return 100
+    }
+  }
   const best = Math.min(...heard.split(' ').map((word) => editDistance(target, word)))
   return clampScore(100 * (1 - best / Math.max(target.length, 1)))
 }
@@ -253,6 +262,37 @@ function heardForms(
   return [...forms].filter(Boolean)
 }
 
+/**
+ * Decide the sound from a romanized transcript of a Chinese attempt.
+ *
+ * The transcription service writes short Cantonese clips in Latin letters:
+ * 男 comes back as "Nam", 藍 as "Lam", 你 as "nei". Matching Han characters
+ * alone therefore found nothing and the app reported that it could not
+ * recognize a word. The pair differs only in its initial, so a romanized
+ * token whose initial matches and whose spelling is close enough to the
+ * word's own romanization settles which sound was said.
+ */
+function romanizedSound(exercise: Exercise, heard: string, pairSound: TargetSound): TargetSound | null {
+  const candidates: [string, TargetSound][] = [
+    [syllableOf(exercise.word), exercise.target],
+    [syllableOf(exercise.pair), pairSound],
+  ]
+  if (candidates.some(([syllable]) => !syllable)) return null
+  let best: { sound: TargetSound; distance: number } | null = null
+  for (const raw of heard.split(' ')) {
+    const token = latinSyllable(raw)
+    if (!token) continue
+    for (const [syllable, sound] of candidates) {
+      if (token[0] !== syllable[0]) continue
+      const distance = token.length === 1 ? 0 : editDistance(token, syllable)
+      const tolerance = Math.max(1, Math.floor(syllable.length / 3))
+      if (distance > tolerance) continue
+      if (!best || distance < best.distance) best = { sound, distance }
+    }
+  }
+  return best?.sound ?? null
+}
+
 function initialSound(word: string): TargetSound | null {
   if (/^(kn|n)/.test(word)) return 'N'
   if (word.startsWith('l')) return 'L'
@@ -282,7 +322,7 @@ export function detectSoundFromTranscript(exercise: Exercise, transcript: string
   if (targetHit && !pairHit) return exercise.target
   if (pairHit && !targetHit) return pairSound
   if (targetHit && pairHit) return null
-  if (!spaced) return null
+  if (!spaced) return romanizedSound(exercise, heard, pairSound)
 
   // Fuzzy match for English recognizers that return near spellings such as
   // "lite" or "nite": the initial letter names the sound, and the rest of the
