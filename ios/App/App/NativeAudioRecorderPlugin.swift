@@ -4,6 +4,36 @@ import Speech
 
 @objc(NativeAudioRecorderPlugin)
 final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
+    /// The speech recognizer for a practice language.
+    ///
+    /// Apple has no `yue-HK` locale: its Cantonese dictation is `zh-HK`, and
+    /// `SFSpeechRecognizer(locale:)` simply returns nil for an identifier it
+    /// does not know, which left Cantonese attempts with no recognizer and an
+    /// empty transcript. Each language therefore offers several identifiers
+    /// and the first one the device actually supports is used.
+    static func speechRecognizer(for language: String) -> SFSpeechRecognizer? {
+        let candidates: [String]
+        switch language {
+        case "yue-HK":
+            candidates = ["zh-HK", "yue-Hant-HK", "yue-HK", "zh-Hant-HK"]
+        case "zh-CN":
+            candidates = ["zh-CN", "zh-Hans-CN", "zh-Hans"]
+        default:
+            candidates = [language, "en-US"]
+        }
+        let supported = SFSpeechRecognizer.supportedLocales().map { $0.identifier }
+        for identifier in candidates {
+            let normalized = identifier.replacingOccurrences(of: "-", with: "_")
+            guard supported.contains(identifier) || supported.contains(normalized) else { continue }
+            if let recognizer = SFSpeechRecognizer(locale: Locale(identifier: identifier)) {
+                return recognizer
+            }
+        }
+        // Nothing matched the supported list; try the identifiers anyway, since
+        // the list and the initializer have disagreed across iOS versions.
+        return candidates.compactMap { SFSpeechRecognizer(locale: Locale(identifier: $0)) }.first
+    }
+
     let identifier = "NativeAudioRecorderPlugin"
     let jsName = "NativeAudioRecorder"
     let pluginMethods: [CAPPluginMethod] = [
@@ -156,7 +186,7 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
             audioEngine = engine
 
             if speechAuthorized,
-               let recognizer = SFSpeechRecognizer(locale: Locale(identifier: language)),
+               let recognizer = Self.speechRecognizer(for: language),
                recognizer.isAvailable {
                 let request = SFSpeechAudioBufferRecognitionRequest()
                 request.shouldReportPartialResults = true
