@@ -68,10 +68,11 @@ describe('hybrid pronunciation score', () => {
     expect(correct.evidence.lEvidence).toBeGreaterThan(correct.evidence.nEvidence)
   })
 
-  it('refuses to manufacture a number when no word was recognized', () => {
-    expect(() => scorePronunciation(exercise, '', lLikeFeatures)).toThrow(
-      'A recognized word is required before pronunciation can be scored.',
-    )
+  it('scores from the sound alone when no word was recognized', () => {
+    const score = scorePronunciation(exercise, '', lLikeFeatures)
+    expect(score.overall).toBeGreaterThan(0)
+    expect(score.detectionSource).toBe('acoustic')
+    expect(score.feedback.some((item) => item.code === 'recognitionUnavailable')).toBe(true)
   })
 })
 
@@ -229,6 +230,14 @@ describe('Chinese attempts are judged by sound, not by character', () => {
     const score = scorePronunciation(cantonese, 'Nam.', features)
     expect(score.detectedSound).toBe('N')
     expect(score.recognition).toBe(100)
+  })
+
+  it('still scores when the recognizer returns nothing', () => {
+    // Cantonese attempts used to end here with no score at all.
+    const score = scorePronunciation(cantonese, '', features)
+    expect(score.overall).toBeGreaterThan(0)
+    expect(score.detectionSource).toBe('acoustic')
+    expect(score.feedback.some((item) => item.code === 'recognitionUnavailable')).toBe(true)
   })
 
   it('reads ü as the v the table uses', () => {

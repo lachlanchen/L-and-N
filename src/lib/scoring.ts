@@ -343,9 +343,12 @@ export function scorePronunciation(
   features: AcousticFeatures,
   calibration?: AcousticCalibration,
 ): PronunciationScore {
-  if (!normalizeSpeech(transcript)) {
-    throw new Error('A recognized word is required before pronunciation can be scored.')
-  }
+  // A recognizer that returns nothing must not cost the learner their attempt.
+  // Cantonese is the common case: the browser has no Cantonese voice on many
+  // devices and the transcription service writes a short clip as punctuation.
+  // The onset model and the acoustic cues can still judge l against n, so the
+  // attempt is scored from sound alone and `detectionSource` says so.
+  const recognized = Boolean(normalizeSpeech(transcript))
   const pairSound: TargetSound = exercise.target === 'L' ? 'N' : 'L'
   const recognizedSound = detectSoundFromTranscript(exercise, transcript)
   const heardPair = recognizedSound === pairSound
@@ -369,9 +372,11 @@ export function scorePronunciation(
       100,
   )
   const tone = scoreTone(exercise, features)
-  const soundOverall = heardTarget
-    ? clampScore(recognition * 0.42 + contrast * 0.2 + acoustic * 0.23 + delivery * 0.15)
-    : clampScore(recognition * 0.38 + contrast * 0.2 + acoustic * 0.32 + delivery * 0.1)
+  const soundOverall = !recognized
+    ? clampScore(acoustic * 0.68 + delivery * 0.32)
+    : heardTarget
+      ? clampScore(recognition * 0.42 + contrast * 0.2 + acoustic * 0.23 + delivery * 0.15)
+      : clampScore(recognition * 0.38 + contrast * 0.2 + acoustic * 0.32 + delivery * 0.1)
   const blended = tone === null ? soundOverall : clampScore(soundOverall * 0.88 + tone * 0.12)
   // A recording in which the recognizer heard the other member of the pair
   // cannot score as a success, whatever the acoustic cues say.
@@ -383,8 +388,10 @@ export function scorePronunciation(
     feedback.push({ code: 'heardPair', value: transcript })
     feedback.push({ code: exercise.target === 'N' ? 'addNasal' : 'reduceNasal' })
   } else {
-    if (recognition < 70) {
-      feedback.push({ code: 'recognitionUnclear', value: transcript || '—' })
+    if (!recognized) {
+      feedback.push({ code: 'recognitionUnavailable' })
+    } else if (recognition < 70) {
+      feedback.push({ code: 'recognitionUnclear', value: transcript })
     } else {
       feedback.push({ code: 'recognitionClear', value: exercise.word })
     }

@@ -238,7 +238,7 @@ describe('recording lifecycle', () => {
     expect(warning).toHaveBeenCalledOnce()
   })
 
-  it('shows the captured waveform but saves no score when transcription is empty', async () => {
+  it('scores from the sound when the recognizer returns no word', async () => {
     audioCaptureMocks.startAudioCapture.mockResolvedValueOnce({
       analyser: null,
       stop: vi.fn(async () => ({
@@ -277,9 +277,11 @@ describe('recording lifecycle', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Stop and score recording' })).toBeTruthy())
     fireEvent.click(screen.getByRole('button', { name: 'Stop and score recording' }))
 
-    expect(await screen.findByText(/I recorded your voice, but could not recognize a word/)).toBeTruthy()
+    // Cantonese often comes back with no word at all. The attempt is still
+    // scored, from the onset and the acoustic cues, and the card says so.
+    expect(await screen.findByText(/Word recognition was unavailable/)).toBeTruthy()
     expect(screen.getByText('Last sound')).toBeTruthy()
-    expect(screen.queryByText('/ 100')).toBeNull()
+    expect(screen.getByText('/ 100')).toBeTruthy()
   })
 })
 

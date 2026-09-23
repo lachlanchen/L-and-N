@@ -237,11 +237,6 @@ function App() {
       const captured = await session.capture.stop()
       if (operationRef.current !== session.operationId) return
       setLastFeatures(captured.features)
-      if (!captured.transcript.trim()) {
-        setScore(null)
-        setError(copy.errors.transcription)
-        return
-      }
       const result = scorePronunciation(
         session.exercise,
         captured.transcript,
