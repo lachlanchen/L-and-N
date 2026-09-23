@@ -26,6 +26,11 @@ Google approved the restarted review and published the full rollout on 2026-09-0
 - Production: release `4 (1.0.1)` created from the library bundle with a 100 % rollout and saved; see the line below for the review submission result.
 - Production submission: sent for review on 2026-09-18 after Play's quick checks passed; Google approved it the same afternoon and the production track shows **Available on Google Play, released Sep 18 16:25 HKT**, latest release `4 (1.0.1)`, 177 countries/regions.
 
+## Internal builds 14-16 (1.0.5 to 1.0.7), 2026-09-22 and 2026-09-23 — Chinese scoring
+
+- Three internal releases on both apps, ending at `16 (1.0.7)` (free bundle `f1917faf…`, Pro `bae9523e…`): Mandarin and Cantonese judged by syllable rather than character, romanized recognizer output understood, and an attempt scored from its onset and acoustics when no word is recognized. Production was not touched: the free app's listing change is in review and Pro's first review is still running.
+- Known gap: the Android package has no native speech plugin and the system WebView has no Web Speech API, so the app scores from acoustics only. A plugin around the platform `SpeechRecognizer` with `yue-Hant-HK` is the proposed fix.
+
 ## Payments profile, 2026-09-21 — bank account verified
 
 - Google's micro-deposit reached the Mercury checking account and the amount was confirmed in Play Console → Settings → Payments profile; Google now shows the account as verified, so Play earnings can be paid out.

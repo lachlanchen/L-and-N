@@ -317,5 +317,32 @@
     "android": {
       "play": "free and Pro main store listings now carry the 7 new phone screenshots (saved; the free app's change waits behind the release 13 review, the Pro change behind its first review)"
     }
+  },
+  "cantoneseRelease": {
+    "preparedAt": "2026-09-23",
+    "version": "1.0.7 / iOS 1.0.6 build 15",
+    "sourceCommit": "21e0b99",
+    "reason": "Mandarin and Cantonese are judged by syllable rather than by character; romanized recognizer output is understood; an attempt is scored from onset and acoustics when no word is recognized; iOS asks for the Cantonese locale Apple actually has (zh-HK)",
+    "web": {
+      "release": "/opt/l-and-n-web/releases/287ac56f43040998dd382a5d599e25488ba7d6951f62a98ed9c7256cdbdbda0d",
+      "mainAsset": "assets/index-UKSCHkPi.js"
+    },
+    "android": {
+      "versionCode": 16,
+      "versionName": "1.0.7",
+      "freeAabSha256": "f1917faf649785178ab395870b65f1a7c4d56fbfdba24e6932019d84499184f3",
+      "proAabSha256": "bae9523e87e7560195cb767d2c979548e65fca49e4c94520ef2202bdc9930668",
+      "play": "internal track 16 (1.0.7) published on the free app and on L & N Pro; production untouched (free listing change in review, Pro first review still running)",
+      "gap": "Android has no native speech plugin and the WebView has no Web Speech API, so the packaged app scores from acoustics only; a SpeechRecognizer plugin (yue-Hant-HK) is the proposed fix"
+    },
+    "ios": {
+      "builds": {
+        "14": "web-side fixes",
+        "15": "adds the SFSpeechRecognizer locale fix"
+      },
+      "buildId15": "9cdc2613-0b8b-4bbe-afad-ee612a789693",
+      "ipaSha256_14": "84c4dc3727d1f1fb75c21b50b67eb6897c40a78737c8a771aa537243af39b566",
+      "testflight": "builds 14 and 15 in internal testing and added to L & N Public Beta; external beta review for 15 waits because another build in the train is still in review"
+    }
   }
 }
