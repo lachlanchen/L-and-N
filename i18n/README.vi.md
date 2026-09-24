@@ -81,9 +81,9 @@ Nếu dự án miễn phí này hữu ích, một ngôi sao, issue, bản dịch
 
 | Donate | PayPal | Stripe |
 | --- | --- | --- |
-| [LazyingArt Donate](https://chat.lazying.art/donate) | [paypal.me/RongzhouChen](https://paypal.me/RongzhouChen) | [Ủng hộ qua Stripe](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
+| [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
 
-[Tài trợ trên GitHub](https://github.com/sponsors/lachlanchen)
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 ## Trích dẫn và giấy phép
 

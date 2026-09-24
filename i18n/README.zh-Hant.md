@@ -87,9 +87,9 @@ Capacitor 從 `dist/` 產生原生 Web 套件。手錶是刻意精簡的獨立 S
 
 | Donate | PayPal | Stripe |
 | --- | --- | --- |
-| [LazyingArt 捐助](https://chat.lazying.art/donate) | [paypal.me/RongzhouChen](https://paypal.me/RongzhouChen) | [透過 Stripe 支持](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
+| [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
 
-[在 GitHub Sponsors 支持](https://github.com/sponsors/lachlanchen)
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 ## 引用與授權
 

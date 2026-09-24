@@ -1,7 +1,8 @@
-# GitHub renders the sponsor button from this profile.
+# GitHub renders its native Sponsor button from this profile:
+# https://github.com/sponsors/lachlanchen
 github: [lachlanchen]
+# Keep the other support methods in the menu without duplicating GitHub Sponsors.
 custom:
-  - https://github.com/sponsors/lachlanchen
   - https://chat.lazying.art/donate
   - https://paypal.me/RongzhouChen
   - https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400
