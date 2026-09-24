@@ -16,6 +16,16 @@ The web app is free and needs no account. On Google Play the app installs free w
 
 L-and-N turns a small but frustrating speech contrast into a short practice loop: see the letter inside the word, hear a studio model, watch the signal, record, and receive an explained score. The same curriculum runs as an installable PWA, Android app, iPhone/iPad app, and a compact watchOS drill.
 
+## Watch the app
+
+English demo
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+中文演示 · Chinese demo
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ![Practice screen](docs/images/pwa-practice.png)
 
 ## What it does
