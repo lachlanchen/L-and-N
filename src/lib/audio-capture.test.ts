@@ -2,6 +2,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Capacitor } from '@capacitor/core'
 import { extractAcousticFeatures } from './acoustics'
+import * as acoustics from './acoustics'
 import {
   AudioCaptureError,
   decodePCM16Base64,
@@ -43,6 +44,64 @@ describe('captured-audio validation', () => {
 })
 
 describe('web capture startup', () => {
+  it('never requests the Android microphone without online-recognition consent', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('android')
+    const getUserMedia = vi.fn()
+    Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia } })
+    await expect(startAudioCapture({ language: 'en-US', expectedWords: ['light', 'night'], onLiveSignal: vi.fn() }))
+      .rejects.toMatchObject({ code: 'microphone-unavailable' })
+    expect(getUserMedia).not.toHaveBeenCalled()
+  })
+
+  it('uses one Android recording and frees the microphone before uploading it', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('android')
+    const trackStop = vi.fn()
+    const getUserMedia = vi.fn(async () => ({ getTracks: () => [{ stop: trackStop }] }))
+    Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia } })
+    const close = vi.fn(async () => undefined)
+    class Context {
+      state = 'running'
+      resume = vi.fn(async () => undefined)
+      close = close
+      createAnalyser = () => ({ fftSize: 2048, smoothingTimeConstant: 0 })
+      createMediaStreamSource = () => ({ connect: vi.fn() })
+    }
+    Object.defineProperty(window, 'AudioContext', { configurable: true, value: Context })
+    const chunk = new Blob([new Uint8Array(32000)], { type: 'audio/webm;codecs=opus' })
+    class Recorder extends EventTarget {
+      static isTypeSupported = () => true
+      state = 'inactive'
+      mimeType = chunk.type
+      start() { this.state = 'recording' }
+      stop() {
+        this.state = 'inactive'
+        this.dispatchEvent(Object.assign(new Event('dataavailable'), { data: chunk }))
+        this.dispatchEvent(new Event('stop'))
+      }
+    }
+    Object.defineProperty(globalThis, 'MediaRecorder', { configurable: true, value: Recorder })
+    const features = extractAcousticFeatures(Float32Array.from({ length: 16000 }, (_, i) => 0.15 * Math.sin(i / 10)), 16000)
+    vi.spyOn(acoustics, 'decodeAudioFeatures').mockResolvedValue(features)
+    vi.spyOn(window, 'fetch').mockImplementation(async (_url, options) => {
+      expect(trackStop).toHaveBeenCalledOnce()
+      expect(close).toHaveBeenCalledOnce()
+      const file = (options?.body as FormData).get('file') as File
+      expect(file.size).toBe(chunk.size)
+      expect(file.type).toBe(chunk.type)
+      return new Response(JSON.stringify({ text: 'light' }))
+    })
+    const capture = await startAudioCapture({ language: 'en-US', expectedWords: ['light', 'night'], allowOnlineRecognition: true, onLiveSignal: vi.fn() })
+    expect(getUserMedia).toHaveBeenCalledExactlyOnceWith({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } })
+    const result = await capture.stop()
+    expect(result.transcript).toBe('light')
+    expect(result.features).toBe(features)
+    expect(result.recording?.blob.size).toBe(chunk.size)
+    expect(window.fetch).toHaveBeenCalledOnce()
+    expect(trackStop).toHaveBeenCalledOnce()
+  })
+
   it('resumes Web Audio in the tap task and releases every resource on cancel', async () => {
     vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(false)
     const trackStop = vi.fn()

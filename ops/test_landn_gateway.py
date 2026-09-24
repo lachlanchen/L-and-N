@@ -18,6 +18,11 @@ class GatewayTests(unittest.TestCase):
         self.assertFalse(window.allow("test", float(REQUESTS_PER_WINDOW)))
         self.assertTrue(window.allow("test", 61.0))
 
+    def test_normal_practice_cadence_is_not_rate_limited(self) -> None:
+        window = RateWindow()
+        for second in range(0, 60, 5):
+            self.assertTrue(window.allow("learner", float(second)))
+
 
 if __name__ == "__main__":
     unittest.main()

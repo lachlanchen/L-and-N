@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core'
 import { SpeechRecognition } from '@capacitor-community/speech-recognition'
 import type { Exercise, TrainingLanguage } from '../types'
+import { isAndroidApp } from './android-speech-consent'
 
 export interface SpeechSession {
   result: Promise<string>
@@ -158,7 +159,19 @@ async function beginNativeRecognition(language: TrainingLanguage): Promise<Speec
   }
 }
 
-export async function beginSpeechRecognition(language: TrainingLanguage): Promise<SpeechSession> {
+export async function beginSpeechRecognition(
+  language: TrainingLanguage,
+  options: { allowOnlineRecognition?: boolean } = {},
+): Promise<SpeechSession> {
+  // Android's system recognizer opens a second microphone, independent of
+  // MediaRecorder. Some OEMs silence that consumer; others have no compatible
+  // recognition service. Transcribe the exact waveform recording instead,
+  // only after the learner has explicitly opted in. iOS stays native.
+  if (isAndroidApp()) {
+    return options.allowOnlineRecognition
+      ? sameOriginFallbackSession()
+      : { result: Promise.resolve(''), stop: async () => undefined, sameOriginFallback: 'never' }
+  }
   if (Capacitor.isNativePlatform()) return beginNativeRecognition(language)
   return beginBrowserRecognition(language)
 }
@@ -223,11 +236,15 @@ async function postTranscription(
   blob: Blob,
   language: string,
   timeoutMs: number,
+  signal?: AbortSignal,
 ): Promise<string> {
+  if (signal?.aborted) return ''
   const controller = new AbortController()
+  const abort = () => controller.abort()
+  signal?.addEventListener('abort', abort, { once: true })
   const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
   const body = new FormData()
-  const extension = blob.type.includes('mp4') ? 'm4a' : 'webm'
+  const extension = blob.type.includes('mp4') ? 'm4a' : blob.type.includes('wav') ? 'wav' : 'webm'
   body.append('file', blob, `practice.${extension}`)
   body.append('language', language)
   try {
@@ -237,18 +254,23 @@ async function postTranscription(
       cache: 'no-store',
       signal: controller.signal,
     })
-    if (!response.ok) return ''
+    if (!response.ok) {
+      // Local diagnostic only: never log audio, transcript or request bodies.
+      console.warn('L & N transcription unavailable', { status: response.status })
+      return ''
+    }
     const result = (await response.json()) as WhisperResponse
-    return result.text?.trim() ?? ''
+    return typeof result.text === 'string' ? result.text.trim() : ''
   } catch {
     return ''
   } finally {
     window.clearTimeout(timeout)
+    signal?.removeEventListener('abort', abort)
   }
 }
 
 /** True when a transcript carries no letters or characters, only punctuation. */
-function isEmptyTranscript(value: string): boolean {
+export function isEmptyTranscript(value: string): boolean {
   return !/[\p{L}\p{N}]/u.test(value)
 }
 
@@ -256,12 +278,16 @@ export async function transcribeWithWhisper(
   blob: Blob,
   language: TrainingLanguage,
   timeoutMs = 15000,
+  signal?: AbortSignal,
 ): Promise<string> {
-  const first = await postTranscription(blob, whisperLanguage(language), timeoutMs)
+  const first = await postTranscription(blob, whisperLanguage(language), timeoutMs, signal)
   if (!isEmptyTranscript(first)) return first
+  // A failed request is not a language problem. Do not double the load or
+  // retry a cancelled upload; retry only a successful punctuation-only result.
+  if (!first || signal?.aborted) return ''
   // A short clip often comes back as punctuation under a forced language.
   // Letting the service detect the language itself recovers many of those.
-  const second = await postTranscription(blob, 'auto', timeoutMs)
+  const second = await postTranscription(blob, 'auto', timeoutMs, signal)
   return isEmptyTranscript(second) ? '' : second
 }
 
@@ -270,8 +296,9 @@ export function transcribeWithAllowedFallback(
   blob: Blob,
   language: TrainingLanguage,
   recognizedText = '',
+  signal?: AbortSignal,
 ): Promise<string> {
   const recognized = recognizedText.trim()
   if (recognized || session.sameOriginFallback === 'never') return Promise.resolve(recognized)
-  return transcribeWithWhisper(blob, language)
+  return transcribeWithWhisper(blob, language, 15000, signal)
 }

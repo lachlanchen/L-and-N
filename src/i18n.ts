@@ -21,6 +21,7 @@ export interface UICopy {
   primaryNavigation: string
   nav: { practice: string; listen: string; learn: string; progress: string }
   storeLinks: { title: string; note: string; appStore: string; googlePlay: string }
+  androidSpeech: { allow: string; disclosure: string; noResult: string }
   unlock: {
     title: string
     body: string
@@ -170,6 +171,11 @@ export interface UICopy {
 
 const copies: Record<UILanguage, UICopy> = {
   en: {
+    androidSpeech: {
+      allow: 'Allow online word recognition',
+      disclosure: 'After you tap Record, your short recording is sent securely to L & N’s transcription service to recognize the word, then discarded there—not used for training. Internet required. Uncheck to turn this off; listening and lessons still work offline.',
+      noResult: 'Your voice was recorded, but no word was recognized. No L/N judgment or score was saved. Check your connection, wait a moment and try again.',
+    },
     appTitle: 'L-and-N pronunciation coach',
     uiLanguage: 'Interface language',
     streak: 'Practice streak',
@@ -330,6 +336,11 @@ const copies: Record<UILanguage, UICopy> = {
     },
   },
   'zh-Hans': {
+    androidSpeech: {
+      allow: '允许在线辨词',
+      disclosure: '点击录音后，短录音会通过加密连接发送至 L & N 转写服务以辨认词语，处理后即丢弃，不用于训练。需要联网。取消勾选即可关闭；听辨和课程仍可离线使用。',
+      noResult: '已录到你的声音，但未能辨认词语。没有判定 L/N，也没有保存分数。请检查网络，稍等片刻再试。',
+    },
     appTitle: 'L-and-N 发音教练', uiLanguage: '界面语言', streak: '连续练习', trainingLanguage: '练习语言', trainingLanguages: { 'en-US': '英语', 'zh-CN': '普通话', 'yue-HK': '粤语' }, primaryNavigation: '主导航',
     nav: { practice: '练习', listen: '听辨', learn: '学习', progress: '进度' },
     storeLinks: {
@@ -404,6 +415,11 @@ const copies: Record<UILanguage, UICopy> = {
     },
   },
   'zh-Hant': {
+    androidSpeech: {
+      allow: '允許線上辨詞',
+      disclosure: '點按錄音後，短錄音會透過加密連線傳送至 L & N 轉寫服務以辨認詞語，處理後即棄置，不用於訓練。需要連網。取消勾選即可關閉；聽辨和課程仍可離線使用。',
+      noResult: '已錄到你的聲音，但未能辨認詞語。沒有判定 L/N，也沒有儲存分數。請檢查網絡，稍等片刻再試。',
+    },
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英語', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
     nav: { practice: '練習', listen: '聽辨', learn: '學習', progress: '進度' },
     storeLinks: {
@@ -478,6 +494,11 @@ const copies: Record<UILanguage, UICopy> = {
     },
   },
   yue: {
+    androidSpeech: {
+      allow: '允許上網辨詞',
+      disclosure: '撳錄音後，短錄音會經加密連線傳送去 L & N 轉寫服務辨認詞語，處理完就丟棄，唔會用嚟訓練。需要上網。取消剔選就會關閉；聽辨同課程仍然可以離線用。',
+      noResult: '錄到你把聲，但辨唔到個詞。冇判定 L/N，亦冇儲存分數。請檢查網絡，等一陣再試。',
+    },
     appTitle: 'L-and-N 發音教練', uiLanguage: '介面語言', streak: '連續練習', trainingLanguage: '練習語言', trainingLanguages: { 'en-US': '英文', 'zh-CN': '普通話', 'yue-HK': '廣東話' }, primaryNavigation: '主要導覽',
     nav: { practice: '練習', listen: '聽辨', learn: '學原理', progress: '進度' },
     storeLinks: {

@@ -28,7 +28,8 @@ import {
 } from './lib/progress'
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
 import { loadEntitlement, UNGATED, unlockedExercises, type Entitlement } from './lib/purchases'
-import { speakExample } from './lib/speech'
+import { isEmptyTranscript, speakExample } from './lib/speech'
+import { hasAndroidSpeechConsent, isAndroidApp, setAndroidSpeechConsent } from './lib/android-speech-consent'
 import { loadTake, playTakeBlob, saveTake, type TakePlayback } from './lib/takes'
 import { playSequence } from './lib/word-audio'
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
@@ -59,6 +60,8 @@ function App() {
   const [analyser, setAnalyser] = useState<AnalyserNode | null>(null)
   const [liveSignal, setLiveSignal] = useState<LiveSignal | null>(null)
   const [error, setError] = useState('')
+  const androidApp = isAndroidApp()
+  const [onlineRecognition, setOnlineRecognition] = useState(hasAndroidSpeechConsent)
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
   const [lastTakeId, setLastTakeId] = useState<string | null>(null)
   const [playingTakeId, setPlayingTakeId] = useState<string | null>(null)
@@ -237,6 +240,12 @@ function App() {
       const captured = await session.capture.stop()
       if (operationRef.current !== session.operationId) return
       setLastFeatures(captured.features)
+      if (androidApp && isEmptyTranscript(captured.transcript)) {
+        // An unavailable recognizer says nothing about the learner's L/N.
+        // Keep the real waveform but do not save a guessed score/calibration.
+        setError(copy.androidSpeech.noResult)
+        return
+      }
       const result = scorePronunciation(
         session.exercise,
         captured.transcript,
@@ -303,11 +312,13 @@ function App() {
 
   const startRecording = async () => {
     if (capturePhaseRef.current !== 'idle') return
+    if (androidApp && !onlineRecognition) return
     const operationId = operationRef.current + 1
     operationRef.current = operationId
     updateCapturePhase('starting')
     setError('')
     setScore(null)
+    setLastTakeId(null)
     setLastFeatures(null)
     setLiveSignal(null)
     let capture: ActiveAudioCapture | null = null
@@ -315,6 +326,7 @@ function App() {
       capture = await startAudioCapture({
         language,
         expectedWords: [exercise.word.split(' ')[0], exercise.pair.split(' ')[0]],
+        allowOnlineRecognition: androidApp && onlineRecognition,
         onLiveSignal: (signal) => {
           if (operationRef.current !== operationId) return
           setLiveSignal(signal)
@@ -434,10 +446,25 @@ function App() {
 
         <SignalVisualizer analyser={analyser} liveSignal={liveSignal} features={lastFeatures} recording={recording} target={exercise.target} copy={copy.signal} />
 
+        {androidApp && (
+          <div className="speech-consent" data-testid="android-speech-consent">
+            <label>
+              <input type="checkbox" checked={onlineRecognition} disabled={captureBusy}
+                aria-describedby="android-speech-disclosure"
+                onChange={(event) => {
+                  setOnlineRecognition(event.target.checked)
+                  setAndroidSpeechConsent(event.target.checked)
+                }} />
+              <span>{copy.androidSpeech.allow}</span>
+            </label>
+            <p id="android-speech-disclosure">{copy.androidSpeech.disclosure} <a href="/privacy.html" target="_blank" rel="noreferrer">{copy.progress.privacy}</a></p>
+          </div>
+        )}
+
         <button
           className={`record-button ${recording ? 'recording' : ''}`}
           onClick={toggleRecording}
-          disabled={starting || processing}
+          disabled={starting || processing || (androidApp && !onlineRecognition)}
           aria-busy={starting || processing}
           aria-label={recording ? copy.practice.stopAndScore : copy.practice.startRecording}
         >

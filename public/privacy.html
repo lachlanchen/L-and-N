@@ -13,16 +13,17 @@
       <p class="eyebrow">Privacy</p>
       <h1>Your voice stays yours.</h1>
       <p class="lede">L &amp; N is a focused pronunciation coach. It does not require an account, sell personal data, show ads, or use advertising trackers.</p>
-      <p class="updated">Effective September 5, 2026</p>
+      <p class="updated">Updated September 24, 2026 · Android 1.0.9</p>
 
       <div class="card">
         <h2>What the app stores</h2>
-        <p>Your preferences and up to 200 recent practice summaries—such as sound, word, score, language, and time—are stored locally on your device. Since version 1.0.3, the audio of each scored attempt (your “take”) is also kept on your device, up to the 60 most recent, so you can replay it and compare it with the studio model. Takes never leave the device and are removed when you clear the app’s data.</p>
+        <p>Your preferences and up to 200 recent practice summaries—such as sound, word, score, language, and time—are stored locally on your device. Since version 1.0.3, the audio of each scored attempt (your “take”) is also kept on your device, up to the 60 most recent, so you can replay it and compare it with the studio model. The saved take library is not uploaded and is removed when you clear the app’s data. A newly recorded attempt may be processed for recognition as described below.</p>
 
         <h2>How speech is analyzed</h2>
-        <p>In the iOS, Android, and watchOS apps, recognition is requested through the operating system’s speech services. The native apps do not send recordings to an L &amp; N server. Your device and platform settings determine whether the operating system performs recognition on-device or through its own service.</p>
+        <p>In the iOS and watchOS apps, recognition is requested through the operating system’s speech services, not an L &amp; N server. Your device and platform settings determine whether the operating system performs recognition on-device or through its own service. Android versions up to 1.0.8 also used the operating system’s speech service.</p>
+        <p>Starting with Android 1.0.9, word recognition uses L &amp; N’s private transcription service only after you explicitly enable “Allow online word recognition” and tap Record. The short recording is sent over encrypted HTTPS to recognize the word, then discarded from the service. It is not retained, shared for advertising, or used to train a model. Internet access is required. You can withdraw consent with the same checkbox; listening exercises and lessons remain available without online recognition. If no word is recognized, Android shows the captured waveform but does not judge L/N or save a pronunciation score.</p>
         <p>In supported browsers, L &amp; N normally requests the browser’s speech-recognition feature. Whether that recognition runs on-device or through the browser or platform provider is controlled by that browser and platform. On iPhone and iPad web, the app avoids running a second recognizer beside the recorder so that one microphone stream can reliably supply the visible waveform.</p>
-        <p>When browser recognition is unavailable, fails, or returns no usable text—including the iPhone and iPad web path—the web app may send the user-started short recording over encrypted HTTPS to the same-origin private transcription service after recording stops. It is used only to return that attempt’s text, then discarded. It is not retained or used to train a model. If no word is returned, the app keeps the waveform visible but does not display or save a pronunciation score.</p>
+        <p>When browser recognition is unavailable, fails, or returns no usable text—including the iPhone and iPad web path—the web app may send the user-started short recording over encrypted HTTPS to the same-origin private transcription service after recording stops. It is used only to return that attempt’s text, then discarded. It is not retained or used to train a model. Existing web and iOS versions may show a lower-confidence acoustic estimate when word recognition is unavailable; that estimate is not a recognized word.</p>
 
         <h2>What we do not collect</h2>
         <ul>
@@ -36,7 +37,7 @@
         <p>Microphone access is used only when you tap Record. Speech-recognition access may be requested on supported Apple platforms. You can revoke these permissions at any time in system settings.</p>
 
         <h2>Retention and deletion</h2>
-        <p>Practice summaries remain on the device until you clear the app’s site data, remove the app, or reset its storage. Transient web transcription audio is discarded after the request. Infrastructure security logs may contain technical metadata such as timestamps and status codes, but not the recording body.</p>
+        <p>Practice summaries remain on the device until you clear the app’s site data, remove the app, or reset its storage. Transient transcription audio is discarded after processing. Infrastructure security logs may contain technical metadata such as timestamps and status codes, but not the recording body or recognized words.</p>
 
         <h2>Children and health</h2>
         <p>L &amp; N is an educational practice tool, not a medical device or a substitute for a speech-language pathologist. A parent or guardian should supervise a child’s use and the device’s permission settings.</p>

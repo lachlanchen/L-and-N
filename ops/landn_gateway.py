@@ -16,7 +16,9 @@ from urllib.parse import urlsplit
 
 MAX_BODY_BYTES = 2_500_000
 WINDOW_SECONDS = 60
-REQUESTS_PER_WINDOW = 6
+# A normal drill can finish a word every few seconds; permit that cadence
+# while retaining the body bound and single-upstream concurrency guard.
+REQUESTS_PER_WINDOW = 24
 UPSTREAM_TIMEOUT_SECONDS = 90
 
 

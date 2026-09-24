@@ -7,6 +7,7 @@ import {
 } from './speech'
 import { wavFromFloat32 } from './takes'
 import type { AcousticFeatures, TrainingLanguage } from '../types'
+import { isAndroidApp } from './android-speech-consent'
 
 export type AudioCaptureErrorCode =
   | 'microphone-unavailable'
@@ -52,6 +53,7 @@ interface StartCaptureOptions {
   language: TrainingLanguage
   expectedWords: string[]
   onLiveSignal: (signal: LiveSignal) => void
+  allowOnlineRecognition?: boolean
 }
 
 interface NativeRecorderStartResult {
@@ -223,6 +225,9 @@ function preferredRecorderOptions(): MediaRecorderOptions | undefined {
 }
 
 async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudioCapture> {
+  if (isAndroidApp() && !options.allowOnlineRecognition) {
+    throw new AudioCaptureError('microphone-unavailable', 'Online speech recognition needs explicit consent.')
+  }
   const Context = audioContextConstructor()
   if (!Context || !navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
     throw new AudioCaptureError('microphone-unavailable', 'This browser does not provide the required audio capture APIs.')
@@ -233,10 +238,15 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
   const audioContext = new Context()
   const resumePromise = audioContext.resume()
   const streamPromise = navigator.mediaDevices.getUserMedia({
-    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+    // Keep the quiet initial consonant intact on Android instead of asking
+    // the WebView's call-oriented processing to suppress it as background.
+    audio: isAndroidApp()
+      ? { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+      : { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
   })
 
   let stream: MediaStream | null = null
+  const recognitionAbort = new AbortController()
   let speech = inactiveSpeechSession()
   try {
     // Wait for both startup operations to settle so a stream that opens just
@@ -262,7 +272,9 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
     analyser.smoothingTimeConstant = 0.72
     audioContext.createMediaStreamSource(activeStream).connect(analyser)
 
-    speech = await beginSpeechRecognition(options.language).catch(() => inactiveSpeechSession())
+    speech = await beginSpeechRecognition(options.language, {
+      allowOnlineRecognition: options.allowOnlineRecognition,
+    }).catch(() => inactiveSpeechSession())
     const recorder = new MediaRecorder(activeStream, preferredRecorderOptions())
     const chunks: Blob[] = []
     recorder.addEventListener('dataavailable', (event) => {
@@ -271,7 +283,10 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
     recorder.start()
 
     let finished = false
+    let resourcesClosed = false
     const closeResources = async () => {
+      if (resourcesClosed) return
+      resourcesClosed = true
       stream?.getTracks().forEach((track) => track.stop())
       if (audioContext.state !== 'closed') await audioContext.close().catch(() => undefined)
     }
@@ -300,6 +315,9 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
           }
           recorder.stop()
           const blob = await timeout(stopped, 2500, 'The browser recorder did not finish in time.')
+          // Release the microphone before decoding/network work. Slow or
+          // unavailable transcription must never keep the microphone occupied.
+          await closeResources()
           const [features, browserTranscript] = await Promise.all([
             decodeAudioFeatures(blob),
             timeout(speech.result.catch(() => ''), 2200, 'Speech recognition did not finish in time.').catch(() => ''),
@@ -310,6 +328,7 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
             blob,
             options.language,
             browserTranscript,
+            recognitionAbort.signal,
           )
           return {
             features,
@@ -327,6 +346,7 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
         }
       },
       cancel: async () => {
+        recognitionAbort.abort()
         if (finished) return
         finished = true
         try {

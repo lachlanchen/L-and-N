@@ -1,4 +1,4 @@
-# Google Play Data safety declaration draft
+# Google Play Data safety declaration — Android 1.0.9
 
 ## Collection and sharing
 
@@ -8,12 +8,12 @@
 - Collected: Yes.
 - Shared: No.
 - Processing: Ephemeral.
-- Required or optional: Optional; only after the user taps Record and grants microphone permission.
+- Required or optional: Optional; only after the user explicitly enables online word recognition, taps Record and grants microphone permission. Consent is revocable in the practice screen; listening exercises and lessons do not require it.
 - Purpose: App functionality.
 - Account creation: Not supported.
 - Data deletion request: Local practice data can be removed by clearing app storage or uninstalling. L & N does not retain raw audio on its servers.
-- Encryption in transit: Yes when the installed speech service uses network recognition.
+- Encryption in transit: Yes; recordings use HTTPS to the first-party transcription endpoint.
 
-Reasoning: the Android app invokes the user’s installed operating-system speech recognition service. Depending on device and service settings, recognition may occur locally or the service may process a short audio request. This conservative form answer includes ephemeral processing even though L & N receives only recognition text and does not retain the recording.
+Reasoning: Android 1.0.9 uses one microphone recording for waveform, replay and opt-in first-party transcription, avoiding competing OEM speech services. Audio is processed transiently for app functionality, discarded after processing, and never used for training. The saved take library stays on the device. Local diagnostic messages contain status codes only, not audio or transcripts. Older Android versions used the operating-system recognizer.
 
 Reconfirm every answer against the exact Play Console questionnaire and submitted AAB immediately before rollout.

@@ -1,0 +1,3 @@
+<en-US>
+Fixes empty word recognition on Android devices, including phones without a compatible speech service. One recording now supplies the waveform and opt-in online recognition. No L/N score is saved when recognition fails. Clear privacy controls and more reliable microphone cleanup.
+</en-US>

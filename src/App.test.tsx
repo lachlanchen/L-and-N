@@ -5,6 +5,7 @@ import { Capacitor } from '@capacitor/core'
 import App from './App'
 import { saveAttempt } from './lib/progress'
 import { AudioCaptureError } from './lib/audio-capture'
+import { extractAcousticFeatures } from './lib/acoustics'
 
 const audioCaptureMocks = vi.hoisted(() => ({
   startAudioCapture: vi.fn(),
@@ -98,6 +99,7 @@ afterEach(() => {
   audioCaptureMocks.startAudioCapture.mockReset()
   audioMocks.playSequence.mockClear()
   audioMocks.unlockAudio.mockClear()
+  vi.mocked(saveAttempt).mockClear()
   vi.restoreAllMocks()
 })
 
@@ -191,6 +193,50 @@ describe('language and sound controls', () => {
 })
 
 describe('recording lifecycle', () => {
+  it('requires explicit, revocable consent before Android recording', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('android')
+    render(<App />)
+    const record = screen.getByRole('button', { name: 'Start recording' })
+    const consent = screen.getByRole('checkbox', { name: 'Allow online word recognition' })
+    expect(record.hasAttribute('disabled')).toBe(true)
+    fireEvent.click(record)
+    expect(audioCaptureMocks.startAudioCapture).not.toHaveBeenCalled()
+    fireEvent.click(consent)
+    expect(record.hasAttribute('disabled')).toBe(false)
+    fireEvent.click(consent)
+    expect(record.hasAttribute('disabled')).toBe(true)
+  })
+
+  it.each(['', '...', '。'])('does not score/save an Android attempt with empty recognition (%s)', async (transcript) => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('android')
+    const features = extractAcousticFeatures(Float32Array.from({ length: 16000 }, (_, i) => 0.15 * Math.sin(i / 10)), 16000)
+    audioCaptureMocks.startAudioCapture.mockResolvedValueOnce({
+      analyser: null,
+      stop: vi.fn(async () => ({ transcript, features, rawBytes: 32000, source: 'web' })),
+      cancel: vi.fn(async () => undefined),
+    })
+    render(<App />)
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Allow online word recognition' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Stop and score recording' })).toBeTruthy())
+    expect(audioCaptureMocks.startAudioCapture.mock.calls[0][0].allowOnlineRecognition).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Stop and score recording' }))
+    expect(await screen.findByText(/No L\/N judgment or score was saved/)).toBeTruthy()
+    expect(screen.getByText('Last sound')).toBeTruthy()
+    expect(screen.queryByText('/ 100')).toBeNull()
+    expect(saveAttempt).not.toHaveBeenCalled()
+  })
+
+  it('does not add the Android disclosure to native iOS', () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('ios')
+    render(<App />)
+    expect(screen.queryByTestId('android-speech-consent')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Start recording' }).hasAttribute('disabled')).toBe(false)
+  })
+
   it('allows only one microphone startup while permission is pending', async () => {
     let resolveCapture: ((value: {
       analyser: null
