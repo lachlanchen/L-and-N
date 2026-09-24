@@ -4,7 +4,7 @@
 
 `art.lazying.landn`: **available to internal testers**. The same exact AAB was
 promoted and sent for production review; Console reports **Changes in review**
-with automated quick checks still running. This is not approval or public
+with initial automated checks finished. This is not approval or public
 availability. Existing countries are preserved, with 100% rollout after approval.
 Pro tracks, prices and billing settings were not changed.
 

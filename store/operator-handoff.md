@@ -7,8 +7,8 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 ## Latest Android update — September 24
 
 Android **1.0.9 / 18** (`art.lazying.landn`) is available internally and submitted
-for production review. Console shows **Changes in review** while automated
-checks still run; this is not approval or public release. Production was 17.
+for production review. Console confirms **Your changes are now in review**;
+initial quick checks finished. This is not approval or public release. Production was 17.
 The exact internal AAB was promoted, with existing countries and a full rollout
 after approval. See [artifact and QA record](artifacts/android-release-1.0.9.json).
 

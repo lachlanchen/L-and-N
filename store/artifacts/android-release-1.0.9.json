@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-09-24T22:07:00+08:00",
+  "recordedAt": "2026-09-24T22:12:00+08:00",
   "package": "art.lazying.landn",
   "versionName": "1.0.9",
   "versionCode": 18,
@@ -30,7 +30,7 @@
   "googlePlay": {
     "previousProduction": "17 (1.0.8)",
     "internal": "18 (1.0.9), available to internal testers",
-    "production": "submitted; Console shows Changes in review with automated quick checks still running",
+    "production": "submitted; initial quick checks finished; Console confirms Your changes are now in review",
     "approved": false,
     "publiclyReleased": false,
     "rolloutAfterApprovalPercent": 100,

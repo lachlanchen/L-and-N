@@ -42,7 +42,7 @@ platforms:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/freeRelease/app-free-release.aab
-    status: production_build_17_live; production_build_18_1_0_9_submitted_2026_09_24_automated_checks_running; internal_build_18_available
+    status: production_build_17_live; production_build_18_1_0_9_in_review_2026_09_24_initial_checks_finished; internal_build_18_available
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0

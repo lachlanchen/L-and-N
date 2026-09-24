@@ -4,8 +4,8 @@ Updated: 2026-09-24
 
 ## Current Android follow-up
 
-- Android 1.0.9/build 18: internal testing available; production update submitted,
-  with automated checks still running. Approval/public rollout remains external.
+- Android 1.0.9/build 18: internal testing available; production update in review,
+  with initial quick checks finished. Approval/public rollout remains external.
 - Google reported a privacy-policy DNS warning. Independent Google/Cloudflare
   resolution and direct HTTPS checks passed; the provider-supported incorrect-
   check review route was used. Monitor the review outcome, not just the upload.
