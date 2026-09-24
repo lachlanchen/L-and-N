@@ -8,6 +8,8 @@
 
 [開啟線上 PWA](https://l-and-n.lazying.art) · [研究說明](../docs/research/pronunciation-assessment.md) · [原課程索引](../docs/source-lesson.md)
 
+[Apple App Store — 0.99 美元](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — 免費下載，含應用程式內購買](https://play.google.com/store/apps/details?id=art.lazying.landn) · [官方連結](../docs/public-links.md)
+
 L-and-N 把容易混淆的聲音變成短練習循環：看清單詞中的目標字母或漢字，聽錄製好的示範音，觀察訊號，錄下自己的聲音，再閱讀可以解釋的評分。相同課程可安裝成 PWA、Android、iPhone/iPad 應用，亦有精簡的 watchOS 練習版。
 
 ![練習畫面](../docs/images/pwa-practice.png)

@@ -8,6 +8,8 @@
 
 [PWA を開く](https://l-and-n.lazying.art) · [研究ノート](../docs/research/pronunciation-assessment.md) · [元レッスン対応表](../docs/source-lesson.md)
 
+[App Store — 0.99米ドル](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — ダウンロード無料・アプリ内購入あり](https://play.google.com/store/apps/details?id=art.lazying.landn) · [公式リンク](../docs/public-links.md)
+
 L-and-N は、難しい音の対立を短い練習サイクルにします。単語中の文字や漢字を見て、収録済みの手本を聞き、信号を確認し、自分の声を録音して、説明付きの結果を読みます。同じ教材をインストール可能な PWA、Android、iPhone/iPad、コンパクトな watchOS ドリルで利用できます。
 
 ![練習画面](../docs/images/pwa-practice.png)

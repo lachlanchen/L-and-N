@@ -8,6 +8,8 @@
 
 [라이브 PWA 열기](https://l-and-n.lazying.art) · [연구 노트](../docs/research/pronunciation-assessment.md) · [원본 수업 안내](../docs/source-lesson.md)
 
+[App Store — US$0.99](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — 무료 다운로드, 인앱 구매 포함](https://play.google.com/store/apps/details?id=art.lazying.landn) · [공식 링크](../docs/public-links.md)
+
 L-and-N은 어려운 소리 대조를 짧은 연습 순환으로 바꿉니다. 단어나 한자에서 목표를 보고, 녹음된 모델을 듣고, 신호를 확인하고, 자신의 소리를 녹음한 뒤 설명 가능한 점수를 읽습니다. 같은 교육 과정이 설치형 PWA, Android, iPhone/iPad와 작은 watchOS 훈련 앱에서 동작합니다.
 
 ![연습 화면](../docs/images/pwa-practice.png)

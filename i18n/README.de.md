@@ -8,6 +8,8 @@
 
 [Live-PWA öffnen](https://l-and-n.lazying.art) · [Forschungsnotizen](../docs/research/pronunciation-assessment.md) · [Quellenübersicht](../docs/source-lesson.md)
 
+[App Store — 0,99 US-Dollar](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — kostenloser Download, In-App-Käufe](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Offizielle Links](../docs/public-links.md)
+
 L-and-N macht aus einem schwierigen Lautkontrast eine kurze Übungsschleife: Zielbuchstaben oder Schriftzeichen sehen, ein aufgenommenes Vorbild hören, das Signal beobachten, die eigene Stimme aufnehmen und eine erklärte Bewertung lesen. Derselbe Kurs läuft als installierbare PWA, Android-App, iPhone/iPad-App und kompakte watchOS-Übung.
 
 ![Übungsansicht](../docs/images/pwa-practice.png)

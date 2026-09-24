@@ -8,6 +8,8 @@
 
 [افتح تطبيق PWA](https://l-and-n.lazying.art) · [ملاحظات البحث](../docs/research/pronunciation-assessment.md) · [خريطة الدرس الأصلي](../docs/source-lesson.md)
 
+[App Store — ‏0.99 دولار أمريكي](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — تنزيل مجاني مع مشتريات داخل التطبيق](https://play.google.com/store/apps/details?id=art.lazying.landn) · [الروابط الرسمية](../docs/public-links.md)
+
 يحوّل L-and-N الفرق الصوتي الصعب إلى دورة تدريب قصيرة: شاهد الحرف أو الرمز الصيني داخل الكلمة، واستمع إلى نموذج مسجّل، وراقب الإشارة، وسجّل صوتك، ثم اقرأ نتيجة موضحة. يعمل المنهج نفسه كتطبيق PWA قابل للتثبيت وتطبيق Android وتطبيق iPhone/iPad وتمرين صغير على watchOS.
 
 ![شاشة التدريب](../docs/images/pwa-practice.png)

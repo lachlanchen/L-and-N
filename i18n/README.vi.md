@@ -8,6 +8,8 @@
 
 [Mở PWA](https://l-and-n.lazying.art) · [Ghi chú nghiên cứu](../docs/research/pronunciation-assessment.md) · [Bản đồ bài học](../docs/source-lesson.md)
 
+[App Store — 0,99 USD](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — tải miễn phí, có mua hàng trong ứng dụng](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Liên kết chính thức](../docs/public-links.md)
+
 L-and-N biến một cặp âm dễ nhầm thành vòng luyện tập ngắn: nhìn chữ cái hoặc chữ Hán trong từ, nghe mẫu đã thu, xem tín hiệu, ghi âm rồi đọc điểm số có giải thích. Cùng giáo trình chạy dưới dạng PWA có thể cài đặt, ứng dụng Android, iPhone/iPad và bài tập watchOS nhỏ gọn.
 
 ![Màn hình luyện tập](../docs/images/pwa-practice.png)

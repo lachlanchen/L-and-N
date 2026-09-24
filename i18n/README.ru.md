@@ -8,6 +8,8 @@
 
 [Открыть PWA](https://l-and-n.lazying.art) · [Исследование](../docs/research/pronunciation-assessment.md) · [Карта исходного урока](../docs/source-lesson.md)
 
+[App Store — 0,99 доллара США](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — бесплатная загрузка, покупки в приложении](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Официальные ссылки](../docs/public-links.md)
+
 L-and-N превращает сложное различие звуков в короткий цикл: увидеть целевую букву или иероглиф, услышать записанный образец, посмотреть на сигнал, записать себя и получить объяснимую оценку. Один курс работает как устанавливаемое PWA, приложение Android, приложение iPhone/iPad и компактное упражнение watchOS.
 
 ![Экран упражнения](../docs/images/pwa-practice.png)

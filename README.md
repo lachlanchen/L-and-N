@@ -6,9 +6,9 @@
 
 **A calm, evidence-aware pronunciation coach for hearing and producing L and N.**
 
-[Open the live PWA](https://l-and-n.lazying.art) · [Try the light/night mini-lesson](https://l-and-n.lazying.art/lessons/light-vs-night/) · [Custom lessons for tutors](https://l-and-n.lazying.art/for-tutors/) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
+[App Store — US$0.99](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [Google Play — free download, in-app purchases](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Official links](docs/public-links.md)
 
-[Download on the App Store](https://apps.apple.com/us/app/l-n-speech-practice/id6808872450) · [TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C) · [Get it on Google Play](https://play.google.com/store/apps/details?id=art.lazying.landn) · [Signed Android test APK, build 13](https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build13-test.apk)
+[Open the live PWA](https://l-and-n.lazying.art) · [Try the light/night mini-lesson](https://l-and-n.lazying.art/lessons/light-vs-night/) · [Custom lessons for tutors](https://l-and-n.lazying.art/for-tutors/) · [Privacy](https://l-and-n.lazying.art/privacy.html) · [Support](https://l-and-n.lazying.art/support.html) · [Research notes](docs/research/pronunciation-assessment.md)
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
@@ -48,6 +48,8 @@ The public browser never receives LazyEdge credentials and never connects direct
 | Android | Capacitor 8 | API 36.1 emulator build/install/launch, recording result, 3D model, bundled audio |
 | iOS | Capacitor 8 + native AVAudioEngine recorder | iPhone 17 Pro simulator build/install/launch; embedded watch and recorder integration compiled (physical-device microphone check still required) |
 | watchOS | SwiftUI | Apple Watch Series 11 (42 mm) simulator build/install/launch |
+
+For beta testing only: [TestFlight for iPhone + Apple Watch](https://testflight.apple.com/join/CpkT8m9C). For everyday practice, use the production-store links above.
 
 <p align="center"><img src="docs/images/android-score-current.png" width="240" alt="Android score explanation"> <img src="docs/images/ios-current.png" width="240" alt="iOS practice screen"> <img src="docs/images/watchos-current.png" width="190" alt="watchOS drill"></p>
 
