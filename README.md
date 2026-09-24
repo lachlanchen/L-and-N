@@ -18,11 +18,11 @@ L-and-N turns a small but frustrating speech contrast into a short practice loop
 
 ## Watch the app
 
-English demo
+English demo · subtitled
 
 <video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
 
-中文演示 · Chinese demo
+中文演示 · Chinese demo · subtitled
 
 <video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
 
