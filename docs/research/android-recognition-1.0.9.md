@@ -42,6 +42,9 @@ Sources: [audio-input sharing](https://developer.android.com/media/platform/shar
 - Gateway rate limits accommodate a normal short-word drill (24 requests per
   minute per client); the request-size and one-upstream concurrency guards
   remain in force. Busy/unavailable recognition is never a pronunciation grade.
+- The public reverse proxy must forward both POST and OPTIONS for the exact
+  transcription path; unknown origins and other API paths stay denied. The
+  private service's transient workspace is memory-backed, not persistent disk.
 
 ## Qualification scope
 
@@ -56,3 +59,13 @@ are reference-clip checks, not a representative human/accent accuracy study or
 a physical Honor test. Keep exact package hashes, emulator results and provider
 submission receipts in the release record/private evidence. Real Honor
 confirmation remains valuable after the update.
+
+Release qualification: 117 app tests, four gateway tests, Android release unit
+tests/lint and signing passed. The signed API-34 emulator package verified the
+consent/permission flow and rejected two silent attempts without a score, with
+no installed recognition service. Its gRPC audio injection crashed the emulator,
+so that was **not** counted as successful microphone speech testing. Separately,
+the full real Web Audio → Opus recording → HTTPS → scoring pipeline passed all
+four studio clips with a nonzero live waveform. A browser test from simulated
+`https://localhost` verified real cross-origin transcription without disabling
+browser security. Details: [release record](../../store/artifacts/android-release-1.0.9.json).

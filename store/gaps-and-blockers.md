@@ -1,6 +1,23 @@
 # Store publication status
 
-Updated: 2026-09-17
+Updated: 2026-09-24
+
+## Current Android follow-up
+
+- Android 1.0.9/build 18: internal testing available; production update submitted,
+  with automated checks still running. Approval/public rollout remains external.
+- Google reported a privacy-policy DNS warning. Independent Google/Cloudflare
+  resolution and direct HTTPS checks passed; the provider-supported incorrect-
+  check review route was used. Monitor the review outcome, not just the upload.
+- Physical Honor Magic 7 Pro confirmation remains pending. The device was not
+  connected; studio-fixture browser pipeline tests and signed-APK emulator UI/
+  silence tests are not labelled as physical-device pronunciation validation.
+- iOS/watchOS and Google Pro were not changed by this update. Older platform
+  observations below are historical, not a current provider check.
+
+See [Android 1.0.9 evidence](artifacts/android-release-1.0.9.json).
+
+## Historical publication evidence
 
 ## Verified locally
 

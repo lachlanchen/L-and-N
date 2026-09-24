@@ -1,7 +1,7 @@
 app:
   name: L & N
-  version: 1.0.8
-  build: 17
+  version: 1.0.9
+  build: 18
   owner: LazyingArt LLC
   support_email: echomind@lazying.art
   marketing_url: https://l-and-n.lazying.art
@@ -32,15 +32,17 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: /opt/l-and-n-web/releases/9591f2413cc752bc495fa46f16d02e09c9be2ba7355f81f2324bdfb887aeb687
+    release: android18-535be6a4ca84afb7cd9a927ff51e77b54dc154a640481276df74b6b1e6cd3ea6
+    support_patch_source: cf985732ac165fc192a6dba6a43ecc95ff82dcf1
+    support_patch_note: privacy, test APK, and speech gateway only; existing PWA application bundle preserved
     source_commit: 775ebc15aaaec7e3bdb48bdcc29f239b65b97007
     main_asset: assets/index-NfvsP63s.js
-    rollback: /opt/l-and-n-web/releases/428b118f8a9c13f469addb1dd0c6a77dfcee8cc384f52310d326abcb39a9cf8c
+    rollback: 9591f2413cc752bc495fa46f16d02e09c9be2ba7355f81f2324bdfb887aeb687
   android:
     min_sdk: 24
     target_sdk: 36
-    artifact: android/app/build/outputs/bundle/release/app-release.aab
-    status: production_live_build_4_1_0_1; production_build_11_1_0_3_live_2026_09_21; production_build_13_1_0_4_submitted_2026_09_21; internal_testing_build_17_1_0_8_cantonese_2026_09_23
+    artifact: android/app/build/outputs/bundle/freeRelease/app-free-release.aab
+    status: production_build_17_live; production_build_18_1_0_9_submitted_2026_09_24_automated_checks_running; internal_build_18_available
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0
@@ -55,14 +57,14 @@ platforms:
 
 testing:
   android:
-    version: 1.0.4
-    build: 13
+    version: 1.0.9
+    build: 18
     track: internal
     status: available_to_internal_testers
     url: https://play.google.com/apps/internaltest/4701251861700553150
-    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.4-build13-test.apk
-    direct_apk_sha256: 04b884711552ebd2faef6d0dacc2cdcd8c61b348a4ecccc7e665636f8abd3d50
-    artifact_manifest: store/artifacts/native-release-1.0.2.json
+    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.9-build18-test.apk
+    direct_apk_sha256: 2f643105907f0cb621c9522bcf96d6b7189e794d54241782d93d665f35979582
+    artifact_manifest: store/artifacts/android-release-1.0.9.json
   ios_watchos:
     version: 1.0.5
     build: 11

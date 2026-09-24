@@ -1,10 +1,30 @@
 # Store publication handoff
 
-Updated: 2026-09-19
+Updated: 2026-09-24
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
-## L & N
+## Latest Android update — September 24
+
+Android **1.0.9 / 18** (`art.lazying.landn`) is available internally and submitted
+for production review. Console shows **Changes in review** while automated
+checks still run; this is not approval or public release. Production was 17.
+The exact internal AAB was promoted, with existing countries and a full rollout
+after approval. See [artifact and QA record](artifacts/android-release-1.0.9.json).
+
+This fixes empty recognition being treated as an acoustic L/N judgment on an
+Honor report. Android now requires explicit consent for single-stream online
+recognition and saves no score when recognition is empty. Public policy and
+gateway support are updated; PWA app assets, iOS/watchOS, Pro tracks and
+commercial settings are unchanged. The physical Honor was not connected.
+
+Play reported a privacy-page DNS warning despite successful independent DNS
+and HTTP checks. Its supported incorrect-check review option was acknowledged;
+review may still reject it. Private evidence and runtime/rollback details are
+in `.runtime/android-recognition-20260924/` and
+`.runtime/store/android-recognition-20260924.md`.
+
+## Historical L & N record (superseded Android statuses below)
 
 - Healthy working copy: `/home/lachlan/ProjectsLFS/L-And-N`
 - Recovery checkout retained from the disk repair: `/home/lachlan/L-And-N-audio-repair`

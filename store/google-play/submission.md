@@ -1,5 +1,27 @@
 # Google Play submission
 
+## September 24 update — 1.0.9 / 18
+
+`art.lazying.landn`: **available to internal testers**. The same exact AAB was
+promoted and sent for production review; Console reports **Changes in review**
+with automated quick checks still running. This is not approval or public
+availability. Existing countries are preserved, with 100% rollout after approval.
+Pro tracks, prices and billing settings were not changed.
+
+The release fixes Android empty recognition being scored as an acoustic L/N
+guess, uses a single recording with explicit online-recognition consent, and
+keeps failed recognition out of score history. See the
+[artifact, test scope and DNS-check observation](../artifacts/android-release-1.0.9.json).
+
+- [Internal test](https://play.google.com/apps/internaltest/4701251861700553150)
+- [Exact signed test APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0.9-build18-test.apk)
+
+Use Play testing for an existing Play installation. The direct APK uses the
+upload certificate, which may differ from Play App Signing; do not uninstall
+and lose local practice history merely to switch signing channels.
+
+## Historical submissions
+
 Submitted: 2026-09-05; corrected production binary submitted 2026-09-06
 
 - App: `L & N: Speech Practice`

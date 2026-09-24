@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-09-24T22:07:00+08:00",
+  "package": "art.lazying.landn",
+  "versionName": "1.0.9",
+  "versionCode": 18,
+  "applicationSourceCommit": "cf985732ac165fc192a6dba6a43ecc95ff82dcf1",
+  "aabSha256": "bfae2f5b4e3ddb500e976a315f8cc7b2b99425cebf401210febd46c2cfd68121",
+  "apkSha256": "2f643105907f0cb621c9522bcf96d6b7189e794d54241782d93d665f35979582",
+  "uploadCertificateSha256": "5d9562b1ec58958dc5dd6d04df8e4e47834242038b4af6ddb42e37d2a0c7b5e3",
+  "downloadUrl": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.9-build18-test.apk",
+  "downloadBytesVerified": true,
+  "qualification": {
+    "appTests": 117,
+    "gatewayTests": 4,
+    "lintTypescriptBuild": "passed",
+    "androidReleaseUnitTestsLintSigning": "passed",
+    "signedApkApi34Emulator": "installed; consent and permission UI verified; two silent-input attempts rejected without a score; no recognition service installed",
+    "studioFixturePipeline": "light/night/low/no: real Web Audio, Opus MediaRecorder, HTTPS transcription, waveform and correct L/N identity; Android platform simulated in desktop browser",
+    "nativeOriginCors": "real browser request from simulated https://localhost returned HTTP 200 and Light; browser security not disabled",
+    "physicalHonorMagic7Pro": "not tested; device not connected and its logs unavailable",
+    "emulatorAudioInjection": "not qualified: emulator gRPC audio-injection driver crashed; not counted as a successful app microphone test"
+  },
+  "privacy": {
+    "onlineRecognition": "explicit revocable opt-in",
+    "noEmptyRecognitionScore": true,
+    "transientWorkspace": "private memory-backed runtime directory; empty after completed requests",
+    "playDeclarationVerified": "optional voice recordings; collected, not shared; ephemeral; app functionality; encrypted in transit",
+    "policyPageUpdatedAndVerified": true
+  },
+  "googlePlay": {
+    "previousProduction": "17 (1.0.8)",
+    "internal": "18 (1.0.9), available to internal testers",
+    "production": "submitted; Console shows Changes in review with automated quick checks still running",
+    "approved": false,
+    "publiclyReleased": false,
+    "rolloutAfterApprovalPercent": 100,
+    "rolloutRationale": "Very small installed base; a small staged percentage would not provide a meaningful cohort. Owner requested formal publication.",
+    "countrySelection": "existing targeted countries unchanged",
+    "managedPublishing": false,
+    "privacyDnsCheck": "Google reported a DNS warning. Exact URL returned HTTP 200 directly and with crawler UA; Google Public DNS and Cloudflare resolved successfully. Used the provider-supported incorrect-check Proceed option, acknowledged review may still reject. No DNS/provider account changes."
+  },
+  "unchanged": ["iOS and watchOS source/binaries/submissions", "Google Pro tracks", "prices and purchases", "PWA application entry bundle", "tracked dist-manifest.sha256"],
+  "webSupportPatch": "privacy page, exact test APK, normal-drill rate allowance and exact-route OPTIONS support; existing web app assets preserved",
+  "privateEvidence": ".runtime/android-recognition-20260924/"
+}
