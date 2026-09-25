@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-09-25T21:19:02+08:00",
+  "status": "deployed-and-verified",
+  "url": "https://l-and-n.lazying.art/",
+  "sourceCommit": "6426c748b6984782a8d28228218a3d74549acd48",
+  "releaseTarSha256": "7ad308ad61e8a7448eb823d536a2a14103cb5d4fb7250f7cb48ff483da5dc756",
+  "distManifestSha256": "44a2894e66cfff45d177b9d735d4b5a9971cedb1fa88e3c528ef0486fd5fafc1",
+  "webBuildManifestSha256": "061146ca3803dfdee35b63e65ff3587b53191bb2ee61c62dfa920015060313af",
+  "mainAsset": "assets/index-DttL7BRW.js",
+  "mainAssetSha256": "4acb2a9867c94d25752e56db27832842dca0f0096c97f400ab383165244f5e29",
+  "behavior": {
+    "placement": "Compact inline prompt below practice-language tabs; no modal or automatic redirect",
+    "routing": "iPhone/iPad/iPod to App Store; Android to Google Play; unknown/desktop excluded",
+    "interaction": "Explicit store-link tap only; dismissal remembered when browser storage is available",
+    "locales": ["en", "zh-Hans", "zh-Hant", "yue"],
+    "language": "Follows interface language, independent of practice language",
+    "capture": "Hidden and inert during microphone startup, recording and scoring; layout space preserved",
+    "native": "Excluded in Capacitor iOS and Android; no native build or store submission"
+  },
+  "verification": {
+    "check": "npm run check passed: lint, 139 tests in 16 files, TypeScript and production PWA build",
+    "browser": "Local and live Chromium passed 16 cases each: four UI languages with iPhone, Android, iPad and desktop emulation at 320/390/768/1280px",
+    "interaction": "Both visible store-link clicks opened the exact listing URL; dismissal survived reload; keyboard focus and 44px controls verified; no horizontal overflow",
+    "hardwareLimit": "Browser device emulation, not a new physical-phone test",
+    "assets": "Public HTML, JS, CSS, service worker and privacy hashes matched candidate; lesson and APK available",
+    "preserved": "Current privacy, APK bytes, gateway code/process, Caddy configuration and tracked dist-manifest unchanged; older lazy chunks retained for open tabs",
+    "rollback": "Initial APK verification timeout triggered successful automatic rollback; same verified candidate promoted after complete APK digest check with longer timeout",
+    "runtime": "Temporary QA tab/server closed; shared store desktop preserved"
+  }
+}
