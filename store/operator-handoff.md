@@ -1,8 +1,21 @@
 # Store publication handoff
 
-Updated: 2026-09-24
+Updated: 2026-09-26
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
+
+## Latest web update — September 26
+
+Recording history now appends older attempts as the learner scrolls and keeps
+saved recordings beyond the former 60-audio/200-summary limits. Replay errors
+appear beside the affected entry, and storage failures are explained. Previously
+deleted recordings cannot be recovered. All 153 tests passed; real IndexedDB
+storage and replay were checked with 205 synthetic attempts, along with four UI
+languages and narrow phone layouts. The PWA is deployed and verified; existing
+native store binaries and the submitted Mac build are unchanged. See
+[release evidence](artifacts/pwa-recording-history-release.json) and
+[behavior and limits](../docs/recording-history.md). Runtime and rollback details
+are in `.runtime/history-20260926/handoff.md`.
 
 ## Latest Android update — September 24
 

@@ -32,12 +32,13 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: android18-535be6a4ca84afb7cd9a927ff51e77b54dc154a640481276df74b6b1e6cd3ea6
+    release: history-559bff7202840821245cf322a676d591a018a29582cf0e233ff530a626a7c8e7
     support_patch_source: cf985732ac165fc192a6dba6a43ecc95ff82dcf1
-    support_patch_note: privacy, test APK, and speech gateway only; existing PWA application bundle preserved
-    source_commit: 775ebc15aaaec7e3bdb48bdcc29f239b65b97007
-    main_asset: assets/index-NfvsP63s.js
-    rollback: 9591f2413cc752bc495fa46f16d02e09c9be2ba7355f81f2324bdfb887aeb687
+    support_patch_note: earlier September 24 privacy, test APK, and speech gateway patch; backend unchanged by subsequent web releases
+    source_commit: 32a2c88345d83ccaa7034522b1d8cb62bc7d548f
+    main_asset: assets/index-XQERvNpo.js
+    rollback: store-prompt-7ad308ad61e8a7448eb823d536a2a14103cb5d4fb7250f7cb48ff483da5dc756
+    artifact_manifest: store/artifacts/pwa-recording-history-release.json
   android:
     min_sdk: 24
     target_sdk: 36

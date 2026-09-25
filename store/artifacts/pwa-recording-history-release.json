@@ -1,0 +1,35 @@
+{
+  "verifiedAt": "2026-09-25T16:54:30Z",
+  "status": "deployed-and-verified",
+  "url": "https://l-and-n.lazying.art/",
+  "sourceCommit": "32a2c88345d83ccaa7034522b1d8cb62bc7d548f",
+  "releaseTarSha256": "559bff7202840821245cf322a676d591a018a29582cf0e233ff530a626a7c8e7",
+  "distManifestSha256": "f6dabab48097cfbb09109e812626f42be8c602748e197f02df9242ecc3628d9b",
+  "webBuildManifestSha256": "dc7ece0dec37e8d35cc5170d279ae48f0894c2def7d3ceeb8aaad53cd3625a31",
+  "mainAsset": "assets/index-XQERvNpo.js",
+  "mainAssetSha256": "b69c6435c0e8c3cd2d3048ccd0db876ea8dc8703bee930bd96e25b6ea262e503",
+  "cssAsset": "assets/index-BC7kjAMw.css",
+  "cssAssetSha256": "64aa171a1cedec47cb406d73a9e53bcecb359551310bf7d26b9c07d01e35c304",
+  "rollbackRelease": "store-prompt-7ad308ad61e8a7448eb823d536a2a14103cb5d4fb7250f7cb48ff483da5dc756",
+  "behavior": {
+    "history": "Initially 12 entries; append 12 on scroll or Load older attempts; retained expansion across tabs",
+    "retention": "No automatic 60-take or 200-summary eviction; recent 200 acoustic feature arrays retained for calibration",
+    "audio": "Loaded on replay only; cancellation guards; visible missing/playback/storage errors",
+    "locales": ["en", "zh-Hans", "zh-Hant", "yue"],
+    "limits": "Device-local, finite storage; session-only fallback warning; old deleted recordings cannot be restored; no cloud backup",
+    "implementation": "Incremental rendering and lazy audio, not database cursor pagination",
+    "includedSharedSource": "Previously tested WebGL-unavailable fallback; desktop layout is scoped to native Mac and inactive on web"
+  },
+  "verification": {
+    "check": "npm run check passed: lint, 153 tests in 19 files, TypeScript, production PWA build",
+    "browserStorage": "205 synthetic WAV takes and summaries saved through real functions; retained after reload; oldest audio played through completion",
+    "browserUI": "All 205 reachable by scrolling; manual fallback, tab-switch retention, all four UI languages, 320px/390px missing-audio layouts and desktop screenshots checked",
+    "productionPreview": "Exact built entry verified with 205 saved summaries and progressive pagination",
+    "live": "Public entry, CSS, privacy, service worker and registration bytes matched candidate; existing service worker updated and live Recording history UI verified",
+    "service": "Gateway remained active with unchanged process and code; Caddy unchanged; lesson and preserved old asset available; expected CORS 204 and private route 404",
+    "apk": "Existing APK digest and hardlink identity preserved; public download HEAD 200",
+    "scope": "Web only; no iOS, watchOS, Android or Mac binary replacement or store submission",
+    "limitations": "Synthetic playback validates storage/replay, not physical-phone recording or speech accuracy; no new reboot test",
+    "runtime": "Only isolated synthetic test data removed; temporary QA tab and local server stopped; shared store desktop preserved"
+  }
+}
