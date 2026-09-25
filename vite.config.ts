@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      injectRegister: null,
       includeAssets: ['icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png'],
       manifest: {
         name: 'L-and-N Pronunciation Lab',
@@ -25,6 +26,8 @@ export default defineConfig({
         ],
       },
       workbox: {
+        clientsClaim: true,
+        globIgnores: ['**/app-updates.json'],
         navigateFallback: '/index.html',
         globPatterns: ['**/*.{js,css,html,png,svg,json,woff2,mp3}'],
         ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^v$/],

@@ -4,6 +4,7 @@ import { Capacitor } from '@capacitor/core'
 import { Activity, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Ear, Flame, Globe2, Headphones, Mic, RotateCcw, Sparkles, Square, Target, Volume2, Waves } from 'lucide-react'
 import './App.css'
 import { AppStorePrompt } from './components/AppStorePrompt'
+import { UpdatePrompt } from './components/UpdatePrompt'
 import { ListeningExam } from './components/ListeningExam'
 import { UnlockCard } from './components/UnlockCard'
 import { SignalVisualizer } from './components/SignalVisualizer'
@@ -611,6 +612,7 @@ function App() {
           <div className="streak" aria-label={`${copy.streak}: ${streak}`}><Flame size={16} /> {streak}</div>
         </div>
       </header>
+      <UpdatePrompt copy={copy} busy={captureBusy || Boolean(playingTakeId) || tab === 'listen'} />
       {tab === 'practice' && renderPractice()}
       {tab === 'listen' && renderListen()}
       {tab === 'learn' && renderLearn()}

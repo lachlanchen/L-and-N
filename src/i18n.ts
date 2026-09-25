@@ -22,6 +22,7 @@ export interface UICopy {
   nav: { practice: string; listen: string; learn: string; progress: string }
   storeLinks: { title: string; note: string; appStore: string; googlePlay: string }
   storePrompt: { title: string; note: string; dismiss: string }
+  updates: { title: string; webNote: string; nativeNote: string; reload: string; store: string; later: string; failed: string }
   androidSpeech: { allow: string; disclosure: string; noResult: string }
   unlock: {
     title: string
@@ -188,6 +189,7 @@ const copies: Record<UILanguage, UICopy> = {
     trainingLanguages: { 'en-US': 'English', 'zh-CN': 'Mandarin', 'yue-HK': 'Cantonese' },
     primaryNavigation: 'Primary navigation',
     nav: { practice: 'Practice', listen: 'Listen', learn: 'Learn', progress: 'Progress' },
+    updates: { title: 'An update is ready', webNote: 'Refresh when you finish practising; your saved recordings stay on this device.', nativeNote: 'Version {version} is available with improvements. Update in place through your store; no reinstall needed.', reload: 'Update and refresh', store: 'View update', later: 'Later', failed: 'Could not update just now. Please try again when online.' },
     storeLinks: {
       title: 'Also available as an app',
       note: 'The browser version remains free. See each store for pricing and availability.',
@@ -365,6 +367,7 @@ const copies: Record<UILanguage, UICopy> = {
       note: '网页版免费练习，应用价格请查看商店。',
       dismiss: '继续使用网页版',
     },
+    updates: { title: '更好的体验，已准备好', webNote: '有新版本可用。练习完成后可刷新，已保存的录音仍留在本机。', nativeNote: '{version} 版本已有改进。请通过应用商店更新，以保留录音。', reload: '更新并刷新', store: '查看更新', later: '稍后', failed: '暂时无法更新，请联网后重试。' },
     unlock: {
       title: '解锁全部 59 组易混词',
       body: '每种语言的前 {free} 组免费。一次购买即可在“练习”和“听辨”中永久解锁全部英语、普通话和粤语词组（绑定当前 Google 账号）。',
@@ -449,6 +452,7 @@ const copies: Record<UILanguage, UICopy> = {
       note: '網頁版免費練習，App 價格請查看商店。',
       dismiss: '繼續使用網頁版',
     },
+    updates: { title: '更好的體驗，已準備好', webNote: '有新版本可用。練習完成後可重新整理，已儲存的錄音仍留在本機。', nativeNote: '{version} 版本已有改進。請透過應用程式商店更新，以保留錄音。', reload: '更新並重新整理', store: '查看更新', later: '稍後', failed: '暫時無法更新，請連線後重試。' },
     unlock: {
       title: '解鎖全部 59 組易混詞',
       body: '每種語言的前 {free} 組免費。一次購買即可在「練習」和「聽辨」中永久解鎖全部英語、普通話和粵語詞組（綁定目前的 Google 帳號）。',
@@ -533,6 +537,7 @@ const copies: Record<UILanguage, UICopy> = {
       note: '網頁版免費練習，App 價錢可以去商店睇。',
       dismiss: '繼續用網頁版',
     },
+    updates: { title: '更好嘅體驗，準備好喇', webNote: '有新版本可以用。練完先重新載入，儲存咗嘅錄音仍然留喺部機度。', nativeNote: '{version} 版本有改進。請經應用程式商店更新，保留你嘅錄音。', reload: '更新並重新載入', store: '睇吓更新', later: '遲啲先', failed: '暫時更新唔到，連線之後再試。' },
     unlock: {
       title: '解鎖全部 59 組易混字',
       body: '每種語言頭 {free} 組免費。買一次就可以喺「練習」同「聽辨」永久解鎖全部英語、普通話同粵語字組（綁定而家嘅 Google 帳號）。',

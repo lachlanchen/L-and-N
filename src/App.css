@@ -18,6 +18,15 @@ button { font: inherit; }
 button:disabled { cursor: not-allowed; }
 .app-shell { min-height: 100dvh; padding-bottom: calc(94px + env(safe-area-inset-bottom)); background: radial-gradient(circle at 100% 0, rgba(19,169,155,.09), transparent 30rem), var(--cream); }
 .app-header { min-height: 62px; display: flex; align-items: center; justify-content: space-between; padding: calc(8px + env(safe-area-inset-top)) 16px 8px; max-width: 780px; margin: auto; }
+.update-prompt { width: min(100% - 32px, 680px); margin: 8px auto 14px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; border: 1px solid rgba(19,169,155,.2); border-radius: 18px; background: var(--teal-soft); color: var(--navy); }
+.update-prompt > svg { flex: none; color: var(--teal); margin-top: 2px; }
+.update-prompt.is-busy { visibility: hidden; pointer-events: none; }
+.update-copy { flex: 1; min-width: 0; }
+.update-copy strong { font-size: 14px; }
+.update-copy p { font-size: 12px; line-height: 1.5; margin: 5px 0 8px; }
+.update-actions { display: flex; gap: 6px 12px; flex-wrap: wrap; }
+.update-actions button, .update-actions a { min-height: 44px; padding: 9px 12px; display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 12px; font-weight: 750; font-size: 12px; color: white; background: var(--navy); cursor: pointer; text-decoration: none; }
+.update-actions .update-later { color: var(--navy); background: transparent; }
 .brand { border: 0; background: transparent; display: flex; align-items: center; gap: 10px; color: var(--navy); font-weight: 850; letter-spacing: -.04em; font-size: 20px; cursor: pointer; }
 .brand img { width: 32px; height: 32px; border-radius: 9px; box-shadow: 0 6px 14px rgba(8,31,77,.18); }
 .header-actions { display: flex; align-items: center; gap: 7px; }
