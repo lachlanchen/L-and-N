@@ -104,6 +104,42 @@ afterEach(() => {
 })
 
 describe('web store links', () => {
+  it('localizes the phone prompt independently of practice language and remembers dismissal', () => {
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('iPhone')
+    render(<App />)
+    expect(screen.getByRole('link', { name: 'View on the App Store' })).toBeTruthy()
+    fireEvent.click(screen.getByTestId('practice-language-yue-HK'))
+    expect(screen.getByText('Prefer the app?')).toBeTruthy()
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: 'zh-Hans' } })
+    expect(screen.getByText('想用手机应用练习？')).toBeTruthy()
+    expect(screen.getByTestId('app-root').getAttribute('data-practice-language')).toBe('yue-HK')
+    fireEvent.click(screen.getByRole('button', { name: '继续使用网页版' }))
+    fireEvent.click(screen.getByRole('button', { name: '进度' }))
+    // Dismissal only affects the nudge, not the permanent links.
+    expect(screen.getByRole('link', { name: '在 App Store 查看' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: '练习' }))
+    expect(screen.queryByTestId('app-store-prompt')).toBeNull()
+  })
+
+  it('suppresses the prompt through microphone startup, recording and scoring', async () => {
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Android')
+    let resolveCapture: ((value: unknown) => void) | undefined
+    audioCaptureMocks.startAudioCapture.mockReturnValueOnce(new Promise((resolve) => { resolveCapture = resolve }))
+    render(<App />)
+    expect(screen.getByRole('link', { name: 'View on Google Play' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    expect(screen.getByTestId('app-store-prompt').hasAttribute('inert')).toBe(true)
+    resolveCapture?.({
+      analyser: null,
+      stop: vi.fn(() => new Promise<never>(() => undefined)),
+      cancel: vi.fn(async () => undefined),
+    })
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Stop and score recording' })).toBeTruthy())
+    expect(screen.queryByRole('link', { name: 'View on Google Play' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Stop and score recording' }))
+    expect(screen.getByTestId('app-store-prompt').hasAttribute('inert')).toBe(true)
+  })
+
   it.each([
     ['en', 'Progress', 'Also available as an app', 'View on the App Store', 'View on Google Play'],
     ['zh-Hans', '进度', '也可以使用手机应用', '在 App Store 查看', '在 Google Play 查看'],

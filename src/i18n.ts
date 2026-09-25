@@ -21,6 +21,7 @@ export interface UICopy {
   primaryNavigation: string
   nav: { practice: string; listen: string; learn: string; progress: string }
   storeLinks: { title: string; note: string; appStore: string; googlePlay: string }
+  storePrompt: { title: string; note: string; dismiss: string }
   androidSpeech: { allow: string; disclosure: string; noResult: string }
   unlock: {
     title: string
@@ -189,6 +190,11 @@ const copies: Record<UILanguage, UICopy> = {
       appStore: 'View on the App Store',
       googlePlay: 'View on Google Play',
     },
+    storePrompt: {
+      title: 'Prefer the app?',
+      note: 'Browser practice is free. See the store for app pricing.',
+      dismiss: 'Keep using the browser',
+    },
     unlock: {
       title: 'Unlock all 59 pairs',
       body: 'The first {free} pairs of each language are free. One purchase unlocks every English, Mandarin and Cantonese pair in Practice and Listen, forever, on this Google account.',
@@ -349,6 +355,11 @@ const copies: Record<UILanguage, UICopy> = {
       appStore: '在 App Store 查看',
       googlePlay: '在 Google Play 查看',
     },
+    storePrompt: {
+      title: '想用手机应用练习？',
+      note: '网页版免费练习，应用价格请查看商店。',
+      dismiss: '继续使用网页版',
+    },
     unlock: {
       title: '解锁全部 59 组易混词',
       body: '每种语言的前 {free} 组免费。一次购买即可在“练习”和“听辨”中永久解锁全部英语、普通话和粤语词组（绑定当前 Google 账号）。',
@@ -428,6 +439,11 @@ const copies: Record<UILanguage, UICopy> = {
       appStore: '在 App Store 查看',
       googlePlay: '在 Google Play 查看',
     },
+    storePrompt: {
+      title: '想用手機 App 練習？',
+      note: '網頁版免費練習，App 價格請查看商店。',
+      dismiss: '繼續使用網頁版',
+    },
     unlock: {
       title: '解鎖全部 59 組易混詞',
       body: '每種語言的前 {free} 組免費。一次購買即可在「練習」和「聽辨」中永久解鎖全部英語、普通話和粵語詞組（綁定目前的 Google 帳號）。',
@@ -506,6 +522,11 @@ const copies: Record<UILanguage, UICopy> = {
       note: '網頁版仍然免費。價錢同上架地區可以去各個應用程式商店睇。',
       appStore: '去 App Store 睇',
       googlePlay: '去 Google Play 睇',
+    },
+    storePrompt: {
+      title: '想用手機 App 練習？',
+      note: '網頁版免費練習，App 價錢可以去商店睇。',
+      dismiss: '繼續用網頁版',
     },
     unlock: {
       title: '解鎖全部 59 組易混字',

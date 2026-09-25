@@ -195,6 +195,18 @@ button:disabled { cursor: not-allowed; }
 .store-links .store-links-title { color: var(--ink); font-weight: 700; }
 .store-links > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; }
 .store-links a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; color: var(--navy); font-size: 13px; font-weight: 700; text-underline-offset: 3px; }
+.app-store-prompt { display: flex; align-items: flex-start; gap: 10px; margin: 10px 0; padding: 12px 8px 8px 12px; border: 1px solid rgba(19,169,155,.18); border-radius: 18px; background: var(--teal-soft); }
+/* Keep the layout steady, but remove the offer from sight, focus and taps during capture. */
+.app-store-prompt.is-busy { visibility: hidden; pointer-events: none; }
+.app-store-prompt > img { flex: 0 0 36px; border-radius: 10px; margin-top: 2px; }
+.app-store-prompt-copy { min-width: 0; flex: 1; }
+.app-store-prompt-copy strong { color: var(--navy); font-size: 13px; }
+.app-store-prompt-copy p { margin: 3px 0 6px; color: #4c6268; font-size: 11px; line-height: 1.5; }
+.app-store-prompt-copy a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 12px; border-radius: 11px; background: var(--navy); color: white; font-size: 12px; font-weight: 750; text-decoration: none; }
+.app-store-prompt-copy a svg { flex-shrink: 0; }
+.app-store-prompt-dismiss { display: grid; place-items: center; flex: 0 0 44px; height: 44px; margin-top: -6px; border: 0; border-radius: 12px; background: transparent; color: #4c6268; cursor: pointer; }
+.app-store-prompt-dismiss:hover { background: rgba(16,35,61,.06); }
+.app-store-prompt :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
 .bottom-nav { position: fixed; z-index: 10; bottom: max(12px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(calc(100% - 24px), 440px); height: 68px; display: grid; grid-template-columns: repeat(4, 1fr); padding: 5px; background: rgba(8,31,77,.94); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; box-shadow: 0 15px 38px rgba(8,31,77,.28); }
 .bottom-nav button { border: 0; border-radius: 17px; color: #aebbd1; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 9px; font-weight: 750; cursor: pointer; }
 .bottom-nav svg { width: 20px; }

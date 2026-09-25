@@ -3,6 +3,7 @@ import { App as CapacitorApp } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import { Activity, ArrowRight, BookOpen, Check, ChevronLeft, ChevronRight, Ear, Flame, Globe2, Headphones, Mic, RotateCcw, Sparkles, Square, Target, Volume2, Waves } from 'lucide-react'
 import './App.css'
+import { AppStorePrompt } from './components/AppStorePrompt'
 import { ListeningExam } from './components/ListeningExam'
 import { UnlockCard } from './components/UnlockCard'
 import { SignalVisualizer } from './components/SignalVisualizer'
@@ -29,6 +30,7 @@ import {
 import { buildAcousticCalibration, scorePronunciation } from './lib/scoring'
 import { loadEntitlement, UNGATED, unlockedExercises, type Entitlement } from './lib/purchases'
 import { isEmptyTranscript, speakExample } from './lib/speech'
+import { APP_STORE_URL, GOOGLE_PLAY_URL } from './lib/app-stores'
 import { hasAndroidSpeechConsent, isAndroidApp, setAndroidSpeechConsent } from './lib/android-speech-consent'
 import { loadTake, playTakeBlob, saveTake, type TakePlayback } from './lib/takes'
 import { playSequence } from './lib/word-audio'
@@ -401,6 +403,7 @@ function App() {
   const renderPractice = () => (
     <main className="practice-page">
       {languageSwitcher}
+      <AppStorePrompt copy={copy} busy={captureBusy} />
 
       <div className="practice-kicker">
         <span className="eyebrow"><Sparkles size={14} /> {copy.practice.session}</span>
@@ -558,8 +561,8 @@ function App() {
         <nav className="store-links" aria-label={copy.storeLinks.title}>
           <p className="store-links-title">{copy.storeLinks.title}</p>
           <div>
-            <a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450" target="_blank" rel="noopener noreferrer">{copy.storeLinks.appStore}</a>
-            <a href="https://play.google.com/store/apps/details?id=art.lazying.landn" target="_blank" rel="noopener noreferrer">{copy.storeLinks.googlePlay}</a>
+            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">{copy.storeLinks.appStore}</a>
+            <a href={GOOGLE_PLAY_URL} target="_blank" rel="noopener noreferrer">{copy.storeLinks.googlePlay}</a>
           </div>
           <p>{copy.storeLinks.note}</p>
         </nav>
