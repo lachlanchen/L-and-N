@@ -1,0 +1,43 @@
+{
+  "platform": "MAC_OS",
+  "technology": "Mac Catalyst",
+  "app_id": "6808872450",
+  "bundle_id": "art.lazying.landn",
+  "version": "1.0.0",
+  "build": "1",
+  "minimum_macos": "12.0",
+  "architectures": ["x86_64", "arm64"],
+  "application_source_commit": "1bca346",
+  "listing_source_commit": "abc86bc12f696ed942b1bcb00472b1e5d2608d1e",
+  "installer_sha256": "13466e201c4f5305b9eae988d6419cd46115cfdbca2428381828c96dde760015",
+  "apple_validation": "passed_no_errors",
+  "upload": "succeeded_no_errors",
+  "build_id": "63771d62-8718-40e5-899d-3545b9e3ccb9",
+  "processing_state": "VALID",
+  "version_id": "37960509-1987-4792-bf6a-da7c2b271654",
+  "review_submission_id": "2b288099-3cef-4322-8966-a6e8192bf4fd",
+  "submitted_at": "2026-09-25T15:54:18.249Z",
+  "review_state": "WAITING_FOR_REVIEW",
+  "release_type": "MANUAL",
+  "publicly_released": false,
+  "internal_testflight_state": "IN_BETA_TESTING",
+  "external_testflight_state": "READY_FOR_BETA_SUBMISSION",
+  "qa": {
+    "web_tests_passed": 140,
+    "native_pcm_tests_passed": 7,
+    "lint_typecheck_build": "passed",
+    "macos_runtime": "15.7.9 Intel virtual Mac, actual Debug Catalyst application",
+    "ui_checks": "passed: language independence, L/N controls, lessons, graphics fallback, progress, repeated denied microphone recovery, native promotion exclusion",
+    "genuine_3d_gpu_rendering_on_mac": "not_verified; virtual GPU initialization failure falls back without blanking the app",
+    "live_microphone_accuracy": "not_verified; test host has no working audio input",
+    "apple_silicon_runtime": "not_tested; universal compile and signing verified",
+    "distribution_archive_direct_launch": "not_run; macOS refused direct launch outside store installation"
+  },
+  "screenshots": [
+    {"file": "store/assets/macos-01-practice.png", "sha256": "119a620e55778c10d47a112deb9db37c912e550aed6b94f522c7bd680cb4df15", "delivery": "COMPLETE"},
+    {"file": "store/assets/macos-02-listen.png", "sha256": "53074f8cb10ce8bb2d2116fe07582945f6c003d35f60404843e3a4436ffc2b6a", "delivery": "COMPLETE"},
+    {"file": "store/assets/macos-03-progress.png", "sha256": "a9436fe23c6ceda0a8627d571958e892b0cd5facae554b14727d9b0a4e38ce58", "delivery": "COMPLETE"}
+  ],
+  "screenshot_provenance": "Actual Mac Catalyst WebKit snapshots, 1280x800; lossless RGB encoding with zero pixel differences from the opaque source captures",
+  "scope": "Existing app record; no iOS, watchOS, Google Play, pricing, account or territory changes. No website deployment."
+}
