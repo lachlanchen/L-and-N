@@ -1,6 +1,7 @@
 import AVFoundation
 import Capacitor
 import Speech
+import WebKit
 
 @objc(NativeAudioRecorderPlugin)
 final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
@@ -64,6 +65,12 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
                 call.reject("A recording is already active.", "RECORDING_ACTIVE")
                 return
             }
+            #if targetEnvironment(macCatalyst)
+            guard AVCaptureDevice.default(for: .audio) != nil else {
+                call.reject("Connect an audio input device and try again.", "AUDIO_INPUT_UNAVAILABLE")
+                return
+            }
+            #endif
 
             self.requestMicrophonePermission { granted in
                 guard granted else {
@@ -120,6 +127,20 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     private func requestMicrophonePermission(_ completion: @escaping (Bool) -> Void) {
+        #if targetEnvironment(macCatalyst)
+        // macOS owns input-device selection and microphone privacy separately
+        // from iPhone's shared playback/recording audio session.
+        switch AVCaptureDevice.authorizationStatus(for: .audio) {
+        case .authorized:
+            completion(true)
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .audio) { granted in
+                DispatchQueue.main.async { completion(granted) }
+            }
+        default:
+            completion(false)
+        }
+        #else
         let session = AVAudioSession.sharedInstance()
         switch session.recordPermission {
         case .granted:
@@ -133,6 +154,7 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         @unknown default:
             completion(false)
         }
+        #endif
     }
 
     private func requestSpeechPermission(_ completion: @escaping (Bool) -> Void) {
@@ -156,9 +178,15 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         let language = call.getString("language") ?? "en-US"
         let contextualStrings = call.getArray("contextualStrings", String.self) ?? []
         let maximumDurationMs = min(max(call.getInt("maximumDurationMs") ?? 6000, 1000), 8000)
-        let session = AVAudioSession.sharedInstance()
-
         do {
+            #if targetEnvironment(macCatalyst)
+            // Avoid asking AVAudioEngine for an input node when a Mac has no
+            // audio device; the engine can raise an Objective-C exception.
+            guard AVCaptureDevice.default(for: .audio) != nil else {
+                throw RecorderFailure.invalidInputFormat
+            }
+            #else
+            let session = AVAudioSession.sharedInstance()
             // Record-only would leave the shared session with no playback
             // route, which silences the web view's own audio (studio models,
             // the listening exam) after the first recording. Keep playback
@@ -167,6 +195,7 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
             try session.setPreferredSampleRate(48_000)
             try session.setPreferredIOBufferDuration(0.01)
             try session.setActive(true, options: .notifyOthersOnDeactivation)
+            #endif
 
             let engine = AVAudioEngine()
             let inputNode = engine.inputNode
@@ -241,7 +270,7 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         } catch {
             stopCaptureEngine()
             resetCapture()
-            call.reject("The iOS audio engine could not start.", "AUDIO_ENGINE_START_FAILED", error)
+            call.reject("The audio engine could not start. Check that an input device is connected.", "AUDIO_ENGINE_START_FAILED", error)
         }
     }
 
@@ -250,16 +279,11 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         let count = Int(buffer.frameLength)
         guard count > 0 else { return }
 
-        var encoded = [Int16](repeating: 0, count: count)
-        var sumSquares = 0.0
-        for index in 0..<count {
-            let sample = max(-1.0, min(1.0, Double(channel[index])))
-            sumSquares += sample * sample
-            encoded[index] = Int16((sample * Double(Int16.max)).rounded())
-        }
-        let chunk = encoded.withUnsafeBytes { Data($0) }
+        meterCounter += 1
+        let frame = PCMFrame(samples: UnsafeBufferPointer(start: channel, count: count),
+                             includeWaveform: meterCounter % 4 == 0)
         sampleLock.lock()
-        pcm16Data.append(chunk)
+        pcm16Data.append(frame.pcm16)
         sampleLock.unlock()
 
         // Feed every captured buffer to speech recognition. Meter rendering is
@@ -267,20 +291,9 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         // continuous stream.
         recognitionRequest?.append(buffer)
 
-        meterCounter += 1
         guard meterCounter % 4 == 0 else { return }
-        let pointCount = min(96, count)
-        let stride = max(1, count / pointCount)
-        var waveform: [Double] = []
-        waveform.reserveCapacity(pointCount)
-        var index = 0
-        while index < count && waveform.count < pointCount {
-            waveform.append(Double(channel[index]))
-            index += stride
-        }
-        let rms = sqrt(sumSquares / Double(count))
         DispatchQueue.main.async { [weak self] in
-            self?.notifyListeners("meter", data: ["rms": rms, "waveform": waveform])
+            self?.notifyListeners("meter", data: ["rms": frame.rms, "waveform": frame.waveform])
         }
 
     }
@@ -295,11 +308,13 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
         }
         isRecording = false
         recognitionRequest?.endAudio()
+        #if !targetEnvironment(macCatalyst)
         let session = AVAudioSession.sharedInstance()
         try? session.setActive(false, options: .notifyOthersOnDeactivation)
         // Hand the session back in a playback category so WKWebView audio
         // works again once recording is over.
         try? session.setCategory(.playback, mode: .default, options: [])
+        #endif
     }
 
     private func resolveStoppedCapture() {
@@ -353,5 +368,37 @@ final class LAndNBridgeViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
         bridge?.registerPluginInstance(NativeAudioRecorderPlugin())
+        #if targetEnvironment(macCatalyst)
+        webView?.configuration.userContentController.addUserScript(WKUserScript(
+            source: "document.documentElement.dataset.nativePlatform = 'macos'",
+            injectionTime: .atDocumentEnd, forMainFrameOnly: true))
+        #endif
+        #if DEBUG && targetEnvironment(macCatalyst)
+        if CommandLine.arguments.contains("--landn-smoke-test"), let webView {
+            Task { @MainActor in await MacSmokeTests(webView: webView).run() }
+        }
+        #endif
     }
+
+    #if targetEnvironment(macCatalyst)
+    override var keyCommands: [UIKeyCommand]? {
+        [
+            UIKeyCommand(title: "Practice", action: #selector(selectPracticeTab(_:)), input: "1", modifierFlags: .command),
+            UIKeyCommand(title: "Listen", action: #selector(selectPracticeTab(_:)), input: "2", modifierFlags: .command),
+            UIKeyCommand(title: "Learn", action: #selector(selectPracticeTab(_:)), input: "3", modifierFlags: .command),
+            UIKeyCommand(title: "Progress", action: #selector(selectPracticeTab(_:)), input: "4", modifierFlags: .command),
+            UIKeyCommand(title: "Record / Stop", action: #selector(togglePracticeRecording), input: "r", modifierFlags: .command)
+        ]
+    }
+
+    @objc private func selectPracticeTab(_ command: UIKeyCommand) {
+        guard let input = command.input, let index = Int(input), (1...4).contains(index) else { return }
+        // Use the same visible controls and their busy-state guards as a click.
+        webView?.evaluateJavaScript("document.querySelector('.bottom-nav button:nth-child(\(index)):not(:disabled)')?.click()")
+    }
+
+    @objc private func togglePracticeRecording() {
+        webView?.evaluateJavaScript("document.querySelector('.record-button:not(:disabled)')?.click()")
+    }
+    #endif
 }

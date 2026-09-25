@@ -218,6 +218,20 @@ button:disabled { cursor: not-allowed; }
   .practice-page { width: min(100% - 32px, 720px); }
   .score-card { padding: 28px 32px; }
 }
+/* Catalyst has a desktop pointer and a shorter window than a portrait iPad.
+   Keep the word, genuine signal display and record action together. */
+@media (min-width: 900px) {
+  html[data-native-platform="macos"] .app-header { max-width: 1000px; }
+  html[data-native-platform="macos"] .practice-page { width: min(100% - 48px, 1000px); }
+  html[data-native-platform="macos"] .drill-card { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; padding: 24px 28px; }
+  html[data-native-platform="macos"] .drill-topline { grid-column: 1 / -1; }
+  html[data-native-platform="macos"] .word-area { grid-column: 1; grid-row: 2 / 5; padding: 24px 0 12px; align-self: center; }
+  html[data-native-platform="macos"] .contrast-row { grid-column: 2; }
+  html[data-native-platform="macos"] .cue { grid-column: 2; padding: 0 4px; }
+  html[data-native-platform="macos"] .signal-studio { grid-column: 2; margin: 0; }
+  html[data-native-platform="macos"] .record-button { grid-column: 1 / -1; min-height: 64px; margin-top: 0; }
+  html[data-native-platform="macos"] .error-message { grid-column: 1 / -1; margin: 0; }
+}
 @media (max-width: 390px) {
   .brand span { display: none; }
   .ui-language-picker select { width: 72px; }

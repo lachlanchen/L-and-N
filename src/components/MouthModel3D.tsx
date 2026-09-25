@@ -47,20 +47,10 @@ function ellipsoid(
   return mesh
 }
 
-/** Some WebViews and headless browsers cannot create a WebGL context; the rest of the app must keep working. */
-function supportsWebGL(): boolean {
-  try {
-    const probe = document.createElement('canvas')
-    return Boolean(probe.getContext('webgl2') ?? probe.getContext('webgl'))
-  } catch {
-    return false
-  }
-}
-
 export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [sound, setSound] = useState<TargetSound>('L')
-  const [unsupported] = useState(() => !supportsWebGL())
+  const [unsupported, setUnsupported] = useState(false)
 
   useEffect(() => {
     const host = hostRef.current
@@ -69,7 +59,21 @@ export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100)
     camera.position.set(0.05, 0.55, 6.8)
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    // A non-null WebGL context does not guarantee a usable GPU. In particular,
+    // virtual Macs can fail while Three queries shader precision. Contain that
+    // failure here instead of unmounting the entire learning app.
+    let renderer: THREE.WebGLRenderer
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    } catch {
+      queueMicrotask(() => setUnsupported(true))
+      return
+    }
+    const contextLost = (event: Event) => {
+      event.preventDefault()
+      setUnsupported(true)
+    }
+    renderer.domElement.addEventListener('webglcontextlost', contextLost)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.setClearColor(0x000000, 0)
@@ -244,6 +248,7 @@ export function MouthModel3D({ copy }: { copy: UICopy['model'] }) {
       renderer.domElement.removeEventListener('pointermove', pointerMove)
       renderer.domElement.removeEventListener('pointerup', pointerUp)
       renderer.domElement.removeEventListener('pointercancel', pointerUp)
+      renderer.domElement.removeEventListener('webglcontextlost', contextLost)
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
           object.geometry.dispose()

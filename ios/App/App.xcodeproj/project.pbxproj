@@ -16,6 +16,8 @@
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
 		9582B6852FE996820072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6842FE996800072D4E8 /* SceneDelegate.swift */; };
 		B10000012FEA000100000001 /* NativeAudioRecorderPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000022FEA000100000001 /* NativeAudioRecorderPlugin.swift */; };
+		B10000032FEA000100000001 /* PCMFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000042FEA000100000001 /* PCMFrame.swift */; };
+		B10000052FEA000100000001 /* MacSmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000062FEA000100000001 /* MacSmokeTests.swift */; };
 		A11D00012FEA000100000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A11D00022FEA000100000001 /* PrivacyInfo.xcprivacy */; };
 		A11D10012FEA000100000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D11012FEA000100000001 /* ContentView.swift */; };
 		A11D10022FEA000100000001 /* DrillModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11D11022FEA000100000001 /* DrillModel.swift */; };
@@ -62,6 +64,8 @@
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		9582B6842FE996800072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B10000022FEA000100000001 /* NativeAudioRecorderPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAudioRecorderPlugin.swift; sourceTree = "<group>"; };
+		B10000042FEA000100000001 /* PCMFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../../../native/apple-audio/Sources/LAndNAudio/PCMFrame.swift"; sourceTree = "<group>"; };
+		B10000062FEA000100000001 /* MacSmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSmokeTests.swift; sourceTree = "<group>"; };
 		A11D00022FEA000100000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A11D11012FEA000100000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A11D11022FEA000100000001 /* DrillModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillModel.swift; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 			children = (
 				9582B6842FE996800072D4E8 /* SceneDelegate.swift */,
 				B10000022FEA000100000001 /* NativeAudioRecorderPlugin.swift */,
+				B10000062FEA000100000001 /* MacSmokeTests.swift */,
+				B10000042FEA000100000001 /* PCMFrame.swift */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
@@ -314,6 +320,8 @@
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				9582B6852FE996820072D4E8 /* SceneDelegate.swift in Sources */,
 				B10000012FEA000100000001 /* NativeAudioRecorderPlugin.swift in Sources */,
+				B10000032FEA000100000001 /* PCMFrame.swift in Sources */,
+				B10000052FEA000100000001 /* MacSmokeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +477,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */;
 			buildSettings = {
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = App/Mac.entitlements;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				"CURRENT_PROJECT_VERSION[sdk=macosx*]" = 1;
+				"MARKETING_VERSION[sdk=macosx*]" = 1.0.0;
+				"GENERATE_INFOPLIST_FILE[sdk=macosx*]" = YES;
+				"INFOPLIST_KEY_LSApplicationCategoryType[sdk=macosx*]" = "public.app-category.education";
+				"TARGETED_DEVICE_FAMILY[sdk=macosx*]" = 6;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 16;
@@ -490,6 +509,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */;
 			buildSettings = {
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = App/Mac.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Distribution";
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				"CURRENT_PROJECT_VERSION[sdk=macosx*]" = 1;
+				"MARKETING_VERSION[sdk=macosx*]" = 1.0.0;
+				"GENERATE_INFOPLIST_FILE[sdk=macosx*]" = YES;
+				"INFOPLIST_KEY_LSApplicationCategoryType[sdk=macosx*]" = "public.app-category.education";
+				"TARGETED_DEVICE_FAMILY[sdk=macosx*]" = 6;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -502,6 +533,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = art.lazying.landn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "L and N App Store 1-B4657463";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "L and N Mac Catalyst App Store";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -31,3 +31,7 @@ ios/App/*.xcworkspace/xcuserdata/
 .idea/
 .vscode/
 *.log
+
+# Apple audio regression package output
+native/apple-audio/.build/
+native/apple-audio/.swiftpm/
