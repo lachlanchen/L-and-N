@@ -127,7 +127,7 @@ export interface UICopy {
     drag: string
     disclaimer: string
   }
-  takes: { replay: string; compare: string; stop: string; missing: string; keptNote: string }
+  takes: { replay: string; compare: string; stop: string; missing: string; keptNote: string; noAudio: string; playbackFailed: string; sessionOnly: string; notSaved: string; historyNotSaved: string }
   progress: {
     eyebrow: string
     title: string
@@ -136,6 +136,10 @@ export interface UICopy {
     average: string
     attempts: string
     recent: string
+    historyNote: string
+    loadMore: string
+    shown: string
+    allLoaded: string
     empty: string
     start: string
     target: string
@@ -304,10 +308,11 @@ const copies: Record<UILanguage, UICopy> = {
       drag: 'Drag for an oblique view.',
       disclaimer: 'This is an explanatory target model—not a scan or measurement of your tongue.',
     },
-    takes: { replay: 'Replay my take', compare: 'Studio model, then me', stop: 'Stop', missing: 'This attempt has no kept recording.', keptNote: 'Your takes stay on this device only.' },
+    takes: { replay: 'Replay my take', compare: 'Studio model, then me', stop: 'Stop', missing: 'This recording is no longer on this device. Older app versions removed takes beyond the newest 60; clearing app data also removes recordings.', keptNote: 'Your takes stay on this device only.', noAudio: 'No audio saved', playbackFailed: 'Could not play this recording. Please try again.', sessionOnly: 'This recording is available only while this app session stays open: permanent audio storage is unavailable.', notSaved: 'Your score is ready, but this recording could not be saved. Check available device storage; earlier recordings have not been removed.', historyNotSaved: 'This attempt is visible for this session, but its history entry could not be saved. Check available device storage.' },
     progress: {
       eyebrow: 'Private on this device', title: 'Your sound map', hint: 'Short, frequent practice beats one long session.',
-      dayStreak: 'day streak', average: 'average score', attempts: 'attempts', recent: 'Recent attempts',
+      dayStreak: 'day streak', average: 'average score', attempts: 'attempts', recent: 'Recording history',
+      historyNote: 'Scroll for older attempts. Audio loads only when you replay it.', loadMore: 'Load older attempts', shown: '{shown} of {total} attempts', allLoaded: 'All saved attempts shown.',
       empty: 'Your first recording will appear here.', start: 'Start a drill', target: 'target', detected: 'detected',
       note: 'Scores are coaching feedback, not diagnosis. For clinical use, validate them with a speech-language professional.', privacy: 'Privacy', support: 'Support',
     },
@@ -404,8 +409,8 @@ const copies: Record<UILanguage, UICopy> = {
       tongue: '舌头', ridge: '上齿龈', velum: '软腭', airPath: '气流', lContact: '较窄的舌尖接触', lVelum: '软腭抬起', lAir: '气流从舌侧通过', nContact: '较宽的舌面封闭', nVelum: '软腭下降', nAir: '气流从鼻腔通过',
       drag: '拖动可查看斜侧面。', disclaimer: '这是用于解释目标动作的模型，不是对您舌头的扫描或测量。',
     },
-    takes: { replay: '回放我的录音', compare: '先听示范，再听我', stop: '停止', missing: '这次尝试没有保留录音。', keptNote: '录音只保存在本机。' },
-    progress: { eyebrow: '仅保存在本设备', title: '你的发音地图', hint: '短时、频繁的练习胜过一次练很久。', dayStreak: '连续天数', average: '平均分', attempts: '练习次数', recent: '最近练习', empty: '第一次录音会显示在这里。', start: '开始练习', target: '目标', detected: '检测为', note: '分数只用于发音辅导，不是医学诊断。如用于临床，请与言语治疗专业人员共同验证。', privacy: '隐私政策', support: '帮助与支持' },
+    takes: { replay: '回放我的录音', compare: '先听示范，再听我', stop: '停止', missing: '本机已没有这段录音。旧版只保留最近 60 段录音；清除应用数据也会移除录音。', keptNote: '录音只保存在本机。', noAudio: '未保存录音', playbackFailed: '无法播放这段录音，请再试一次。', sessionOnly: '目前无法永久保存录音；这段录音只在本次应用会话中可用。', notSaved: '评分已完成，但录音保存失败。请检查设备剩余空间；之前的录音没有被移除。', historyNotSaved: '这次练习暂时可见，但历史记录保存失败。请检查设备剩余空间。' },
+    progress: { eyebrow: '仅保存在本设备', title: '你的发音地图', hint: '短时、频繁的练习胜过一次练很久。', dayStreak: '连续天数', average: '平均分', attempts: '练习次数', recent: '录音历史', historyNote: '向下滚动可查看更早的练习。回放时才加载录音。', loadMore: '加载更早的练习', shown: '已显示 {shown} 条，共 {total} 条', allLoaded: '已显示全部保存的练习。', empty: '第一次录音会显示在这里。', start: '开始练习', target: '目标', detected: '检测为', note: '分数只用于发音辅导，不是医学诊断。如用于临床，请与言语治疗专业人员共同验证。', privacy: '隐私政策', support: '帮助与支持' },
     score: {
       word: '辨词', contrast: 'L/N 对立', soundCues: '声音线索', voice: '发声', tone: '声调', confidence: { high: '高置信度', medium: '中等置信度', low: '低置信度' },
       landed: '这次对立发得很清楚。', close: '很接近——再塑造词首音。', slowly: '先慢慢建立这个音。', detected: '检测结果', heard: '识别结果', uncertain: '不确定', evidence: '查看声音证据', lLike: '更像 L', nLike: '更像 N', signal: '信号', nasalBand: '鼻音频带',
@@ -488,8 +493,8 @@ const copies: Record<UILanguage, UICopy> = {
       tongue: '舌頭', ridge: '上齒齦', velum: '軟顎', airPath: '氣流', lContact: '較窄的舌尖接觸', lVelum: '軟顎抬起', lAir: '氣流從舌側通過', nContact: '較寬的舌面封閉', nVelum: '軟顎下降', nAir: '氣流從鼻腔通過',
       drag: '拖動可查看斜側面。', disclaimer: '這是用來解釋目標動作的模型，並非對你的舌頭進行掃描或測量。',
     },
-    takes: { replay: '回放我的錄音', compare: '先聽示範，再聽我', stop: '停止', missing: '這次嘗試沒有保留錄音。', keptNote: '錄音只保存在本機。' },
-    progress: { eyebrow: '只保存在本裝置', title: '你的發音地圖', hint: '短時間、頻密的練習勝過一次練很久。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '最近練習', empty: '第一次錄音會顯示在這裡。', start: '開始練習', target: '目標', detected: '偵測為', note: '分數只用於發音輔導，並非醫學診斷。如用於臨床，請與言語治療專業人員共同驗證。', privacy: '私隱政策', support: '幫助與支援' },
+    takes: { replay: '回放我的錄音', compare: '先聽示範，再聽我', stop: '停止', missing: '本機已沒有這段錄音。舊版只保留最近 60 段錄音；清除應用程式資料也會移除錄音。', keptNote: '錄音只保存在本機。', noAudio: '未儲存錄音', playbackFailed: '無法播放這段錄音，請再試一次。', sessionOnly: '目前無法永久儲存錄音；這段錄音只在本次應用程式工作階段中可用。', notSaved: '評分已完成，但錄音儲存失敗。請檢查裝置剩餘空間；之前的錄音沒有被移除。', historyNotSaved: '這次練習暫時可見，但歷史紀錄儲存失敗。請檢查裝置剩餘空間。' },
+    progress: { eyebrow: '只保存在本裝置', title: '你的發音地圖', hint: '短時間、頻密的練習勝過一次練很久。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '錄音歷史', historyNote: '向下捲動可查看較早的練習。回放時才載入錄音。', loadMore: '載入較早的練習', shown: '已顯示 {shown} 筆，共 {total} 筆', allLoaded: '已顯示全部儲存的練習。', empty: '第一次錄音會顯示在這裡。', start: '開始練習', target: '目標', detected: '偵測為', note: '分數只用於發音輔導，並非醫學診斷。如用於臨床，請與言語治療專業人員共同驗證。', privacy: '私隱政策', support: '幫助與支援' },
     score: {
       word: '辨詞', contrast: 'L/N 對立', soundCues: '聲音線索', voice: '發聲', tone: '聲調', confidence: { high: '高可信度', medium: '中等可信度', low: '低可信度' },
       landed: '這次對立發得很清楚。', close: '很接近——再調整詞首音。', slowly: '先慢慢建立這個音。', detected: '偵測結果', heard: '辨識結果', uncertain: '不確定', evidence: '查看聲音證據', lLike: '較像 L', nLike: '較像 N', signal: '訊號', nasalBand: '鼻音頻帶',
@@ -572,8 +577,8 @@ const copies: Record<UILanguage, UICopy> = {
       tongue: '舌頭', ridge: '上齒齦', velum: '軟顎', airPath: '氣流', lContact: '較窄嘅舌尖接觸', lVelum: '軟顎升起', lAir: '氣流由舌側通過', nContact: '較闊嘅舌面封閉', nVelum: '軟顎降低', nAir: '氣流由鼻腔通過',
       drag: '拖動可以睇斜側面。', disclaimer: '呢個係解釋目標動作嘅模型，唔係掃描或者量度你條脷。',
     },
-    takes: { replay: '重播我嘅錄音', compare: '先聽示範，再聽我', stop: '停止', missing: '呢次冇保留錄音。', keptNote: '錄音只會留喺部機度。' },
-    progress: { eyebrow: '只保存在呢部機', title: '你嘅發音地圖', hint: '短時間、密啲練，好過一次練好耐。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '最近練習', empty: '第一次錄音會喺度出現。', start: '開始練習', target: '目標', detected: '聽落似', note: '分數只係發音輔導，唔係醫學診斷。如果用作臨床用途，請搵言語治療師一齊驗證。', privacy: '私隱政策', support: '幫助同支援' },
+    takes: { replay: '重播我嘅錄音', compare: '先聽示範，再聽我', stop: '停止', missing: '呢部機已經冇呢段錄音。舊版只保留最近 60 段；清除應用程式資料亦會刪走錄音。', keptNote: '錄音只會留喺部機度。', noAudio: '冇儲存錄音', playbackFailed: '播唔到呢段錄音，請再試一次。', sessionOnly: '而家唔能夠永久儲存錄音；呢段錄音只喺今次開住個應用程式時用到。', notSaved: '已經評咗分，但儲存唔到錄音。請睇吓部機仲有幾多空間；之前嘅錄音冇刪走。', historyNotSaved: '今次暫時睇到呢次練習，但儲存唔到歷史紀錄。請檢查部機剩低嘅空間。' },
+    progress: { eyebrow: '只保存在呢部機', title: '你嘅發音地圖', hint: '短時間、密啲練，好過一次練好耐。', dayStreak: '連續日數', average: '平均分', attempts: '練習次數', recent: '錄音歷史', historyNote: '向下捲就睇到之前嘅練習。撳重播先會載入錄音。', loadMore: '載入之前嘅練習', shown: '睇緊 {shown} 條，共 {total} 條', allLoaded: '已經顯示晒儲存咗嘅練習。', empty: '第一次錄音會喺度出現。', start: '開始練習', target: '目標', detected: '聽落似', note: '分數只係發音輔導，唔係醫學診斷。如果用作臨床用途，請搵言語治療師一齊驗證。', privacy: '私隱政策', support: '幫助同支援' },
     score: {
       word: '辨詞', contrast: 'L/N 對立', soundCues: '聲音線索', voice: '發聲', tone: '聲調', confidence: { high: '高可信度', medium: '中等可信度', low: '低可信度' },
       landed: '今次對立講得好清楚。', close: '好接近——再執一執詞首音。', slowly: '慢慢建立呢個音先。', detected: '偵測結果', heard: '辨識結果', uncertain: '未肯定', evidence: '睇聲音證據', lLike: '較似 L', nLike: '較似 N', signal: '訊號', nasalBand: '鼻音頻帶',

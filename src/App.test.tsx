@@ -3,7 +3,8 @@ import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Capacitor } from '@capacitor/core'
 import App from './App'
-import { saveAttempt } from './lib/progress'
+import { loadAttempts, saveAttempt } from './lib/progress'
+import * as takes from './lib/takes'
 import { AudioCaptureError } from './lib/audio-capture'
 import { extractAcousticFeatures } from './lib/acoustics'
 
@@ -100,6 +101,7 @@ afterEach(() => {
   audioMocks.playSequence.mockClear()
   audioMocks.unlockAudio.mockClear()
   vi.mocked(saveAttempt).mockClear()
+  vi.mocked(loadAttempts).mockReset().mockResolvedValue([])
   vi.restoreAllMocks()
 })
 
@@ -491,6 +493,57 @@ describe('kept takes', () => {
     firstFormantBandwidthHz: 160, nasalPeakContrastDb: 7, voicedContinuity: 0.9, durationMs: 900, onsetMs: 35, onsetDurationMs: 240,
     signalQuality: 0.92, waveform: [0, 0.2, -0.2, 0.12, 0.08, -0.1, 0.04, 0], spectrum: [0.1, 0.35, 0.8, 0.5],
   }
+
+  it('shows missing-recording feedback in Progress, and keeps loaded history across tab changes', async () => {
+    vi.mocked(loadAttempts).mockResolvedValueOnce(Array.from({ length: 25 }, (_, index) => ({
+      exerciseId: 'en-light-night', score: 90, detectedSound: 'L' as const,
+      createdAt: new Date(2026, 8, 26, 0, 0, index).toISOString(), takeId: `missing-${index}`,
+    })))
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Progress' }))
+    await waitFor(() => expect(screen.getAllByTestId('history-attempt')).toHaveLength(12))
+    fireEvent.click(screen.getByRole('button', { name: 'Load older attempts' }))
+    expect(screen.getAllByTestId('history-attempt')).toHaveLength(24)
+    fireEvent.click(screen.getAllByTestId('history-play')[23])
+    expect((await screen.findByRole('alert')).textContent).toContain('no longer on this device')
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: 'zh-Hans' } })
+    expect(screen.getByRole('alert').textContent).toContain('本机已没有')
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: 'en' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Practice' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Progress' }))
+    expect(screen.getAllByTestId('history-attempt')).toHaveLength(24)
+  })
+
+  it('cancels pending recording playback when leaving history', async () => {
+    vi.mocked(loadAttempts).mockResolvedValueOnce([{ exerciseId: 'en-light-night', score: 90, detectedSound: 'L', createdAt: '2026-09-26T01:00:00.000Z', takeId: 'pending' }])
+    let resolveTake!: (take: takes.TakeRecord) => void
+    vi.spyOn(takes, 'loadTake').mockReturnValueOnce(new Promise((resolve) => { resolveTake = resolve }))
+    const play = vi.spyOn(takes, 'playTakeBlob')
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Progress' }))
+    fireEvent.click(await screen.findByTestId('history-play'))
+    fireEvent.click(screen.getByRole('button', { name: 'Practice' }))
+    resolveTake({ id: 'pending', exerciseId: 'en-light-night', score: 90, detectedSound: 'L', createdAt: '', mimeType: 'audio/wav', blob: new Blob() })
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Start recording' })).toBeTruthy())
+    expect(play).not.toHaveBeenCalled()
+  })
+
+  it('reports audio storage failure without losing the score', async () => {
+    vi.spyOn(takes, 'saveTake').mockRejectedValueOnce(new Error('QuotaExceededError'))
+    vi.mocked(saveAttempt).mockImplementationOnce(async (attempt) => [attempt])
+    audioCaptureMocks.startAudioCapture.mockResolvedValueOnce({ analyser: null,
+      stop: vi.fn(async () => ({ transcript: 'light', features, rawBytes: 32000, source: 'web',
+        recording: { blob: new Blob([new Uint8Array([1])]), mimeType: 'audio/wav' } })), cancel: vi.fn(async () => undefined) })
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Stop and score recording' }))
+    expect((await screen.findByText(/this recording could not be saved/)).textContent).toContain('earlier recordings have not been removed')
+    expect(screen.queryByTestId('take-replay')).toBeNull()
+    await waitFor(() => expect(saveAttempt).toHaveBeenCalled())
+    fireEvent.click(screen.getByRole('button', { name: 'Progress' }))
+    expect(screen.getByTestId('history-attempt')).toBeTruthy()
+    expect(screen.getByText('No audio saved')).toBeTruthy()
+  })
 
   it('offers to replay the scored attempt and lists it in the history', async () => {
     const played: string[] = []

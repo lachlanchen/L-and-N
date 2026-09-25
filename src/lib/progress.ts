@@ -11,6 +11,7 @@ export interface AttemptRecord {
   features?: AcousticFeatures
   /** Id of the stored audio take (see lib/takes.ts), when one was kept. */
   takeId?: string
+  transcript?: string
 }
 
 export interface ListeningResult {
@@ -37,7 +38,15 @@ export async function loadAttempts(): Promise<AttemptRecord[]> {
 
 export async function saveAttempt(attempt: AttemptRecord): Promise<AttemptRecord[]> {
   const current = await loadAttempts()
-  const next = [attempt, ...current].slice(0, 200)
+  // Keep every history entry and its audio link. Only recent attempts need the
+  // large acoustic arrays for calibration; don't fill Preferences with years
+  // of waveform/spectrum data (the recording itself lives in IndexedDB).
+  const next = [attempt, ...current].map((item, index) => {
+    if (index < 200 || !item.features) return item
+    const summary = { ...item }
+    delete summary.features
+    return summary
+  })
   await Preferences.set({ key: STORAGE_KEY, value: JSON.stringify(next) })
   return next
 }

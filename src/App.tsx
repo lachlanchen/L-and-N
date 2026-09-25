@@ -7,6 +7,7 @@ import { AppStorePrompt } from './components/AppStorePrompt'
 import { ListeningExam } from './components/ListeningExam'
 import { UnlockCard } from './components/UnlockCard'
 import { SignalVisualizer } from './components/SignalVisualizer'
+import { RecordingHistory, HISTORY_PAGE_SIZE } from './components/RecordingHistory'
 import { exercises } from './data/curriculum'
 import { localizedExercise } from './data/curriculum-i18n'
 import { feedbackCopy, formatCopy, initialUILanguage, uiCopy, uiLanguageLabels, type UICopy } from './i18n'
@@ -32,7 +33,7 @@ import { loadEntitlement, UNGATED, unlockedExercises, type Entitlement } from '.
 import { isEmptyTranscript, speakExample } from './lib/speech'
 import { APP_STORE_URL, GOOGLE_PLAY_URL } from './lib/app-stores'
 import { hasAndroidSpeechConsent, isAndroidApp, setAndroidSpeechConsent } from './lib/android-speech-consent'
-import { loadTake, playTakeBlob, saveTake, type TakePlayback } from './lib/takes'
+import { loadTake, playTakeBlob, saveTake } from './lib/takes'
 import { playSequence } from './lib/word-audio'
 import type { AcousticFeatures, Exercise, PronunciationScore, TargetSound, TrainingLanguage, UILanguage } from './types'
 
@@ -67,6 +68,11 @@ function App() {
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
   const [lastTakeId, setLastTakeId] = useState<string | null>(null)
   const [playingTakeId, setPlayingTakeId] = useState<string | null>(null)
+  const [playbackError, setPlaybackError] = useState<{ kind: 'missing' | 'playbackFailed'; takeId: string } | null>(null)
+  const [storageWarning, setStorageWarning] = useState<'sessionOnly' | 'notSaved' | 'historyNotSaved' | null>(null)
+  const [historyVisible, setHistoryVisible] = useState(HISTORY_PAGE_SIZE)
+  const loadMoreHistory = useCallback(() => setHistoryVisible((count) => count + HISTORY_PAGE_SIZE), [])
+  const takeOperationRef = useRef(0)
   const takePlaybackRef = useRef<{ stop: () => void } | null>(null)
   const [listening, setListening] = useState<ListeningResult[]>([])
   const sessionRef = useRef<RecordingSession | null>(null)
@@ -186,47 +192,70 @@ function App() {
   }
 
   const stopTakePlayback = useCallback(() => {
+    takeOperationRef.current += 1
     takePlaybackRef.current?.stop()
     takePlaybackRef.current = null
     setPlayingTakeId(null)
   }, [])
 
+  useEffect(() => {
+    const onVisibility = () => { if (document.visibilityState === 'hidden') stopTakePlayback() }
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      takeOperationRef.current += 1
+      takePlaybackRef.current?.stop()
+      takePlaybackRef.current = null
+    }
+  }, [stopTakePlayback])
+
+  const selectTab = (next: Tab) => {
+    stopTakePlayback()
+    setPlaybackError(null)
+    setTab(next)
+  }
+
   /** Plays a kept take, optionally after the studio model of its word. */
   const playTake = useCallback(async (takeId: string, withModel: boolean) => {
-    if (playingTakeId) {
+    if (playingTakeId === takeId) {
       stopTakePlayback()
       return
     }
+    stopTakePlayback()
+    const operation = ++takeOperationRef.current
+    const cancelled = () => takeOperationRef.current !== operation
+    setPlayingTakeId(takeId)
+    setPlaybackError(null)
     const take = await loadTake(takeId).catch(() => null)
+    if (cancelled()) return
     if (!take) {
-      setError(copy.takes.missing)
+      setPlaybackError({ kind: 'missing', takeId })
+      setPlayingTakeId(null)
       return
     }
-    setPlayingTakeId(takeId)
-    let current: TakePlayback | { stop: () => void } | null = null
-    const cancelled = () => takePlaybackRef.current !== current
     try {
       if (withModel) {
         const model = await playSequence([take.exerciseId], { gapMs: 0 })
-        current = model
+        if (cancelled()) { model.stop(); return }
         takePlaybackRef.current = model
         await model.finished
         if (cancelled()) return
         await new Promise((resolve) => window.setTimeout(resolve, 350))
+        if (cancelled()) return
       }
       const own = playTakeBlob(take.blob)
-      current = own
       takePlaybackRef.current = own
       await own.finished
     } catch (caught) {
       console.warn('Take playback failed', caught)
+      if (!cancelled()) setPlaybackError({ kind: 'playbackFailed', takeId })
     } finally {
-      if (takePlaybackRef.current === current) {
+      if (!cancelled()) {
         takePlaybackRef.current = null
         setPlayingTakeId(null)
       }
     }
-  }, [playingTakeId, stopTakePlayback, copy.takes.missing])
+  }, [playingTakeId, stopTakePlayback])
 
   const finishRecording = async () => {
     const session = sessionRef.current
@@ -259,9 +288,9 @@ function App() {
       let takeId: string | undefined
       if (captured.recording) {
         // Keep the take on this device so the learner can replay it. Losing it
-        // must never lose the score, so storage failures are only logged.
+        // must never lose the score. Report storage failures to the learner.
         try {
-          await saveTake({
+          const storage = await saveTake({
             id: createdAt,
             exerciseId: session.exercise.id,
             createdAt,
@@ -271,11 +300,13 @@ function App() {
             blob: captured.recording.blob,
           })
           takeId = createdAt
+          if (storage === 'session') setStorageWarning('sessionOnly')
         } catch (caught) {
           console.warn('Could not keep the take', caught)
+          setStorageWarning('notSaved')
         }
       }
-      const next = await saveAttempt({
+      const attempt: AttemptRecord = {
         exerciseId: session.exercise.id,
         score: result.overall,
         detectedSound: result.detectedSound,
@@ -284,7 +315,16 @@ function App() {
         language: session.exercise.language,
         features: captured.features,
         takeId,
-      })
+        transcript: result.transcript,
+      }
+      let next: AttemptRecord[]
+      try {
+        next = await saveAttempt(attempt)
+      } catch (caught) {
+        console.warn('Could not save practice history', caught)
+        next = [attempt, ...attempts]
+        setStorageWarning('historyNotSaved')
+      }
       if (operationRef.current === session.operationId) {
         setAttempts(next)
         setLastTakeId(takeId ?? null)
@@ -316,6 +356,9 @@ function App() {
     if (capturePhaseRef.current !== 'idle') return
     if (androidApp && !onlineRecognition) return
     const operationId = operationRef.current + 1
+    stopTakePlayback()
+    setPlaybackError(null)
+    setStorageWarning(null)
     operationRef.current = operationId
     updateCapturePhase('starting')
     setError('')
@@ -479,6 +522,8 @@ function App() {
         {error && <p className="error-message">{error}</p>}
       </section>
       <UnlockCard copy={copy} entitlement={entitlement} onChange={setEntitlement} />
+      {storageWarning && <p className="storage-warning" role="status">{copy.takes[storageWarning]}</p>}
+      {playbackError && <p className="error-message" role="alert">{copy.takes[playbackError.kind]}</p>}
 
       {score && (
         <ScoreCard
@@ -531,31 +576,11 @@ function App() {
         <article><Check /><strong>{attempts.length}</strong><span>{copy.progress.attempts}</span></article>
         <article><Ear /><strong>{aural === null ? '—' : `${aural}%`}</strong><span>{copy.nav.listen}</span></article>
       </section>
-      <section className="history-card">
-        <h2>{copy.progress.recent}</h2>
-        {attempts.length === 0 ? (
-          <div className="empty-state"><Mic /><p>{copy.progress.empty}</p><button onClick={() => setTab('practice')}>{copy.progress.start}</button></div>
-        ) : attempts.slice(0, 12).map((attempt) => {
-          const item = exercises.find(({ id }) => id === attempt.exerciseId)
-          return (
-            <article key={`${attempt.exerciseId}-${attempt.createdAt}`}>
-              <div><strong>{item?.word ?? attempt.exerciseId}</strong><span>{copy.progress.target} /{item?.target.toLowerCase()}/ · {copy.progress.detected} {attempt.detectedSound}</span></div>
-              {attempt.takeId && (
-                <button
-                  type="button"
-                  className={`take-play${playingTakeId === attempt.takeId ? ' playing' : ''}`}
-                  aria-label={playingTakeId === attempt.takeId ? copy.takes.stop : copy.takes.replay}
-                  data-testid="history-play"
-                  onClick={() => void playTake(attempt.takeId!, false)}
-                >
-                  {playingTakeId === attempt.takeId ? <Square size={15} /> : <Volume2 size={15} />}
-                </button>
-              )}
-              <b>{attempt.score}</b>
-            </article>
-          )
-        })}
-      </section>
+      {storageWarning && <p className="storage-warning" role="status">{copy.takes[storageWarning]}</p>}
+      <RecordingHistory attempts={attempts} copy={copy} language={uiLanguage}
+        visibleCount={historyVisible} onLoadMore={loadMoreHistory} onPractice={() => selectTab('practice')}
+        playbackError={playbackError ? { takeId: playbackError.takeId, message: copy.takes[playbackError.kind] } : undefined}
+        playingTakeId={playingTakeId} onPlay={(id) => void playTake(id, false)} />
       <p className="clinical-note">{copy.progress.note}</p>
       {!Capacitor.isNativePlatform() && (
         <nav className="store-links" aria-label={copy.storeLinks.title}>
@@ -574,7 +599,7 @@ function App() {
   return (
     <div className="app-shell" data-testid="app-root" data-ui-language={uiLanguage} data-practice-language={language}>
       <header className="app-header">
-        <button className="brand" onClick={() => setTab('practice')}><img src="/icons/icon-192.png" alt="" /><span>L–and–N</span></button>
+        <button className="brand" onClick={() => selectTab('practice')}><img src="/icons/icon-192.png" alt="" /><span>L–and–N</span></button>
         <div className="header-actions">
           <label className="ui-language-picker">
             <Globe2 size={16} aria-hidden="true" />
@@ -591,10 +616,10 @@ function App() {
       {tab === 'learn' && renderLearn()}
       {tab === 'progress' && renderProgress()}
       <nav className="bottom-nav" aria-label={copy.primaryNavigation}>
-        <button className={tab === 'practice' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('practice')}><Mic /><span>{copy.nav.practice}</span></button>
-        <button className={tab === 'listen' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('listen')}><Ear /><span>{copy.nav.listen}</span></button>
-        <button className={tab === 'learn' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('learn')}><BookOpen /><span>{copy.nav.learn}</span></button>
-        <button className={tab === 'progress' ? 'active' : ''} disabled={captureBusy} onClick={() => setTab('progress')}><Activity /><span>{copy.nav.progress}</span></button>
+        <button className={tab === 'practice' ? 'active' : ''} disabled={captureBusy} onClick={() => selectTab('practice')}><Mic /><span>{copy.nav.practice}</span></button>
+        <button className={tab === 'listen' ? 'active' : ''} disabled={captureBusy} onClick={() => selectTab('listen')}><Ear /><span>{copy.nav.listen}</span></button>
+        <button className={tab === 'learn' ? 'active' : ''} disabled={captureBusy} onClick={() => selectTab('learn')}><BookOpen /><span>{copy.nav.learn}</span></button>
+        <button className={tab === 'progress' ? 'active' : ''} disabled={captureBusy} onClick={() => selectTab('progress')}><Activity /><span>{copy.nav.progress}</span></button>
       </nav>
     </div>
   )

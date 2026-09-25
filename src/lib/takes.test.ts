@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { deleteTake, listTakeIds, loadTake, MAX_TAKES, playTakeBlob, saveTake, wavFromFloat32 } from './takes'
+import { deleteTake, listTakeIds, loadTake, playTakeBlob, saveTake, wavFromFloat32 } from './takes'
 
 // jsdom has no IndexedDB, so these tests exercise the in-memory fallback,
 // which is also what the app uses when storage is blocked.
@@ -30,13 +30,15 @@ describe('kept takes', () => {
     expect(await loadTake('2026-09-20T11:00:00.000Z')).toBeNull()
   })
 
-  it('keeps only the most recent takes', async () => {
-    for (let index = 0; index < MAX_TAKES + 5; index += 1) {
+  it('keeps earlier takes past the old 60-recording limit and reports session-only storage', async () => {
+    for (let index = 0; index < 75; index += 1) {
       await saveTake(take(`2026-09-20T10:00:00.${String(index).padStart(3, '0')}Z`))
     }
     const ids = await listTakeIds()
-    expect(ids).toHaveLength(MAX_TAKES)
+    expect(ids).toHaveLength(75)
     expect(ids[0] > ids[ids.length - 1]).toBe(true)
+    expect(await loadTake('2026-09-20T10:00:00.000Z')).not.toBeNull()
+    expect(await saveTake(take('2026-09-21T10:00:00.000Z'))).toBe('session')
   })
 })
 
@@ -64,6 +66,21 @@ describe('WAV packaging of the native recorder output', () => {
 
 describe('take playback', () => {
   afterEach(() => vi.unstubAllGlobals())
+
+  it('reports playback failure and releases its object URL only once', async () => {
+    class FailedAudio extends EventTarget {
+      preload = ''
+      async play(): Promise<void> { throw new Error('Playback blocked') }
+      pause(): void {}
+    }
+    const revokeObjectURL = vi.fn()
+    vi.stubGlobal('Audio', FailedAudio)
+    vi.stubGlobal('URL', { ...URL, createObjectURL: () => 'blob:failed', revokeObjectURL })
+    const playback = playTakeBlob(new Blob())
+    await expect(playback.finished).rejects.toThrow('Playback blocked')
+    playback.stop()
+    expect(revokeObjectURL).toHaveBeenCalledExactlyOnceWith('blob:failed')
+  })
 
   it('plays through a media element and settles when it ends', async () => {
     const instances: FakeAudio[] = []

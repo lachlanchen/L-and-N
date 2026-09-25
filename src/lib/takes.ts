@@ -17,7 +17,6 @@ export interface TakeRecord {
   blob: Blob
 }
 
-export const MAX_TAKES = 60
 const DB_NAME = 'landn-takes'
 const STORE = 'takes'
 
@@ -70,30 +69,16 @@ async function withStore<T>(mode: IDBTransactionMode, run: (store: IDBObjectStor
   }
 }
 
-/** Stores a take and evicts the oldest ones beyond MAX_TAKES. */
-export async function saveTake(take: TakeRecord): Promise<void> {
+/** Never evict a learner's earlier take to make room for a newer one. */
+export async function saveTake(take: TakeRecord): Promise<'persistent' | 'session'> {
   if (!hasIndexedDb()) {
     memory.set(take.id, take)
-    pruneMemory()
-    return
+    return 'session'
   }
   await withStore('readwrite', async (store) => {
     await requestToPromise(store.put(take))
-    const keys = (await requestToPromise(store.index('createdAt').getAllKeys())) as IDBValidKey[]
-    if (keys.length > MAX_TAKES) {
-      const extra = keys.length - MAX_TAKES
-      // getAllKeys on the index returns ascending createdAt: the oldest first.
-      for (const key of keys.slice(0, extra)) await requestToPromise(store.delete(key))
-    }
   })
-}
-
-function pruneMemory(): void {
-  const sorted = [...memory.values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt))
-  while (sorted.length > MAX_TAKES) {
-    const oldest = sorted.shift()!
-    memory.delete(oldest.id)
-  }
+  return 'persistent'
 }
 
 export async function loadTake(id: string): Promise<TakeRecord | null> {
@@ -157,16 +142,24 @@ export function playTakeBlob(blob: Blob): TakePlayback {
   const url = URL.createObjectURL(blob)
   const media = new Audio(url)
   media.preload = 'auto'
-  let settle: () => void = () => undefined
-  const finished = new Promise<void>((resolve) => {
-    settle = () => {
+  let settle: (error?: unknown) => void = () => undefined
+  let settled = false
+  const finished = new Promise<void>((resolve, reject) => {
+    settle = (error) => {
+      if (settled) return
+      settled = true
+      media.removeEventListener('ended', onEnded)
+      media.removeEventListener('error', onError)
       URL.revokeObjectURL(url)
-      resolve()
+      if (error) reject(error)
+      else resolve()
     }
   })
-  media.addEventListener('ended', () => settle(), { once: true })
-  media.addEventListener('error', () => settle(), { once: true })
-  void media.play().catch(() => settle())
+  const onEnded = () => settle()
+  const onError = () => settle(new Error('Recording playback failed'))
+  media.addEventListener('ended', onEnded, { once: true })
+  media.addEventListener('error', onError, { once: true })
+  void media.play().catch(settle)
   return {
     finished,
     stop: () => {
