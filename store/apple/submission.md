@@ -1,5 +1,21 @@
 # Apple App Store submission
 
+## September 26 — iOS/watchOS 1.0.7 (17)
+
+**Waiting for Review**, with manual release. Apple processing is **VALID**;
+internal TestFlight is **IN_BETA_TESTING** and the existing public beta group is
+**WAITING_FOR_BETA_REVIEW**, with automatic tester notification enabled.
+The [TestFlight link](https://testflight.apple.com/join/CpkT8m9C) may offer the
+earlier approved build until beta approval. This is not App Store approval.
+
+This update includes progressive recording history and optional update reminders.
+Archive/export, Apple validation and isolated iOS26.5 simulator checks passed;
+the embedded Watch version/build match. Existing screenshots were inherited and
+verified. The separately submitted Mac build remains unchanged and **IN_REVIEW**.
+See [exact artifact and QA record](../artifacts/native-history-update-release.json).
+
+## Historical submissions
+
 Resubmitted: 2026-09-06; 1.0 approved and released 2026-09-17; 1.0.1 approved and auto-released 2026-09-19
 
 - App: `L & N: Speech Practice`

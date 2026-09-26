@@ -1,0 +1,37 @@
+{
+  "verifiedAt": "2026-09-26T02:10:24Z",
+  "status": "deployed-and-verified",
+  "url": "https://l-and-n.lazying.art/",
+  "sourceCommit": "ffc1b9c14dd209aef5c89fe42d3f0f6623807255",
+  "releaseTarSha256": "d66bc224856c7e0ac36b2db1ae5389bc132e993ce8f34a74ee2081023809e4a9",
+  "distManifestSha256": "f41e291b07c372cde8ffb1e5f26de3788e48da50e151ba37ca1b9e37e517df58",
+  "webBuildManifestSha256": "4a1993496960de286ed87ba40e1c419f50da5bf4d79a552b6d4fd7dbd3e2cd01",
+  "mainAsset": "assets/index-BW6ic4df.js",
+  "mainAssetSha256": "23fb705933b39ad0a3615b0188d1b8e4398e4e0ee823b190fd6f756ff8ea1a3c",
+  "cssAsset": "assets/index-7Xr3rjbD.css",
+  "cssAssetSha256": "6d3c996744f7a13e5ac675782c5a15b91238e9993ce09cbf9fc0a1c83dcda8b3",
+  "rollbackRelease": "history-559bff7202840821245cf322a676d591a018a29582cf0e233ff530a626a7c8e7",
+  "behavior": {
+    "locales": ["en", "zh-Hans", "zh-Hant", "yue"],
+    "pwa": "Explicit Update and refresh or Later; no forced reload during capture, scoring, playback or listening",
+    "native": "First-party public-version manifest, numeric comparison, fixed store destinations and 24-hour per-version dismissal",
+    "privacy": "Update request contains no audio, transcript, installed version, device identifier or account information",
+    "manifestAtDeployment": {"ios": "1.0.6", "android": "1.0.9"},
+    "manifestPolicy": "Only advertise verified public releases, never a test or pending review build",
+    "history": "Preserves device-local recordings and summaries; no storage clearing",
+    "migration": "Older PWA installations may require closing all app tabs and reopening once; do not uninstall or clear storage"
+  },
+  "androidTestDownload": {
+    "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.10-build20-test.apk",
+    "sha256": "2427d7f3e535f28618a47769a25606a2a5df2933550d16c2d1211153854b2439",
+    "signing": "Direct APK uses the existing upload signing identity; use Play internal testing to upgrade a Play-signed installation"
+  },
+  "verification": {
+    "automated": "174 tests in 22 files; lint, TypeScript and production build pass",
+    "browser": "Real waiting-worker lifecycle, explicit activation/reload once, Later, listening suppression, retained history and all four UI locales at 320px verified",
+    "live": "Public entry, JS, CSS, worker, privacy and update manifest match candidate bytes; complete APK download SHA256 verified; isolated real public first-install worker activation, no false prompt, new history and 320px/390px screenshots verified",
+    "service": "Unchanged gateway process and code, unchanged Caddy; health, CORS204, private404, lesson and previous entry asset checks pass",
+    "preservation": "Tracked dist-manifest unchanged; previous APK hardlink/hash preserved; old lazy assets retained",
+    "limitations": "No new physical-phone microphone accuracy or reboot test; native older versions need installation of a prompt-capable build first"
+  }
+}

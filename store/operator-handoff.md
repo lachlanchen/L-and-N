@@ -4,7 +4,28 @@ Updated: 2026-09-26
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
-## Latest web update — September 26
+## Latest test/review release — September 26
+
+Android **1.0.10 (20)** is available to internal testers. The same candidate was
+sent for production review; automatic checks passed and Console confirms **In Review**.
+iOS/watchOS **1.0.7 (17)** is valid and in internal TestFlight, public TestFlight
+is waiting for beta review, and the App Store submission is **Waiting for Review**
+with manual release. Existing Mac **1.0.0 (1)** remains **In Review**, unchanged.
+These are submission/testing states, not public release claims.
+
+Both native candidates contain the progressive recording history and optional
+localized update reminders. Android also migrates obsolete native service-worker
+caches without clearing recordings. Candidate19 failed upgrade QA and was never
+published. The PWA prompt and exact Android20 test download are deployed and
+verified, with no backend restart. All 174 tests and scoped native UI checks pass.
+No new physical-phone accuracy claim is made.
+
+See [native release evidence](artifacts/native-history-update-release.json),
+[web evidence](artifacts/pwa-update-reminder-release.json), and
+[update behavior](../docs/app-updates.md). Private receipts, current process
+ownership and rollback are in `.runtime/native-updates-20260926/`.
+
+## Earlier web update — September 26
 
 Recording history now appends older attempts as the learner scrolls and keeps
 saved recordings beyond the former 60-audio/200-summary limits. Replay errors
@@ -17,7 +38,7 @@ native store binaries and the submitted Mac build are unchanged. See
 [behavior and limits](../docs/recording-history.md). Runtime and rollback details
 are in `.runtime/history-20260926/handoff.md`.
 
-## Latest Android update — September 24
+## Earlier Android update — September 24
 
 Android **1.0.9 / 18** (`art.lazying.landn`) is available internally and submitted
 for production review. Console confirms **Your changes are now in review**;

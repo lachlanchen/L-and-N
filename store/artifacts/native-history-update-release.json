@@ -1,0 +1,60 @@
+{
+  "observedAt": "2026-09-26T02:19:39Z",
+  "appId": "art.lazying.landn",
+  "features": [
+    "Progressive recording history, timestamps and recognized words",
+    "Retain newly saved recordings without automatic count-based eviction",
+    "Clear replay/storage errors and cancellation guards",
+    "Optional localized public-store update reminders"
+  ],
+  "android": {
+    "version": "1.0.10",
+    "build": 20,
+    "sourceCommit": "a3351365f4e1b99e5d477259c99db7a9039e3438",
+    "aabSha256": "f3fbf6bdc830da2c4c72327fd4094022b883770cd27e9a8b9c53e3a4e796cda7",
+    "apkSha256": "2427d7f3e535f28618a47769a25606a2a5df2933550d16c2d1211153854b2439",
+    "internal": "AVAILABLE_TO_INTERNAL_TESTERS",
+    "production": "IN_REVIEW",
+    "preReviewChecks": "COMPLETE; Console confirms Your changes are now in review",
+    "productionScope": "Same tested AAB, existing countries, full rollout after approval; only main app changed",
+    "testUrl": "https://play.google.com/apps/internaltest/4701251861700553150",
+    "apkUrl": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.10-build20-test.apk",
+    "qualification": "Release unit tests and lint pass; existing upload signature verified; release APK in-place upgrade, new history UI, relaunch and denied-microphone recovery verified on isolated API34 emulator",
+    "migration": "Native-injected removal of only the legacy app-root worker and Workbox precache; IndexedDB, Preferences, localStorage, cookies and arbitrary caches untouched",
+    "quarantinedCandidate": "Build19 was uploaded to an unpublished internal draft, rejected by upgrade QA and discarded before publication; never select it for any track",
+    "signingCaveat": "Play uses its app signing key; direct APK uses the upload key. Existing Play installations should update through Play to retain data. Do not uninstall to sideload."
+  },
+  "apple": {
+    "version": "1.0.7",
+    "build": 17,
+    "platforms": ["iOS", "embedded watchOS"],
+    "sourceCommit": "fba161e100eb66c3b7b3fab7f9a73b99308ffbc0",
+    "qaHarnessCommit": "ffc1b9c14dd209aef5c89fe42d3f0f6623807255",
+    "ipaSha256": "d6e9526fadce3ba9819dba3819b1bf56217500587f11ef99fc9390d9d3582372",
+    "processing": "VALID",
+    "internalTestFlight": "IN_BETA_TESTING",
+    "publicTestFlight": "WAITING_FOR_BETA_REVIEW",
+    "automaticTesterNotification": true,
+    "testUrl": "https://testflight.apple.com/join/CpkT8m9C",
+    "appStore": "WAITING_FOR_REVIEW",
+    "releaseType": "MANUAL",
+    "qualification": "Archive/export, deep strict signature check and Apple validation/upload succeeded; iOS/watchOS bundle versions match; iOS26.5 simulator UI checks passed",
+    "simulatorChecks": "Native audio bridge, L/N switching, three practice languages, four independent UI languages, Listen, Learn, new history screen, two microphone-denial recoveries without fabricated score, no native web-store promotion",
+    "listing": "Existing seven iPhone, seven iPad and one Watch screenshots inherited and verified complete; release/reviewer notes updated, account/privacy/price settings unchanged",
+    "preservedMac": "Existing Mac1.0.0(1) remains IN_REVIEW with its original build"
+  },
+  "sharedVerification": {
+    "automated": "174 tests in 22 files, lint, TypeScript and web build pass",
+    "pwaLifecycle": "Real waiting-worker update, explicit refresh once, retained history, Later and busy-state suppression verified",
+    "releaseWorkflowContract": "47 shell-script contract checks passed; private scoped submission scripts syntax checked",
+    "cleanup": "Owned Android emulator and iOS simulator stopped; evidence retained; shared store browser and other projects untouched"
+  },
+  "limitations": [
+    "Store submission is not approval or public availability",
+    "Public TestFlight build17 needs beta approval; the existing link may offer an earlier approved build meanwhile",
+    "No new physical Honor/iPhone/Watch microphone-accuracy or purchase test",
+    "Previously deleted recordings cannot be recovered; finite local storage still applies",
+    "Native prompt is available only after installing a prompt-capable build; manifest advertises public versions only",
+    "Pro package, pricing, account settings, IAP products and existing Mac review unchanged"
+  ]
+}

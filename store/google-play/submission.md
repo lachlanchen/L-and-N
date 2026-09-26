@@ -1,5 +1,23 @@
 # Google Play submission
 
+## September 26 — 1.0.10 / 20
+
+Main app **available to internal testers**. The exact tested AAB was promoted
+to production and sent for review, with existing countries and full rollout
+after approval. Automatic checks passed; Console confirms **Your changes are now
+in review**. This is not approval or public availability. Pro and commercial settings are unchanged.
+
+Includes progressive recording history, optional public-store update reminders,
+and safe migration of the obsolete native app-page cache. In-place upgrade and
+microphone-denial recovery were checked on an isolated release emulator.
+Candidate19 was discarded before publication after QA found its stale-cache
+problem. Use only20. See [artifact and QA record](../artifacts/native-history-update-release.json).
+
+Use [Play internal testing](https://play.google.com/apps/internaltest/4701251861700553150)
+to update an existing Play installation. The [direct APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0.10-build20-test.apk)
+uses the upload signing identity and may not update a Play-signed installation.
+Do not uninstall or clear storage to update: recordings are device-local.
+
 ## September 24 update — 1.0.9 / 18
 
 `art.lazying.landn`: **available to internal testers**. The same exact AAB was
