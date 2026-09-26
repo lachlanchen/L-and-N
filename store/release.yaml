@@ -32,13 +32,13 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: playback-67039936d2b6db615ba2a05a9afedfef2c5b98f100433bfd2efc36416c6d8e1f
+    release: pair-recovery-5dc9f0b1d981c84aa1868a8e2d3ff57dc0a567a66827d6673e55a878f0da06b7
     support_patch_source: cf985732ac165fc192a6dba6a43ecc95ff82dcf1
     support_patch_note: earlier September 24 privacy, test APK, and speech gateway patch; backend unchanged by subsequent web releases
-    source_commit: 911b0b40f29e07a585c315c7102765782db2c5cd
-    main_asset: assets/index-ByYNNO63.js
-    rollback: playback-1c215954fc68184c7b649f0a8d77b27330be91c2be15dfe839440c45ab5c6cc4
-    artifact_manifest: store/artifacts/pwa-playback-controls-release.json
+    source_commit: 19d3150c9c9b1fa86c704bb8a74c24073dcc0797
+    main_asset: assets/index-4J3zDHT7.js
+    rollback: playback-67039936d2b6db615ba2a05a9afedfef2c5b98f100433bfd2efc36416c6d8e1f
+    artifact_manifest: store/artifacts/ios-pair-recovery-release.json
   android:
     min_sdk: 24
     target_sdk: 36
@@ -47,9 +47,9 @@ platforms:
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0
-    artifact: /Users/lachlanchen/Projects/L-And-N/release/ios-1.0.8-18/export/App.ipa
+    artifact: /Users/lachlanchen/Projects/L-And-N/release/ios-1.0.8-19/export/App.ipa
     app_store_id: 6808872450
-    status: public_1_0_6_build16; 1_0_8_build18_waiting_for_review_2026_09_26; previous_1_0_7_review_replaced_with_user_approval
+    status: public_1_0_6_build16; 1_0_8_build19_waiting_for_review_2026_09_26; previous_build18_review_replaced_with_user_approval
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
@@ -68,11 +68,13 @@ testing:
     artifact_manifest: store/artifacts/native-playback-controls-release.json
   ios_watchos:
     version: 1.0.8
-    build: 18
+    build: 19
     internal_group: L & N Internal Testers
     internal_status: testing
     public_group: L & N Public Beta
-    public_status: waiting_for_beta_review
+    public_status: build19_submission_blocked_by_pending_build18_beta_review
+    public_candidate_state: ready_for_beta_submission
+    artifact_manifest: store/artifacts/ios-pair-recovery-release.json
     public_url: https://testflight.apple.com/join/CpkT8m9C
     public_tester_limit: 100
     automatic_tester_notification: true

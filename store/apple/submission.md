@@ -1,6 +1,30 @@
 # Apple App Store submission
 
-## September 26 — iOS/watchOS 1.0.8 (18), latest
+## September 26 — iOS/watchOS 1.0.8 (19), latest
+
+**Waiting for Review**, manual release. Build19 is **VALID** and
+**IN_BETA_TESTING** internally. With prior explicit user approval, the pending
+formal build18 review was withdrawn and replaced by this tested build. The
+separate Mac1.0.0(1) binary/review remains unchanged and **IN_REVIEW**.
+
+Improves cancellation, deadlines, frozen-output-clock recovery and isolation of
+stale playback attempts. All 216 tests, lint and build pass. An iOS26.5 simulator
+on a physical Mac with audio output passed 15 normal and 16 forced-fallback
+checks requiring real audio-ended events for repeated pairs in three languages.
+The reporting user confirmed repeated light/night → low/no → light/night works
+on their iPhone with build19. This is not a general microphone-accuracy claim.
+
+Archive/signing, matching embedded Watch version, Apple validation, one upload
+and retained listing screenshots are verified. See
+[exact artifact and evidence](../artifacts/ios-pair-recovery-release.json).
+Public TestFlight submission was **rejected because build18 is still in beta
+review**; build19 is attached to the public group but remains
+**READY_FOR_BETA_SUBMISSION**, not approved or waiting for beta review.
+Reconcile and submit once after the earlier beta review completes. The
+[public link](https://testflight.apple.com/join/CpkT8m9C) may offer an earlier
+approved build. Automatic notifications do not establish email delivery.
+
+## Earlier September 26 — iOS/watchOS 1.0.8 (18), formal review replaced
 
 **Waiting for Review**, manual release. Build 18 is **VALID** and
 **IN_BETA_TESTING** internally; public TestFlight is **WAITING_FOR_BETA_REVIEW**.
@@ -9,7 +33,9 @@ Mac 1.0.0 (1) remains **IN_REVIEW** with its original selected binary.
 
 Adds pair-tap previews, direct same-sound word navigation and uninterrupted
 two-repeat models. Native checks caught and fixed Apple bundled-media status-zero
-handling before upload. All 200 tests and 12 iOS simulator checks pass; archive,
+handling before upload. All 200 tests and 12 iOS simulator control checks pass;
+the virtual host had no audio output device, so those timer/control checks did
+not prove sound output. Archive,
 signing, server validation, embedded Watch versions and screenshots are verified.
 See [artifact and QA evidence](../artifacts/native-playback-controls-release.json).
 The [TestFlight link](https://testflight.apple.com/join/CpkT8m9C) may show an

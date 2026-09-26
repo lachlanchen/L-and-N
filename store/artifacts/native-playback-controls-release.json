@@ -40,7 +40,7 @@
     "releaseType": "MANUAL",
     "replacedSubmission": "Previous iOS1.0.7(17) review withdrawn with explicit user approval, then replaced with the tested build18; Mac review unchanged",
     "localAudioFix": "Accept nonempty, non-opaque status-zero bundled media only from capacitor://localhost. Capacitor's Apple handler uses URLResponse for media; the earlier player incorrectly rejected it. Ordinary failed web responses remain rejected.",
-    "qualification": "Final corrected archive/export, deep strict signing, matching iOS/watchOS versions, Apple validation and one upload succeeded. Twelve iOS26.5 simulator checks pass, including real model/pair playback, independent languages, history and repeat unavailable-microphone recovery.",
+    "qualification": "Final corrected archive/export, deep strict signing, matching iOS/watchOS versions, Apple validation and one upload succeeded. Twelve iOS26.5 simulator UI checks passed, including model/pair control completion, independent languages, history and repeat unavailable-microphone recovery. Later stricter testing found the virtual host has no audio output device: these historical timer/control checks do not prove audio output. See docs/testing/pair-audio-recovery.md.",
     "unsubmittedCandidate": "The first build18 archive failed native pair-playback QA and was not uploaded. Only the corrected IPA hash above was uploaded.",
     "listing": "Seven iPhone, seven iPad and one Watch images verified complete; release/reviewer notes updated; other store settings unchanged",
     "preservedMac": "Mac1.0.0(1) remains IN_REVIEW with its original selected binary"

@@ -4,4 +4,6 @@ The studio model ignores repeat taps until both pronunciations finish. Changing 
 
 Corrects playback of bundled listening clips on Apple devices.
 
+Improves recovery when pair audio is interrupted: repeat taps and returning to a previous pair no longer have to wait indefinitely for a stalled player. Failed playback can be retried without restarting the app.
+
 Also includes progressive recording history and optional update reminders. Update in place to keep device-local recordings; previously deleted recordings cannot be recovered. Includes the watchOS companion.

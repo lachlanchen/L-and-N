@@ -4,13 +4,43 @@ Updated: 2026-09-26
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
-## Latest playback update — September 26
+## Latest iPhone pair-replay recovery — September 26
+
+The reporting user confirmed that light/night → low/no → light/night works
+repeatedly in TestFlight **1.0.8 (19)**. Build 19 is **IN_BETA_TESTING** internally
+and **WAITING_FOR_REVIEW** in the App Store, with manual release preserved. The
+pending formal build18 review was replaced with the user's prior approval.
+This is not App Store approval or a claim that all audio scenarios are fixed.
+
+The public TestFlight group includes build19, but Apple rejected its beta
+submission because build18 is still in beta review. Build19 is
+**READY_FOR_BETA_SUBMISSION**, not waiting for beta review: reconcile and submit
+once after the earlier beta review completes. No tester email delivery claim.
+The existing public link may still offer an earlier approved build.
+
+The recovery code is also live on the PWA. All 216 tests, lint and build pass;
+public-site playback/retry checks pass. An iOS26.5 simulator on a physical Mac
+with audio output passed 15 normal-route and 16 forced-fallback checks, including
+actual audio-ended events for repeated pairs in all three practice languages.
+Older virtual-Mac timer/control checks did not prove sound output; corrected
+historical evidence preserves that distinction. No new microphone accuracy test.
+
+Android21 internal/production submissions and separate Mac1.0.0(1) are unchanged.
+Owned preview/test runtimes are stopped; shared browser and services preserved.
+See [artifact and provider evidence](artifacts/ios-pair-recovery-release.json)
+and [qualification](../docs/testing/pair-audio-recovery.md). Exact receipts,
+the pending beta action, runtime ownership and rollback remain private in
+`.runtime/pair-recovery-20260926/handoff.md`.
+
+## Earlier playback update — September 26
 
 The PWA playback update is deployed and verified. Listening pair taps play L
 then N; Practice arrows retain the selected sound; the studio control stays
 busy through both pronunciations. Native iOS checks also found and fixed the
 Apple local-media status-zero handling. All 200 tests pass, plus real public
-browser playback, signed Android upgrade checks and 12 iOS simulator checks.
+browser playback, signed Android upgrade checks and 12 iOS simulator control
+checks. Those older native timer/control checks did not verify sound output;
+see the stricter build19 qualification above.
 
 Android **1.0.11 (21)** is available internally and **In Review** for production;
 automatic checks finished. Previous Android 1.0.10 is published. iOS/watchOS

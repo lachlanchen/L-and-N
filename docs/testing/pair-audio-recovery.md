@@ -37,9 +37,20 @@ English, Mandarin and Cantonese, plus stop and tab-change recovery.
 
 The virtual Mac has no audio output device: its timer-only historical checks
 are not evidence of audible playback. Stricter output checks exposed this
-limitation. Native output qualification is being moved to an existing physical
-Mac with an iOS simulator and a real output device. This remains simulator QA,
-not a physical-iPhone or real-microphone accuracy test.
+limitation. Qualification subsequently passed on an iOS 26.5 simulator on a
+physical Mac with an output device: 15 normal-route checks and 16 checks with
+the media-element fallback explicitly forced. Both runs used actual bundled
+clips and required both audio-ended events for each repeated pair. The headless
+simulator screenshot was blank and is not visual evidence; existing store
+screenshots were retained. This is simulator event/output-path evidence, not
+an instrumented physical-iPhone or real-microphone accuracy test.
 
-Build 19 is a candidate until its signed artifact and publication receipt are
-recorded. Build 18 does not receive these bundled-code changes automatically.
+The reporting user installed TestFlight 1.0.8 (19) and confirmed that
+light/night → low/no → light/night works repeatedly on their iPhone. This
+confirms the reported sequence for that test, not every interruption scenario.
+
+The signed build 19 passed Apple validation and is available internally through
+TestFlight. Exact artifact and provider states are recorded in
+[release evidence](../../store/artifacts/ios-pair-recovery-release.json).
+The web fix is deployed and both playback routes passed public-site checks.
+Build 18 does not receive these bundled-code changes automatically.
