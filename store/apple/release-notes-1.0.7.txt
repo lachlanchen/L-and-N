@@ -1,0 +1,5 @@
+Keep the attempts you want to hear again.
+
+Recording history now loads older attempts as you scroll, with timestamps and recognized words. New saves no longer automatically remove older recordings. Replay and storage errors are clearer.
+
+A gentle, optional reminder helps you find future app updates without interrupting practice. Update in place to keep your saved history. Previously deleted recordings cannot be recovered.

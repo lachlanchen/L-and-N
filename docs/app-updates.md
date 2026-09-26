@@ -39,6 +39,14 @@ blocks practice. “Later” keeps the current page until the next app opening.
 Native builds do not register a service worker. The store-version manifest is
 excluded from the precache so store metadata cannot be frozen inside an old app.
 
+Android's native shell also removes the legacy app-root service worker and its
+Workbox static precache on startup. This migration is injected by the shell, so
+an old worker cannot serve old JavaScript that bypasses it. It does not clear
+IndexedDB, Preferences, localStorage, cookies or arbitrary caches. A controlled
+old page reloads once into the newly installed bundle. Existing PWA versions
+without prompt support may need all their tabs closed/reopened for the first
+transition to the new prompt-based worker.
+
 Refreshing/updating in place does not clear saved history or recordings. Do not
 advise learners to uninstall or clear storage as an update step. Already evicted
 recordings cannot be recovered; finite browser/device storage still applies.
