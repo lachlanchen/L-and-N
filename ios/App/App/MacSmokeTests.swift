@@ -47,6 +47,20 @@ final class MacSmokeTests {
             try await wait("document.querySelector('[data-testid=app-root]') && document.querySelector('.word-area h2')")
             try await wait("window.Capacitor?.isNativePlatform() && window.Capacitor?.isPluginAvailable('NativeAudioRecorder')")
             check("bundled Apple UI and native audio bridge loaded")
+            if CommandLine.arguments.contains("--landn-playback-test") {
+                _ = try await js("""
+                window.__modelQA=[];
+                const qaMediaPlay=HTMLMediaElement.prototype.play;
+                HTMLMediaElement.prototype.play=function(...args){
+                  if(this.src.includes('/audio/models/')) {
+                    __modelQA.push('start '+this.src);
+                    for(const event of ['playing','ended','error','stalled','waiting','pause'])this.addEventListener(event,()=>__modelQA.push(event+' time='+this.currentTime+' ready='+this.readyState+' error='+this.error?.message));
+                  }
+                  return qaMediaPlay.apply(this,args).catch(e=>{__modelQA.push('rejected '+e);throw e});
+                };
+                true;
+                """)
+            }
             // Change language only through the actual UI; leave previous data intact.
             _ = try await js("var picker=document.querySelector('[data-testid=ui-language-picker]');picker.value='en';picker.dispatchEvent(new Event('change',{bubbles:true}))")
             try await click("[data-testid=practice-language-en-US]")
@@ -86,17 +100,44 @@ final class MacSmokeTests {
                 window.fetch=(...args)=>{__playbackQA.push('fetch '+args[0]);return originalFetch(...args).then(r=>{__playbackQA.push('response '+r.status+' '+args[0]);return r},e=>{__playbackQA.push('fetch error '+e);throw e})};
                 const originalDecode=AudioContext.prototype.decodeAudioData;
                 AudioContext.prototype.decodeAudioData=function(...args){__playbackQA.push('decode '+args[0].byteLength+' state='+this.state);return originalDecode.apply(this,args).then(b=>{__playbackQA.push('decoded '+b.duration);return b},e=>{__playbackQA.push('decode error '+e);throw e})};
+                window.__pairEnded=0;
+                const originalStart=AudioBufferSourceNode.prototype.start;
+                AudioBufferSourceNode.prototype.start=function(...args){this.addEventListener('ended',()=>{window.__pairEnded++},{once:true});return originalStart.apply(this,args)};
+                const originalMediaPlay=HTMLMediaElement.prototype.play;
+                HTMLMediaElement.prototype.play=function(...args){if(this.src.includes('/audio/clips/'))this.addEventListener('ended',()=>{window.__pairEnded++},{once:true});return originalMediaPlay.apply(this,args)};
                 true;
                 """)
+                if CommandLine.arguments.contains("--landn-element-test") {
+                    _ = try await js("window.AudioContext=undefined;window.webkitAudioContext=undefined;true")
+                    check("test-only forced media-element fallback; actual bundled audio retained")
+                }
             }
             try await click(".bottom-nav button:nth-child(2)")
             try await wait("document.querySelector('.listen-shell')")
             if CommandLine.arguments.contains("--landn-playback-test") {
+                for language in ["en-US", "zh-CN", "yue-HK"] {
+                    try await click("[data-testid=practice-language-\(language)]")
+                    for index in [1, 2, 1, 1] {
+                        let ended = (try await js("window.__pairEnded") as? Int) ?? 0
+                        try await click("[aria-label=\"Word pair\"] button:nth-child(\(index))")
+                        try await wait("document.querySelector('[data-testid=exam-preview-stop]') && document.querySelector('[data-testid=exam-play]').disabled && !document.querySelector('[data-testid=exam-answers]')")
+                        try await wait("!document.querySelector('[data-testid=exam-preview-stop]')", timeout: 20)
+                        try await wait("!document.querySelector('.error-message') && !document.querySelector('[data-testid=exam-play]').disabled")
+                        try await wait("window.__pairEnded === \(ended + 2)")
+                    }
+                    check("native \(language) pair 1 -> pair 2 -> pair 1 -> pair 1 completes both audio sources every time")
+                }
+                try await click("[data-testid=practice-language-en-US]")
                 try await click("[data-testid^=exam-pair-]")
-                try await wait("document.querySelector('[data-testid=exam-preview-stop]') && document.querySelector('[data-testid=exam-play]').disabled && !document.querySelector('[data-testid=exam-answers]')")
-                try await wait("!document.querySelector('[data-testid=exam-preview-stop]')", timeout: 35)
+                try await click("[data-testid=exam-preview-stop]")
+                try await wait("!document.querySelector('[data-testid=exam-preview-stop]') && !document.querySelector('[data-testid=exam-play]').disabled")
+                try await click("[data-testid^=exam-pair-]")
+                try await click(".bottom-nav button:nth-child(1)")
+                try await click(".bottom-nav button:nth-child(2)")
+                try await click("[data-testid^=exam-pair-]")
+                try await wait("!document.querySelector('[data-testid=exam-preview-stop]')", timeout: 20)
                 try await wait("!document.querySelector('.error-message') && !document.querySelector('[data-testid=exam-play]').disabled")
-                check("native listening pair plays both words without starting an exam")
+                check("native stop and tab-change cancellation permit immediate pair replay")
             }
             try await screenshot("02-listen")
             check("listening lessons render")
@@ -128,6 +169,7 @@ final class MacSmokeTests {
         } catch {
             failure = String(describing: error)
             if let diagnostics = try? await js("JSON.stringify(window.__playbackQA || [])") { print("LANDN_QA playback diagnostics: \(diagnostics)") }
+            if let diagnostics = try? await js("JSON.stringify(window.__modelQA || [])") { print("LANDN_QA model diagnostics: \(diagnostics)") }
             try? await screenshot("failure")
         }
         let report: [String: Any] = ["passed": passed, "checks": checks, "error": failure,

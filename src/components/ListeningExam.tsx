@@ -63,17 +63,27 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
   const [previewing, setPreviewing] = useState(false)
   const [previewWord, setPreviewWord] = useState('')
   const playbackRef = useRef<SequencePlayback | null>(null)
+  const requestRef = useRef<AbortController | null>(null)
+  const previewTimerRef = useRef<number | undefined>(undefined)
   const operationRef = useRef(0)
   const audioBusyRef = useRef(false)
 
   const pair: MinimalPair | undefined =
     pairs.find((item) => item.id === pairId && !lockedIds.has(item.id)) ?? pairs.find((item) => !lockedIds.has(item.id)) ?? pairs[0]
 
-  const reset = useCallback(() => {
+  const cancelPlayback = useCallback(() => {
     operationRef.current += 1
+    requestRef.current?.abort()
+    requestRef.current = null
     playbackRef.current?.stop()
     playbackRef.current = null
+    window.clearTimeout(previewTimerRef.current)
+    previewTimerRef.current = undefined
     audioBusyRef.current = false
+  }, [])
+
+  const reset = useCallback(() => {
+    cancelPlayback()
     setPreviewing(false)
     setPreviewWord('')
     setExam(null)
@@ -83,12 +93,9 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
     setPhase('idle')
     setError('')
     setErrorDetail('')
-  }, [])
+  }, [cancelPlayback])
 
-  useEffect(() => () => {
-    operationRef.current += 1
-    playbackRef.current?.stop()
-  }, [])
+  useEffect(() => cancelPlayback, [cancelPlayback])
 
   useEffect(() => {
     if (!pair) return
@@ -100,6 +107,9 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
     audioBusyRef.current = true
     const operation = operationRef.current + 1
     operationRef.current = operation
+    requestRef.current?.abort()
+    const request = new AbortController()
+    requestRef.current = request
     playbackRef.current?.stop()
     setError('')
     setErrorDetail('')
@@ -110,6 +120,7 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
       const playback = await playSequence(
         current.items.map((item) => item.exerciseId),
         {
+          signal: request.signal,
           onItem: (index) => {
             if (operationRef.current === operation) setPlayingIndex(index)
           },
@@ -138,6 +149,7 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
       if (operationRef.current === operation) {
         audioBusyRef.current = false
         playbackRef.current = null
+        requestRef.current = null
       }
     }
   }
@@ -156,15 +168,12 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
   }
 
   const stop = useCallback(() => {
-    operationRef.current += 1
-    playbackRef.current?.stop()
-    playbackRef.current = null
-    audioBusyRef.current = false
+    cancelPlayback()
     setPreviewing(false)
     setPreviewWord('')
     setPlayingIndex(null)
     setPhase(result ? 'reviewed' : exam ? 'answering' : 'idle')
-  }, [exam, result])
+  }, [cancelPlayback, exam, result])
 
   useEffect(() => {
     const onHidden = () => { if (document.visibilityState === 'hidden') stop() }
@@ -181,15 +190,27 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
     audioBusyRef.current = true
     const operation = operationRef.current + 1
     operationRef.current = operation
+    requestRef.current?.abort()
+    const request = new AbortController()
+    requestRef.current = request
     playbackRef.current?.stop()
     setPreviewing(true)
     setPreviewWord('')
     setError('')
     setErrorDetail('')
+    // Final UI safety net for a short one/two-word preview. Even an unexpected
+    // platform stall must release the controls and cancel any late audio.
+    previewTimerRef.current = window.setTimeout(() => {
+      if (operationRef.current !== operation) return
+      stop()
+      setError(copy.listen.audioError)
+      setErrorDetail('Pair playback timed out. Please tap the pair to retry.')
+    }, 15_000)
     try {
       unlockAudio()
       const playback = await playSequence(items.map((item) => item.id), {
         gapMs: 350,
+        signal: request.signal,
         onItem: (index) => {
           if (operationRef.current === operation) setPreviewWord(index === null ? '' : items[index]?.word ?? '')
         },
@@ -204,8 +225,11 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
       }
     } finally {
       if (operationRef.current === operation) {
+        window.clearTimeout(previewTimerRef.current)
+        previewTimerRef.current = undefined
         audioBusyRef.current = false
         playbackRef.current = null
+        requestRef.current = null
         setPreviewing(false)
         setPreviewWord('')
       }

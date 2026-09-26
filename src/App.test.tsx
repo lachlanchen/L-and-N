@@ -41,7 +41,7 @@ vi.mock('./lib/progress', () => ({
 }))
 
 const audioMocks = vi.hoisted(() => ({
-  playSequence: vi.fn((exerciseIds: string[], options?: { onItem?: (index: number | null) => void }) => {
+  playSequence: vi.fn((exerciseIds: string[], options?: { signal?: AbortSignal; onItem?: (index: number | null) => void }) => {
     options?.onItem?.(null)
     return Promise.resolve({ finished: Promise.resolve(), stop: vi.fn(), played: exerciseIds })
   }),
@@ -106,6 +106,7 @@ afterEach(() => {
   vi.mocked(saveAttempt).mockClear()
   vi.mocked(loadAttempts).mockReset().mockResolvedValue([])
   vi.restoreAllMocks()
+  vi.useRealTimers()
 })
 
 describe('web store links', () => {
@@ -530,11 +531,61 @@ describe('listening exam', () => {
     audioMocks.playSequence.mockImplementationOnce(() => new Promise((resolve) => { ready = resolve }))
     await openExam()
     fireEvent.click(screen.getByTestId('exam-pair-en-light-night|en-night-light'))
+    const signal = audioMocks.playSequence.mock.calls[0][1]?.signal
+    expect(signal?.aborted).toBe(false)
     fireEvent.click(screen.getByRole('button', { name: 'Practice' }))
+    expect(signal?.aborted).toBe(true)
     const stop = vi.fn()
     await act(async () => ready({ finished: Promise.resolve(), stop, played: [] }))
     expect(stop).toHaveBeenCalledOnce()
     expect(screen.queryByText(/could not be played/)).toBeNull()
+  })
+
+  it.each(['loading', 'playing'])('releases a stalled %s preview and replays pair 1, pair 2, pair 1', async (stage) => {
+    const stopped = vi.fn()
+    audioMocks.playSequence.mockImplementationOnce((ids) => stage === 'loading'
+      ? new Promise(() => undefined)
+      : Promise.resolve({ finished: new Promise<void>(() => undefined), stop: stopped, played: ids }))
+    await openExam()
+    vi.useFakeTimers()
+    const pairs = listeningPairs('en-US')
+    const first = screen.getByTestId(`exam-pair-${pairs[0].id}`)
+    fireEvent.click(first)
+    const signal = audioMocks.playSequence.mock.calls[0][1]?.signal
+    await act(async () => { await vi.advanceTimersByTimeAsync(15_000) })
+    expect(signal?.aborted).toBe(true)
+    expect(first.hasAttribute('disabled')).toBe(false)
+    expect(screen.getByText('The audio could not be played. Check the volume, then try again.')).toBeTruthy()
+    if (stage === 'playing') expect(stopped).toHaveBeenCalledOnce()
+    for (const pair of [pairs[0], pairs[1], pairs[0], pairs[0]]) {
+      fireEvent.click(screen.getByTestId(`exam-pair-${pair.id}`))
+      await act(async () => undefined)
+      expect(screen.getByTestId(`exam-pair-${pair.id}`).hasAttribute('disabled')).toBe(false)
+      expect(audioMocks.playSequence.mock.lastCall?.[0]).toEqual([pair.lateral.id, pair.nasal.id])
+    }
+    expect(screen.queryByText('The audio could not be played. Check the volume, then try again.')).toBeNull()
+  })
+
+  it('stop cancels a loading preview without letting its late handle disturb the next pair', async () => {
+    let ready!: (value: Awaited<ReturnType<typeof audioMocks.playSequence>>) => void
+    audioMocks.playSequence.mockImplementationOnce(() => new Promise((resolve) => { ready = resolve }))
+    await openExam()
+    fireEvent.click(screen.getByTestId('exam-pair-en-light-night|en-night-light'))
+    const oldSignal = audioMocks.playSequence.mock.calls[0][1]?.signal
+    fireEvent.click(screen.getByTestId('exam-preview-stop'))
+    expect(oldSignal?.aborted).toBe(true)
+    let finish!: () => void
+    audioMocks.playSequence.mockImplementationOnce((ids) => Promise.resolve({
+      finished: new Promise<void>((resolve) => { finish = resolve }), stop: vi.fn(), played: ids,
+    }))
+    const second = screen.getByTestId('exam-pair-en-low-no|en-no-low')
+    fireEvent.click(second)
+    const oldStop = vi.fn()
+    await act(async () => ready({ finished: Promise.resolve(), stop: oldStop, played: [] }))
+    expect(oldStop).toHaveBeenCalledOnce()
+    expect(second.hasAttribute('disabled')).toBe(true)
+    await act(async () => finish())
+    expect(second.hasAttribute('disabled')).toBe(false)
   })
 
   it('recovers from a preview error and allows another tap', async () => {

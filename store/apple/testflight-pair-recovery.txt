@@ -1,0 +1,7 @@
+Build 19 tightens recovery when listening-pair audio is interrupted or stops responding.
+
+Please update without uninstalling, to keep your recordings. In Listen, tap light/night, then low/no, then light/night again; repeat the same pair several times. Both words should play each time. Try Mandarin and Cantonese too. Stop a preview, switch tabs, and leave/return to the app before retrying. If audio cannot finish, the controls should recover and allow another tap without force-closing the app.
+
+Audio downloads, decoding, media loading and playback startup now have bounded waits. Cancellation also applies before playback starts, and a stale request cannot interfere with a new pair. A stopped audio clock should produce a recoverable error rather than silently claiming playback completed.
+
+Recording/scoring, stored history, permissions and purchase behavior are unchanged. The watchOS companion remains included. Simulator and automated checks are not a substitute for your real-iPhone playback feedback.
