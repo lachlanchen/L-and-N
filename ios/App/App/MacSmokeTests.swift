@@ -79,6 +79,16 @@ final class MacSmokeTests {
                 try await wait("document.querySelector('[data-testid=app-root]').dataset.practiceLanguage === 'en-US'")
             }
             check("UI language independent from practice language")
+            if CommandLine.arguments.contains("--landn-playback-test") {
+                _ = try await js("""
+                window.__playbackQA=[];
+                const originalFetch=window.fetch;
+                window.fetch=(...args)=>{__playbackQA.push('fetch '+args[0]);return originalFetch(...args).then(r=>{__playbackQA.push('response '+r.status+' '+args[0]);return r},e=>{__playbackQA.push('fetch error '+e);throw e})};
+                const originalDecode=AudioContext.prototype.decodeAudioData;
+                AudioContext.prototype.decodeAudioData=function(...args){__playbackQA.push('decode '+args[0].byteLength+' state='+this.state);return originalDecode.apply(this,args).then(b=>{__playbackQA.push('decoded '+b.duration);return b},e=>{__playbackQA.push('decode error '+e);throw e})};
+                true;
+                """)
+            }
             try await click(".bottom-nav button:nth-child(2)")
             try await wait("document.querySelector('.listen-shell')")
             if CommandLine.arguments.contains("--landn-playback-test") {
@@ -117,6 +127,7 @@ final class MacSmokeTests {
             passed = true
         } catch {
             failure = String(describing: error)
+            if let diagnostics = try? await js("JSON.stringify(window.__playbackQA || [])") { print("LANDN_QA playback diagnostics: \(diagnostics)") }
             try? await screenshot("failure")
         }
         let report: [String: Any] = ["passed": passed, "checks": checks, "error": failure,

@@ -23,3 +23,9 @@ Interface language remains independent from practice language. This does not
 change scoring, microphone permissions, saved data, purchase entitlements or
 the submitted Mac binary. Shared source changes reach installed native apps
 only through a new store/test build; a PWA deployment does not replace them.
+
+The Apple native asset handler serves bundled media using a non-HTTP response
+(status zero). The player accepts that response only for local
+`capacitor://localhost` media with a nonempty, non-opaque body; ordinary failed
+web responses still fall back. Native simulator playback, not just mocked
+browser tests, covers this distinction.

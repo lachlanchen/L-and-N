@@ -170,9 +170,17 @@ function bufferFor(active: AudioContext, clip: WordClip): Promise<AudioBuffer> {
   if (cached) return cached
   const pending = (async () => {
     const response = await fetch(clip.src, { cache: 'force-cache' })
-    if (!response.ok) throw new WordAudioError('web-audio', `download of ${clip.key} failed (${response.status})`)
+    // Capacitor's Apple asset handler returns URLResponse (not HTTPURLResponse)
+    // for media, so a successfully loaded bundled MP3 has status 0. This is
+    // only valid for our local custom-scheme assets, never an opaque web fetch.
+    const bundledAppleMedia = window.location.protocol === 'capacitor:'
+      && window.location.hostname === 'localhost'
+      && response.status === 0 && response.type !== 'opaque'
+    if (!response.ok && !bundledAppleMedia) throw new WordAudioError('web-audio', `download of ${clip.key} failed (${response.status})`)
     try {
-      return await active.decodeAudioData(await response.arrayBuffer())
+      const bytes = await response.arrayBuffer()
+      if (!bytes.byteLength) throw new Error('Empty audio file')
+      return await active.decodeAudioData(bytes)
     } catch (caught) {
       throw new WordAudioError('web-audio', `decode of ${clip.key} failed`, { cause: caught })
     }

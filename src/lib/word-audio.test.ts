@@ -121,6 +121,36 @@ afterEach(() => {
 })
 
 describe('studio clip playback', () => {
+  it('decodes status-zero media from the bundled Apple asset handler', async () => {
+    vi.stubGlobal('location', new URL('capacitor://localhost/'))
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 0, type: 'basic', arrayBuffer: async () => new ArrayBuffer(8) })))
+    const pending = playSequence([light, night])
+    await vi.advanceTimersByTimeAsync(0)
+    const playback = await pending
+    expect(playback.route).toBe('web-audio')
+    expect((unlockAudio() as unknown as FakeContext).started).toHaveLength(2)
+    playback.stop()
+  })
+
+  it.each(['opaque', 'empty'])('does not accept %s bundled media as a decoded clip', async (kind) => {
+    vi.stubGlobal('location', new URL('capacitor://localhost/'))
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 0, type: kind === 'opaque' ? 'opaque' : 'basic', arrayBuffer: async () => new ArrayBuffer(kind === 'empty' ? 0 : 8) })))
+    const pending = playSequence([light])
+    await vi.advanceTimersByTimeAsync(20)
+    const playback = await pending
+    expect(playback.route).toBe('element')
+    playback.stop()
+  })
+
+  it('does not accept status-zero network responses on the web', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 0, type: 'basic', arrayBuffer: async () => new ArrayBuffer(8) })))
+    const pending = playSequence([light])
+    await vi.advanceTimersByTimeAsync(20)
+    const playback = await pending
+    expect(playback.route).toBe('element')
+    playback.stop()
+  })
+
   it('schedules each word in order with a gap between them', async () => {
     const heard: Array<number | null> = []
     const pending = playSequence([light, night, light], { gapMs: 500, onItem: (index) => heard.push(index) })
