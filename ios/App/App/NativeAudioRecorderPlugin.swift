@@ -373,7 +373,7 @@ final class LAndNBridgeViewController: CAPBridgeViewController {
             source: "document.documentElement.dataset.nativePlatform = 'macos'",
             injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         #endif
-        #if DEBUG && targetEnvironment(macCatalyst)
+        #if DEBUG && (targetEnvironment(macCatalyst) || targetEnvironment(simulator))
         if CommandLine.arguments.contains("--landn-smoke-test"), let webView {
             Task { @MainActor in await MacSmokeTests(webView: webView).run() }
         }

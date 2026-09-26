@@ -1,4 +1,4 @@
-#if DEBUG && targetEnvironment(macCatalyst)
+#if DEBUG && (targetEnvironment(macCatalyst) || targetEnvironment(simulator))
 import AVFoundation
 import UIKit
 import WebKit
@@ -46,7 +46,7 @@ final class MacSmokeTests {
             try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
             try await wait("document.querySelector('[data-testid=app-root]') && document.querySelector('.word-area h2')")
             try await wait("window.Capacitor?.isNativePlatform() && window.Capacitor?.isPluginAvailable('NativeAudioRecorder')")
-            check("bundled Mac Catalyst UI and native audio bridge loaded")
+            check("bundled Apple UI and native audio bridge loaded")
             // Change language only through the actual UI; leave previous data intact.
             _ = try await js("var picker=document.querySelector('[data-testid=ui-language-picker]');picker.value='en';picker.dispatchEvent(new Event('change',{bubbles:true}))")
             try await click("[data-testid=practice-language-en-US]")
@@ -80,6 +80,7 @@ final class MacSmokeTests {
             check("mouth model and direct L/N articulation controls")
             try await click(".bottom-nav button:nth-child(4)")
             try await wait("document.querySelector('.progress-page')")
+            try await wait("document.querySelector('.progress-page').innerText.includes('Recording history')")
             try await screenshot("04-progress")
             check("progress and privacy links render")
             try await click(".bottom-nav button:nth-child(1)")
