@@ -1,6 +1,28 @@
 # Apple App Store submission
 
-## September 26 — iOS/watchOS 1.0.8 (19), latest
+## September 27 — iOS/watchOS 1.0.8 (19), approved and released
+
+Apple approved the latest uploaded iOS build 19. It was **Pending Developer
+Release**, which left the public App Store on 1.0.6 without pair-tap playback.
+The exact approved build was manually released once at 06:29 HKT; readback
+confirms **READY_FOR_SALE / READY_FOR_DISTRIBUTION** with build 19 still selected.
+No replacement binary or new formal review was necessary. Changes after the
+qualified source commit are documentation only.
+
+Public US/HK lookup still reports 1.0.6 during propagation; immediate download
+availability is not yet verified. Apple documents that a manual release can
+take [up to 24 hours](https://developer.apple.com/help/app-store-connect/manage-your-apps-availability/select-an-app-store-version-release-option/)
+to appear. Update in place when 1.0.8 is offered; do not uninstall or clear data.
+The public update manifest is unchanged until the new public version is verified.
+
+Internal TestFlight 19 remains available. Build 18 beta review is now approved,
+but the single reconciled public-beta 19 retry was refused with
+**ENTITY_UNPROCESSABLE.CLOSED_VERSION**: Apple has closed this released version
+for beta review. No build was expired; future public beta testing needs a new
+version/build. This does not block the formal release. Mac and Android were not
+changed. See [release evidence](../artifacts/ios-release-1.0.8.json).
+
+## September 26 — iOS/watchOS 1.0.8 (19), submission history
 
 **Waiting for Review**, manual release. Build19 is **VALID** and
 **IN_BETA_TESTING** internally. With prior explicit user approval, the pending

@@ -49,12 +49,13 @@ platforms:
     minimum_os: 15.0
     artifact: /Users/lachlanchen/Projects/L-And-N/release/ios-1.0.8-19/export/App.ipa
     app_store_id: 6808872450
-    status: public_1_0_6_build16; 1_0_8_build19_waiting_for_review_2026_09_26; previous_build18_review_replaced_with_user_approval
+    status: 1_0_8_build19_approved_and_manually_released_2026_09_27_ready_for_sale; public_us_hk_listing_still_1_0_6_during_propagation
+    artifact_manifest: store/artifacts/ios-release-1.0.8.json
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
     embedded_in: ios
-    status: embedded_in_submitted_ios_build
+    status: embedded_in_approved_released_ios_build19
 
 testing:
   android:
@@ -72,9 +73,9 @@ testing:
     internal_group: L & N Internal Testers
     internal_status: testing
     public_group: L & N Public Beta
-    public_status: build19_submission_blocked_by_pending_build18_beta_review
+    public_status: build18_approved; build19_beta_submission_refused_closed_version_after_formal_release
     public_candidate_state: ready_for_beta_submission
-    artifact_manifest: store/artifacts/ios-pair-recovery-release.json
+    artifact_manifest: store/artifacts/ios-release-1.0.8.json
     public_url: https://testflight.apple.com/join/CpkT8m9C
     public_tester_limit: 100
     automatic_tester_notification: true

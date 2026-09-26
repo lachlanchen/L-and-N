@@ -1,0 +1,45 @@
+{
+  "observedAt": "2026-09-27",
+  "appId": "art.lazying.landn",
+  "version": "1.0.8",
+  "build": 19,
+  "platforms": ["iOS", "embedded watchOS"],
+  "sourceCommit": "19d3150c9c9b1fa86c704bb8a74c24073dcc0797",
+  "ipaSha256": "e1b6bb4490b73ad59f84c58c02099ffb3e7d13bf36837255be788bc31c855c89",
+  "qualificationRecord": "store/artifacts/ios-pair-recovery-release.json",
+  "latestBuildVerified": true,
+  "newBinaryUploaded": false,
+  "appStore": {
+    "before": "PENDING_DEVELOPER_RELEASE",
+    "review": "COMPLETE",
+    "approvedBuild": 19,
+    "releaseType": "MANUAL",
+    "releaseRequestAccepted": true,
+    "releaseConfirmedAt": "2026-09-26T22:29:26Z",
+    "after": "READY_FOR_SALE",
+    "appVersionState": "READY_FOR_DISTRIBUTION",
+    "publicListingVerified": false,
+    "lastPublicVersion": "1.0.6",
+    "checkedStorefronts": ["US", "HK"],
+    "availabilityNote": "Release accepted and exact selected build 19 verified; public US/HK lookup still reports 1.0.6 during propagation. No claim that every device can download 1.0.8 yet."
+  },
+  "testFlight": {
+    "internal": "IN_BETA_TESTING",
+    "publicBuild19Submission": "REJECTED_CLOSED_VERSION",
+    "providerCode": "ENTITY_UNPROCESSABLE.CLOSED_VERSION",
+    "explanation": "After build18 beta approval, retried the reconciled build19 public beta submission once. Apple refused because this released version is closed for beta review; a future public beta needs a new version/build.",
+    "olderPublicBeta": "Build18 approved; not expired or removed",
+    "automaticTesterNotification": true,
+    "emailDeliveryVerified": false
+  },
+  "preserved": [
+    "Existing signed binary, screenshots, privacy declarations, prices and account settings",
+    "Android production/internal submissions",
+    "Separate Mac1.0.0(1) review and selected binary",
+    "PWA app assets and backend; no deployment or service restart",
+    "Public update manifest remains on verified public versions until storefront propagation is verified",
+    "Tracked dist-manifest.sha256 and unrelated EchoMind integration documentation"
+  ],
+  "operatorChecks": "Fresh provider build/version/review identity guards, single release POST, readback and public US/HK lookup; release workflow contract checks and private helper syntax checks. Existing app qualification reused; no application source changed.",
+  "installGuidance": "Update in place from the App Store when version1.0.8 appears. Do not uninstall or clear data: recordings are stored locally."
+}

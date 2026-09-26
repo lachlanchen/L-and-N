@@ -1,10 +1,30 @@
 # Store publication handoff
 
-Updated: 2026-09-26
+Updated: 2026-09-27
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
-## Latest iPhone pair-replay recovery — September 26
+## Latest App Store release — September 27
+
+The approved latest iOS/watchOS **1.0.8 (19)** was held in **Pending Developer
+Release** while the public App Store still served 1.0.6. It was manually released
+once; Apple now reports **READY_FOR_SALE / READY_FOR_DISTRIBUTION**. No new build
+or formal review was needed. Public US/HK lookup remains 1.0.6 during propagation;
+do not claim immediate device availability. Update the first-party reminder
+manifest only after verifying public 1.0.8, independently of Android.
+
+Internal TestFlight 19 remains available. Public-beta 18 was approved; the one
+reconciled beta 19 retry was refused with **CLOSED_VERSION** because this release
+is closed for beta review. A future public beta needs a new version/build;
+do not keep retrying or expire the existing builds. This is independent of the
+accepted App Store release. No email delivery or new physical-device QA claim.
+
+See [sanitized release evidence](artifacts/ios-release-1.0.8.json). Private
+identity guards, single-attempt receipts, public lookup snapshots and remaining
+verification are in `.runtime/ios-release-20260927/`. No GUI/build runtime was
+started; Android, Mac, PWA/backend, account settings and source assets unchanged.
+
+## Earlier iPhone pair-replay recovery — September 26
 
 The reporting user confirmed that light/night → low/no → light/night works
 repeatedly in TestFlight **1.0.8 (19)**. Build 19 is **IN_BETA_TESTING** internally
