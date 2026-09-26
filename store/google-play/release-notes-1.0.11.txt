@@ -1,0 +1,3 @@
+<en-US>
+Tap a listening word pair to hear both words back to back. Practice arrows now move directly to the next word while keeping your selected L or N sound. Studio playback ignores repeat taps until both pronunciations finish, and stops cleanly when you change words or tabs. Includes recording-history improvements and gentle update reminders. Update in place to keep your device-local recordings.
+</en-US>

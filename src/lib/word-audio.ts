@@ -299,8 +299,14 @@ async function playWithElement(
   const media = element
   if (!media) throw new WordAudioError('element', 'no media element')
   let stopped = false
+  let cancelWait: (() => void) | null = null
+  let settleCancelled: () => void = () => undefined
+  const cancelled = new Promise<void>((resolve) => { settleCancelled = resolve })
   const timers: number[] = []
-  const sleep = (ms: number) => new Promise<void>((resolve) => timers.push(window.setTimeout(resolve, ms)))
+  const sleep = (ms: number) => new Promise<void>((resolve) => {
+    cancelWait = resolve
+    timers.push(window.setTimeout(resolve, ms))
+  })
 
   const playCued = async (clip: WordClip) => {
     try {
@@ -322,6 +328,7 @@ async function playWithElement(
         resolve()
       }
       media.addEventListener('ended', done)
+      cancelWait = done
       // Safety net in case the ended event never arrives.
       const seconds = Number.isFinite(media.duration) && media.duration > 0 ? media.duration : clip.seconds
       timers.push(window.setTimeout(done, seconds * 1000 + 300))
@@ -333,7 +340,7 @@ async function playWithElement(
   await playCued(clips[0])
   onItem?.(0)
 
-  const finished = (async () => {
+  const run = (async () => {
     for (let index = 0; index < clips.length; index += 1) {
       if (stopped) return
       if (index > 0) {
@@ -346,13 +353,18 @@ async function playWithElement(
       if (stopped) return
       if (index < clips.length - 1) await sleep(gapAfter(clips, index, gapMs, repeatGapMs))
     }
+    cancelWait = null
     if (!stopped) onItem?.(null)
   })()
+  const finished = Promise.race([run, cancelled])
 
   const stop = () => {
     if (stopped) return
     stopped = true
     timers.forEach((timer) => window.clearTimeout(timer))
+    cancelWait?.()
+    cancelWait = null
+    settleCancelled()
     media.pause()
     onItem?.(null)
   }

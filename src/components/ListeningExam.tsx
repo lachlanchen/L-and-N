@@ -60,8 +60,11 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
   const [result, setResult] = useState<ExamResult | null>(null)
   const [error, setError] = useState('')
   const [errorDetail, setErrorDetail] = useState('')
+  const [previewing, setPreviewing] = useState(false)
+  const [previewWord, setPreviewWord] = useState('')
   const playbackRef = useRef<SequencePlayback | null>(null)
   const operationRef = useRef(0)
+  const audioBusyRef = useRef(false)
 
   const pair: MinimalPair | undefined =
     pairs.find((item) => item.id === pairId && !lockedIds.has(item.id)) ?? pairs.find((item) => !lockedIds.has(item.id)) ?? pairs[0]
@@ -70,6 +73,9 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
     operationRef.current += 1
     playbackRef.current?.stop()
     playbackRef.current = null
+    audioBusyRef.current = false
+    setPreviewing(false)
+    setPreviewWord('')
     setExam(null)
     setAnswers([])
     setResult(null)
@@ -90,6 +96,8 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
   }, [pair])
 
   const play = async (current: Exam) => {
+    if (audioBusyRef.current) return
+    audioBusyRef.current = true
     const operation = operationRef.current + 1
     operationRef.current = operation
     playbackRef.current?.stop()
@@ -126,11 +134,16 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
       setError(copy.listen.audioError)
       // The technical reason stays in English: it is for reporting, not reading.
       setErrorDetail(caught instanceof Error ? caught.message : String(caught))
+    } finally {
+      if (operationRef.current === operation) {
+        audioBusyRef.current = false
+        playbackRef.current = null
+      }
     }
   }
 
   const startExam = () => {
-    if (!pair) return
+    if (!pair || audioBusyRef.current) return
     const next = createListeningExam(pair, length)
     setExam(next)
     setAnswers([])
@@ -142,40 +155,85 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
     if (exam) void play(exam)
   }
 
-  const stop = () => {
+  const stop = useCallback(() => {
     operationRef.current += 1
     playbackRef.current?.stop()
     playbackRef.current = null
+    audioBusyRef.current = false
+    setPreviewing(false)
+    setPreviewWord('')
     setPlayingIndex(null)
-    setPhase(exam ? 'answering' : 'idle')
-  }
+    setPhase(result ? 'reviewed' : exam ? 'answering' : 'idle')
+  }, [exam, result])
 
-  const playOne = (exerciseId: string) => {
+  useEffect(() => {
+    const onHidden = () => { if (document.visibilityState === 'hidden') stop() }
+    document.addEventListener('visibilitychange', onHidden)
+    window.addEventListener('pagehide', stop)
+    return () => {
+      document.removeEventListener('visibilitychange', onHidden)
+      window.removeEventListener('pagehide', stop)
+    }
+  }, [stop])
+
+  const playPreview = async (items: Array<{ id: string; word: string }>) => {
+    if (audioBusyRef.current) return
+    audioBusyRef.current = true
     const operation = operationRef.current + 1
     operationRef.current = operation
     playbackRef.current?.stop()
-    unlockAudio()
-    void playSequence([exerciseId])
-      .then((playback) => {
-        if (operationRef.current !== operation) {
-          playback.stop()
-          return
-        }
-        playbackRef.current = playback
+    setPreviewing(true)
+    setPreviewWord('')
+    setError('')
+    setErrorDetail('')
+    try {
+      unlockAudio()
+      const playback = await playSequence(items.map((item) => item.id), {
+        gapMs: 350,
+        onItem: (index) => {
+          if (operationRef.current === operation) setPreviewWord(index === null ? '' : items[index]?.word ?? '')
+        },
       })
-      .catch((caught: unknown) => {
+      if (operationRef.current !== operation) { playback.stop(); return }
+      playbackRef.current = playback
+      await playback.finished
+    } catch (caught) {
+      if (operationRef.current === operation) {
         setError(copy.listen.audioError)
         setErrorDetail(caught instanceof Error ? caught.message : String(caught))
-      })
+      }
+    } finally {
+      if (operationRef.current === operation) {
+        audioBusyRef.current = false
+        playbackRef.current = null
+        setPreviewing(false)
+        setPreviewWord('')
+      }
+    }
+  }
+
+  const playOne = (exerciseId: string) => {
+    const item = exercises.find((entry) => entry.id === exerciseId)
+    if (item) void playPreview([item])
+  }
+
+  const selectPair = (item: MinimalPair) => {
+    if (audioBusyRef.current || lockedIds.has(item.id)) return
+    // Rehearing the selected pair must not erase an exam being answered.
+    if (item.id !== pair?.id) {
+      reset()
+      setPairId(item.id)
+    }
+    void playPreview([item.lateral, item.nasal])
   }
 
   const choose = (sound: TargetSound) => {
-    if (!exam || phase === 'playing' || phase === 'loading' || result) return
+    if (!exam || audioBusyRef.current || result) return
     setAnswers((current) => (current.length >= exam.items.length ? current : [...current, sound]))
   }
 
   const submit = () => {
-    if (!exam || !examIsComplete(exam, answers)) return
+    if (!exam || audioBusyRef.current || !examIsComplete(exam, answers)) return
     const scored = scoreListeningExam(exam, answers)
     setResult(scored)
     setPhase('reviewed')
@@ -194,7 +252,8 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
     )
   }
 
-  const busy = phase === 'playing' || phase === 'loading'
+  const examBusy = phase === 'playing' || phase === 'loading'
+  const busy = examBusy || previewing
   const answered = answers.length
   const total = exam?.items.length ?? length
 
@@ -219,17 +278,16 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
                   aria-pressed={item.id === pair.id}
                   className={`${item.id === pair.id ? 'active' : ''}${lockedIds.has(item.id) ? ' locked' : ''}`}
                   disabled={busy || lockedIds.has(item.id)}
-                  title={lockedIds.has(item.id) ? copy.unlock.lockedPair : undefined}
-                  onClick={() => {
-                    setPairId(item.id)
-                    reset()
-                  }}
+                  title={lockedIds.has(item.id) ? copy.unlock.lockedPair : formatCopy(copy.listen.hearPair, { left: item.lateral.word, right: item.nasal.word })}
+                  onClick={() => selectPair(item)}
                 >
                   {lockedIds.has(item.id) && <Lock size={11} aria-hidden="true" />}
+                  {!lockedIds.has(item.id) && <Volume2 size={12} aria-hidden="true" />}
                   {item.lateral.word.split(' ')[0]} · {item.nasal.word.split(' ')[0]}
                 </button>
               ))}
             </div>
+            <small className="pair-preview-hint">{copy.listen.pairHint}</small>
           </div>
           <div className="exam-field">
             <span>{copy.listen.lengthLabel}</span>
@@ -267,7 +325,12 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
         </div>
 
         <div className="exam-actions">
-          {busy ? (
+          {previewing && (
+            <button type="button" className="exam-preview-stop" data-testid="exam-preview-stop" onClick={stop}>
+              <Square size={16} /> {copy.listen.stopPreview}
+            </button>
+          )}
+          {examBusy ? (
             <button type="button" className="exam-primary" data-testid="exam-stop" onClick={stop}>
               <Square size={18} />
               {phase === 'loading'
@@ -275,15 +338,17 @@ export function ListeningExam({ language, copy, onResult, entitlement = UNGATED,
                 : formatCopy(copy.listen.playing, { index: (playingIndex ?? 0) + 1, total })}
             </button>
           ) : exam && !result ? (
-            <button type="button" className="exam-primary" data-testid="exam-replay" onClick={replay}>
+            <button type="button" className="exam-primary" data-testid="exam-replay" disabled={previewing} onClick={replay}>
               <RotateCcw size={18} /> {copy.listen.replay}
             </button>
           ) : (
-            <button type="button" className="exam-primary" data-testid="exam-play" onClick={startExam}>
+            <button type="button" className="exam-primary" data-testid="exam-play" disabled={previewing} onClick={startExam}>
               <Play size={18} /> {exam ? copy.listen.newExam : copy.listen.play}
             </button>
           )}
         </div>
+
+        {previewing && <p className="preview-status" role="status"><Volume2 size={16} aria-hidden="true" />{copy.listen.previewPlaying}{previewWord && <strong>{previewWord}</strong>}</p>}
 
         {exam && !result && (
           <>

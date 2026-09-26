@@ -176,35 +176,77 @@ export async function beginSpeechRecognition(
   return beginBrowserRecognition(language)
 }
 
-function browserVoice(text: string, language: TrainingLanguage): void {
-  if (!('speechSynthesis' in window)) return
-  window.speechSynthesis.cancel()
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = language
-  utterance.rate = 0.72
-  utterance.pitch = 1
-  const languageStem = language.toLowerCase().split('-')[0]
-  const preferredVoice = window.speechSynthesis
-    .getVoices()
-    .find((voice) => voice.lang.toLowerCase().startsWith(languageStem))
-  if (preferredVoice) utterance.voice = preferredVoice
-  window.speechSynthesis.speak(utterance)
-}
-
 function exampleAudioPath(exercise: Exercise): string {
   const key = exercise.id.split('-').slice(0, 2).join('-')
   return `/audio/models/${key}.mp3?v=3`
 }
 
-export async function speakExample(exercise: Exercise): Promise<void> {
-  const text = exercise.word.split(' ')[0]
-  const audio = new Audio(exampleAudioPath(exercise))
-  audio.preload = 'auto'
-  try {
-    await audio.play()
-  } catch {
-    browserVoice(text, exercise.language)
-  }
+/** Resolves at the end of the whole two-repeat model, not when play() starts. */
+export function speakExample(exercise: Exercise, signal?: AbortSignal): Promise<void> {
+  if (signal?.aborted) return Promise.resolve()
+  return new Promise((resolve, reject) => {
+    const audio = new Audio(exampleAudioPath(exercise))
+    audio.preload = 'auto'
+    let settled = false
+    let fallback = false
+    let utterance: SpeechSynthesisUtterance | null = null
+    const finish = (error?: Error) => {
+      if (settled) return
+      settled = true
+      window.clearTimeout(timeout)
+      audio.removeEventListener('ended', ended)
+      audio.removeEventListener('error', useVoice)
+      audio.pause()
+      signal?.removeEventListener('abort', cancel)
+      if (utterance) { utterance.onend = null; utterance.onerror = null }
+      if (error) reject(error)
+      else resolve()
+    }
+    const ended = () => finish()
+    const cancel = () => {
+      if (utterance) window.speechSynthesis.cancel()
+      finish()
+    }
+    const useVoice = () => {
+      if (settled || fallback) return
+      fallback = true
+      audio.pause()
+      audio.removeEventListener('ended', ended)
+      audio.removeEventListener('error', useVoice)
+      if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+        finish(new Error('Studio audio and speech playback are unavailable'))
+        return
+      }
+      try {
+        const text = exercise.word.split(' ')[0]
+        utterance = new SpeechSynthesisUtterance(`${text}. ${text}.`)
+        utterance.lang = exercise.language
+        utterance.rate = 0.72
+        utterance.pitch = 1
+        const stem = exercise.language.toLowerCase().split('-')[0]
+        const voice = window.speechSynthesis.getVoices().find((item) => item.lang.toLowerCase().startsWith(stem))
+        if (voice) utterance.voice = voice
+        utterance.onend = ended
+        utterance.onerror = () => finish(new Error('Speech playback failed'))
+        window.speechSynthesis.speak(utterance)
+      } catch {
+        finish(new Error('Speech playback failed'))
+      }
+    }
+    // A lost media event or stalled download must not leave the control locked.
+    const timeout = window.setTimeout(() => {
+      finish(new Error('Studio playback timed out'))
+      if (utterance) window.speechSynthesis.cancel()
+    }, 30_000)
+    audio.addEventListener('ended', ended)
+    audio.addEventListener('error', useVoice)
+    signal?.addEventListener('abort', cancel, { once: true })
+    try {
+      void audio.play().then(() => { if (settled || fallback) audio.pause() }, useVoice)
+    } catch {
+      useVoice()
+    }
+  })
 }
 
 interface WhisperResponse {

@@ -1,12 +1,15 @@
 // @vitest-environment jsdom
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Capacitor } from '@capacitor/core'
 import App from './App'
 import { loadAttempts, saveAttempt } from './lib/progress'
 import * as takes from './lib/takes'
 import { AudioCaptureError } from './lib/audio-capture'
 import { extractAcousticFeatures } from './lib/acoustics'
+import * as speech from './lib/speech'
+import { exercises } from './data/curriculum'
+import { listeningPairs } from './lib/listening-exam'
 
 const audioCaptureMocks = vi.hoisted(() => ({
   startAudioCapture: vi.fn(),
@@ -221,12 +224,80 @@ describe('language and sound controls', () => {
     expect(screen.getByTestId('practice-sound-n').getAttribute('aria-pressed')).toBe('true')
   })
 
+  it.each(['en-US', 'zh-CN', 'yue-HK'] as const)('moves between %s words without changing the selected sound', (language) => {
+    render(<App />)
+    fireEvent.click(screen.getByTestId(`practice-language-${language}`))
+    for (const sound of ['L', 'N'] as const) {
+      fireEvent.click(screen.getByTestId(`practice-sound-${sound.toLowerCase()}`))
+      const words = exercises.filter((item) => item.language === language && item.target === sound)
+      const current = document.querySelector('.word-area h2')!.textContent
+      const index = words.findIndex((item) => item.word === current)
+      fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
+      expect(document.querySelector('.word-area h2')!.textContent).toBe(words[(index + 1) % words.length].word)
+      expect(screen.getByTestId(`practice-sound-${sound.toLowerCase()}`).getAttribute('aria-pressed')).toBe('true')
+      fireEvent.click(screen.getByRole('button', { name: 'Previous word' }))
+      expect(document.querySelector('.word-area h2')!.textContent).toBe(current)
+      for (let i = 0; i < words.length; i++) fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
+      expect(document.querySelector('.word-area h2')!.textContent).toBe(current)
+    }
+  })
+
   it('links the Learn view to the static light and night lesson', () => {
     render(<App />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Learn' }))
 
     expect(screen.getByRole('link', { name: 'Open the light/night mini-lesson' }).getAttribute('href')).toBe('/lessons/light-vs-night/')
+  })
+})
+
+describe('practice studio playback', () => {
+  it('ignores repeat taps and prevents recording until the full model ends', async () => {
+    let finish!: () => void
+    const speak = vi.spyOn(speech, 'speakExample').mockImplementation((_exercise, signal) => new Promise<void>((resolve) => {
+      finish = resolve
+      signal?.addEventListener('abort', resolve.bind(null, undefined), { once: true })
+    }))
+    render(<App />)
+    const model = screen.getByTestId('practice-model')
+    fireEvent.click(model)
+    fireEvent.click(model)
+    expect(speak).toHaveBeenCalledOnce()
+    expect(model.getAttribute('aria-busy')).toBe('true')
+    expect(model.hasAttribute('disabled')).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    expect(audioCaptureMocks.startAudioCapture).not.toHaveBeenCalled()
+    await act(async () => finish())
+    expect(model.hasAttribute('disabled')).toBe(false)
+    expect(screen.getByRole('button', { name: 'Start recording' }).hasAttribute('disabled')).toBe(false)
+    fireEvent.click(model)
+    expect(speak).toHaveBeenCalledTimes(2)
+  })
+
+  it.each(['word', 'sound', 'language', 'tab'])('cancels the old model on %s changes', async (change) => {
+    let signal: AbortSignal | undefined
+    vi.spyOn(speech, 'speakExample').mockImplementation((_exercise, current) => {
+      signal = current
+      return new Promise<void>((resolve) => current?.addEventListener('abort', () => resolve(), { once: true }))
+    })
+    render(<App />)
+    fireEvent.click(screen.getByTestId('practice-model'))
+    if (change === 'word') fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
+    if (change === 'sound') fireEvent.click(screen.getByTestId('practice-sound-n'))
+    if (change === 'language') fireEvent.click(screen.getByTestId('practice-language-zh-CN'))
+    if (change === 'tab') fireEvent.click(screen.getByRole('button', { name: 'Listen' }))
+    expect(signal?.aborted).toBe(true)
+    await act(async () => undefined)
+    if (change !== 'tab') expect(screen.getByTestId('practice-model').hasAttribute('disabled')).toBe(false)
+  })
+
+  it('recovers and shows a localized error if model playback fails', async () => {
+    vi.spyOn(speech, 'speakExample').mockRejectedValueOnce(new Error('audio failed'))
+    render(<App />)
+    fireEvent.change(screen.getByTestId('ui-language-picker'), { target: { value: 'zh-Hans' } })
+    fireEvent.click(screen.getByTestId('practice-model'))
+    await screen.findByText('无法播放音频。请检查音量后重试。')
+    expect(screen.getByTestId('practice-model').hasAttribute('disabled')).toBe(false)
   })
 })
 
@@ -403,10 +474,78 @@ describe('listening exam', () => {
     audioMocks.playSequence.mockClear()
     fireEvent.click(screen.getByTestId('exam-hear-l'))
     expect(audioMocks.playSequence.mock.calls[0][0]).toEqual(['en-light-night'])
+    await waitFor(() => expect(screen.getByTestId('exam-hear-n').hasAttribute('disabled')).toBe(false))
     fireEvent.click(screen.getByTestId('exam-hear-n'))
     expect(audioMocks.playSequence.mock.calls[1][0]).toEqual(['en-night-light'])
     expect(screen.getByTestId('exam-hear-l').textContent).toContain('light')
     expect(screen.getByTestId('exam-hear-n').textContent).toContain('night')
+  })
+
+  it.each(['en-US', 'zh-CN', 'yue-HK'] as const)('plays a tapped %s pair L then N without starting an exam', async (language) => {
+    render(<App />)
+    fireEvent.click(screen.getByTestId(`practice-language-${language}`))
+    fireEvent.click(screen.getByRole('button', { name: 'Listen' }))
+    const pair = listeningPairs(language)[1]
+    fireEvent.click(screen.getByTestId(`exam-pair-${pair.id}`))
+    expect(audioMocks.playSequence.mock.calls[0][0]).toEqual([pair.lateral.id, pair.nasal.id])
+    expect(audioMocks.playSequence.mock.calls[0][1]).toMatchObject({ gapMs: 350 })
+    expect(screen.queryByTestId('exam-answers')).toBeNull()
+    await waitFor(() => expect(screen.getByTestId('exam-play').hasAttribute('disabled')).toBe(false))
+    // The already-selected pair can be heard again after completion.
+    fireEvent.click(screen.getByTestId(`exam-pair-${pair.id}`))
+    expect(audioMocks.playSequence).toHaveBeenCalledTimes(2)
+  })
+
+  it('ignores double taps and keeps the exam disabled throughout the pair preview', async () => {
+    let finish!: () => void
+    audioMocks.playSequence.mockImplementationOnce((ids) => Promise.resolve({
+      finished: new Promise<void>((resolve) => { finish = resolve }), stop: vi.fn(), played: ids,
+    }))
+    await openExam()
+    const pair = screen.getByTestId('exam-pair-en-light-night|en-night-light')
+    fireEvent.click(pair)
+    fireEvent.click(pair)
+    fireEvent.click(screen.getByTestId('exam-play'))
+    expect(audioMocks.playSequence).toHaveBeenCalledOnce()
+    await act(async () => undefined)
+    expect(pair.hasAttribute('disabled')).toBe(true)
+    expect(screen.getByTestId('exam-play').hasAttribute('disabled')).toBe(true)
+    await act(async () => finish())
+    expect(pair.hasAttribute('disabled')).toBe(false)
+    expect(screen.getByTestId('exam-play').hasAttribute('disabled')).toBe(false)
+  })
+
+  it('does not erase answers when rehearing the selected pair', async () => {
+    fireEvent.click(await openExam())
+    await screen.findByTestId('exam-replay')
+    fireEvent.click(screen.getByTestId('exam-choose-l'))
+    const before = screen.getByTestId('exam-answers').textContent
+    fireEvent.click(screen.getByTestId('exam-pair-en-light-night|en-night-light'))
+    await waitFor(() => expect(screen.getByTestId('exam-replay').hasAttribute('disabled')).toBe(false))
+    expect(screen.getByTestId('exam-answers').textContent).toBe(before)
+  })
+
+  it('stops a pending preview after leaving the tab and ignores its late failure', async () => {
+    let ready!: (value: Awaited<ReturnType<typeof audioMocks.playSequence>>) => void
+    audioMocks.playSequence.mockImplementationOnce(() => new Promise((resolve) => { ready = resolve }))
+    await openExam()
+    fireEvent.click(screen.getByTestId('exam-pair-en-light-night|en-night-light'))
+    fireEvent.click(screen.getByRole('button', { name: 'Practice' }))
+    const stop = vi.fn()
+    await act(async () => ready({ finished: Promise.resolve(), stop, played: [] }))
+    expect(stop).toHaveBeenCalledOnce()
+    expect(screen.queryByText(/could not be played/)).toBeNull()
+  })
+
+  it('recovers from a preview error and allows another tap', async () => {
+    audioMocks.playSequence.mockRejectedValueOnce(new Error('preview failed'))
+    await openExam()
+    const pair = screen.getByTestId('exam-pair-en-light-night|en-night-light')
+    fireEvent.click(pair)
+    await screen.findByText('The audio could not be played. Check the volume, then try again.')
+    expect(pair.hasAttribute('disabled')).toBe(false)
+    fireEvent.click(pair)
+    await waitFor(() => expect(screen.queryByText('The audio could not be played. Check the volume, then try again.')).toBeNull())
   })
 
   it('scores the submitted answers against what was played', async () => {
@@ -456,12 +595,12 @@ describe('Android full-curriculum unlock', () => {
 
     const card = await screen.findByTestId('unlock-card')
     expect(card.textContent).toContain('US$0.99')
-    // Six free exercises: cycling forward six times returns to the first word.
+    // Three free pairs: arrows stay on L and cycle back after three words.
     const word = () => document.querySelector('.word-area h2')?.textContent
     const first = word()
     fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
     expect(word()).not.toBe(first)
-    for (let step = 1; step < 6; step += 1) fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
+    for (let step = 1; step < 3; step += 1) fireEvent.click(screen.getByRole('button', { name: 'Next word' }))
     expect(word()).toBe(first)
 
     fireEvent.click(screen.getByRole('button', { name: 'Listen' }))

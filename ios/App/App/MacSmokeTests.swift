@@ -51,6 +51,19 @@ final class MacSmokeTests {
             _ = try await js("var picker=document.querySelector('[data-testid=ui-language-picker]');picker.value='en';picker.dispatchEvent(new Event('change',{bubbles:true}))")
             try await click("[data-testid=practice-language-en-US]")
             try await click("[data-testid=practice-sound-l]")
+            try await click(".drill-topline > button:last-child")
+            try await wait("document.querySelector('.word-area h2').textContent === 'low' && document.querySelector('[data-testid=practice-sound-l]').getAttribute('aria-pressed') === 'true'")
+            try await click(".drill-topline > button:first-child")
+            try await wait("document.querySelector('.word-area h2').textContent === 'light'")
+            check("practice arrows advance words while keeping L selected")
+            if CommandLine.arguments.contains("--landn-playback-test") {
+                try await click("[data-testid=practice-model]")
+                try await wait("document.querySelector('[data-testid=practice-model]').disabled && document.querySelector('.record-button').disabled")
+                _ = try await js("document.querySelector('[data-testid=practice-model]').click()")
+                try await wait("!document.querySelector('[data-testid=practice-model]').disabled", timeout: 35)
+                try await wait("!document.querySelector('.error-message')")
+                check("full native studio model finishes and repeat taps do not restart it")
+            }
             try await screenshot("01-practice")
             try await click("[data-testid=practice-sound-n]")
             try await wait("document.querySelector('[data-testid=practice-sound-n]').getAttribute('aria-pressed') === 'true'")
@@ -68,6 +81,13 @@ final class MacSmokeTests {
             check("UI language independent from practice language")
             try await click(".bottom-nav button:nth-child(2)")
             try await wait("document.querySelector('.listen-shell')")
+            if CommandLine.arguments.contains("--landn-playback-test") {
+                try await click("[data-testid^=exam-pair-]")
+                try await wait("document.querySelector('[data-testid=exam-preview-stop]') && document.querySelector('[data-testid=exam-play]').disabled && !document.querySelector('[data-testid=exam-answers]')")
+                try await wait("!document.querySelector('[data-testid=exam-preview-stop]')", timeout: 35)
+                try await wait("!document.querySelector('.error-message') && !document.querySelector('[data-testid=exam-play]').disabled")
+                check("native listening pair plays both words without starting an exam")
+            }
             try await screenshot("02-listen")
             check("listening lessons render")
             try await click(".bottom-nav button:nth-child(3)")

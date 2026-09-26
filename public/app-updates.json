@@ -3,6 +3,6 @@
   "verifiedAt": "2026-09-26",
   "platforms": {
     "ios": { "appId": "art.lazying.landn", "version": "1.0.6", "status": "public" },
-    "android": { "appId": "art.lazying.landn", "version": "1.0.9", "status": "public" }
+    "android": { "appId": "art.lazying.landn", "version": "1.0.10", "status": "public" }
   }
 }

@@ -67,6 +67,7 @@ button:disabled { cursor: not-allowed; }
 .sound-spelling small { margin-left: 9px; color: #8a96a6; font-size: 8px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
 .sound-spelling.chinese > span:first-child { margin: 0 8px 0 3px; color: var(--navy); font-size: 16px; }
 .listen-button { margin: auto; border: 0; color: var(--teal); background: var(--teal-soft); border-radius: 999px; padding: 10px 15px; display: flex; gap: 8px; align-items: center; font-weight: 800; cursor: pointer; }
+.listen-button[aria-busy="true"] { opacity: 1; cursor: wait; }
 .contrast-row { background: #f5f3ee; border-radius: 18px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
 .contrast-row div { display: flex; flex-direction: column; gap: 2px; min-width: 88px; }
 .contrast-row div:last-child { text-align: right; }
@@ -267,6 +268,10 @@ button:disabled { cursor: not-allowed; }
 .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip-row button { border: 1px solid var(--line); background: white; color: var(--muted); border-radius: 12px; padding: 8px 11px; font-size: 12px; font-weight: 750; cursor: pointer; }
 .chip-row button.active { background: var(--navy); border-color: var(--navy); color: white; }
+.chip-row button { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; }
+.pair-preview-hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.preview-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--teal); font-size: 13px; }
+.exam-preview-stop { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--teal-soft); color: var(--navy); cursor: pointer; }
 .chip-row button:disabled { opacity: .5; cursor: default; }
 .exam-dots { display: flex; gap: 6px; justify-content: center; margin: 18px 0 14px; min-height: 12px; }
 .exam-dots i { width: 11px; height: 11px; border-radius: 50%; background: rgba(16,35,61,.12); transition: transform .15s ease, background .15s ease; }
@@ -274,7 +279,7 @@ button:disabled { cursor: not-allowed; }
 .exam-dots i.playing { background: var(--coral); transform: scale(1.45); }
 .exam-dots i.right { background: var(--teal); }
 .exam-dots i.wrong { background: var(--coral); }
-.exam-actions { display: flex; }
+.exam-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .exam-primary { flex: 1; min-height: 58px; border: 0; border-radius: 18px; background: var(--navy); color: white; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 850; cursor: pointer; box-shadow: 0 12px 25px rgba(8,31,77,.18); }
 .exam-prompt { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; color: var(--muted); font-size: 12px; margin: 18px 0 8px; }
 .exam-prompt b { color: var(--navy); font-variant-numeric: tabular-nums; }

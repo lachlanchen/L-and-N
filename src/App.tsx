@@ -64,6 +64,8 @@ function App() {
   const [analyser, setAnalyser] = useState<AnalyserNode | null>(null)
   const [liveSignal, setLiveSignal] = useState<LiveSignal | null>(null)
   const [error, setError] = useState('')
+  const [studioPlaying, setStudioPlaying] = useState(false)
+  const studioRef = useRef<AbortController | null>(null)
   const androidApp = isAndroidApp()
   const [onlineRecognition, setOnlineRecognition] = useState(hasAndroidSpeechConsent)
   const [attempts, setAttempts] = useState<AttemptRecord[]>([])
@@ -162,16 +164,68 @@ function App() {
     setCapturePhase(phase)
   }
 
+  const stopStudioPlayback = useCallback(() => {
+    studioRef.current?.abort()
+    studioRef.current = null
+    setStudioPlaying(false)
+  }, [])
+
+  const stopTakePlayback = useCallback(() => {
+    takeOperationRef.current += 1
+    takePlaybackRef.current?.stop()
+    takePlaybackRef.current = null
+    setPlayingTakeId(null)
+  }, [])
+
+  useEffect(() => {
+    const onHidden = () => { if (document.visibilityState === 'hidden') stopStudioPlayback() }
+    document.addEventListener('visibilitychange', onHidden)
+    window.addEventListener('pagehide', stopStudioPlayback)
+    return () => {
+      document.removeEventListener('visibilitychange', onHidden)
+      window.removeEventListener('pagehide', stopStudioPlayback)
+      studioRef.current?.abort()
+      studioRef.current = null
+    }
+  }, [stopStudioPlayback])
+
+  const playStudio = async () => {
+    // Ref guards even two taps delivered before React updates the button.
+    if (studioRef.current || capturePhaseRef.current !== 'idle') return
+    stopTakePlayback()
+    const controller = new AbortController()
+    studioRef.current = controller
+    setStudioPlaying(true)
+    setError('')
+    try {
+      await speakExample(exercise, controller.signal)
+    } catch {
+      if (studioRef.current === controller) setError(copy.listen.audioError)
+    } finally {
+      if (studioRef.current === controller) {
+        studioRef.current = null
+        setStudioPlaying(false)
+      }
+    }
+  }
+
   const moveExercise = (direction: number) => {
-    setExerciseIndex((current) =>
-      (current + direction + languageExercises.length) % languageExercises.length,
-    )
+    stopStudioPlayback()
+    stopTakePlayback()
+    setExerciseIndex((current) => {
+      const index = current % languageExercises.length
+      const target = languageExercises[index].target
+      const indices = languageExercises.flatMap((item, at) => item.target === target ? [at] : [])
+      return indices[(indices.indexOf(index) + direction + indices.length) % indices.length]
+    })
     setScore(null)
     setLastFeatures(null)
     setError('')
   }
 
   const selectLanguage = (code: TrainingLanguage) => {
+    stopStudioPlayback()
+    stopTakePlayback()
     setLanguage(code)
     setExerciseIndex(0)
     setScore(null)
@@ -181,6 +235,8 @@ function App() {
 
   const selectTargetSound = (target: TargetSound) => {
     if (exercise.target === target) return
+    stopStudioPlayback()
+    stopTakePlayback()
     const pairedWord = exercise.pair.split(' ')[0]
     const pairedIndex = languageExercises.findIndex(
       (item) => item.target === target && item.word.split(' ')[0] === pairedWord,
@@ -191,13 +247,6 @@ function App() {
     setLastFeatures(null)
     setError('')
   }
-
-  const stopTakePlayback = useCallback(() => {
-    takeOperationRef.current += 1
-    takePlaybackRef.current?.stop()
-    takePlaybackRef.current = null
-    setPlayingTakeId(null)
-  }, [])
 
   useEffect(() => {
     const onVisibility = () => { if (document.visibilityState === 'hidden') stopTakePlayback() }
@@ -211,6 +260,7 @@ function App() {
   }, [stopTakePlayback])
 
   const selectTab = (next: Tab) => {
+    stopStudioPlayback()
     stopTakePlayback()
     setPlaybackError(null)
     setTab(next)
@@ -218,6 +268,7 @@ function App() {
 
   /** Plays a kept take, optionally after the studio model of its word. */
   const playTake = useCallback(async (takeId: string, withModel: boolean) => {
+    stopStudioPlayback()
     if (playingTakeId === takeId) {
       stopTakePlayback()
       return
@@ -256,7 +307,7 @@ function App() {
         setPlayingTakeId(null)
       }
     }
-  }, [playingTakeId, stopTakePlayback])
+  }, [playingTakeId, stopTakePlayback, stopStudioPlayback])
 
   const finishRecording = async () => {
     const session = sessionRef.current
@@ -354,7 +405,7 @@ function App() {
   }
 
   const startRecording = async () => {
-    if (capturePhaseRef.current !== 'idle') return
+    if (capturePhaseRef.current !== 'idle' || studioRef.current) return
     if (androidApp && !onlineRecognition) return
     const operationId = operationRef.current + 1
     stopTakePlayback()
@@ -447,7 +498,7 @@ function App() {
   const renderPractice = () => (
     <main className="practice-page">
       {languageSwitcher}
-      <AppStorePrompt copy={copy} busy={captureBusy} />
+      <AppStorePrompt copy={copy} busy={captureBusy || studioPlaying} />
 
       <div className="practice-kicker">
         <span className="eyebrow"><Sparkles size={14} /> {copy.practice.session}</span>
@@ -478,8 +529,9 @@ function App() {
           <h2>{exercise.word}</h2>
           <p className="ipa">{exercise.ipa} <span>· {exerciseText.translation}</span></p>
           <SoundSpelling exercise={exercise} copy={copy} />
-          <button className="listen-button" title={copy.practice.studioTitle} disabled={captureBusy} onClick={() => void speakExample(exercise)}>
-            <Volume2 size={19} /> {copy.practice.hearModel}
+          <button className="listen-button" data-testid="practice-model" title={copy.practice.studioTitle}
+            aria-busy={studioPlaying} disabled={captureBusy || studioPlaying} onClick={() => void playStudio()}>
+            <Volume2 size={19} /> {studioPlaying ? copy.practice.playingModel : copy.practice.hearModel}
           </button>
         </div>
 
@@ -511,7 +563,7 @@ function App() {
         <button
           className={`record-button ${recording ? 'recording' : ''}`}
           onClick={toggleRecording}
-          disabled={starting || processing || (androidApp && !onlineRecognition)}
+          disabled={starting || processing || studioPlaying || (androidApp && !onlineRecognition)}
           aria-busy={starting || processing}
           aria-label={recording ? copy.practice.stopAndScore : copy.practice.startRecording}
         >
@@ -612,7 +664,7 @@ function App() {
           <div className="streak" aria-label={`${copy.streak}: ${streak}`}><Flame size={16} /> {streak}</div>
         </div>
       </header>
-      <UpdatePrompt copy={copy} busy={captureBusy || Boolean(playingTakeId) || tab === 'listen'} />
+      <UpdatePrompt copy={copy} busy={captureBusy || studioPlaying || Boolean(playingTakeId) || tab === 'listen'} />
       {tab === 'practice' && renderPractice()}
       {tab === 'listen' && renderListen()}
       {tab === 'learn' && renderLearn()}

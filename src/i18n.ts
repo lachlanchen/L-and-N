@@ -46,6 +46,7 @@ export interface UICopy {
     measuredOnset: string
     onsetToneSeparate: string
     hearModel: string
+    playingModel: string
     studioTitle: string
     letterMeasured: string
     onsetMeasured: string
@@ -74,6 +75,10 @@ export interface UICopy {
     title: string
     hint: string
     pairLabel: string
+    pairHint: string
+    hearPair: string
+    previewPlaying: string
+    stopPreview: string
     lengthLabel: string
     play: string
     loading: string
@@ -223,6 +228,7 @@ const copies: Record<UILanguage, UICopy> = {
       measuredOnset: 'measured onset',
       onsetToneSeparate: 'onset · tone separate',
       hearModel: 'Hear studio model',
+      playingModel: 'Playing model…',
       studioTitle: 'Verified offline studio example',
       letterMeasured: 'The first letter {value} is the measured sound',
       onsetMeasured: 'The {value} onset in the romanization is measured',
@@ -251,6 +257,10 @@ const copies: Record<UILanguage, UICopy> = {
       title: 'Hear the difference',
       hint: 'Play the sequence, then tap the word you heard at each position and submit.',
       pairLabel: 'Word pair',
+      pairHint: 'Tap a pair to hear both words, one after the other.',
+      hearPair: 'Hear {left}, then {right}',
+      previewPlaying: 'Playing example…',
+      stopPreview: 'Stop example',
       lengthLabel: 'Words',
       play: 'Play sequence',
       loading: 'Loading audio…',
@@ -383,13 +393,14 @@ const copies: Record<UILanguage, UICopy> = {
     practice: {
       session: '4 分钟辨音练习', sessionHint: '听 · 感受 · 录音', previousWord: '上一个词', nextWord: '下一个词', soundPicker: '选择要练习的音',
       target: '目标', measuredOnset: '分析词首音', onsetToneSeparate: '词首音 · 声调分开评分', hearModel: '听标准示范', say: '请说', not: '不要说成',
-      studioTitle: '已验证的离线标准示范', letterMeasured: '分析首字母 {value} 的发音', onsetMeasured: '分析拼音中的 {value} 词首音',
+      playingModel: '正在播放示范…', studioTitle: '已验证的离线标准示范', letterMeasured: '分析首字母 {value} 的发音', onsetMeasured: '分析拼音中的 {value} 词首音',
       listening: '正在聆听', preparing: '正在准备麦克风…', analysing: '分析中…', stopAndScore: '停止录音并评分', startRecording: '开始录音', tapToScore: '点按并评分', tapThenSay: '点按后说出词语',
       scoreHow: '评分方法', scoreHowBody: '综合辨词、最小对立词、鼻音/边音声学线索和发声稳定性。只有成功辨词后才会显示分数；浏览器无法辨词或没有返回结果时，可能使用 L & N 的私有 Whisper 服务，转写后即丢弃录音。',
     },
     signal: { aria: '实时波形与词首频谱', listeningLive: '实时聆听', lastSound: '上次录音', soundLens: '声音镜头', onsetSpectrum: '词首 · 频谱', note: '阴影区域是提取 L/N 线索的位置。波形高度表示信号强弱，不表示发音正确度。' },
     listen: {
       eyebrow: '听辨训练', title: '听出区别', hint: '先播放整段，然后按顺序点选每个位置听到的词，最后提交。',
+      pairHint: '点按一组词，依次听两个词的发音。', hearPair: '先听 {left}，再听 {right}', previewPlaying: '正在播放示范…', stopPreview: '停止示范',
       pairLabel: '对立词', lengthLabel: '词数', play: '播放序列', loading: '正在加载音频…', playing: '正在播放第 {index} / {total} 个',
       replay: '再播一次', newExam: '换一组', chooseHeard: '按顺序点选你听到的词。', answerProgress: '已选 {done} / {total}',
       undo: '撤销', clear: '清空', submit: '提交答案', resultTitle: '听辨结果', correctCount: '答对 {correct} / {total}',
@@ -468,13 +479,14 @@ const copies: Record<UILanguage, UICopy> = {
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄音', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '選擇要練習的音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開評分', hearModel: '聽標準示範', say: '請說', not: '不要說成',
-      studioTitle: '已驗證的離線標準示範', letterMeasured: '分析首字母 {value} 的發音', onsetMeasured: '分析羅馬字中的 {value} 詞首音',
+      playingModel: '正在播放示範…', studioTitle: '已驗證的離線標準示範', letterMeasured: '分析首字母 {value} 的發音', onsetMeasured: '分析羅馬字中的 {value} 詞首音',
       listening: '正在聆聽', preparing: '正在準備咪高峰…', analysing: '分析中…', stopAndScore: '停止錄音並評分', startRecording: '開始錄音', tapToScore: '點按並評分', tapThenSay: '點按後說出詞語',
       scoreHow: '評分方法', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索和發聲穩定性。只有成功辨詞後才會顯示分數；瀏覽器無法辨詞或沒有回傳結果時，可能使用 L & N 的私有 Whisper 服務，轉寫後即棄置錄音。',
     },
     signal: { aria: '即時波形與詞首頻譜', listeningLive: '即時聆聽', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影區域是提取 L/N 線索的位置。波形高度代表訊號強弱，不代表發音正確度。' },
     listen: {
       eyebrow: '聽辨訓練', title: '聽出分別', hint: '先播放整段，然後按順序點選每個位置聽到的詞，最後提交。',
+      pairHint: '點按一組詞，依次聽兩個詞的發音。', hearPair: '先聽 {left}，再聽 {right}', previewPlaying: '正在播放示範…', stopPreview: '停止示範',
       pairLabel: '對立詞', lengthLabel: '詞數', play: '播放序列', loading: '正在載入音訊…', playing: '正在播放第 {index} / {total} 個',
       replay: '再播一次', newExam: '換一組', chooseHeard: '按順序點選你聽到的詞。', answerProgress: '已選 {done} / {total}',
       undo: '復原', clear: '清空', submit: '提交答案', resultTitle: '聽辨結果', correctCount: '答對 {correct} / {total}',
@@ -553,13 +565,14 @@ const copies: Record<UILanguage, UICopy> = {
     practice: {
       session: '4 分鐘辨音練習', sessionHint: '聽 · 感受 · 錄低', previousWord: '上一個詞', nextWord: '下一個詞', soundPicker: '揀想練嘅音',
       target: '目標', measuredOnset: '分析詞首音', onsetToneSeparate: '詞首音 · 聲調分開計', hearModel: '聽標準示範', say: '講', not: '唔好講成',
-      studioTitle: '驗證過嘅離線標準示範', letterMeasured: '分析第一個字母 {value} 嘅發音', onsetMeasured: '分析羅馬字入面嘅 {value} 詞首音',
+      playingModel: '播緊示範…', studioTitle: '驗證過嘅離線標準示範', letterMeasured: '分析第一個字母 {value} 嘅發音', onsetMeasured: '分析羅馬字入面嘅 {value} 詞首音',
       listening: '聽緊', preparing: '準備緊咪高峰…', analysing: '分析緊…', stopAndScore: '停低錄音並評分', startRecording: '開始錄音', tapToScore: '撳一下評分', tapThenSay: '撳一下，再講個詞',
       scoreHow: '點樣評分', scoreHowBody: '綜合辨詞、最小對立詞、鼻音／邊音聲學線索同發聲穩定性。成功辨到詞先會顯示分數；瀏覽器辨唔到或者冇結果時，可能會用 L & N 私有 Whisper 服務，轉寫完就丟棄錄音。',
     },
     signal: { aria: '即時波形同詞首頻譜', listeningLive: '即時聽緊', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影位置係提取 L/N 線索嘅範圍。波形高度只代表訊號強弱，唔代表啱唔啱。' },
     listen: {
       eyebrow: '聽辨練習', title: '聽出分別', hint: '先播成段，然後順住次序撳返你聽到嘅詞，最後交答案。',
+      pairHint: '撳一組詞，就會逐個播畀你聽。', hearPair: '先聽 {left}，再聽 {right}', previewPlaying: '播緊示範…', stopPreview: '停止示範',
       pairLabel: '對立詞', lengthLabel: '詞數', play: '播放成段', loading: '載入緊音訊…', playing: '播緊第 {index} / {total} 個',
       replay: '再播一次', newExam: '換一組', chooseHeard: '順住次序撳你聽到嘅詞。', answerProgress: '已揀 {done} / {total}',
       undo: '復原', clear: '清空', submit: '交答案', resultTitle: '聽辨結果', correctCount: '啱咗 {correct} / {total}',

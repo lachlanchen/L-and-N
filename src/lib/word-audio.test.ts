@@ -224,4 +224,20 @@ describe('studio clip playback', () => {
   it('refuses a word with no studio recording', async () => {
     await expect(playSequence(['en-missing-word'])).rejects.toBeInstanceOf(WordAudioError)
   })
+
+  it('settles cancelled fallback playback and never plays the second word', async () => {
+    vi.stubGlobal('AudioContext', undefined)
+    const heard: Array<number | null> = []
+    const pending = playSequence([light, night], { onItem: (index) => heard.push(index) })
+    await vi.advanceTimersByTimeAsync(20)
+    const playback = await pending
+    const media = FakeAudio.instances[0]
+    playback.stop()
+    await expect(playback.finished).resolves.toBeUndefined()
+    const count = media.plays.length
+    await vi.advanceTimersByTimeAsync(6000)
+    expect(media.plays).toHaveLength(count)
+    expect(media.paused).toBe(true)
+    expect(heard).toEqual([0, null])
+  })
 })
