@@ -2,4 +2,6 @@ Tap a listening word pair to hear its two words back to back. Practice arrows no
 
 The studio model ignores repeat taps until both pronunciations finish. Changing words or tabs stops the old example, and playback errors recover cleanly.
 
+Corrects playback of bundled listening clips on Apple devices.
+
 Also includes progressive recording history and optional update reminders. Update in place to keep device-local recordings; previously deleted recordings cannot be recovered. Includes the watchOS companion.

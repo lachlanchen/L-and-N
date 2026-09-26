@@ -1,7 +1,7 @@
 app:
   name: L & N
-  version: 1.0.9
-  build: 18
+  version: 1.0.11
+  build: 21
   owner: LazyingArt LLC
   support_email: echomind@lazying.art
   marketing_url: https://l-and-n.lazying.art
@@ -32,24 +32,24 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: history-559bff7202840821245cf322a676d591a018a29582cf0e233ff530a626a7c8e7
+    release: playback-67039936d2b6db615ba2a05a9afedfef2c5b98f100433bfd2efc36416c6d8e1f
     support_patch_source: cf985732ac165fc192a6dba6a43ecc95ff82dcf1
     support_patch_note: earlier September 24 privacy, test APK, and speech gateway patch; backend unchanged by subsequent web releases
-    source_commit: 32a2c88345d83ccaa7034522b1d8cb62bc7d548f
-    main_asset: assets/index-XQERvNpo.js
-    rollback: store-prompt-7ad308ad61e8a7448eb823d536a2a14103cb5d4fb7250f7cb48ff483da5dc756
-    artifact_manifest: store/artifacts/pwa-recording-history-release.json
+    source_commit: 911b0b40f29e07a585c315c7102765782db2c5cd
+    main_asset: assets/index-ByYNNO63.js
+    rollback: playback-1c215954fc68184c7b649f0a8d77b27330be91c2be15dfe839440c45ab5c6cc4
+    artifact_manifest: store/artifacts/pwa-playback-controls-release.json
   android:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/freeRelease/app-free-release.aab
-    status: production_build_17_live; production_build_18_1_0_9_in_review_2026_09_24_initial_checks_finished; internal_build_18_available
+    status: production_1_0_10_build20_published; internal_1_0_11_build21_available; production_build21_in_review_2026_09_26_quick_checks_complete
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0
-    artifact: /Users/lachlanchen/Projects/L-And-N/release/export-1.0.0-2/App.ipa
+    artifact: /Users/lachlanchen/Projects/L-And-N/release/ios-1.0.8-18/export/App.ipa
     app_store_id: 6808872450
-    status: 1_0_1_build_3_live_ready_for_sale_2026_09_19; 1_0_2_build_7_live_ready_for_sale; 1_0_3_build_8_live_ready_for_sale_2026_09_21; 1_0_4_build_9_live_ready_for_sale_2026_09_21; 1_0_5_build_10_invalid_binary_version_mismatch; 1_0_5_build_11_resubmitted_2026_09_22; build_10_in_internal_testflight_public_beta_review_submitted_2026_09_21; all_175_territories_enabled_dsa_active
+    status: public_1_0_6_build16; 1_0_8_build18_waiting_for_review_2026_09_26; previous_1_0_7_review_replaced_with_user_approval
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
@@ -58,21 +58,21 @@ platforms:
 
 testing:
   android:
-    version: 1.0.9
-    build: 18
+    version: 1.0.11
+    build: 21
     track: internal
     status: available_to_internal_testers
     url: https://play.google.com/apps/internaltest/4701251861700553150
-    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.9-build18-test.apk
-    direct_apk_sha256: 2f643105907f0cb621c9522bcf96d6b7189e794d54241782d93d665f35979582
-    artifact_manifest: store/artifacts/android-release-1.0.9.json
+    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.11-build21-test.apk
+    direct_apk_sha256: 0c01334d03a6006bd0a94c5f0e03ceb6e3697d495468026a0bdbb6c41d01c8a8
+    artifact_manifest: store/artifacts/native-playback-controls-release.json
   ios_watchos:
-    version: 1.0.5
-    build: 11
+    version: 1.0.8
+    build: 18
     internal_group: L & N Internal Testers
     internal_status: testing
     public_group: L & N Public Beta
-    public_status: testing
+    public_status: waiting_for_beta_review
     public_url: https://testflight.apple.com/join/CpkT8m9C
     public_tester_limit: 100
     automatic_tester_notification: true

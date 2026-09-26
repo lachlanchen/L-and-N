@@ -1,0 +1,63 @@
+{
+  "observedAt": "2026-09-26",
+  "appId": "art.lazying.landn",
+  "features": [
+    "Tap a listening pair to preview L then N; no exam or score is created",
+    "Replaying the selected pair preserves existing answers",
+    "Practice arrows advance words while retaining the selected L/N sound",
+    "The studio model ignores repeat taps until both pronunciations finish",
+    "Changing words/tabs and hiding the app cancel model playback",
+    "Retains progressive recording history and optional update reminders"
+  ],
+  "android": {
+    "version": "1.0.11",
+    "build": 21,
+    "sourceCommit": "df3d80fc674c90d4a2f5c79f8cd494aac8dee0dc",
+    "aabSha256": "bfa330cb58fe3de79b7fdeea9c23c65c1dbf18c5e566124ace748f942c753734",
+    "apkSha256": "0c01334d03a6006bd0a94c5f0e03ceb6e3697d495468026a0bdbb6c41d01c8a8",
+    "internal": "AVAILABLE_TO_INTERNAL_TESTERS",
+    "production": "IN_REVIEW",
+    "preReviewChecks": "COMPLETE",
+    "previousProduction": "1.0.10 build20 published",
+    "scope": "Same tested AAB promoted to production, existing countries, full rollout after approval; main app only",
+    "testUrl": "https://play.google.com/apps/internaltest/4701251861700553150",
+    "apkUrl": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.11-build21-test.apk",
+    "qualification": "Release unit tests/lint and existing upload signature pass; signed in-place upgrade on API34; direct low navigation, model busy/completion and pair light/night/completion verified",
+    "signingCaveat": "Play installations must update through Play to retain data; direct APK uses the upload signing key. Do not uninstall to sideload."
+  },
+  "apple": {
+    "version": "1.0.8",
+    "build": 18,
+    "platforms": ["iOS", "embedded watchOS"],
+    "sourceCommit": "911b0b40f29e07a585c315c7102765782db2c5cd",
+    "ipaSha256": "3941e0d5011e397935294c0640a997d4a0838820629fc38e9e47d255afbd3f39",
+    "processing": "VALID",
+    "internalTestFlight": "IN_BETA_TESTING",
+    "publicTestFlight": "WAITING_FOR_BETA_REVIEW",
+    "automaticTesterNotification": true,
+    "testUrl": "https://testflight.apple.com/join/CpkT8m9C",
+    "appStore": "WAITING_FOR_REVIEW",
+    "releaseType": "MANUAL",
+    "replacedSubmission": "Previous iOS1.0.7(17) review withdrawn with explicit user approval, then replaced with the tested build18; Mac review unchanged",
+    "localAudioFix": "Accept nonempty, non-opaque status-zero bundled media only from capacitor://localhost. Capacitor's Apple handler uses URLResponse for media; the earlier player incorrectly rejected it. Ordinary failed web responses remain rejected.",
+    "qualification": "Final corrected archive/export, deep strict signing, matching iOS/watchOS versions, Apple validation and one upload succeeded. Twelve iOS26.5 simulator checks pass, including real model/pair playback, independent languages, history and repeat unavailable-microphone recovery.",
+    "unsubmittedCandidate": "The first build18 archive failed native pair-playback QA and was not uploaded. Only the corrected IPA hash above was uploaded.",
+    "listing": "Seven iPhone, seven iPad and one Watch images verified complete; release/reviewer notes updated; other store settings unchanged",
+    "preservedMac": "Mac1.0.0(1) remains IN_REVIEW with its original selected binary"
+  },
+  "verification": {
+    "sharedTests": "200 tests in 23 files, lint, TypeScript and production build pass",
+    "publicWeb": "Actual audio completion, pair order, cancellation, rapid taps and four UI locales at320px verified on the deployed site",
+    "workflowContract": "47 shell-script publication contract checks passed; scoped release helpers syntax checked",
+    "preserved": "Scoring, microphone permissions, saved data, purchase entitlements, Pro package, account/price settings and submitted Mac binary unchanged",
+    "cleanup": "Owned Android/iOS simulators, preview server, temporary browser contexts and provider tab stopped/closed after evidence capture; shared browser and other projects preserved"
+  },
+  "limitations": [
+    "Formal submission is not approval or public rollout",
+    "The public TestFlight link may offer an earlier approved build until build18 beta approval",
+    "Automatic tester notification is not proof of email delivery",
+    "No new physical Honor/iPhone/Watch microphone accuracy or purchase test",
+    "Previously deleted recordings cannot be recovered; update without uninstalling",
+    "The public update manifest advertises iOS1.0.6 and Android1.0.10, not pending-review candidates"
+  ]
+}

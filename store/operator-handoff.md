@@ -4,7 +4,29 @@ Updated: 2026-09-26
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
 
-## Latest test/review release — September 26
+## Latest playback update — September 26
+
+The PWA playback update is deployed and verified. Listening pair taps play L
+then N; Practice arrows retain the selected sound; the studio control stays
+busy through both pronunciations. Native iOS checks also found and fixed the
+Apple local-media status-zero handling. All 200 tests pass, plus real public
+browser playback, signed Android upgrade checks and 12 iOS simulator checks.
+
+Android **1.0.11 (21)** is available internally and **In Review** for production;
+automatic checks finished. Previous Android 1.0.10 is published. iOS/watchOS
+**1.0.8 (18)** is in internal TestFlight, awaits public beta review, and is
+**Waiting for Review** in the App Store. It replaces the previous pending iOS
+submission with the user's approval; manual release is preserved. Mac
+**1.0.0 (1)** remains untouched. Submission is not approval.
+
+See [native release evidence](artifacts/native-playback-controls-release.json),
+[web release evidence](artifacts/pwa-playback-controls-release.json), and
+[playback behavior](../docs/playback-controls.md). Exact native receipts and
+owned-runtime cleanup are private in `.runtime/playback-controls-20260926/`.
+Use Play testing to upgrade a Play installation; do not uninstall to sideload.
+No new physical-phone microphone accuracy or purchase test is claimed.
+
+## Earlier history/update-reminder release — September 26
 
 Android **1.0.10 (20)** is available to internal testers. The same candidate was
 sent for production review; automatic checks passed and Console confirms **In Review**.

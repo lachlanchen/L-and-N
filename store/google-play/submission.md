@@ -1,6 +1,20 @@
 # Google Play submission
 
-## September 26 — 1.0.10 / 20
+## September 26 — 1.0.11 / 21, latest
+
+Main app **available to internal testers**, exact tested AAB promoted to
+production and **In Review** with automatic checks complete. Existing countries
+and rollout policy retained; Pro and commercial settings unchanged. Adds
+pair-tap previews, direct same-sound navigation and guarded two-repeat models.
+Signed in-place release upgrade and actual playback UI verified on API 34.
+See [artifact and QA evidence](../artifacts/native-playback-controls-release.json).
+
+Use [Play internal testing](https://play.google.com/apps/internaltest/4701251861700553150)
+for existing Play installations. The [direct APK](https://l-and-n.lazying.art/downloads/L-and-N-1.0.11-build21-test.apk)
+uses the upload signing identity; do not uninstall to sideload or lose recordings.
+Previous 1.0.10 (20) was verified published before this submission.
+
+## Earlier September 26 — 1.0.10 / 20, subsequently published
 
 Main app **available to internal testers**. The exact tested AAB was promoted
 to production and sent for review, with existing countries and full rollout

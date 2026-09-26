@@ -1,0 +1,41 @@
+{
+  "verifiedAt": "2026-09-26",
+  "status": "deployed-and-verified",
+  "url": "https://l-and-n.lazying.art/",
+  "sourceCommit": "911b0b40f29e07a585c315c7102765782db2c5cd",
+  "releaseTarSha256": "67039936d2b6db615ba2a05a9afedfef2c5b98f100433bfd2efc36416c6d8e1f",
+  "distManifestSha256": "532a86720b9f75167769949bc55725137141e2e74dd4332481f413ebd84be6b8",
+  "webBuildManifestSha256": "a5f0474a46374e234d573d02837bf44204378aa509e565a18c6b61f01f50ba7f",
+  "mainAsset": "assets/index-ByYNNO63.js",
+  "mainAssetSha256": "b7cae6fc2ed2d9cc23bc5cce79a50d033c1a2a40c0a28e265b7e0a17962c1d28",
+  "cssAsset": "assets/index-CJeYmIhd.css",
+  "cssAssetSha256": "3c05335d96550ffe9e9823c74530ab024948fb9c125253f690ce6f1044a1a698",
+  "rollbackRelease": "playback-1c215954fc68184c7b649f0a8d77b27330be91c2be15dfe839440c45ab5c6cc4",
+  "features": [
+    "Tap a listening pair to hear L then N without starting an exam",
+    "Replaying the selected pair preserves existing exam answers",
+    "Practice arrows advance through the selected sound; L/N controls switch partners",
+    "Model button ignores repeated taps until the complete two-repeat playback ends",
+    "Recording waits for the model; changing words/tabs or hiding the app stops playback",
+    "Four UI languages remain independent from three practice languages"
+  ],
+  "androidTestDownload": {
+    "version": "1.0.11",
+    "build": 21,
+    "sourceCommit": "df3d80fc674c90d4a2f5c79f8cd494aac8dee0dc",
+    "url": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.11-build21-test.apk",
+    "sha256": "0c01334d03a6006bd0a94c5f0e03ceb6e3697d495468026a0bdbb6c41d01c8a8",
+    "signingCaveat": "Use Play internal testing to upgrade Play-signed installations; do not uninstall to sideload"
+  },
+  "verification": {
+    "automated": "200 tests in 23 files; lint, TypeScript and production build pass",
+    "browser": "Actual model completion, rapid taps, word navigation, pair order, preview stop and four UI locales at 320px pass on the public site in an isolated context",
+    "liveBytes": "Entry, JS, CSS, worker, privacy and update manifest match candidate; complete APK download hash verified",
+    "publicManifest": { "ios": "1.0.6", "android": "1.0.10" },
+    "manifestPolicy": "Advertise publicly released builds only, not internal or pending-review builds",
+    "service": "Gateway process/code and ingress configuration unchanged; health, CORS204, private404, lesson and old entry asset checks pass",
+    "preservation": "Tracked dist-manifest unchanged; previous APKs and lazy assets retained; no learner storage cleared",
+    "cleanup": "Temporary browser contexts disposed and preview server stopped; shared browser preserved",
+    "limits": "No new physical-device microphone accuracy, purchase or reboot test"
+  }
+}

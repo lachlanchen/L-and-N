@@ -1,6 +1,21 @@
 # Apple App Store submission
 
-## September 26 — iOS/watchOS 1.0.7 (17)
+## September 26 — iOS/watchOS 1.0.8 (18), latest
+
+**Waiting for Review**, manual release. Build 18 is **VALID** and
+**IN_BETA_TESTING** internally; public TestFlight is **WAITING_FOR_BETA_REVIEW**.
+The prior pending iOS 1.0.7 submission was replaced with explicit user approval.
+Mac 1.0.0 (1) remains **IN_REVIEW** with its original selected binary.
+
+Adds pair-tap previews, direct same-sound word navigation and uninterrupted
+two-repeat models. Native checks caught and fixed Apple bundled-media status-zero
+handling before upload. All 200 tests and 12 iOS simulator checks pass; archive,
+signing, server validation, embedded Watch versions and screenshots are verified.
+See [artifact and QA evidence](../artifacts/native-playback-controls-release.json).
+The [TestFlight link](https://testflight.apple.com/join/CpkT8m9C) may show an
+earlier approved build until beta approval; email delivery is not verified.
+
+## Earlier September 26 — iOS/watchOS 1.0.7 (17), review replaced
 
 **Waiting for Review**, with manual release. Apple processing is **VALID**;
 internal TestFlight is **IN_BETA_TESTING** and the existing public beta group is

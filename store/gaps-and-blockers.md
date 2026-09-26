@@ -1,8 +1,22 @@
 # Store publication status
 
-Updated: 2026-09-24
+Updated: 2026-09-26
 
-## Current Android follow-up
+## Latest playback update
+
+PWA is deployed. Android 1.0.11 (21) is available internally and in production
+review with quick checks complete. iOS/watchOS 1.0.8 (18) is valid, in internal
+TestFlight, waiting for public beta review and waiting for formal App Store
+review. It replaces the previous pending iOS build with explicit approval;
+the separate Mac 1.0.0 (1) review is unchanged. Store approval is external.
+
+All 200 tests, public-browser playback, signed Android upgrade checks and 12
+iOS simulator checks pass. A native-only bundled audio response bug found by
+the simulator is fixed. Physical Honor/iPhone/Watch microphone validation
+remains separate; no new accuracy claim is made. See
+[release evidence](artifacts/native-playback-controls-release.json).
+
+## Earlier Android follow-up — September 24
 
 - Android 1.0.9/build 18: internal testing available; production update in review,
   with initial quick checks finished. Approval/public rollout remains external.
