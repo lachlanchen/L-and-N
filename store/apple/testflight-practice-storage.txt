@@ -1,0 +1,9 @@
+Practice controls now stay in place while recording, scoring and trying again, with changing feedback below them.
+
+Saved recordings are more resilient, with clearer storage warnings and session replay if permanent saving is unavailable. iOS uses a smaller replay copy when beneficial; original audio still drives waveform analysis and scoring. Earlier recordings are preserved.
+
+In Listen, hold a word pair to repeat it continuously and tap its inline Stop control to finish. Playing indicators no longer move the results.
+
+Please update without uninstalling, then test: repeated recordings; replay from History after closing/reopening; light/night → low/no → light/night; long-press repeat and Stop.
+
+English, Mandarin and Cantonese remain available. No new offline transcription mode is included.

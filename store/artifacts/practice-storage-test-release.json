@@ -1,0 +1,35 @@
+{
+  "sourceCommit": "0c70f453d4485e33509fd413dbd56c285e83467b",
+  "scope": "Web, Android internal testing and iOS/watchOS TestFlight; production and Mac reviews unchanged",
+  "checks": {
+    "webTests": 265,
+    "appleAudioTests": 10,
+    "lintAndBuild": "passed",
+    "browserGeometryStorage": "passed: 4 UI languages, 3 practice languages, 320/390/1024 widths",
+    "androidInstalledRelease": "passed: silent capture recovery, 3-language pair replay, looping and Stop",
+    "iosWebView": "passed: synthetic capture through real scoring/storage UI, database commit and reload/replay, 12 checks",
+    "physicalMicrophoneAccuracy": "not tested"
+  },
+  "android": {
+    "package": "art.lazying.landn",
+    "version": "1.0.12",
+    "build": 22,
+    "aabSha256": "1ea80e62fe4a7107d5570ff6f3478f78a309d9dbf60d03e9357d0dc6b7824b42",
+    "apkSha256": "d270d3707f45fd2caec80fecd92a7228f95195c25e1522519e02d23c0095924e",
+    "internalState": "publish requested; confirmation pending",
+    "testUrl": "https://play.google.com/apps/internaltest/4701251861700553150"
+  },
+  "ios": {
+    "bundleId": "art.lazying.landn",
+    "version": "1.0.9",
+    "build": 20,
+    "embeddedWatchBuild": 20,
+    "ipaSha256": "db0171a2a7c68f9d33c7f6a3492cf5df414bda670f608be38ee81a793ecf708a",
+    "validation": "Apple validation passed",
+    "testflightState": "upload planned",
+    "testUrl": "https://testflight.apple.com/join/CpkT8m9C"
+  },
+  "productionChanged": false,
+  "offlineTranscriptionShipped": false,
+  "existingRecordingsDeleted": false
+}
