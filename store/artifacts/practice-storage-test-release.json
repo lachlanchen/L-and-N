@@ -1,11 +1,13 @@
 {
   "sourceCommit": "0c70f453d4485e33509fd413dbd56c285e83467b",
+  "observedAt": "2026-09-27T16:38:57Z",
   "scope": "Web, Android internal testing and iOS/watchOS TestFlight; production and Mac reviews unchanged",
   "checks": {
     "webTests": 265,
     "appleAudioTests": 10,
     "lintAndBuild": "passed",
     "browserGeometryStorage": "passed: 4 UI languages, 3 practice languages, 320/390/1024 widths",
+    "liveWeb": "passed: deployed bundle, repeated capture/reload/storage checks, real pair playback/loop/Stop and stable result geometry",
     "androidInstalledRelease": "passed: silent capture recovery, 3-language pair replay, looping and Stop",
     "iosWebView": "passed: synthetic capture through real scoring/storage UI, database commit and reload/replay, 12 checks",
     "physicalMicrophoneAccuracy": "not tested"
@@ -16,8 +18,10 @@
     "build": 22,
     "aabSha256": "1ea80e62fe4a7107d5570ff6f3478f78a309d9dbf60d03e9357d0dc6b7824b42",
     "apkSha256": "d270d3707f45fd2caec80fecd92a7228f95195c25e1522519e02d23c0095924e",
-    "internalState": "publish requested; confirmation pending",
-    "testUrl": "https://play.google.com/apps/internaltest/4701251861700553150"
+    "internalState": "Available to internal testers",
+    "productionVersionUnchanged": "1.0.11 (21)",
+    "testUrl": "https://play.google.com/apps/internaltest/4701251861700553150",
+    "apkUrl": "https://l-and-n.lazying.art/downloads/L-and-N-1.0.12-build22-test.apk"
   },
   "ios": {
     "bundleId": "art.lazying.landn",
@@ -26,9 +30,26 @@
     "embeddedWatchBuild": 20,
     "ipaSha256": "db0171a2a7c68f9d33c7f6a3492cf5df414bda670f608be38ee81a793ecf708a",
     "validation": "Apple validation passed",
-    "testflightState": "upload planned",
-    "testUrl": "https://testflight.apple.com/join/CpkT8m9C"
+    "processingState": "VALID",
+    "testflightState": "IN_BETA_TESTING for existing internal testers",
+    "externalBetaState": "WAITING_FOR_BETA_REVIEW",
+    "externalGroupAttached": true,
+    "autoNotifyEnabled": true,
+    "productionVersionUnchanged": "1.0.8 (19)",
+    "testUrl": "https://testflight.apple.com/join/CpkT8m9C",
+    "publicLinkCaveat": "Build 20 requires Apple's external beta approval before public-link testers can install it"
   },
+  "web": {
+    "url": "https://l-and-n.lazying.art",
+    "state": "deployed; public asset, old/new APK and service checks passed",
+    "mainAsset": "assets/index-h-NWMo7U.js",
+    "mainAssetSha256": "19d7437a4f4db2ba4310642147f8694945d41073fdda0ec786d0996326acb6dc",
+    "packageSha256": "977f0d9fa608b7cdf8c3070649bd8b09d6fa57445d6467cd8bcfdc6562e45ec7",
+    "releaseManifestSha256": "9691ff4801fb5f7a18fd3005df8d5ec920774ed74e1066c556e2378e37d3467c",
+    "productionUpdateFeedChanged": false,
+    "cloudServiceChanged": false
+  },
+  "macReviewChanged": false,
   "productionChanged": false,
   "offlineTranscriptionShipped": false,
   "existingRecordingsDeleted": false
