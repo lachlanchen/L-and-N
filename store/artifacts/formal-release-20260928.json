@@ -44,7 +44,10 @@
     "internalAttached": true,
     "originalFormalBuild": 1,
     "formalReplacementSubmitted": false,
-    "replacementAuthorization": "Owner asked to include Mac; explicit queue-replacement choice requested"
+    "replacementAuthorization": "Owner explicitly approved replacing the pending Mac review with the latest tested fixes on September 28",
+    "supersededReviewId": "2b288099-3cef-4322-8966-a6e8192bf4fd",
+    "versionId": "37960509-1987-4792-bf6a-da7c2b271654",
+    "releaseType": "MANUAL"
   },
   "pricingChanged": false,
   "iapChanged": false,
