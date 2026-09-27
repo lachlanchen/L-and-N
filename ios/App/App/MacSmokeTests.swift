@@ -84,7 +84,7 @@ final class MacSmokeTests {
         // Restore the native bridge before reloading; the app must find history
         // and committed audio again with its ordinary production code.
         _ = try await js("Capacitor.nativePromise=window.__originalNativePromise;location.reload();true")
-        try await wait("document.querySelector('[data-testid=app-root]')")
+        try await wait("typeof window.__storageFixture==='undefined' && document.querySelector('[data-testid=app-root]')")
         try await click(".bottom-nav button:nth-child(4)")
         try await wait("document.querySelectorAll('[data-testid=history-play]').length>=3")
         _ = try await js("""

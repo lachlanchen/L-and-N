@@ -19,8 +19,9 @@ limit and must not delete earlier takes to make a new one fit.
   takes. Closing the app loses session-only audio, not successfully stored takes.
 - iOS creates a compact AAC/M4A **replay copy** on a background queue using
   [AVAudioFile](https://developer.apple.com/documentation/avfaudio/avaudiofile).
-  Bitrate adapts to the captured sample rate. Encoding failure falls back to
-  the original PCM WAV. Full-rate PCM remains the input to waveform/features
+  Bitrate adapts to the captured sample rate. Encoding failure, or a compressed
+  container larger than a very short recording, falls back to the original PCM
+  WAV. Full-rate PCM remains the input to waveform/features
   and scoring; system speech recognition continues to receive the original
   microphone stream. Existing recordings are not recompressed.
 - No additional upload, model, account or cloud service is introduced. This is

@@ -341,7 +341,7 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
             ]
             // Compress only the saved replay, off the UI thread. Original PCM
             // remains the source of waveform/features and acoustic scoring.
-            if let replay = try? ReplayAudio.encode(pcm16: data, sampleRate: capturedSampleRate) {
+            if let replay = ReplayAudio.compactCopy(pcm16: data, sampleRate: capturedSampleRate) {
                 result["replayBase64"] = replay.base64EncodedString()
                 result["replayMimeType"] = "audio/mp4"
             }

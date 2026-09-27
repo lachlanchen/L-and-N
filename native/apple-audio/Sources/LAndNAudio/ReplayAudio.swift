@@ -5,6 +5,12 @@ import Foundation
 /// A compact replay copy only. Recognition and scoring still consume the
 /// untouched full-rate PCM. Encoding failure must never lose that recording.
 enum ReplayAudio {
+    static func compactCopy(pcm16: Data, sampleRate: Double) -> Data? {
+        guard let encoded = try? encode(pcm16: pcm16, sampleRate: sampleRate),
+              encoded.count < pcm16.count + 44 else { return nil }
+        return encoded
+    }
+
     static func encode(pcm16: Data, sampleRate: Double) throws -> Data {
         let count = pcm16.count / MemoryLayout<Int16>.size
         guard count > 0, count <= 384_000 * 8, sampleRate.isFinite,

@@ -30,5 +30,13 @@ final class ReplayAudioTests: XCTestCase {
         XCTAssertThrowsError(try ReplayAudio.encode(pcm16: Data(), sampleRate: 48_000))
         XCTAssertThrowsError(try ReplayAudio.encode(pcm16: Data([0, 1]), sampleRate: .nan))
     }
+
+    func testShortWordsNeverGetALargerReplayCopy() {
+        let pcm = Data(repeating: 0, count: 4800)
+        if let compact = ReplayAudio.compactCopy(pcm16: pcm, sampleRate: 48_000) {
+            XCTAssertLessThan(compact.count, pcm.count + 44)
+        }
+        XCTAssertNil(ReplayAudio.compactCopy(pcm16: Data(), sampleRate: 48_000))
+    }
 }
 #endif
