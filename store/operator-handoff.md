@@ -12,10 +12,12 @@ rollout after approval with managed publishing unchanged/off. Exact previously
 qualified test binaries were reused. Internal testing remains available on both
 stores; the public iOS20 beta has its own pending external review.
 
-Mac **1.0.0 (2)** is separately built and tested; original Mac1 remains In Review
-until the owner chooses whether to replace that queue entry. Check the latest
-[formal artifact record](artifacts/formal-release-20260928.json) for its current
-validation/upload state. New Mac QA verifies actual Debug Catalyst UI/storage
+Mac **1.0.0 (2)** is **Waiting for Review**, replacing the earlier build1 review
+with the owner's explicit approval. Apple accepted the replacement at 22:44 UTC
+on September 27 (September 28 in Hong Kong). Manual release after approval and
+internal TestFlight availability are preserved; this is not a public release.
+Check the [formal artifact record](artifacts/formal-release-20260928.json).
+Mac QA verifies actual Debug Catalyst UI/storage
 mechanics on the virtual Intel Mac, not physical speech accuracy or Apple
 silicon runtime behavior.
 

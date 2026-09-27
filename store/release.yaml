@@ -61,7 +61,7 @@ platforms:
     minimum_os: 12.0
     version: 1.0.0
     candidate_build: 2
-    status: build1_in_review_unchanged; build2_valid_internal_testflight_available; replacement_choice_pending
+    status: build2_waiting_for_review_manual_release; internal_testflight_available; replaces_build1_with_owner_approval
     artifact_manifest: store/artifacts/formal-release-20260928.json
 
 testing:

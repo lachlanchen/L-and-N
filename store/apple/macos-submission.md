@@ -1,6 +1,6 @@
 # Mac submissions
 
-## September 28 — qualified build 2; existing build 1 review preserved
+## September 28 — latest build 2 submitted, replacing build 1
 
 Mac Catalyst **1.0.0 (2)** contains the latest Practice and Listen layout fixes,
 pair hold-to-repeat/Stop, recording-history improvements and more resilient,
@@ -16,9 +16,16 @@ is no physical microphone, audible-output or Apple silicon runtime claim.
 The signed App Store archive was validated, not directly installed as a store
 download. Existing recordings and shared host services were preserved.
 
-The original **1.0.0 (1)** review is still **In Review**, unchanged. Replacing it
-would restart the queue; the owner's explicit queue choice is pending. Do not
-call build 2 a formal submission. See the
+At the owner's explicit request, the earlier **1.0.0 (1)** review was withdrawn
+and replaced with this exact tested **1.0.0 (2)**. Apple accepted the new Mac
+submission at **22:44 UTC on September 27** (September 28 in Hong Kong) and
+confirmed **Waiting for Review**. This restarts the Mac queue; it is not approval
+or public availability. Release remains manual after approval.
+
+All three existing store screenshots, localization and reviewer contacts were
+preserved. Build-specific review instructions were appended. The iOS20
+attachment was verified unchanged and still Waiting for Review; no Android
+actions, new binary upload, pricing, IAP or privacy changes were made. See the
 [current artifact and provider state](../artifacts/formal-release-20260928.json).
 
 ## September 25 — first submission
