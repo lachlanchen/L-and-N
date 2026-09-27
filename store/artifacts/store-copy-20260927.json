@@ -1,0 +1,78 @@
+{
+  "date": "2026-09-27",
+  "scope": "English (US) store copy only: iOS and the main Google Play app",
+  "source_baseline": "c9bf6b7ca42cb2910f0a3b041afb671e2bf38a7a",
+  "apple": {
+    "bundle_id": "art.lazying.landn",
+    "version": "1.0.8",
+    "build": "19",
+    "state": "READY_FOR_SALE",
+    "applied": ["en-US promotionalText"],
+    "promotional_text": "Light or night? Train your ear with short listening rounds, practise one word, then replay your take beside the model. English, Mandarin and Cantonese.",
+    "provider_readback_at": "2026-09-27T14:35:31.671610+00:00",
+    "exact_readback_match": true,
+    "other_localization_attributes_unchanged": true,
+    "version_attributes_and_attached_build_unchanged": true,
+    "staged_only": ["en-US subtitle", "en-US description"],
+    "staging_reason": "Use the next normal editable iOS version; no new version or review created for copy.",
+    "local_price_reference_corrected": "Paid up front; current regional price. No provider price change.",
+    "public_version_readback": "1.0.8",
+    "public_promotional_text_status": "Not observed on the checked public product page at 14:37 UTC; provider save is verified, storefront propagation is not claimed.",
+    "unchanged_provider_description_sha256": "02e8f02c64e9a9b37696bd94cb514079d6f2ce05acaee327d52d4c13e2c95e2d"
+  },
+  "google_play": {
+    "package": "art.lazying.landn",
+    "production_version_readback": "21 (1.0.11)",
+    "production_track_state": "Active",
+    "production_readback_at": "2026-09-27T14:39:02.403155+00:00",
+    "publishing_overview": "No pending changes; last published September 26, 2026. Fresh Console navigation supersedes the older cached tab and earlier in-review record.",
+    "publishing_readback_at": "2026-09-27T14:39:15.201540+00:00",
+    "applied": [],
+    "staged_only": ["en-US short description", "en-US full description"],
+    "staging_reason": "Listing edits require review. Keep the correction local for the next normal listing submission under this request's no-review-affecting-change boundary.",
+    "provider_listing_readback_at": "2026-09-27T14:36:32.817442+00:00",
+    "provider_listing_unchanged": true,
+    "provider_listing_still_contains_obsolete_recording_retention_sentence": true,
+    "provider_save_as_draft_disabled": true,
+    "existing_curriculum_unlock_verified_active": true,
+    "commercial_settings_changed": false
+  },
+  "copy_validation": {
+    "exact_handoff_copy_match": true,
+    "apple_subtitle_characters": 25,
+    "apple_promotional_text_characters": 151,
+    "apple_description_characters": 1345,
+    "google_short_description_characters": 67,
+    "google_full_description_characters": 1634,
+    "all_provider_length_limits_passed": true,
+    "historical_release_notes_preserved_and_labeled": true,
+    "apple_app_review_notes_unchanged": true,
+    "privacy_policy_and_dist_manifest_unchanged": true,
+    "store_workflow_contract_tests": "Passed: 47 shell scripts",
+    "profile_readme_audit": "Pre-existing translation section/prose gaps; README files were not changed in this bounded task.",
+    "app_rebuild_or_device_retest": "Not performed: no app source or binary changed."
+  },
+  "feature_evidence": [
+    "src/lib/listening-exam.ts",
+    "src/components/ListeningExam.tsx",
+    "src/App.tsx",
+    "src/lib/takes.ts",
+    "src/lib/speech.ts",
+    "src/lib/purchases.ts",
+    "docs/recording-history.md",
+    "public/privacy.html",
+    "ops/landn_gateway.py"
+  ],
+  "provider_documentation": [
+    "https://developer.apple.com/app-store/product-page/",
+    "https://support.google.com/googleplay/android-developer/answer/9859654?hl=en"
+  ],
+  "preserved": [
+    "Existing binaries and review/release configuration",
+    "Pricing, IAP and country settings",
+    "Mac and Pro",
+    "Privacy declarations",
+    "App names, keywords, categories and URLs",
+    "All unrelated source and dist-manifest.sha256"
+  ]
+}
