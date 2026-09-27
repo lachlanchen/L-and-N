@@ -1,0 +1,3 @@
+<en-US>
+Practice controls stay in place while recording and scoring. Hold a word pair in Listen to repeat it, then tap Stop. Playing indicators no longer move the results. Saved recordings have more reliable storage and clearer warnings. Short-word recognition rejects unrelated sentences instead of guessing a score. Update without uninstalling to keep your history.
+</en-US>

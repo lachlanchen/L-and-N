@@ -1,0 +1,7 @@
+Practice controls stay in place while recording, scoring and trying again, with changing feedback below them.
+
+Saved recordings are more resilient, with clearer storage warnings and smaller replay files when beneficial. Existing recordings are preserved.
+
+In Listen, hold a word pair to repeat it continuously, then tap Stop. Playing indicators no longer move the results.
+
+Update without uninstalling to keep your practice history.
