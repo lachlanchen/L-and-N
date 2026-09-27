@@ -79,6 +79,8 @@ export interface UICopy {
     hearPair: string
     previewPlaying: string
     stopPreview: string
+    loopPair: string
+    loopPlaying: string
     lengthLabel: string
     play: string
     loading: string
@@ -257,10 +259,12 @@ const copies: Record<UILanguage, UICopy> = {
       title: 'Hear the difference',
       hint: 'Play the sequence, then tap the word you heard at each position and submit.',
       pairLabel: 'Word pair',
-      pairHint: 'Tap a pair to hear both words, one after the other.',
+      pairHint: 'Tap to hear both words. Hold a pair to keep repeating; tap Stop to finish.',
       hearPair: 'Hear {left}, then {right}',
       previewPlaying: 'Playing example…',
       stopPreview: 'Stop example',
+      loopPair: 'Repeat pair',
+      loopPlaying: 'Repeating pair…',
       lengthLabel: 'Words',
       play: 'Play sequence',
       loading: 'Loading audio…',
@@ -354,7 +358,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: 'Microphone access is required to practise. Speech recognition improves the score when available.',
       recording: 'No usable audio was captured. Check the microphone, then try again.',
       silence: 'I could not hear a clear word. Move closer to the microphone and try again.',
-      transcription: 'I recorded your voice, but could not recognize a word. No score was saved—please say only the displayed word and try again.',
+      transcription: 'Your voice was recorded, but the recognized text did not fit this one-word exercise. No score was saved. Try the word again, or say it twice with a short pause. Please do not use a sentence.',
       scoring: 'The recording could not be scored. Please try again.',
     },
   },
@@ -400,7 +404,7 @@ const copies: Record<UILanguage, UICopy> = {
     signal: { aria: '实时波形与词首频谱', listeningLive: '实时聆听', lastSound: '上次录音', soundLens: '声音镜头', onsetSpectrum: '词首 · 频谱', note: '阴影区域是提取 L/N 线索的位置。波形高度表示信号强弱，不表示发音正确度。' },
     listen: {
       eyebrow: '听辨训练', title: '听出区别', hint: '先播放整段，然后按顺序点选每个位置听到的词，最后提交。',
-      pairHint: '点按一组词，依次听两个词的发音。', hearPair: '先听 {left}，再听 {right}', previewPlaying: '正在播放示范…', stopPreview: '停止示范',
+      pairHint: '点按依次听两个词；长按可循环播放，点「停止」结束。', hearPair: '先听 {left}，再听 {right}', previewPlaying: '正在播放示范…', stopPreview: '停止示范', loopPair: '循环听词', loopPlaying: '正在循环播放…',
       pairLabel: '对立词', lengthLabel: '词数', play: '播放序列', loading: '正在加载音频…', playing: '正在播放第 {index} / {total} 个',
       replay: '再播一次', newExam: '换一组', chooseHeard: '按顺序点选你听到的词。', answerProgress: '已选 {done} / {total}',
       undo: '撤销', clear: '清空', submit: '提交答案', resultTitle: '听辨结果', correctCount: '答对 {correct} / {total}',
@@ -440,7 +444,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: '练习需要麦克风权限；语音识别可用时会提高评分质量。',
       recording: '没有录到可用的声音。请检查麦克风后重试。',
       silence: '没有听到清楚的词语。请靠近麦克风再试一次。',
-      transcription: '已录到你的声音，但没有辨认出词语，因此没有保存分数。请只说屏幕上的词语后重试。',
+      transcription: '已录到你的声音，但识别文字不符合单词练习，因此没有保存分数。请重说这个词，或稍作停顿后重复一次，不要说整句。',
       scoring: '本次录音无法评分，请再试一次。',
     },
   },
@@ -486,7 +490,7 @@ const copies: Record<UILanguage, UICopy> = {
     signal: { aria: '即時波形與詞首頻譜', listeningLive: '即時聆聽', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影區域是提取 L/N 線索的位置。波形高度代表訊號強弱，不代表發音正確度。' },
     listen: {
       eyebrow: '聽辨訓練', title: '聽出分別', hint: '先播放整段，然後按順序點選每個位置聽到的詞，最後提交。',
-      pairHint: '點按一組詞，依次聽兩個詞的發音。', hearPair: '先聽 {left}，再聽 {right}', previewPlaying: '正在播放示範…', stopPreview: '停止示範',
+      pairHint: '點按依次聽兩個詞；長按可循環播放，點「停止」結束。', hearPair: '先聽 {left}，再聽 {right}', previewPlaying: '正在播放示範…', stopPreview: '停止示範', loopPair: '循環聽詞', loopPlaying: '正在循環播放…',
       pairLabel: '對立詞', lengthLabel: '詞數', play: '播放序列', loading: '正在載入音訊…', playing: '正在播放第 {index} / {total} 個',
       replay: '再播一次', newExam: '換一組', chooseHeard: '按順序點選你聽到的詞。', answerProgress: '已選 {done} / {total}',
       undo: '復原', clear: '清空', submit: '提交答案', resultTitle: '聽辨結果', correctCount: '答對 {correct} / {total}',
@@ -526,7 +530,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: '練習需要咪高峰權限；語音辨識可用時會提高評分質素。',
       recording: '沒有錄到可用的聲音。請檢查咪高峰後再試。',
       silence: '沒有聽到清楚的詞語。請靠近咪高峰再試一次。',
-      transcription: '已錄到你的聲音，但未能辨認詞語，所以沒有儲存分數。請只說畫面上的詞語後再試。',
+      transcription: '已錄到你的聲音，但辨識文字不符合單詞練習，所以沒有儲存分數。請重說這個詞，或稍作停頓後重複一次，不要說整句。',
       scoring: '本次錄音無法評分，請再試一次。',
     },
   },
@@ -572,7 +576,7 @@ const copies: Record<UILanguage, UICopy> = {
     signal: { aria: '即時波形同詞首頻譜', listeningLive: '即時聽緊', lastSound: '上次錄音', soundLens: '聲音鏡頭', onsetSpectrum: '詞首 · 頻譜', note: '陰影位置係提取 L/N 線索嘅範圍。波形高度只代表訊號強弱，唔代表啱唔啱。' },
     listen: {
       eyebrow: '聽辨練習', title: '聽出分別', hint: '先播成段，然後順住次序撳返你聽到嘅詞，最後交答案。',
-      pairHint: '撳一組詞，就會逐個播畀你聽。', hearPair: '先聽 {left}，再聽 {right}', previewPlaying: '播緊示範…', stopPreview: '停止示範',
+      pairHint: '撳一下聽兩個詞；長撳就會循環播，撳「停止」就停。', hearPair: '先聽 {left}，再聽 {right}', previewPlaying: '播緊示範…', stopPreview: '停止示範', loopPair: '循環聽詞', loopPlaying: '循環播緊…',
       pairLabel: '對立詞', lengthLabel: '詞數', play: '播放成段', loading: '載入緊音訊…', playing: '播緊第 {index} / {total} 個',
       replay: '再播一次', newExam: '換一組', chooseHeard: '順住次序撳你聽到嘅詞。', answerProgress: '已揀 {done} / {total}',
       undo: '復原', clear: '清空', submit: '交答案', resultTitle: '聽辨結果', correctCount: '啱咗 {correct} / {total}',
@@ -612,7 +616,7 @@ const copies: Record<UILanguage, UICopy> = {
       microphone: '練習需要咪高峰權限；有語音辨識時會令評分更準。',
       recording: '今次錄唔到可用聲音。檢查咪高峰之後再試。',
       silence: '聽唔到清楚嘅詞。行近咪高峰再試一次。',
-      transcription: '錄到你把聲，但辨唔到個詞，所以冇儲存分數。請只講畫面上個詞，再試一次。',
+      transcription: '錄到你把聲，但辨認出嚟嘅文字唔符合單詞練習，所以冇儲存分數。試下再講個詞，或者停一停再講多次，唔好講成句。',
       scoring: '今次錄音評唔到分，請再試一次。',
     },
   },

@@ -88,6 +88,20 @@ they are not used.
 
 ## Playback
 
+September 27 controls: a tap previews the selected L/N pair once; holding it
+for 500 ms starts an intentional repeat loop. A keyboard-accessible Repeat
+pair button offers the same action. The active word chip or result-row speaker
+becomes Stop, with a soft non-moving glow (static for reduced-motion users).
+Status and a secondary stop control sit below the results in a reserved slot,
+so replay inserts no content above the result rows.
+
+Loops use one finite two-word sequence per cycle, a 650 ms pause between cycles,
+and a fresh 15-second watchdog for each sequence. They stop on the active word,
+the secondary Stop button, navigation, document hiding or native app
+backgrounding. A failed/stalled cycle stops and reports an error instead of
+retrying endlessly. Moving a held pointer more than 12 pixels cancels the hold,
+so normal scrolling does not intentionally activate a loop.
+
 Each verified word is shipped as its own small file under
 `public/audio/clips/` (118 files, about 1 MB in total), written by the
 generator. Nothing seeks inside a recording at runtime: a

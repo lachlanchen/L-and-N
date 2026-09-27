@@ -260,7 +260,7 @@ interface WhisperResponse {
  * reaches the bundle rather than the site and the request simply fails. The
  * native builds therefore call the public endpoint, which now allows the
  * WebView origins. Android needs this to have any word recognition at all,
- * and it gives iOS a second chance when Apple's dictation returns nothing.
+ * Native iOS uses Apple's recorder/recognizer, never this fallback.
  */
 function transcriptionEndpoint(): string {
   const local = /^(capacitor|ionic):/.test(window.location.protocol) || window.location.hostname === 'localhost'
@@ -316,21 +316,52 @@ export function isEmptyTranscript(value: string): boolean {
   return !/[\p{L}\p{N}]/u.test(value)
 }
 
+export class UnreliableTranscriptError extends Error {
+  constructor() {
+    super('The cloud transcript was not a single-word attempt.')
+    this.name = 'UnreliableTranscriptError'
+  }
+}
+
+/** Reject sentence-like output, not wrong words. Never replace it with the target.
+ * All current drills use one English word or one Chinese syllable. Repeating
+ * that same word up to three times is allowed; mixed words need a fresh take.
+ */
+export function isWordTranscript(value: string, language: TrainingLanguage): boolean {
+  const normalized = value.normalize('NFKC').toLowerCase().trim()
+  if (!normalized || normalized.length > 96) return false
+  const wordPattern = /[\p{Script=Latin}\p{M}]+(?:['’-][\p{Script=Latin}\p{M}]+)*(?:[1-6])?|\p{Script=Han}/gu
+  const tokens = normalized.match(wordPattern) ?? []
+  const remainder = normalized.replace(wordPattern, '')
+  if (/[\p{L}\p{N}]/u.test(remainder)) return false
+  if (language === 'en-US' && tokens.some((token) => /\p{Script=Han}/u.test(token))) return false
+  return tokens.length >= 1 && tokens.length <= 3 && tokens.every((token) => token === tokens[0])
+}
+
 export async function transcribeWithWhisper(
   blob: Blob,
   language: TrainingLanguage,
   timeoutMs = 15000,
   signal?: AbortSignal,
 ): Promise<string> {
+  const started = performance.now()
   const first = await postTranscription(blob, whisperLanguage(language), timeoutMs, signal)
-  if (!isEmptyTranscript(first)) return first
+  if (!isEmptyTranscript(first)) {
+    if (!isWordTranscript(first, language)) throw new UnreliableTranscriptError()
+    return first
+  }
   // A failed request is not a language problem. Do not double the load or
   // retry a cancelled upload; retry only a successful punctuation-only result.
   if (!first || signal?.aborted) return ''
   // A short clip often comes back as punctuation under a forced language.
   // Letting the service detect the language itself recovers many of those.
-  const second = await postTranscription(blob, 'auto', timeoutMs, signal)
-  return isEmptyTranscript(second) ? '' : second
+  // The recovery request shares the original deadline; never wait 30 seconds.
+  const remaining = timeoutMs - (performance.now() - started)
+  if (remaining < 1000) return ''
+  const second = await postTranscription(blob, 'auto', remaining, signal)
+  if (isEmptyTranscript(second)) return ''
+  if (!isWordTranscript(second, language)) throw new UnreliableTranscriptError()
+  return second
 }
 
 export function transcribeWithAllowedFallback(

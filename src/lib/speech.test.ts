@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Capacitor } from '@capacitor/core'
-import { beginSpeechRecognition, isIOSWebBrowser, isEmptyTranscript, transcribeWithAllowedFallback } from './speech'
+import { beginSpeechRecognition, isIOSWebBrowser, isEmptyTranscript, isWordTranscript, transcribeWithAllowedFallback, transcribeWithWhisper, UnreliableTranscriptError } from './speech'
 
 const speechRecognitionMocks = vi.hoisted(() => ({
   available: vi.fn(),
@@ -31,6 +31,7 @@ class BrowserRecognition extends EventTarget {
 afterEach(() => {
   vi.restoreAllMocks()
   vi.clearAllMocks()
+  vi.useRealTimers()
   delete (window as typeof window & { SpeechRecognition?: typeof BrowserRecognition })
     .SpeechRecognition
   delete (window as typeof window & { webkitSpeechRecognition?: typeof BrowserRecognition })
@@ -196,5 +197,40 @@ describe('speech-recognition privacy boundary', () => {
   it('treats punctuation and whitespace as missing recognition, not a word', () => {
     for (const value of ['', '  ', '。', '...']) expect(isEmptyTranscript(value)).toBe(true)
     for (const value of ['light', 'low', 'night', 'no', '南', '藍']) expect(isEmptyTranscript(value)).toBe(false)
+  })
+
+  it.each(['Low.', 'LOW, low.', 'night', 'No! No!', "Let's", 'wrong'])('accepts a short English word without target bias: %s', (text) => {
+    expect(isWordTranscript(text, 'en-US')).toBe(true)
+  })
+
+  it.each(['藍', '蓝，蓝', '南', 'laam4', 'Nam.', 'lǚ', '女 女'])('preserves Han, homophone and romanized words: %s', (text) => {
+    expect(isWordTranscript(text, 'zh-CN')).toBe(true)
+    expect(isWordTranscript(text, 'yue-HK')).toBe(true)
+  })
+
+  it.each(['Thank you for watching.', 'I feel low today', 'low no', '多謝收睇', '字幕由社群提供', 'low low low low', '12345'])('rejects sentence-like/mixed output without silently scoring it: %s', async (text) => {
+    vi.spyOn(window, 'fetch').mockResolvedValue(new Response(JSON.stringify({ text })))
+    await expect(transcribeWithWhisper(new Blob(['audio']), 'en-US')).rejects.toBeInstanceOf(UnreliableTranscriptError)
+    expect(window.fetch).toHaveBeenCalledOnce()
+  })
+
+  it('does not change the native/browser transcript path', async () => {
+    const fetchSpy = vi.spyOn(window, 'fetch')
+    await expect(transcribeWithAllowedFallback({ sameOriginFallback: 'never' }, new Blob(), 'en-US', 'native text unchanged')).resolves.toBe('native text unchanged')
+    expect(fetchSpy).not.toHaveBeenCalled()
+  })
+
+  it('shares one deadline between punctuation recovery requests', async () => {
+    vi.useFakeTimers()
+    vi.spyOn(window, 'fetch').mockImplementationOnce(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 11_000))
+      return new Response(JSON.stringify({ text: '.' }))
+    }).mockImplementationOnce((_url, options) => new Promise((_resolve, reject) => {
+      options?.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')))
+    }))
+    const result = transcribeWithWhisper(new Blob(['audio']), 'en-US')
+    await vi.advanceTimersByTimeAsync(15_000)
+    await expect(result).resolves.toBe('')
+    expect(window.fetch).toHaveBeenCalledTimes(2)
   })
 })

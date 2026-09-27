@@ -270,8 +270,18 @@ button:disabled { cursor: not-allowed; }
 .chip-row button.active { background: var(--navy); border-color: var(--navy); color: white; }
 .chip-row button { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; }
 .pair-preview-hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
-.preview-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--teal); font-size: 13px; }
+.chip-row button[data-testid^="exam-pair-"] { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: pan-y; }
+.preview-transport { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 64px; margin-top: 10px; padding: 8px 2px; }
+.preview-status { min-width: 0; margin: 0; color: var(--teal); font-size: 12px; line-height: 20px; }
+.preview-status span, .preview-status strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .exam-preview-stop { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--teal-soft); color: var(--navy); cursor: pointer; }
+.sound-playing:not(li), li.sound-playing .played .exam-word { animation: sound-breathe 1.8s ease-in-out infinite; }
+.chip-row button.sound-playing { background: var(--teal-soft); color: var(--navy); border-color: var(--teal); }
+.result-rows li.sound-playing .played { color: #087d71; }
+.result-rows li.sound-playing .played .exam-word { border-radius: 8px; background: rgba(19,169,155,.06); }
+.result-rows li.sound-playing button { background: var(--teal-soft); color: #087d71; }
+@keyframes sound-breathe { 0%, 100% { box-shadow: 0 0 4px 1px rgba(19,169,155,.08); } 50% { box-shadow: 0 0 13px 4px rgba(19,169,155,.22); } }
+@media (prefers-reduced-motion: reduce) { .sound-playing:not(li), li.sound-playing .played .exam-word { animation: none; box-shadow: 0 0 0 1px rgba(19,169,155,.4); } }
 .chip-row button:disabled { opacity: .5; cursor: default; }
 .exam-dots { display: flex; gap: 6px; justify-content: center; margin: 18px 0 14px; min-height: 12px; }
 .exam-dots i { width: 11px; height: 11px; border-radius: 50%; background: rgba(16,35,61,.12); transition: transform .15s ease, background .15s ease; }

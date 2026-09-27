@@ -323,6 +323,10 @@ function App() {
       const captured = await session.capture.stop()
       if (operationRef.current !== session.operationId) return
       setLastFeatures(captured.features)
+      if (captured.recognitionRejected) {
+        setError(copy.errors.transcription)
+        return
+      }
       if (androidApp && isEmptyTranscript(captured.transcript)) {
         // An unavailable recognizer says nothing about the learner's L/N.
         // Keep the real waveform but do not save a guessed score/calibration.

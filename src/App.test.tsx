@@ -15,6 +15,14 @@ const audioCaptureMocks = vi.hoisted(() => ({
   startAudioCapture: vi.fn(),
 }))
 
+const nativeStateListeners = vi.hoisted(() => new Set<(state: { isActive: boolean }) => void>())
+vi.mock('@capacitor/app', () => ({ App: {
+  addListener: vi.fn(async (_event, listener) => {
+    nativeStateListeners.add(listener)
+    return { remove: () => { nativeStateListeners.delete(listener) } }
+  }),
+} }))
+
 vi.mock('./lib/audio-capture', () => {
   class MockAudioCaptureError extends Error {
     readonly code: string
@@ -97,6 +105,7 @@ beforeAll(() => {
 
 afterEach(() => {
   cleanup()
+  nativeStateListeners.clear()
   entitlementMocks.next = null
   entitlementMocks.buy.mockClear()
   window.localStorage.clear()
@@ -303,6 +312,24 @@ describe('practice studio playback', () => {
 })
 
 describe('recording lifecycle', () => {
+  it.each(['web', 'android'])('keeps the waveform but never scores a rejected cloud transcript on %s', async (platform) => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(platform === 'android')
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue(platform)
+    const features = extractAcousticFeatures(Float32Array.from({ length: 16000 }, (_, i) => 0.15 * Math.sin(i / 10)), 16000)
+    audioCaptureMocks.startAudioCapture.mockResolvedValueOnce({
+      analyser: null,
+      stop: vi.fn(async () => ({ transcript: '', recognitionRejected: true, features, rawBytes: 32000, source: 'web' })),
+      cancel: vi.fn(async () => undefined),
+    })
+    render(<App />)
+    if (platform === 'android') fireEvent.click(screen.getByRole('checkbox', { name: 'Allow online word recognition' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Stop and score recording' }))
+    expect(await screen.findByText(/recognized text did not fit this one-word exercise/)).toBeTruthy()
+    expect(screen.getByText('Last sound')).toBeTruthy()
+    expect(screen.queryByText('/ 100')).toBeNull()
+    expect(saveAttempt).not.toHaveBeenCalled()
+  })
   it('requires explicit, revocable consent before Android recording', async () => {
     vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
     vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('android')
@@ -497,7 +524,7 @@ describe('listening exam', () => {
     expect(audioMocks.playSequence).toHaveBeenCalledTimes(2)
   })
 
-  it('ignores double taps and keeps the exam disabled throughout the pair preview', async () => {
+  it('keeps other actions disabled while the playing pair itself becomes Stop', async () => {
     let finish!: () => void
     audioMocks.playSequence.mockImplementationOnce((ids) => Promise.resolve({
       finished: new Promise<void>((resolve) => { finish = resolve }), stop: vi.fn(), played: ids,
@@ -505,15 +532,33 @@ describe('listening exam', () => {
     await openExam()
     const pair = screen.getByTestId('exam-pair-en-light-night|en-night-light')
     fireEvent.click(pair)
-    fireEvent.click(pair)
     fireEvent.click(screen.getByTestId('exam-play'))
     expect(audioMocks.playSequence).toHaveBeenCalledOnce()
     await act(async () => undefined)
-    expect(pair.hasAttribute('disabled')).toBe(true)
+    expect(pair.hasAttribute('disabled')).toBe(false)
+    expect(pair.getAttribute('aria-label')).toContain('Stop example')
+    expect(screen.getByTestId('exam-pair-en-low-no|en-no-low').hasAttribute('disabled')).toBe(true)
     expect(screen.getByTestId('exam-play').hasAttribute('disabled')).toBe(true)
     await act(async () => finish())
     expect(pair.hasAttribute('disabled')).toBe(false)
     expect(screen.getByTestId('exam-play').hasAttribute('disabled')).toBe(false)
+  })
+
+  it('stops pair playback by tapping its pulsing word chip', async () => {
+    audioMocks.playSequence.mockImplementationOnce((ids) => Promise.resolve({
+      finished: new Promise<void>(() => undefined), stop: vi.fn(), played: ids,
+    }))
+    await openExam()
+    const pair = screen.getByTestId('exam-pair-en-light-night|en-night-light')
+    fireEvent.click(pair)
+    await act(async () => undefined)
+    expect(pair.classList.contains('sound-playing')).toBe(true)
+    const signal = audioMocks.playSequence.mock.lastCall?.[1]?.signal
+    fireEvent.click(pair)
+    expect(signal?.aborted).toBe(true)
+    expect(pair.classList.contains('sound-playing')).toBe(false)
+    expect(screen.queryByTestId('exam-preview-stop')).toBeNull()
+    expect(audioMocks.playSequence).toHaveBeenCalledOnce()
   })
 
   it('does not erase answers when rehearing the selected pair', async () => {
@@ -524,6 +569,93 @@ describe('listening exam', () => {
     fireEvent.click(screen.getByTestId('exam-pair-en-light-night|en-night-light'))
     await waitFor(() => expect(screen.getByTestId('exam-replay').hasAttribute('disabled')).toBe(false))
     expect(screen.getByTestId('exam-answers').textContent).toBe(before)
+  })
+
+  it('long-press loops finite pairs, releases on Stop, and suppresses the release click', async () => {
+    await openExam()
+    vi.useFakeTimers()
+    const pair = screen.getByTestId('exam-pair-en-light-night|en-night-light')
+    fireEvent.pointerDown(pair, { button: 0 })
+    expect(audioMocks.unlockAudio).toHaveBeenCalledOnce()
+    await act(async () => { await vi.advanceTimersByTimeAsync(500) })
+    fireEvent.pointerUp(pair)
+    fireEvent.click(pair)
+    expect(audioMocks.playSequence).toHaveBeenCalledOnce()
+    expect(screen.getByText('Repeating pair…')).toBeTruthy()
+    await act(async () => { await vi.advanceTimersByTimeAsync(1950) })
+    expect(audioMocks.playSequence).toHaveBeenCalledTimes(4)
+    const signal = audioMocks.playSequence.mock.lastCall?.[1]?.signal
+    fireEvent.click(screen.getByTestId('exam-preview-stop'))
+    await act(async () => { await vi.advanceTimersByTimeAsync(30_000) })
+    expect(signal?.aborted).toBe(true)
+    expect(audioMocks.playSequence).toHaveBeenCalledTimes(4)
+    expect(pair.hasAttribute('disabled')).toBe(false)
+    fireEvent.pointerDown(pair, { button: 0 })
+    fireEvent.pointerUp(pair)
+    fireEvent.click(pair)
+    await act(async () => undefined)
+    expect(audioMocks.playSequence).toHaveBeenCalledTimes(5)
+    expect(screen.queryByTestId('exam-preview-stop')).toBeNull()
+  })
+
+  it.each(['pointerCancel', 'pointerLeave', 'pointerUp'])('cancels a pending hold on %s', async (event) => {
+    await openExam()
+    vi.useFakeTimers()
+    const pair = screen.getByTestId('exam-pair-en-light-night|en-night-light')
+    fireEvent.pointerDown(pair, { button: 0 })
+    fireEvent[event as 'pointerCancel'](pair)
+    await act(async () => { await vi.advanceTimersByTimeAsync(1000) })
+    expect(audioMocks.playSequence).not.toHaveBeenCalled()
+  })
+
+  it('does not start a loop while scrolling across a pair', async () => {
+    await openExam()
+    vi.useFakeTimers()
+    const pair = screen.getByTestId('exam-pair-en-light-night|en-night-light')
+    fireEvent(pair, new MouseEvent('pointerdown', { bubbles: true, button: 0, clientX: 10, clientY: 10 }))
+    fireEvent(pair, new MouseEvent('pointermove', { bubbles: true, clientX: 10, clientY: 35 }))
+    await act(async () => { await vi.advanceTimersByTimeAsync(1000) })
+    expect(audioMocks.playSequence).not.toHaveBeenCalled()
+  })
+
+  it('stops loops on native app backgrounding even if the web document stays visible', async () => {
+    vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
+    vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('ios')
+    await openExam()
+    vi.useFakeTimers()
+    fireEvent.click(screen.getByTestId('exam-loop'))
+    await act(async () => undefined)
+    const signal = audioMocks.playSequence.mock.lastCall?.[1]?.signal
+    await act(async () => { nativeStateListeners.forEach((listener) => listener({ isActive: false })) })
+    await act(async () => { await vi.advanceTimersByTimeAsync(2000) })
+    expect(signal?.aborted).toBe(true)
+    expect(audioMocks.playSequence).toHaveBeenCalledOnce()
+    expect(screen.queryByTestId('exam-preview-stop')).toBeNull()
+  })
+
+  it.each(['pagehide', 'navigation'])('stops a repeating pair on %s', async (event) => {
+    await openExam()
+    vi.useFakeTimers()
+    fireEvent.click(screen.getByTestId('exam-loop'))
+    await act(async () => undefined)
+    const signal = audioMocks.playSequence.mock.lastCall?.[1]?.signal
+    if (event === 'pagehide') fireEvent(window, new Event('pagehide'))
+    else fireEvent.click(screen.getByRole('button', { name: 'Practice' }))
+    await act(async () => { await vi.advanceTimersByTimeAsync(2000) })
+    expect(signal?.aborted).toBe(true)
+    expect(audioMocks.playSequence).toHaveBeenCalledOnce()
+  })
+
+  it('keeps the per-pair watchdog after a successful loop cycle', async () => {
+    await openExam()
+    vi.useFakeTimers()
+    fireEvent.click(screen.getByTestId('exam-loop'))
+    await act(async () => undefined)
+    audioMocks.playSequence.mockImplementationOnce(() => new Promise(() => undefined))
+    await act(async () => { await vi.advanceTimersByTimeAsync(15_650) })
+    expect(screen.getByTestId('exam-loop').hasAttribute('disabled')).toBe(false)
+    expect(screen.queryByText('Repeating pair…')).toBeNull()
+    expect(screen.getByText(/Pair playback timed out/)).toBeTruthy()
   })
 
   it('stops a pending preview after leaving the tab and ignores its late failure', async () => {
@@ -583,7 +715,8 @@ describe('listening exam', () => {
     const oldStop = vi.fn()
     await act(async () => ready({ finished: Promise.resolve(), stop: oldStop, played: [] }))
     expect(oldStop).toHaveBeenCalledOnce()
-    expect(second.hasAttribute('disabled')).toBe(true)
+    expect(second.classList.contains('sound-playing')).toBe(true)
+    expect(second.getAttribute('aria-label')).toContain('Stop example')
     await act(async () => finish())
     expect(second.hasAttribute('disabled')).toBe(false)
   })
@@ -615,6 +748,23 @@ describe('listening exam', () => {
     expect(result.querySelectorAll('.result-rows li')).toHaveLength(5)
     expect(result.querySelectorAll('.result-rows li.wrong')).toHaveLength(0)
     expect(screen.getByTestId('exam-new')).toBeTruthy()
+    const before = result.innerHTML
+    let finish!: () => void
+    audioMocks.playSequence.mockImplementationOnce((ids) => Promise.resolve({
+      finished: new Promise<void>((resolve) => { finish = resolve }), stop: vi.fn(), played: ids,
+    }))
+    fireEvent.click(result.querySelector('.result-rows button')!)
+    await act(async () => undefined)
+    const transport = screen.getByTestId('exam-preview-transport')
+    expect(result.compareDocumentPosition(transport) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(transport.contains(screen.getByTestId('exam-preview-stop'))).toBe(true)
+    expect(document.querySelector('.exam-card .preview-status')).toBeNull()
+    const resultStop = result.querySelector('.result-rows button')!
+    expect(resultStop.getAttribute('aria-label')).toBe('Stop example')
+    expect(resultStop.hasAttribute('disabled')).toBe(false)
+    fireEvent.click(resultStop)
+    await act(async () => finish())
+    expect(result.innerHTML).toBe(before)
   })
 
   it('marks a wrong answer and keeps the interface language', async () => {

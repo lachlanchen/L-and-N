@@ -54,7 +54,7 @@ describe('web capture startup', () => {
     expect(getUserMedia).not.toHaveBeenCalled()
   })
 
-  it('uses one Android recording and frees the microphone before uploading it', async () => {
+  it.each(['light', 'Thank you for watching.'])('uses one Android recording and frees the microphone before recognition: %s', async (recognized) => {
     vi.spyOn(Capacitor, 'isNativePlatform').mockReturnValue(true)
     vi.spyOn(Capacitor, 'getPlatform').mockReturnValue('android')
     const trackStop = vi.fn()
@@ -90,12 +90,13 @@ describe('web capture startup', () => {
       const file = (options?.body as FormData).get('file') as File
       expect(file.size).toBe(chunk.size)
       expect(file.type).toBe(chunk.type)
-      return new Response(JSON.stringify({ text: 'light' }))
+      return new Response(JSON.stringify({ text: recognized }))
     })
     const capture = await startAudioCapture({ language: 'en-US', expectedWords: ['light', 'night'], allowOnlineRecognition: true, onLiveSignal: vi.fn() })
     expect(getUserMedia).toHaveBeenCalledExactlyOnceWith({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } })
     const result = await capture.stop()
-    expect(result.transcript).toBe('light')
+    expect(result.transcript).toBe(recognized === 'light' ? 'light' : '')
+    expect(result.recognitionRejected).toBe(recognized !== 'light')
     expect(result.features).toBe(features)
     expect(result.recording?.blob.size).toBe(chunk.size)
     expect(window.fetch).toHaveBeenCalledOnce()

@@ -84,7 +84,9 @@ function estimatePitchContour(samples: Float32Array, sampleRate: number): number
   const windowSize = Math.max(1, Math.floor(sampleRate * 0.075))
   const stepSize = Math.max(1, Math.floor(sampleRate * 0.04))
   const contour: number[] = []
-  for (let offset = 0; offset + windowSize <= samples.length; offset += stepSize) {
+  // Only the first 36 points are returned. Do not calculate discarded frames:
+  // at 48 kHz each pitch estimate is expensive on mobile CPUs.
+  for (let offset = 0; offset + windowSize <= samples.length && contour.length < 36; offset += stepSize) {
     const frame = samples.slice(offset, offset + windowSize)
     contour.push(rms(frame) >= 0.006 ? estimatePitch(frame, sampleRate) : 0)
   }

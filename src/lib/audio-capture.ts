@@ -3,6 +3,7 @@ import { decodeAudioFeatures, extractAcousticFeatures } from './acoustics'
 import {
   beginSpeechRecognition,
   transcribeWithAllowedFallback,
+  UnreliableTranscriptError,
   type SpeechSession,
 } from './speech'
 import { wavFromFloat32 } from './takes'
@@ -37,6 +38,8 @@ export interface LiveSignal {
 export interface CapturedAudio {
   features: AcousticFeatures
   transcript: string
+  /** A sentence-like cloud result must not fall through to acoustic-only scoring. */
+  recognitionRejected?: boolean
   rawBytes: number
   source: 'native-ios' | 'web'
   /** The attempt's audio, so it can be kept on the device and replayed. */
@@ -323,16 +326,20 @@ async function startWebCapture(options: StartCaptureOptions): Promise<ActiveAudi
             timeout(speech.result.catch(() => ''), 2200, 'Speech recognition did not finish in time.').catch(() => ''),
           ])
           validateCapturedAudio(features, blob.size)
-          const transcript = await transcribeWithAllowedFallback(
-            speech,
-            blob,
-            options.language,
-            browserTranscript,
-            recognitionAbort.signal,
-          )
+          let transcript = ''
+          let recognitionRejected = false
+          try {
+            transcript = await transcribeWithAllowedFallback(
+              speech, blob, options.language, browserTranscript, recognitionAbort.signal,
+            )
+          } catch (error) {
+            if (!(error instanceof UnreliableTranscriptError)) throw error
+            recognitionRejected = true
+          }
           return {
             features,
             transcript,
+            recognitionRejected,
             rawBytes: blob.size,
             source: 'web',
             recording: { blob, mimeType: blob.type || 'audio/webm' },
