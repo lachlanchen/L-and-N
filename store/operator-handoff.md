@@ -1,8 +1,29 @@
 # Store publication handoff
 
-Updated: 2026-09-27
+Updated: 2026-09-28
 
 This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
+
+## Latest formal submissions — September 28
+
+iOS/watchOS **1.0.9 (20)** is **Waiting for Review**, manual release after
+approval. Android **1.0.12 (22)** is **In Review**, quick checks complete, full
+rollout after approval with managed publishing unchanged/off. Exact previously
+qualified test binaries were reused. Internal testing remains available on both
+stores; the public iOS20 beta has its own pending external review.
+
+Mac **1.0.0 (2)** is separately built and tested; original Mac1 remains In Review
+until the owner chooses whether to replace that queue entry. Check the latest
+[formal artifact record](artifacts/formal-release-20260928.json) for its current
+validation/upload state. New Mac QA verifies actual Debug Catalyst UI/storage
+mechanics on the virtual Intel Mac, not physical speech accuracy or Apple
+silicon runtime behavior.
+
+The current web already contains these fixes. Do not reinstall, clear app data
+or delete old recordings. No English-only offline mode was shipped; all three
+practice languages retain their existing recognition routes. Newest private
+submission, one-shot markers, cleanup and shared Mac/browser ownership are in
+`.runtime/formal-20260928/handoff.md`. Older sections below are history.
 
 ## Latest App Store release — September 27
 

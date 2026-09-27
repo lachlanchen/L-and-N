@@ -1,5 +1,25 @@
 # Apple App Store submission
 
+## September 28 HKT — iOS/watchOS 1.0.9 (20)
+
+**Waiting for Review**, submitted once using the exact qualified TestFlight
+build. Manual release after approval is preserved; this is not public release.
+The new version includes stable Practice controls, resilient recording storage,
+smaller replay copies when beneficial, and Listen hold-to-repeat/inline Stop.
+Existing recordings remain readable. No cloud service, price, purchase, country
+or privacy-declaration change was made.
+
+The staged English description and new release notes were saved and read back
+on this normal new version. The optional subtitle remains unchanged. All 15
+inherited iPhone/iPad/Watch screenshots remain COMPLETE. Internal TestFlight20
+is available; external beta20 remains a separate Waiting for Review submission.
+The prior production1.0.8(19) is preserved. Mac is a separately qualified lane.
+
+265 web tests, 10 native audio tests and browser/native mechanics checks passed.
+Synthetic capture verifies storage and geometry, not physical speech accuracy.
+See [formal release evidence](../artifacts/formal-release-20260928.json) and
+[candidate qualification](../artifacts/practice-storage-test-release.json).
+
 ## September 27 — iOS/watchOS 1.0.8 (19), approved and released
 
 Apple approved the latest uploaded iOS build 19. It was **Pending Developer

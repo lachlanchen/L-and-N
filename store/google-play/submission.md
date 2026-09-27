@@ -1,6 +1,26 @@
 # Google Play submission
 
-## September 26 — 1.0.11 / 21, latest
+## September 28 HKT — 1.0.12 / 22, latest submission
+
+The exact qualified internal bundle was selected from the library for
+production. **Your changes are now in review**; preliminary checks completed.
+Only production release22 was in the final payload. Existing countries,
+managed publishing OFF, and full rollout after approval were preserved. The
+small installed base makes a fractional stage ineffective. No Pro, pricing,
+purchase, listing or privacy-declaration changes were bundled.
+
+Adds fixed Practice/Listen geometry, pair hold-to-repeat and inline Stop,
+resilient recording storage and rejection of unrelated short-word transcripts.
+Signed Android upgrade, three-language real pair replay, loop/Stop and silent
+capture recovery passed; physical Honor microphone accuracy was not measured.
+Production21 remains the previous public version until approval and rollout.
+
+Internal22 remains available at the existing testing link. Update without
+uninstalling to retain recordings; use Play testing for Play-signed installs.
+See [formal release evidence](../artifacts/formal-release-20260928.json) and
+[qualification](../artifacts/practice-storage-test-release.json).
+
+## September 26 — 1.0.11 / 21, subsequently published
 
 Main app **available to internal testers**, exact tested AAB promoted to
 production and **In Review** with automatic checks complete. Existing countries
