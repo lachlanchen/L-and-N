@@ -69,6 +69,8 @@ interface NativeRecorderStopResult {
   sampleRate: number
   transcript: string
   durationMs: number
+  replayBase64?: string
+  replayMimeType?: string
 }
 
 interface NativeRecorderPlugin {
@@ -190,13 +192,20 @@ async function startNativeIOSCapture(options: StartCaptureOptions): Promise<Acti
         }
         const features = extractAcousticFeatures(samples, result.sampleRate)
         validateCapturedAudio(features, samples.byteLength)
-        const wav = wavFromFloat32(samples, result.sampleRate)
+        let replay: Blob | undefined
+        if (result.replayBase64 && result.replayMimeType === 'audio/mp4') {
+          try {
+            const bytes = Uint8Array.from(window.atob(result.replayBase64), (value) => value.charCodeAt(0))
+            if (bytes.byteLength > 0) replay = new Blob([bytes], { type: 'audio/mp4' })
+          } catch { /* Older bridge or encoding failure: preserve original WAV. */ }
+        }
+        replay ??= wavFromFloat32(samples, result.sampleRate)
         return {
           features,
           transcript: result.transcript?.trim() ?? '',
           rawBytes: samples.byteLength,
           source: 'native-ios',
-          recording: { blob: wav, mimeType: 'audio/wav' },
+          recording: { blob: replay, mimeType: replay.type },
         }
       } finally {
         await removeListener()

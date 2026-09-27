@@ -8,6 +8,7 @@ interface SignalVisualizerProps {
   features: AcousticFeatures | null
   recording: boolean
   target: TargetSound
+  showNote?: boolean
   copy: {
     aria: string
     listeningLive: string
@@ -39,7 +40,7 @@ function spectrumFromWaveform(waveform: number[], rms: number): number[] {
   return Array.from({ length: 32 }, (_, index) => ((magnitudes[index] ?? 0) / peak) * level)
 }
 
-export function SignalVisualizer({ analyser, liveSignal, features, recording, target, copy }: SignalVisualizerProps) {
+export function SignalVisualizer({ analyser, liveSignal, features, recording, target, copy, showNote = true }: SignalVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -147,7 +148,7 @@ export function SignalVisualizer({ analyser, liveSignal, features, recording, ta
         <span>{copy.onsetSpectrum}</span>
       </div>
       <canvas ref={canvasRef} />
-      <p>{copy.note}</p>
+      {showNote && <p>{copy.note}</p>}
     </section>
   )
 }

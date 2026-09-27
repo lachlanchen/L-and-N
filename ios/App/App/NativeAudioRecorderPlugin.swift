@@ -332,12 +332,21 @@ final class NativeAudioRecorderPlugin: CAPPlugin, CAPBridgedPlugin {
             : 0
         let transcript = latestTranscript
         resetCapture()
-        call.resolve([
-            "pcm16Base64": data.base64EncodedString(),
-            "sampleRate": capturedSampleRate,
-            "transcript": transcript,
-            "durationMs": durationMs
-        ])
+        DispatchQueue.global(qos: .userInitiated).async {
+            var result: [String: Any] = [
+                "pcm16Base64": data.base64EncodedString(),
+                "sampleRate": capturedSampleRate,
+                "transcript": transcript,
+                "durationMs": durationMs
+            ]
+            // Compress only the saved replay, off the UI thread. Original PCM
+            // remains the source of waveform/features and acoustic scoring.
+            if let replay = try? ReplayAudio.encode(pcm16: data, sampleRate: capturedSampleRate) {
+                result["replayBase64"] = replay.base64EncodedString()
+                result["replayMimeType"] = "audio/mp4"
+            }
+            DispatchQueue.main.async { call.resolve(result) }
+        }
     }
 
     private func resetCapture() {

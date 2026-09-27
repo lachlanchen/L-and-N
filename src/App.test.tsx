@@ -877,7 +877,7 @@ describe('kept takes', () => {
     render(<App />)
     fireEvent.click(screen.getByRole('button', { name: 'Start recording' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Stop and score recording' }))
-    expect((await screen.findByText(/this recording could not be saved/)).textContent).toContain('earlier recordings have not been removed')
+    expect((await screen.findByText(/this recording could not be kept/)).textContent).toContain('Earlier recordings have not been removed')
     expect(screen.queryByTestId('take-replay')).toBeNull()
     await waitFor(() => expect(saveAttempt).toHaveBeenCalled())
     fireEvent.click(screen.getByRole('button', { name: 'Progress' }))

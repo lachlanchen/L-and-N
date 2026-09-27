@@ -39,6 +39,66 @@ final class MacSmokeTests {
     }
     private func check(_ name: String) { checks.append(name); print("LANDN_QA PASS: \(name)"); fflush(stdout) }
 
+    /// Explicit synthetic capture fixture to exercise the real scoring/save UI
+    /// and WebKit database. Never described as microphone/recognition accuracy.
+    private func storageChecks() async throws {
+        let rate = 48_000.0
+        let samples = (0..<48_000).map { Float(sin(Double($0) * 220 * 2 * .pi / rate) * 0.24) }
+        let pcm = samples.withUnsafeBufferPointer { PCMFrame(samples: $0, includeWaveform: false).pcm16 }
+        let replay = try ReplayAudio.encode(pcm16: pcm, sampleRate: rate)
+        let fixture: [String: Any] = ["pcm16Base64": pcm.base64EncodedString(), "sampleRate": rate,
+            "transcript": "light", "durationMs": 1000, "replayBase64": replay.base64EncodedString(), "replayMimeType": "audio/mp4"]
+        let encoded = String(decoding: try JSONSerialization.data(withJSONObject: fixture), as: UTF8.self)
+        _ = try await js("""
+        window.__storageFixture=\(encoded);
+        window.__originalNativePromise=Capacitor.nativePromise;
+        Capacitor.nativePromise=function(plugin,method,options){
+          if(plugin==='NativeAudioRecorder' && method==='start')return Promise.resolve({sampleRate:48000,speechRecognitionAvailable:true});
+          if(plugin==='NativeAudioRecorder' && method==='stop')return new Promise(r=>setTimeout(()=>r(window.__storageFixture),400));
+          return window.__originalNativePromise.call(this,plugin,method,options);
+        };
+        window.__takeRead=()=>new Promise((resolve,reject)=>{
+          const open=indexedDB.open('landn-takes',1);
+          open.onerror=()=>reject(open.error);
+          open.onsuccess=()=>{const db=open.result,tx=db.transaction('takes'),r=tx.objectStore('takes').getAll();
+            tx.oncomplete=()=>{db.close();resolve(r.result.map(t=>({id:t.id,bytes:t.audioBytes?.byteLength,mime:t.mimeType}))) };
+            tx.onerror=()=>{db.close();reject(tx.error)};
+          };
+        });true;
+        """)
+        try await click("[data-testid=practice-language-en-US]")
+        try await click("[data-testid=practice-sound-l]")
+        _ = try await js("window.__recordRect=JSON.stringify(document.querySelector('[data-testid=practice-record]').getBoundingClientRect().toJSON());true")
+        for _ in 0..<3 {
+            try await click("[data-testid=practice-record]")
+            try await wait("document.querySelector('.practice-page').dataset.capturePhase==='recording'")
+            try await click("[data-testid=practice-record]")
+            try await wait("document.querySelector('.practice-page').dataset.capturePhase==='idle' && document.querySelector('[data-testid=take-replay]') && !document.querySelector('.storage-warning')")
+            try await wait("JSON.stringify(document.querySelector('[data-testid=practice-record]').getBoundingClientRect().toJSON())===window.__recordRect")
+        }
+        _ = try await js("window.__takeRead().then(r=>window.__durableCount=r.filter(t=>t.mime==='audio/mp4' && t.bytes>0).length);true")
+        try await wait("window.__durableCount>=3")
+        check("synthetic native capture: three real UI scoring/storage cycles keep geometry and commit AAC bytes in WKWebView")
+        print("LANDN_QA replay storage: PCM=\(pcm.count) AAC=\(replay.count) bytes; synthetic fixture")
+        try await screenshot("05-storage-result")
+        // Restore the native bridge before reloading; the app must find history
+        // and committed audio again with its ordinary production code.
+        _ = try await js("Capacitor.nativePromise=window.__originalNativePromise;location.reload();true")
+        try await wait("document.querySelector('[data-testid=app-root]')")
+        try await click(".bottom-nav button:nth-child(4)")
+        try await wait("document.querySelectorAll('[data-testid=history-play]').length>=3")
+        _ = try await js("""
+        window.__replayLoaded=false;
+        const create=URL.createObjectURL;
+        URL.createObjectURL=function(blob){if(blob.type==='audio/mp4' && blob.size>0)window.__replayLoaded=true;return create.call(this,blob)};
+        true;
+        """)
+        try await click("[data-testid=history-play]")
+        try await wait("window.__replayLoaded")
+        check("WKWebView reload retains history and reconstructs saved AAC for the real replay control")
+        try await click(".bottom-nav button:nth-child(1)")
+    }
+
     func run() async {
         var passed = false
         var failure = ""
@@ -47,6 +107,10 @@ final class MacSmokeTests {
             try await wait("document.querySelector('[data-testid=app-root]') && document.querySelector('.word-area h2')")
             try await wait("window.Capacitor?.isNativePlatform() && window.Capacitor?.isPluginAvailable('NativeAudioRecorder')")
             check("bundled Apple UI and native audio bridge loaded")
+            if CommandLine.arguments.contains("--landn-storage-test") {
+                _ = try await js("var picker=document.querySelector('[data-testid=ui-language-picker]');picker.value='en';picker.dispatchEvent(new Event('change',{bubbles:true}))")
+                try await storageChecks()
+            }
             if CommandLine.arguments.contains("--landn-playback-test") {
                 _ = try await js("""
                 window.__modelQA=[];

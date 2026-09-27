@@ -9,6 +9,7 @@ import { ListeningExam } from './components/ListeningExam'
 import { UnlockCard } from './components/UnlockCard'
 import { SignalVisualizer } from './components/SignalVisualizer'
 import { RecordingHistory, HISTORY_PAGE_SIZE } from './components/RecordingHistory'
+import { PracticeFeedback } from './components/PracticeFeedback'
 import { exercises } from './data/curriculum'
 import { localizedExercise } from './data/curriculum-i18n'
 import { feedbackCopy, formatCopy, initialUILanguage, uiCopy, uiLanguageLabels, type UICopy } from './i18n'
@@ -72,7 +73,7 @@ function App() {
   const [lastTakeId, setLastTakeId] = useState<string | null>(null)
   const [playingTakeId, setPlayingTakeId] = useState<string | null>(null)
   const [playbackError, setPlaybackError] = useState<{ kind: 'missing' | 'playbackFailed'; takeId: string } | null>(null)
-  const [storageWarning, setStorageWarning] = useState<'sessionOnly' | 'notSaved' | 'historyNotSaved' | null>(null)
+  const [storageWarning, setStorageWarning] = useState<'sessionOnly' | 'storageFull' | 'notSaved' | 'historyNotSaved' | null>(null)
   const [historyVisible, setHistoryVisible] = useState(HISTORY_PAGE_SIZE)
   const loadMoreHistory = useCallback(() => setHistoryVisible((count) => count + HISTORY_PAGE_SIZE), [])
   const takeOperationRef = useRef(0)
@@ -357,6 +358,7 @@ function App() {
           })
           takeId = createdAt
           if (storage === 'session') setStorageWarning('sessionOnly')
+          if (storage === 'session-full') setStorageWarning('storageFull')
         } catch (caught) {
           console.warn('Could not keep the take', caught)
           setStorageWarning('notSaved')
@@ -500,9 +502,8 @@ function App() {
   )
 
   const renderPractice = () => (
-    <main className="practice-page">
+    <main className="practice-page" data-capture-phase={capturePhase}>
       {languageSwitcher}
-      <AppStorePrompt copy={copy} busy={captureBusy || studioPlaying} />
 
       <div className="practice-kicker">
         <span className="eyebrow"><Sparkles size={14} /> {copy.practice.session}</span>
@@ -539,7 +540,43 @@ function App() {
           </button>
         </div>
 
-        <div className="contrast-row">
+        <SignalVisualizer analyser={analyser} liveSignal={liveSignal} features={lastFeatures} recording={recording} target={exercise.target} copy={copy.signal} showNote={false} />
+
+        <button
+          className={`record-button ${recording ? 'recording' : ''}`}
+          data-testid="practice-record"
+          onClick={toggleRecording}
+          disabled={starting || processing || studioPlaying || (androidApp && !onlineRecognition)}
+          aria-busy={starting || processing}
+          aria-label={recording ? copy.practice.stopAndScore : copy.practice.startRecording}
+          aria-describedby="practice-capture-status"
+        >
+          <span className="record-orbit">{recording ? <Square size={26} /> : <Mic size={30} />}</span>
+          <span>{recording ? copy.practice.tapToScore : copy.practice.startRecording}</span>
+        </button>
+      </section>
+
+      <PracticeFeedback key={exercise.id}>
+        <p className="practice-capture-status" id="practice-capture-status" role="status">
+          {starting ? copy.practice.preparing : processing ? copy.practice.analysing : recording ? copy.practice.listening : copy.practice.tapThenSay}
+        </p>
+        {error && <p className="error-message" role="alert">{error}</p>}
+        {storageWarning && <p className="storage-warning" role="status">{copy.takes[storageWarning]}</p>}
+        {playbackError && <p className="error-message" role="alert">{copy.takes[playbackError.kind]}</p>}
+
+        {score && (
+          <ScoreCard
+            score={score}
+            copy={copy}
+            onRetry={() => setScore(null)}
+            onNext={() => moveExercise(1)}
+            takeId={lastTakeId}
+            playing={playingTakeId !== null && playingTakeId === lastTakeId}
+            onReplay={(withModel) => lastTakeId && void playTake(lastTakeId, withModel)}
+          />
+        )}
+
+        <div className="contrast-row practice-contrast">
           <div><span>{copy.practice.say}</span><strong>{exercise.word}</strong></div>
           <ArrowRight size={18} />
           <div className="avoid"><span>{copy.practice.not}</span><strong>{exercise.pair}</strong></div>
@@ -547,7 +584,7 @@ function App() {
 
         <div className="cue"><Target size={18} /><p>{exerciseText.cue}</p></div>
 
-        <SignalVisualizer analyser={analyser} liveSignal={liveSignal} features={lastFeatures} recording={recording} target={exercise.target} copy={copy.signal} />
+        <p className="practice-signal-note">{copy.signal.note}</p>
 
         {androidApp && (
           <div className="speech-consent" data-testid="android-speech-consent">
@@ -564,40 +601,14 @@ function App() {
           </div>
         )}
 
-        <button
-          className={`record-button ${recording ? 'recording' : ''}`}
-          onClick={toggleRecording}
-          disabled={starting || processing || studioPlaying || (androidApp && !onlineRecognition)}
-          aria-busy={starting || processing}
-          aria-label={recording ? copy.practice.stopAndScore : copy.practice.startRecording}
-        >
-          <span className="record-orbit"><Mic size={30} /></span>
-          <span>{starting ? copy.practice.preparing : processing ? copy.practice.analysing : recording ? copy.practice.tapToScore : copy.practice.tapThenSay}</span>
-          {recording && <span className="recording-time">{copy.practice.listening}</span>}
-        </button>
-
-        {error && <p className="error-message">{error}</p>}
-      </section>
       <UnlockCard copy={copy} entitlement={entitlement} onChange={setEntitlement} />
-      {storageWarning && <p className="storage-warning" role="status">{copy.takes[storageWarning]}</p>}
-      {playbackError && <p className="error-message" role="alert">{copy.takes[playbackError.kind]}</p>}
-
-      {score && (
-        <ScoreCard
-          score={score}
-          copy={copy}
-          onRetry={() => setScore(null)}
-          onNext={() => moveExercise(1)}
-          takeId={lastTakeId}
-          playing={playingTakeId !== null && playingTakeId === lastTakeId}
-          onReplay={(withModel) => lastTakeId && void playTake(lastTakeId, withModel)}
-        />
-      )}
+      <AppStorePrompt copy={copy} busy={captureBusy || studioPlaying} />
 
       <section className="science-note">
         <Waves size={22} />
         <div><strong>{copy.practice.scoreHow}</strong><p>{copy.practice.scoreHowBody}</p></div>
       </section>
+      </PracticeFeedback>
     </main>
   )
 
@@ -668,11 +679,11 @@ function App() {
           <div className="streak" aria-label={`${copy.streak}: ${streak}`}><Flame size={16} /> {streak}</div>
         </div>
       </header>
-      <UpdatePrompt copy={copy} busy={captureBusy || studioPlaying || Boolean(playingTakeId) || tab === 'listen'} />
       {tab === 'practice' && renderPractice()}
       {tab === 'listen' && renderListen()}
       {tab === 'learn' && renderLearn()}
       {tab === 'progress' && renderProgress()}
+      <UpdatePrompt copy={copy} busy={captureBusy || studioPlaying || Boolean(playingTakeId) || tab === 'listen'} />
       <nav className="bottom-nav" aria-label={copy.primaryNavigation}>
         <button className={tab === 'practice' ? 'active' : ''} disabled={captureBusy} onClick={() => selectTab('practice')}><Mic /><span>{copy.nav.practice}</span></button>
         <button className={tab === 'listen' ? 'active' : ''} disabled={captureBusy} onClick={() => selectTab('listen')}><Ear /><span>{copy.nav.listen}</span></button>
