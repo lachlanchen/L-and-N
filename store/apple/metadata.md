@@ -4,9 +4,10 @@
 
 This file is the iOS English (U.S.) copy source, not a bulk-upload payload.
 The promotional text below was saved to iOS 1.0.8 (19) and verified by provider
-readback on September 27. It was the only provider field changed. The proposed
-subtitle and description are staged for the next normal editable iOS version;
-do not create or replace a release for them.
+readback on September 27. During the owner-requested normal 1.0.9 (20) release,
+the description below and version-specific release notes were saved and verified
+in that new version. This is not yet public availability. The optional subtitle
+remains staged; no release was created solely for copy changes.
 See the [applied/staged receipt](../artifacts/store-copy-20260927.json).
 Names, keywords, commercial settings, URLs and privacy declarations are unchanged.
 
@@ -32,7 +33,7 @@ Light or night? Train your ear with short listening rounds, practise one word, t
 
 `pronunciation,speech,English,Mandarin,Cantonese,L,N,minimal pairs,language,phonetics`
 
-### Description — staged for the next normal editable iOS version
+### Description — saved for iOS 1.0.9 (20)
 
 Do light and night sound too similar? L & N gives you a small place to practise the difference, one pair at a time.
 

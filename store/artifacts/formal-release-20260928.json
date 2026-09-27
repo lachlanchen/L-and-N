@@ -1,0 +1,43 @@
+{
+  "applicationSourceCommit": "0c70f453d4485e33509fd413dbd56c285e83467b",
+  "qualification": "store/artifacts/practice-storage-test-release.json",
+  "scope": "Owner-requested production review of tested fixes; Mac candidate separately qualified",
+  "ios": {
+    "version": "1.0.9",
+    "build": 20,
+    "versionId": "9e34f17e-e3a1-4445-afc8-7de87016ca5a",
+    "buildId": "7ae768ee-9e8e-4958-8e7c-fbb601d0d154",
+    "reviewId": "66931f1e-c099-4ea3-81f5-89604efab757",
+    "ipaSha256": "db0171a2a7c68f9d33c7f6a3492cf5df414bda670f608be38ee81a793ecf708a",
+    "embeddedWatchBuild": 20,
+    "state": "READY_FOR_REVIEW; submission pending",
+    "releaseType": "MANUAL",
+    "screenshots": "15 inherited genuine iPhone/iPad/Watch images, all COMPLETE",
+    "metadata": "Staged English description and 1.0.9 release notes saved and read back; optional subtitle unchanged"
+  },
+  "android": {
+    "package": "art.lazying.landn",
+    "version": "1.0.12",
+    "build": 22,
+    "aabSha256": "1ea80e62fe4a7107d5570ff6f3478f78a309d9dbf60d03e9357d0dc6b7824b42",
+    "source": "Existing qualified internal bundle; reuse from library",
+    "state": "Production draft preparation",
+    "previousProduction": "1.0.11 (21)",
+    "managedPublishing": false,
+    "intendedRolloutAfterApproval": 1.0,
+    "rolloutReason": "Existing full-release authority and only 3 installations; a small stage would have no meaningful coverage",
+    "countrySetChanged": false
+  },
+  "macos": {
+    "version": "1.0.0",
+    "candidateBuild": 2,
+    "applicationSourceCommit": "4b2b5a3",
+    "state": "Preparing and testing; original build 1 remains IN_REVIEW",
+    "replacementAuthorization": "Owner asked to include Mac; explicit queue-replacement choice requested"
+  },
+  "pricingChanged": false,
+  "iapChanged": false,
+  "privacyDeclarationsChanged": false,
+  "proAppChanged": false,
+  "physicalMicrophoneAccuracyTested": false
+}
