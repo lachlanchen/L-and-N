@@ -2,6 +2,8 @@
   "date": "2026-09-27",
   "scope": "English (US) store copy only: iOS and the main Google Play app",
   "source_baseline": "c9bf6b7ca42cb2910f0a3b041afb671e2bf38a7a",
+  "google_followup_receipt": "store-copy-google-review-20260927.json",
+  "observation_scope": "Initial copy correction and provider observations through 14:39 UTC. The linked follow-up supersedes the Google staged-only status; Apple was not written again.",
   "apple": {
     "bundle_id": "art.lazying.landn",
     "version": "1.0.8",

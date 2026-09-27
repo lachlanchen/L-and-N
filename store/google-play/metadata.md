@@ -2,11 +2,13 @@
 
 ## Copy status — September 27, 2026
 
-The short and full descriptions below are staged locally for the next normal
-listing submission for `art.lazying.landn`. They have not been saved or submitted
-to Play Console: a listing change would need review. The fresh publishing
-overview showed no pending changes; no new review was started for this copy task.
-See the [applied/staged receipt](../artifacts/store-copy-20260927.json).
+The short and full descriptions below were saved and submitted once for
+`art.lazying.landn` after a fresh overview confirmed no pending changes.
+The final review payload contained exactly these two English (US) fields.
+Automatic quick checks completed; Console confirms **Your changes are now in
+review**. This is not approval or confirmation of public availability. Managed publishing
+remains off. Both saved fields matched a fresh provider readback exactly.
+See the [text-only review receipt](../artifacts/store-copy-google-review-20260927.json).
 The existing one-time curriculum unlock was verified active, without changing
 it. Pro, app identity, commercial settings, URLs and privacy declarations are
 outside this change.
@@ -24,11 +26,11 @@ outside this change.
 - Website: https://l-and-n.lazying.art
 - Privacy policy: https://l-and-n.lazying.art/privacy.html
 
-### Short description — staged
+### Short description — submitted for review
 
 Hear L and N, practise one word, and replay your own pronunciation.
 
-### Full description — staged
+### Full description — submitted for review
 
 Do light and night sound too similar? L & N helps you practise hearing and saying the difference in English, Mandarin and Cantonese.
 
