@@ -3,8 +3,11 @@
 The Mac Catalyst target shares L & N's lessons, listening exercises, progress,
 word recognition and acoustic analysis with the Apple app. It uses the same
 `art.lazying.landn` bundle and existing App Store record. The Mac version is
-independently numbered **1.0.0 (1)**; iOS and watchOS remain **1.0.6 (16)**.
-Store submission and availability are recorded separately in release evidence.
+independently numbered: **1.0.0 (1)** is in review and **1.0.0 (2)** is the
+newly qualified candidate with the latest Practice, Listen and recording-storage
+fixes. iOS/watchOS **1.0.9 (20)** has its own submission. Check the current
+[formal release record](../store/artifacts/formal-release-20260928.json) for
+provider state; a built or uploaded candidate is not a submitted/public app.
 
 The minimum deployment target is macOS 12. A universal release includes Intel
 and Apple silicon. Recording uses AVAudioEngine and Apple's Speech framework;

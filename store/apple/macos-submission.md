@@ -1,4 +1,27 @@
-# Mac submission — 2026-09-25
+# Mac submissions
+
+## September 28 — qualified build 2; existing build 1 review preserved
+
+Mac Catalyst **1.0.0 (2)** contains the latest Practice and Listen layout fixes,
+pair hold-to-repeat/Stop, recording-history improvements and more resilient,
+space-efficient replay storage. It is built for Intel and Apple silicon from
+the same functional app source as the new iOS/Android test releases, with an
+independent Mac build number. Apple server validation and upload passed; build2
+is VALID and available in the existing internal TestFlight group.
+
+12 actual Debug Catalyst checks passed on the Intel virtual Mac, including
+three synthetic capture/storage cycles, reload/replay, fixed control geometry,
+language/lesson navigation and repeated denied/silent-capture recovery. There
+is no physical microphone, audible-output or Apple silicon runtime claim.
+The signed App Store archive was validated, not directly installed as a store
+download. Existing recordings and shared host services were preserved.
+
+The original **1.0.0 (1)** review is still **In Review**, unchanged. Replacing it
+would restart the queue; the owner's explicit queue choice is pending. Do not
+call build 2 a formal submission. See the
+[current artifact and provider state](../artifacts/formal-release-20260928.json).
+
+## September 25 — first submission
 
 L & N **1.0.0 (1)** was submitted at **15:54 UTC**. App Store Connect confirmed
 **Waiting for Review** for the exact processed universal Mac Catalyst build.

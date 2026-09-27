@@ -39,7 +39,11 @@
     "packageSha256": "c33b00d9d778aee0d8aa43f8dcc1f476a635dc345511e360a40fa3e61fb958f1",
     "architectures": ["x86_64", "arm64"],
     "qa": "12 Debug Catalyst checks passed, including database commit/reload/replay and capture recovery; no physical microphone claim",
-    "state": "Signed and exported; Apple validation pending; original build 1 remains IN_REVIEW",
+    "buildId": "01861a6a-ad3d-4eca-b3f6-355bf5dcfc1e",
+    "state": "VALID and IN_BETA_TESTING internally; original build 1 remains IN_REVIEW",
+    "internalAttached": true,
+    "originalFormalBuild": 1,
+    "formalReplacementSubmitted": false,
     "replacementAuthorization": "Owner asked to include Mac; explicit queue-replacement choice requested"
   },
   "pricingChanged": false,

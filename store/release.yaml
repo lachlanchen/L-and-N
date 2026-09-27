@@ -1,7 +1,7 @@
 app:
   name: L & N
-  version: 1.0.11
-  build: 21
+  version: 1.0.12
+  build: 22
   owner: LazyingArt LLC
   support_email: echomind@lazying.art
   marketing_url: https://l-and-n.lazying.art
@@ -32,50 +32,57 @@ release:
 platforms:
   pwa:
     status: production_live
-    release: pair-recovery-5dc9f0b1d981c84aa1868a8e2d3ff57dc0a567a66827d6673e55a878f0da06b7
+    release: practice-storage-977f0d9fa608b7cdf8c3070649bd8b09d6fa57445d6467cd8bcfdc6562e45ec7
     support_patch_source: cf985732ac165fc192a6dba6a43ecc95ff82dcf1
     support_patch_note: earlier September 24 privacy, test APK, and speech gateway patch; backend unchanged by subsequent web releases
-    source_commit: 19d3150c9c9b1fa86c704bb8a74c24073dcc0797
-    main_asset: assets/index-4J3zDHT7.js
-    rollback: playback-67039936d2b6db615ba2a05a9afedfef2c5b98f100433bfd2efc36416c6d8e1f
-    artifact_manifest: store/artifacts/ios-pair-recovery-release.json
+    source_commit: 0c70f453d4485e33509fd413dbd56c285e83467b
+    main_asset: assets/index-h-NWMo7U.js
+    rollback: listen-loop-1d30c65c5115cecd699dba12add686d9a9adc45e695c6c83e255e8cdfa99a2ec
+    artifact_manifest: store/artifacts/practice-storage-test-release.json
   android:
     min_sdk: 24
     target_sdk: 36
     artifact: android/app/build/outputs/bundle/freeRelease/app-free-release.aab
-    status: production_1_0_10_build20_published; internal_1_0_11_build21_available; production_build21_in_review_2026_09_26_quick_checks_complete
+    status: production_1_0_11_build21_published; internal_1_0_12_build22_available; production_build22_in_review_2026_09_28_quick_checks_complete
+    artifact_manifest: store/artifacts/formal-release-20260928.json
     store_url: https://play.google.com/store/apps/details?id=art.lazying.landn
   ios:
     minimum_os: 15.0
-    artifact: /Users/lachlanchen/Projects/L-And-N/release/ios-1.0.8-19/export/App.ipa
+    artifact_sha256: db0171a2a7c68f9d33c7f6a3492cf5df414bda670f608be38ee81a793ecf708a
     app_store_id: 6808872450
-    status: 1_0_8_build19_approved_and_manually_released_2026_09_27_ready_for_sale; public_us_hk_listing_still_1_0_6_during_propagation
-    artifact_manifest: store/artifacts/ios-release-1.0.8.json
+    status: production_1_0_8_build19_released; 1_0_9_build20_waiting_for_review_manual_release
+    artifact_manifest: store/artifacts/formal-release-20260928.json
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:
     minimum_os: 11.0
     embedded_in: ios
-    status: embedded_in_approved_released_ios_build19
+    status: embedded_in_ios_build20_waiting_for_review; previous_build19_released
+  macos:
+    minimum_os: 12.0
+    version: 1.0.0
+    candidate_build: 2
+    status: build1_in_review_unchanged; build2_valid_internal_testflight_available; replacement_choice_pending
+    artifact_manifest: store/artifacts/formal-release-20260928.json
 
 testing:
   android:
-    version: 1.0.11
-    build: 21
+    version: 1.0.12
+    build: 22
     track: internal
     status: available_to_internal_testers
     url: https://play.google.com/apps/internaltest/4701251861700553150
-    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.11-build21-test.apk
-    direct_apk_sha256: 0c01334d03a6006bd0a94c5f0e03ceb6e3697d495468026a0bdbb6c41d01c8a8
-    artifact_manifest: store/artifacts/native-playback-controls-release.json
+    direct_apk_url: https://l-and-n.lazying.art/downloads/L-and-N-1.0.12-build22-test.apk
+    direct_apk_sha256: d270d3707f45fd2caec80fecd92a7228f95195c25e1522519e02d23c0095924e
+    artifact_manifest: store/artifacts/practice-storage-test-release.json
   ios_watchos:
-    version: 1.0.8
-    build: 19
+    version: 1.0.9
+    build: 20
     internal_group: L & N Internal Testers
     internal_status: testing
     public_group: L & N Public Beta
-    public_status: build18_approved; build19_beta_submission_refused_closed_version_after_formal_release
-    public_candidate_state: ready_for_beta_submission
-    artifact_manifest: store/artifacts/ios-release-1.0.8.json
+    public_status: build20_waiting_for_beta_review
+    public_candidate_state: waiting_for_beta_review
+    artifact_manifest: store/artifacts/practice-storage-test-release.json
     public_url: https://testflight.apple.com/join/CpkT8m9C
     public_tester_limit: 100
     automatic_tester_notification: true

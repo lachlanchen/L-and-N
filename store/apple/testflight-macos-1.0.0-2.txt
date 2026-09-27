@@ -1,0 +1,9 @@
+Mac build 2 includes the latest Practice and Listen fixes: fixed-position recording controls, feedback below the controls, hold a pair to repeat it, and inline Stop without moving the results.
+
+Recording storage is more resilient. A smaller AAC replay copy is used only when it reduces space; original microphone audio still drives recognition and analysis. Older saved takes remain readable. Update without uninstalling or clearing data.
+
+Please test with a real Mac microphone: record the displayed word, check waveform and recognized text, close/reopen, and replay from Progress. Try English, Mandarin and Cantonese, repeated light/night -> low/no -> light/night, hold-to-repeat and Stop, and Command-1/2/3/4 and Command-R.
+
+Debug Mac Catalyst UI/storage/reload tests passed on an Intel virtual Mac. That machine has no working microphone/audio output; synthetic capture verifies mechanics, not physical speech accuracy. The signed release contains Intel and Apple silicon builds; Apple silicon runtime behavior is not yet verified.
+
+No new offline transcription mode, account or purchase change is included.
