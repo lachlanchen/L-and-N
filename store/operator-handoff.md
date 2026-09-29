@@ -2,18 +2,23 @@
 
 Updated: 2026-09-30
 
-This is the secret-free, durable handoff. The live local noVNC URL, process ownership, browser targets, private artifact delivery receipt, and shared-profile caveats are recorded in the ignored file `.runtime/store/handoff.md`.
+This is the secret-free, durable handoff. Current browser ownership and relaunch details are in ignored `.runtime/browser-handoff.md`; historical private delivery and account operations remain in `.runtime/store/handoff.md`.
 
 ## Pro update — September 30
 
 Android Pro1.0.12(22) is qualified against the released Apple1.0.9(20) feature
 baseline. The Pro update reminder now uses its own store destination. All267
-web tests and installed signed Pro emulator checks passed. Listing text is
-saved and verified; the bundle upload failed before transfer after Google
-signed the browser out. Owner sign-in is needed before resuming the existing
-internal draft and replacing the older production candidate. The latest Pro
-build has **not been submitted**. Initial provider readback still showed Pro10
-in review, saved production11 and internal17. See the
+web tests and installed signed Pro emulator checks passed. After sign-in in
+the isolated project browser, the accepted bundle was published internally
+and reused for production. Pro22 is **available to internal testers** and
+**in production review**, confirmed by fresh Console navigation. The older
+Pro10 review was restarted with owner authority; saved11 was superseded.
+Existing countries, pricing and managed publishing OFF are unchanged; full
+publication follows approval. Corrected listing text is included, and existing
+Data safety answers were verified without edits. The privacy URL works, but
+Google's automated DNS warning needed its offered incorrect-check review path;
+review acceptance is not a guarantee of approval. No Apple/free-Android action.
+See the
 [Pro record](artifacts/pro-release-1.0.12.json) and ignored
 `.runtime/pro-release-20260930/handoff.md` for exact resume/ownership details.
 

@@ -1,6 +1,6 @@
 # Google Play submission
 
-## September 30 HKT — Pro 1.0.12 / 22 qualified; sign-in required to submit
+## September 30 HKT — Pro 1.0.12 / 22 internal testing and production review
 
 Fresh Pro Console readback showed its original production build10 still in
 review, an older build11 saved, and internal17 available. The latest Pro22
@@ -12,11 +12,22 @@ Pro emulator playback/capture/entitlement checks passed. AAB and tested APK
 contain identical web assets. Updated English listing text was saved and read
 back, including current recognition consent, local history and pair looping.
 
-The upload failed before transfer when the Google session expired. The new
-build is **not yet submitted**. Resume the existing internal draft after sign-in,
-reconcile the bundle library before retrying, and promote the tested bundle
-to replace the older Pro production candidate. Preserve existing pricing,
-172 countries and managed publishing OFF. See
+After renewed sign-in, the reconciled upload succeeded. Pro22 is **available
+to internal testers** on an active track: [join the Pro test](https://play.google.com/apps/internaltest/4701371187848783703).
+The same accepted bundle was selected from the library for production release3.
+Fresh Console navigation at 23:31 UTC September29 (07:31 HKT September30)
+confirmed **Your changes are now in review**, with only build22 as the current
+production candidate and no unsubmitted changes. The owner-authorized restart
+replaced the old build10 review and superseded saved build11. Existing pricing,
+172 countries and managed publishing OFF remain; full release follows approval.
+This is submission, not approval or verified public availability.
+
+The existing Data safety answers already matched optional, encrypted,
+ephemeral voice processing and were left unchanged. Google's automated privacy
+URL DNS warning persisted despite HTTP200 and successful Google public DNS
+readback. Its offered incorrect-check review route allowed submission; the
+warning was not claimed to be technically fixed and may still be reviewed.
+No free-Android, Apple, Mac or web deployment was changed. See
 [Pro qualification and status](../artifacts/pro-release-1.0.12.json).
 
 ## September 28 HKT — 1.0.12 / 22, latest submission
