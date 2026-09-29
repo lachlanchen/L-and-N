@@ -50,7 +50,7 @@ platforms:
     minimum_os: 15.0
     artifact_sha256: db0171a2a7c68f9d33c7f6a3492cf5df414bda670f608be38ee81a793ecf708a
     app_store_id: 6808872450
-    status: production_1_0_8_build19_released; 1_0_9_build20_waiting_for_review_manual_release
+    status: production_1_0_8_build19_released; 1_0_9_build20_ready_for_sale_manual_release; storefront_propagation_pending
     artifact_manifest: store/artifacts/formal-release-20260928.json
     store_url: https://apps.apple.com/app/l-n-speech-practice/id6808872450
   watchos:

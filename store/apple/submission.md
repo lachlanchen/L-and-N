@@ -1,9 +1,12 @@
 # Apple App Store submission
 
-## September 28 HKT — iOS/watchOS 1.0.9 (20)
+## September 29 HKT — iOS/watchOS 1.0.9 (20) released
 
-**Waiting for Review**, submitted once using the exact qualified TestFlight
-build. Manual release after approval is preserved; this is not public release.
+Apple completed review and the exact qualified build is now
+**READY_FOR_SALE / READY_FOR_DISTRIBUTION** after the owner-authorized manual
+release request. The provider release completed at 09:29 HKT. The public US/HK
+lookup still returned 1.0.8 at 17:30 HKT while storefront propagation catches
+up; the public download is therefore not independently verified yet.
 The new version includes stable Practice controls, resilient recording storage,
 smaller replay copies when beneficial, and Listen hold-to-repeat/inline Stop.
 Existing recordings remain readable. No cloud service, price, purchase, country
@@ -19,6 +22,10 @@ The prior production1.0.8(19) is preserved. Mac is a separately qualified lane.
 Synthetic capture verifies storage and geometry, not physical speech accuracy.
 See [formal release evidence](../artifacts/formal-release-20260928.json) and
 [candidate qualification](../artifacts/practice-storage-test-release.json).
+
+Do not advance `public/app-updates.json` until a public lookup returns 1.0.9;
+otherwise the PWA could direct users to a version that has not reached their
+storefront. No second release request is permitted.
 
 ## September 27 — iOS/watchOS 1.0.8 (19), approved and released
 

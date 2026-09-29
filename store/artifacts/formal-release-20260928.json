@@ -10,8 +10,12 @@
     "reviewId": "66931f1e-c099-4ea3-81f5-89604efab757",
     "ipaSha256": "db0171a2a7c68f9d33c7f6a3492cf5df414bda670f608be38ee81a793ecf708a",
     "embeddedWatchBuild": 20,
-    "state": "WAITING_FOR_REVIEW",
+    "state": "READY_FOR_SALE",
+    "appVersionState": "READY_FOR_DISTRIBUTION",
     "submittedAt": "2026-09-27T17:02:46Z",
+    "releaseRequestedAt": "2026-09-29T09:29:46.637722Z",
+    "releasedAt": "2026-09-29T09:29:46.637722Z",
+    "publicListingVerification": "Apple provider is READY_FOR_SALE; US/HK public lookup still returns 1.0.8 during storefront propagation (2026-09-29T09:30:29Z). Do not advance the web update manifest until 1.0.9 is publicly returned.",
     "releaseType": "MANUAL",
     "screenshots": "15 inherited genuine iPhone/iPad/Watch images, all COMPLETE",
     "metadata": "Staged English description and 1.0.9 release notes saved and read back; optional subtitle unchanged"

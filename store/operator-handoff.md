@@ -6,8 +6,7 @@ This is the secret-free, durable handoff. The live local noVNC URL, process owne
 
 ## Latest formal submissions — September 28
 
-iOS/watchOS **1.0.9 (20)** is **Waiting for Review**, manual release after
-approval. Android **1.0.12 (22)** is **In Review**, quick checks complete, full
+iOS/watchOS **1.0.9 (20)** passed review and is now **READY_FOR_SALE / READY_FOR_DISTRIBUTION** after the owner-authorized manual release request. Apple’s public US/HK lookup still returns 1.0.8 while storefront propagation completes; the web update manifest remains unchanged until 1.0.9 is publicly visible. Android **1.0.12 (22)** is **In Review**, quick checks complete, full
 rollout after approval with managed publishing unchanged/off. Exact previously
 qualified test binaries were reused. Internal testing remains available on both
 stores; the public iOS20 beta has its own pending external review.
