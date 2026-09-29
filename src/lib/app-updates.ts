@@ -35,19 +35,29 @@ export function newerVersion(candidate: unknown, installed: string): boolean {
   return false
 }
 export function nativeUpdateFromManifest(data: unknown, platform: string, installed: string, appId: string): AppUpdate | null {
-  if (appId !== 'art.lazying.landn' || (platform !== 'ios' && platform !== 'android')) return null
+  const edition = nativeRelease(platform, appId)
+  if (!edition) return null
   if (!data || typeof data !== 'object') return null
   const manifest = data as { schema?: unknown; platforms?: Record<string, unknown> }
   if (manifest.schema !== 1) return null
-  const release = manifest.platforms?.[platform] as { version?: unknown; status?: unknown; appId?: unknown } | undefined
+  const release = manifest.platforms?.[edition.key] as { version?: unknown; status?: unknown; appId?: unknown } | undefined
   if (!release || release.status !== 'public' || release.appId !== appId || !newerVersion(release.version, installed)) return null
   const version = release.version as string
   // The server cannot supply arbitrary URLs, executable code, or mandatory updates.
-  return { id: `${platform}-${version}`, kind: 'native', version, url: platform === 'ios' ? APP_STORE_URL : GOOGLE_PLAY_URL }
+  return { id: `${edition.key}-${version}`, kind: 'native', version, url: edition.url }
+}
+function nativeRelease(platform: string, appId: string): { key: string; url: string } | null {
+  if (platform === 'android' && appId === 'art.lazying.landn.pro') {
+    return { key: 'androidPro', url: 'https://play.google.com/store/apps/details?id=art.lazying.landn.pro' }
+  }
+  if (appId !== 'art.lazying.landn') return null
+  if (platform === 'ios') return { key: platform, url: APP_STORE_URL }
+  if (platform === 'android') return { key: platform, url: GOOGLE_PLAY_URL }
+  return null
 }
 export async function checkNativeUpdate(platform: string): Promise<AppUpdate | null> {
   const info = await NativeApp.getInfo()
-  if (info.id !== 'art.lazying.landn') return null
+  if (!nativeRelease(platform, info.id)) return null
   // Native HTTP avoids WebView CORS without weakening the site's origin policy.
   // Sends no recording, identifier, installed version or account data.
   const response = await CapacitorHttp.get({

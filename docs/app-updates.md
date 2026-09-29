@@ -11,8 +11,10 @@ The installed version comes from Capacitor App. A small first-party
 `https://l-and-n.lazying.art/app-updates.json` response lists verified **public**
 store versions, separately for iOS and Android. Compare dotted version numbers
 numerically (1.0.10 is newer than 1.0.9); never prompt a beta user to downgrade to
-an older public release. The main app ID is checked, so the separate Pro package
-is not inadvertently routed to the free listing. The submitted Mac build is not
+an older public release. Android Pro uses its own `androidPro` entry and fixed
+Pro store link. A free-app release never prompts Pro users, and a missing or
+unreleased Pro entry remains silent. Each entry must match the installed package.
+The submitted Mac build is not
 changed and Mac prompts are excluded from this implementation.
 
 Checks use [Capacitor's native HTTP API](https://capacitorjs.com/docs/apis/http),

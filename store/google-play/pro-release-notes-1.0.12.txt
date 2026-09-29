@@ -1,0 +1,3 @@
+<en-US>
+Latest L & N improvements, with every pair included. Tap a pair to hear both words, or hold to repeat until Stop. Practice controls stay fixed while recording and scoring. History loads older attempts as you scroll; saved audio has more reliable storage and clearer warnings. Short-word checks reject unrelated transcripts. Optional update reminders now link to the Pro listing. Update without uninstalling to preserve your history.
+</en-US>
