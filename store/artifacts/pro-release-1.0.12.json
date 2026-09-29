@@ -1,0 +1,33 @@
+{
+  "package": "art.lazying.landn.pro",
+  "version": "1.0.12",
+  "build": 22,
+  "applicationSourceCommit": "c720696adbd4448625200da4fa0aadf7c75c9ce9",
+  "sharedFeatureBaseline": "0c70f453d4485e33509fd413dbd56c285e83467b",
+  "appleParityTarget": "Released iOS/watchOS 1.0.9 (20); shared lessons, layout, playback, history and scoring improvements, with Android-specific recording and consent-based cloud recognition",
+  "proOnlyAdaptation": "Optional update reminders use a separate androidPro manifest entry and fixed Pro Play link; only verified public versions can prompt",
+  "aabSha256": "27b3b1a4857a3a942e0a0b3dfb546b6f64fa4f8c0a86c07cfa947e210c65e72a",
+  "apkSha256": "dd1659b391f9733327544035ec198687d74ded6a27a85b2b87964e0e9aff17bf",
+  "webAsset": "assets/index-pSVmoqjP.js",
+  "webAssetSha256": "d3f89b170775232ba986fc3537ca8e7fbc885e11369808f138174ff9ace9d00f",
+  "qualification": {
+    "webTestsPassed": 267,
+    "lintAndTypecheck": "passed",
+    "androidReleaseLintAndUnitTask": "passed; existing Android unit task contains one smoke test",
+    "signatures": "APK verified with established upload certificate; signed AAB verified",
+    "installedEmulator": "Signed Pro release installed on existing API34 emulator",
+    "proEntitlement": "All-owned status, restore and purchase methods return without billing sheet; advanced words accessible in all three languages",
+    "playback": "Each language pair1/pair2/pair1/pair1 completed both real audio sources; long hold repeated three pairs and Stop worked",
+    "capture": "Two silent emulator captures recovered with truthful error, no invented score and fixed Record geometry",
+    "navigation": "Learn direct N and Progress render",
+    "physicalMicrophoneAccuracyTested": false
+  },
+  "internal": { "state": "qualified, upload pending", "previousBuild": 17 },
+  "production": { "state": "replacement pending", "previousReviewBuild": 10, "supersededSavedBuild": 11, "managedPublishing": false, "countryCount": 172 },
+  "listing": "Current Pro English short/full text saved and read back exactly; existing AI-backed screenshot disclosures applied",
+  "privacyPage": "Existing URL returned HTTP 200 and Google public DNS resolved it; requested Console recheck of prior DNS warning",
+  "priceChanged": false,
+  "iapChanged": false,
+  "otherAppSubmissionsChanged": false,
+  "webDeployed": false
+}
