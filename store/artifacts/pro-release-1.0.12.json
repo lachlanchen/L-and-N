@@ -15,6 +15,7 @@
     "lintAndTypecheck": "passed",
     "androidReleaseLintAndUnitTask": "passed; existing Android unit task contains one smoke test",
     "signatures": "APK verified with established upload certificate; signed AAB verified",
+    "bundleApkParity": "All 269 bundled web assets have identical bytes in AAB and tested APK; APK alignment verified",
     "installedEmulator": "Signed Pro release installed on existing API34 emulator",
     "proEntitlement": "All-owned status, restore and purchase methods return without billing sheet; advanced words accessible in all three languages",
     "playback": "Each language pair1/pair2/pair1/pair1 completed both real audio sources; long hold repeated three pairs and Stop worked",
@@ -22,8 +23,8 @@
     "navigation": "Learn direct N and Progress render",
     "physicalMicrophoneAccuracyTested": false
   },
-  "internal": { "state": "qualified, upload pending", "previousBuild": 17 },
-  "production": { "state": "replacement pending", "previousReviewBuild": 10, "supersededSavedBuild": 11, "managedPublishing": false, "countryCount": 172 },
+  "internal": { "state": "qualified; upload failed before transfer when Google session expired; new sign-in required", "previousBuild": 17, "trackId": "4701371187848783703", "draftReleaseId": "6", "uploaded": false },
+  "production": { "state": "build 10 still in review at initial readback; latest build 22 not yet submitted", "previousReviewBuild": 10, "supersededSavedBuild": 11, "managedPublishing": false, "countryCount": 172 },
   "listing": "Current Pro English short/full text saved and read back exactly; existing AI-backed screenshot disclosures applied",
   "privacyPage": "Existing URL returned HTTP 200 and Google public DNS resolved it; requested Console recheck of prior DNS warning",
   "priceChanged": false,

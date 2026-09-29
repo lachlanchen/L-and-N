@@ -1,5 +1,24 @@
 # Google Play submission
 
+## September 30 HKT — Pro 1.0.12 / 22 qualified; sign-in required to submit
+
+Fresh Pro Console readback showed its original production build10 still in
+review, an older build11 saved, and internal17 available. The latest Pro22
+is built from the shared features shipped in Apple1.0.9(20), with a Pro-specific
+update-reminder route. All pairs are included, without an in-app purchase.
+
+267 web tests, release lint, signature/alignment checks and actual installed
+Pro emulator playback/capture/entitlement checks passed. AAB and tested APK
+contain identical web assets. Updated English listing text was saved and read
+back, including current recognition consent, local history and pair looping.
+
+The upload failed before transfer when the Google session expired. The new
+build is **not yet submitted**. Resume the existing internal draft after sign-in,
+reconcile the bundle library before retrying, and promote the tested bundle
+to replace the older Pro production candidate. Preserve existing pricing,
+172 countries and managed publishing OFF. See
+[Pro qualification and status](../artifacts/pro-release-1.0.12.json).
+
 ## September 28 HKT — 1.0.12 / 22, latest submission
 
 The exact qualified internal bundle was selected from the library for
