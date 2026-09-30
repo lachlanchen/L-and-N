@@ -38,13 +38,29 @@ describe('light and night static lesson', () => {
     expect(createHash('sha256').update(video).digest('hex')).toBe('da3962c6ce0a34db33d27ed1defa69e0ad6ea08e3f6f7c71f7e205024368f971')
   })
 
-  it('leads to the free drill and asks only for restrained feedback', () => {
-    const drillLink = lesson.querySelector<HTMLAnchorElement>('a[href*="utm_content=light_night_lesson"]')
+  it('keeps the lesson free and offers exact production-store destinations', () => {
+    const storeLinks = [...lesson.querySelectorAll<HTMLAnchorElement>('.store-actions a')]
+    expect(storeLinks.map((link) => link.getAttribute('href'))).toEqual([
+      'https://apps.apple.com/us/app/l-n-speech-practice/id6808872450',
+      'https://play.google.com/store/apps/details?id=art.lazying.landn',
+    ])
+    expect(lesson.querySelector('.app-link')?.getAttribute('href')).toBe('#practice-app')
+    expect(lesson.querySelector('.store-note')?.textContent).toContain('US$0.99')
+    expect(lesson.querySelector('.store-note')?.textContent).toContain('in-app purchases')
+    expect(lesson.querySelector('.tutor-note')).toBeNull()
+    expect(lesson.querySelector('a[href*="testflight"]')).toBeNull()
+  })
+
+  it('uses current word-twice audio captions and retains the historical video transcript', () => {
+    expect(lesson.querySelector('.sound-l .transcript')?.textContent).toContain('Light. Light.')
+    expect(lesson.querySelector('.sound-n .transcript')?.textContent).toContain('Night. Night.')
+    expect(lesson.querySelector('#video-transcript')?.textContent).toContain('The practice word is light.')
+    expect(lesson.querySelector('.steps')?.textContent).not.toContain('lace/nice')
+  })
+
+  it('asks only for restrained feedback without learner recordings', () => {
     const feedbackLink = lesson.querySelector<HTMLAnchorElement>('a[href^="mailto:"]')
 
-    expect(drillLink?.textContent).toContain('free browser drill')
-    expect(drillLink?.getAttribute('href')).toContain('utm_campaign=l_and_n_pronunciation_launch')
     expect(feedbackLink?.getAttribute('href')).toContain('Please%20do%20not%20attach%20a%20voice%20recording')
-    expect(lesson.querySelector<HTMLAnchorElement>('a[href="../../for-tutors/"]')).toBeTruthy()
   })
 })
