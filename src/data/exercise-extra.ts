@@ -1,0 +1,140 @@
+import type { Exercise } from '../types'
+import { addedLocales, type AddedLocale } from './ui-extra'
+
+// Columns match addedLocales. Glosses describe meaning, never recognition targets.
+type Row = readonly [string, string, string, string, string, string, string, string]
+export const glosses: Record<string, Row> = {
+  'brightness; not heavy': ['نور؛ غير ثقيل','luz; ligero','lumière ; léger','光；軽い','빛; 가벼운','ánh sáng; nhẹ','Licht; leicht','свет; лёгкий'],
+  'the dark hours': ['الليل','noche','nuit','夜','밤','đêm','Nacht','ночь'],
+  'not high': ['منخفض','bajo','bas','低い','낮은','thấp','niedrig','низкий'],
+  'a refusal; not any': ['رفض؛ لا شيء','no; ninguno','non ; aucun','いいえ；ない','아니요; 없는','không; không có','nein; kein','нет; никакой'],
+  'to require': ['يحتاج','necesitar','avoir besoin','必要とする','필요로 하다','cần','brauchen','нуждаться'],
+  'to guide': ['يقود','guiar','guider','導く','이끌다','dẫn dắt','führen','вести'],
+  'a bar for lifting': ['رافعة','palanca','levier','てこ','지렛대','đòn bẩy','Hebel','рычаг'],
+  'at no time': ['أبداً','nunca','jamais','決して〜ない','절대 안','không bao giờ','nie','никогда'],
+  'a fastening for a door': ['قفل','cerradura','serrure','錠','자물쇠','khóa','Schloss','замок'],
+  'to tap on a door': ['يطرق الباب','llamar a la puerta','frapper à la porte','ノックする','문을 두드리다','gõ cửa','anklopfen','стучать в дверь'],
+  'unable to walk well': ['أعرج','cojo','boiteux','足が不自由な','절뚝거리는','đi khập khiễng','lahm','хромой'],
+  'what someone is called': ['اسم','nombre','nom','名前','이름','tên','Name','имя'],
+  'delicate fabric; a shoe string': ['دانتيل؛ رباط حذاء','encaje; cordón','dentelle ; lacet','レース；靴ひも','레이스; 신발 끈','ren; dây giày','Spitze; Schnürsenkel','кружево; шнурок'],
+  'pleasant': ['لطيف','agradable','agréable','感じのよい','좋은','dễ chịu','nett','приятный'],
+  'cut timber': ['خشب منشور','madera cortada','bois de construction','製材','목재','gỗ xẻ','Bauholz','пиломатериалы'],
+  'a numeral': ['عدد','número','nombre','数字','숫자','con số','Zahl','число'],
+  'a diving water bird': ['طائر الغوّاص','colimbo','plongeon (oiseau)','アビ（鳥）','아비(물새)','chim lặn','Seetaucher','гагара'],
+  'midday': ['الظهر','mediodía','midi','正午','정오','buổi trưa','Mittag','полдень'],
+  'edge of the mouth': ['شفة','labio','lèvre','唇','입술','môi','Lippe','губа'],
+  'a small bite or pinch': ['عضّة أو قرصة صغيرة','mordisco o pellizco','petite morsure ou pincement','軽くかむ・つまむ','살짝 물기; 꼬집기','cắn hoặc véo nhẹ','kleiner Biss oder Kniff','лёгкий укус или щипок'],
+  'blue': ['أزرق','azul','bleu','青','파란색','xanh lam','blau','синий'],
+  'south': ['الجنوب','sur','sud','南','남쪽','phía nam','Süden','юг'],
+  'old': ['قديم؛ مسنّ','viejo','vieux','古い；年を取った','오래된; 나이 든','cũ; già','alt','старый'],
+  'brain': ['دماغ','cerebro','cerveau','脳','뇌','não','Gehirn','мозг'],
+  'you': ['أنت','tú','vous / tu','あなた','너; 당신','bạn','du','ты / вы'],
+  'reason; to manage': ['سبب؛ يدير','razón; gestionar','raison ; gérer','道理；管理する','이치; 관리하다','lý lẽ; quản lý','Grund; verwalten','причина; управлять'],
+  'a long mark; a queue': ['خط؛ طابور','línea; fila','ligne ; file','線；列','선; 줄','đường; hàng','Linie; Warteschlange','линия; очередь'],
+  'the number 9': ['العدد 9','número 9','nombre 9','数字の9','숫자 9','số 9','Zahl 9','число 9'],
+  'to allow': ['يسمح','permitir','permettre','許す','허용하다','cho phép','erlauben','позволять'],
+  'a mesh for catching': ['شبكة','red','filet','網','그물','lưới','Netz','сеть'],
+  'the top of the thighs when seated; one circuit': ['الحِجر؛ دورة واحدة','regazo; una vuelta','genoux ; un tour','膝の上；一周','무릎 위; 한 바퀴','lòng; một vòng','Schoß; eine Runde','колени; один круг'],
+  'a short sleep': ['غفوة','siesta breve','petite sieste','昼寝','낮잠','giấc ngủ ngắn','Nickerchen','короткий сон'],
+  'a great deal; a plot of land': ['كثير؛ قطعة أرض','mucho; terreno','beaucoup ; terrain','たくさん；区画','많음; 땅 한 구획','nhiều; lô đất','viel; Grundstück','много; участок'],
+  'negation': ['نفي','negación','négation','否定','부정','phủ định','Verneinung','отрицание'],
+  'being alive; a lifetime': ['حياة؛ عمر','vida','vie','生命；人生','생명; 인생','sự sống; cuộc đời','Leben; Lebenszeit','жизнь'],
+  'a cutting blade': ['سكين','cuchillo','couteau','ナイフ','칼','dao','Messer','нож'],
+  'lighted up': ['مضاء','iluminado','éclairé','明かりのついた','불이 켜진','được thắp sáng','beleuchtet','освещённый'],
+  'to make fabric with needles': ['يحيك بالإبر','tejer','tricoter','編む','뜨개질하다','đan','stricken','вязать'],
+  'inside; a Chinese mile': ['داخل؛ وحدة لي الصينية','dentro; li (unidad china)','intérieur ; li (unité chinoise)','中；里（距離の単位）','안; 리(중국 거리 단위)','bên trong; lý (đơn vị Trung Quốc)','innen; Li (chinesisches Längenmaß)','внутри; ли (китайская мера длины)'],
+  'to flow': ['يجري','fluir','couler','流れる','흐르다','chảy','fließen','течь'],
+  'cow; ox': ['بقرة؛ ثور','vaca; buey','vache ; bœuf','牛','소','bò','Kuh; Rind','корова; бык'],
+  'travel': ['سفر','viajar','voyage','旅','여행','du lịch','Reise','путешествие'],
+  'female; woman': ['أنثى؛ امرأة','femenino; mujer','féminin ; femme','女性','여성','nữ; phụ nữ','weiblich; Frau','женщина; женский'],
+  'to connect': ['يربط','conectar','relier','つなぐ','잇다','nối','verbinden','соединять'],
+  'year': ['سنة','año','année','年','해; 연도','năm','Jahr','год'],
+  'road': ['طريق','camino','route','道','길','đường','Straße','дорога'],
+  'anger': ['غضب','ira','colère','怒り','분노','cơn giận','Wut','гнев'],
+  'dragon': ['تنين','dragón','dragon','龍','용','rồng','Drache','дракон'],
+  'farming; farmer': ['زراعة؛ مزارع','agricultura; agricultor','agriculture ; agriculteur','農業；農民','농업; 농부','nông nghiệp; nông dân','Landwirtschaft; Bauer','земледелие; земледелец'],
+  'male; man': ['ذكر؛ رجل','masculino; hombre','masculin ; homme','男性','남성','nam; đàn ông','männlich; Mann','мужчина; мужской'],
+  'difficult': ['صعب','difícil','difficile','難しい','어려운','khó','schwierig','трудный'],
+  'orchid': ['زهرة الأوركيد','orquídea','orchidée','蘭','난초','hoa lan','Orchidee','орхидея'],
+  'farming': ['زراعة','agricultura','agriculture','農業','농업','nông nghiệp','Landwirtschaft','земледелие'],
+  'kind, category': ['نوع؛ فئة','tipo; categoría','type ; catégorie','種類','종류','loại','Art; Kategorie','вид; категория'],
+  'inside, within': ['داخل','dentro','à l’intérieur','内側','안쪽','bên trong','innen','внутри'],
+  'to stand; to establish': ['يقف؛ يؤسّس','estar de pie; establecer','se tenir debout ; établir','立つ；設立する','서다; 세우다','đứng; thành lập','stehen; gründen','стоять; учреждать'],
+  'to accept; to pay in': ['يقبل؛ يودع مالاً','aceptar; ingresar','accepter ; verser','受け入れる；納める','받아들이다; 납부하다','nhận; nộp','annehmen; einzahlen','принимать; вносить'],
+  'spicy, hot': ['حارّ (طعام)','picante','épicé','辛い','매운','cay','scharf','острый (о пище)'],
+  'to press down; the right-falling stroke': ['يضغط؛ ضربة القلم المائلة يميناً','presionar; trazo descendente a la derecha','appuyer ; trait descendant à droite','押さえる；右払い','누르다; 오른쪽 내리긋는 획','ấn; nét sổ chếch phải','drücken; nach rechts fallender Schriftstrich','нажимать; черта вниз вправо'],
+  'strength, force': ['قوة','fuerza','force','力','힘','sức mạnh','Kraft','сила'],
+  'to drown': ['يغرق','ahogarse','se noyer','溺れる','물에 빠지다','chết đuối','ertrinken','тонуть'],
+  'good, fine': ['جيّد','bueno','bon','良い','좋은','tốt','gut','хороший'],
+  'mother; young woman': ['أمّ؛ شابّة','madre; joven','mère ; jeune femme','母；若い女性','어머니; 젊은 여성','mẹ; cô gái','Mutter; junge Frau','мать; молодая женщина'],
+  'to accept; to pay (tax)': ['يقبل؛ يدفع ضريبة','aceptar; pagar impuestos','accepter ; payer un impôt','受け入れる；税を納める','받아들이다; 세금을 내다','nhận; nộp thuế','annehmen; Steuern zahlen','принимать; платить налог'],
+  'happy; joy': ['سعيد؛ فرح','feliz; alegría','heureux ; joie','楽しい；喜び','즐거운; 기쁨','vui; niềm vui','froh; Freude','радостный; радость'],
+  'slow of speech (as in 木讷)': ['قليل الكلام (木讷)','parco en palabras (木讷)','peu loquace (木讷)','口数の少ない（木讷）','말이 어눌한(木讷)','ít nói (木讷)','wortkarg (木讷)','неразговорчивый (木讷)'],
+  'to rely on; to deny': ['يعتمد؛ ينكر','depender; negar','dépendre ; nier','頼る；否認する','의지하다; 부인하다','dựa vào; chối','sich verlassen; abstreiten','полагаться; отрицать'],
+  'to endure; durable': ['يتحمّل؛ متين','soportar; duradero','endurer ; durable','耐える；丈夫な','견디다; 튼튼한','chịu đựng; bền','ertragen; haltbar','терпеть; прочный'],
+  'wolf': ['ذئب','lobo','loup','狼','늑대','sói','Wolf','волк'],
+  'bag, sac, pouch': ['كيس؛ جراب','bolsa; saco','sac ; poche','袋','주머니','túi','Beutel; Sack','мешок; сумка'],
+  'edge, ridge (of a solid)': ['حافة جسم صلب','arista','arête','角；稜','모서리','cạnh','Kante','ребро; грань'],
+  'can; ability': ['يستطيع؛ قدرة','poder; capacidad','pouvoir ; capacité','できる；能力','할 수 있다; 능력','có thể; khả năng','können; Fähigkeit','мочь; способность'],
+  'to crack, to split': ['يشقّ','agrietar; partir','fendre','割れる；裂く','갈라지다','nứt; tách','spalten; reißen','раскалывать'],
+  'nickel (the metal)': ['نيكل','níquel','nickel','ニッケル','니켈','niken','Nickel','никель'],
+  'material; to expect': ['مادّة؛ يتوقّع','material; prever','matériau ; prévoir','材料；予想する','재료; 예상하다','vật liệu; dự liệu','Material; erwarten','материал; ожидать'],
+  'urine': ['بول','orina','urine','尿','소변','nước tiểu','Urin','моча'],
+  'forest, woods': ['غابة','bosque','forêt','林','숲','rừng','Wald','лес'],
+  'you (polite)': ['أنت (بأدب)','usted','vous (poli)','あなた（敬称）','당신(높임)','bạn (kính ngữ)','Sie','Вы (вежливо)'],
+  'cool, chilly': ['بارد معتدل','fresco','frais','涼しい','서늘한','mát; se lạnh','kühl','прохладный'],
+  'zero': ['صفر','cero','zéro','ゼロ','영','số không','null','ноль'],
+  'peaceful, tranquil': ['هادئ؛ مسالم','tranquilo','paisible','穏やか','평온한','yên bình','friedlich','спокойный'],
+  'to fall, to drop': ['يسقط','caer','tomber','落ちる','떨어지다','rơi','fallen','падать'],
+  'a promise': ['وعد','promesa','promesse','約束','약속','lời hứa','Versprechen','обещание'],
+  'egg, ovum': ['بيضة','huevo','œuf','卵','알','trứng','Ei','яйцо'],
+  'warm': ['دافئ','cálido','chaud','暖かい','따뜻한','ấm','warm','тёплый'],
+  'strategy; roughly': ['استراتيجية؛ تقريباً','estrategia; aproximadamente','stratégie ; approximativement','戦略；おおよそ','전략; 대략','chiến lược; sơ lược','Strategie; ungefähr','стратегия; примерно'],
+  'cruel; to abuse': ['قاسٍ؛ يسيء','cruel; maltratar','cruel ; maltraiter','残酷；虐待する','잔인한; 학대하다','tàn ác; ngược đãi','grausam; misshandeln','жестокий; мучить'],
+  'a plough': ['محراث','arado','charrue','すき','쟁기','cái cày','Pflug','плуг'],
+  'mud': ['طين','barro','boue','泥','진흙','bùn','Schlamm','грязь'],
+  'soft, tender (of food)': ['طريّ (طعام)','blando (comida)','tendre (aliment)','柔らかい（食べ物）','부드러운(음식)','mềm (thức ăn)','weich (Speise)','мягкий (о пище)'],
+  'cheap; honest': ['رخيص؛ نزيه','barato; honrado','bon marché ; honnête','安い；廉直な','저렴한; 청렴한','rẻ; liêm khiết','billig; ehrlich','дешёвый; честный'],
+  'sticky': ['لزج','pegajoso','collant','粘る','끈적한','dính','klebrig','липкий'],
+  'spirit; effective': ['روح؛ فعّال','espíritu; eficaz','esprit ; efficace','霊；効き目のある','영혼; 효험 있는','linh hồn; linh nghiệm','Geist; wirksam','дух; действенный'],
+  'to hunt': ['يصطاد','cazar','chasser','狩る','사냥하다','săn','jagen','охотиться'],
+  'the surname Nip (聶)': ['لقب نيب (聶)','apellido Nip (聶)','nom Nip (聶)','姓のニプ（聶）','성씨 닙(聶)','họ Nhiếp (聶)','Familienname Nip (聶)','фамилия Нип (聶)'],
+  'material': ['مادّة','material','matériau','材料','재료','vật liệu','Material','материал'],
+  'a net; the surname Lo': ['شبكة؛ لقب لو','red; apellido Lo','filet ; nom Lo','網；姓のロー','그물; 성씨 로','lưới; họ La','Netz; Familienname Lo','сеть; фамилия Ло'],
+  'to move, to shift': ['ينقل؛ يزيح','mover','déplacer','移す','옮기다','dời','verschieben','перемещать'],
+  'to fall; to get off': ['يسقط؛ ينزل','caer; bajarse','tomber ; descendre','落ちる；降りる','떨어지다; 내리다','rơi; xuống xe','fallen; aussteigen','падать; выходить'],
+  'young man; husband': ['شابّ؛ زوج','joven; marido','jeune homme ; mari','青年；夫','젊은 남자; 남편','chàng trai; chồng','junger Mann; Ehemann','молодой мужчина; муж'],
+  'messy, chaotic': ['فوضوي','desordenado','désordonné','乱れた','어지러운','lộn xộn','unordentlich','беспорядочный'],
+  'tender, young': ['طريّ؛ صغير','tierno; joven','tendre ; jeune','柔らかい；若い','부드러운; 어린','non; trẻ','zart; jung','нежный; молодой'],
+}
+
+const cues: Record<string, Row> = {
+  L: ['لامس الحافة خلف الأسنان العليا بطرف اللسان، واترك الهواء يخرج من جانبيه قبل حركة العلّة؛ لا تبدأ برنين أنفي.','Toca la cresta detrás de los dientes superiores con la punta de la lengua. Deja salir el aire por los lados antes de la vocal, sin resonancia nasal inicial.','Touchez la crête derrière les dents du haut avec la pointe de la langue. Laissez l’air passer sur les côtés avant la voyelle, sans résonance nasale initiale.','舌先を上の歯の後ろの歯茎に当て、母音の前に舌の側面から空気を流します。語頭に鼻の響きを加えないように。','혀끝을 윗니 뒤 치조능에 대고 모음 전에 혀 옆으로 공기를 보내세요. 첫소리에 코 울림을 넣지 마세요.','Chạm đầu lưỡi vào gờ lợi sau răng trên, cho khí đi qua hai bên trước nguyên âm; không bắt đầu bằng âm mũi.','Berühre mit der Zungenspitze den Kamm hinter den oberen Zähnen. Lass Luft seitlich vor dem Vokal austreten, ohne nasalen Anlaut.','Коснитесь кончиком языка гребня за верхними зубами. Перед гласным выпускайте воздух по бокам языка, без носового начала.'],
+  N: ['أغلق مجرى الفم باللسان عند الحافة خلف الأسنان العليا، وابدأ برنين عبر الأنف ثم انتقل مباشرة إلى حركة العلّة.','Cierra el paso oral con la lengua en la cresta detrás de los dientes superiores. Empieza con resonancia nasal y pasa directamente a la vocal.','Fermez le passage buccal avec la langue contre la crête derrière les dents du haut. Commencez par une résonance nasale, puis passez à la voyelle.','上の歯の後ろの歯茎に舌を当てて口の通路を閉じ、鼻の響きで始めてから直接母音に移ります。','윗니 뒤 치조능에 혀를 대 입 안 통로를 막으세요. 코 울림으로 시작한 뒤 바로 모음으로 넘어가세요.','Khép đường miệng bằng lưỡi ở gờ lợi sau răng trên, bắt đầu bằng cộng hưởng mũi rồi chuyển thẳng sang nguyên âm.','Verschließe den Mundweg mit der Zunge am Kamm hinter den oberen Zähnen. Beginne mit Nasenresonanz und gehe direkt zum Vokal über.','Перекройте ротовой проход языком у гребня за верхними зубами. Начните с носового резонанса, затем сразу переходите к гласному.'],
+  final: ['الصوت الأخير /{sound}/ أنفي أيضاً؛ أبقه منفصلاً عن الصوت الأول.','La consonante final /{sound}/ también es nasal; distínguela del inicio.','La consonne finale /{sound}/ est aussi nasale ; distinguez-la du début.','語末の /{sound}/ も鼻音です。語頭と区別しましょう。','끝의 /{sound}/도 비음이에요. 첫소리와 구분하세요.','Âm cuối /{sound}/ cũng là âm mũi; tách biệt với âm đầu.','Der Auslaut /{sound}/ ist ebenfalls nasal; trenne ihn vom Anlaut.','Конечный /{sound}/ тоже носовой; отличайте его от начала.'],
+  silentK: ['حرف k المكتوب لا يُنطق.','La k escrita es muda.','Le k écrit est muet.','綴りの k は発音しません。','철자의 k는 발음하지 않아요.','Chữ k viết không được phát âm.','Das geschriebene k ist stumm.','Написанная k не произносится.'],
+  zh2: ['النغمة 2: ارتفاع.','Tono 2: ascendente.','Ton 2 : montant.','第2声：上がる。','2성: 올라가요.','Thanh 2: đi lên.','Ton 2: steigend.','Тон 2: восходящий.'],
+  zh3: ['النغمة 3: منخفضة؛ غالباً يظهر الانخفاض ثم الارتفاع في النطق المنفرد.','Tono 3: bajo; suele bajar y subir al decirlo aislado.','Ton 3 : bas ; souvent descendant puis montant en isolation.','第3声：低く。単独で言うと下がって上がることが多い。','3성: 낮게, 단독 발음에서는 흔히 내려갔다 올라가요.','Thanh 3: thấp; khi đọc riêng thường xuống rồi lên.','Ton 3: tief; isoliert oft fallend-steigend.','Тон 3: низкий; отдельно часто нисходяще-восходящий.'],
+  zh4: ['النغمة 4: هبوط واضح.','Tono 4: descendente marcado.','Ton 4 : chute nette.','第4声：はっきり下がる。','4성: 뚜렷하게 내려가요.','Thanh 4: đi xuống rõ.','Ton 4: deutlich fallend.','Тон 4: резко нисходящий.'],
+  yue4: ['النغمة 4: منخفضة، وقد تهبط.','Tono 4: bajo, puede descender.','Ton 4 : bas, éventuellement descendant.','第4声：低く、下がることもある。','4성: 낮게, 내려갈 수도 있어요.','Thanh 4: thấp, có thể đi xuống.','Ton 4: tief, gegebenenfalls fallend.','Тон 4: низкий, может снижаться.'],
+  yue5: ['النغمة 5: ارتفاع من مستوى منخفض.','Tono 5: ascendente desde abajo.','Ton 5 : montant depuis le bas.','第5声：低い位置から上がる。','5성: 낮은 곳에서 올라가요.','Thanh 5: đi lên từ thấp.','Ton 5: tief beginnend, steigend.','Тон 5: восходящий с низкого уровня.'],
+  yue6: ['النغمة 6: منخفضة مستوية.','Tono 6: bajo y sostenido.','Ton 6 : bas et plat.','第6声：低く平ら。','6성: 낮고 평평하게.','Thanh 6: thấp và ngang.','Ton 6: tief und eben.','Тон 6: низкий ровный.'],
+  yueVariation: ['بعض المتحدثين يدمجون n/l في الكانتونية؛ هذا التمرين يدرّب الفرق ولا يحكم على لهجتهم.','Algunos hablantes cantoneses fusionan n/l; este ejercicio entrena el contraste, no juzga su acento.','Certains locuteurs cantonais fusionnent n/l ; cet exercice travaille le contraste, sans juger leur accent.','広東語では n/l を区別しない話者もいます。この練習は区別を学ぶもので、方言を否定するものではありません。','광둥어에서 n/l을 합쳐 말하는 화자도 있어요. 이 연습은 대조 훈련이지 억양을 판단하는 것이 아니에요.','Một số người nói tiếng Quảng Đông nhập n/l; bài này luyện sự phân biệt, không đánh giá giọng của họ.','Manche kantonesischen Sprecher verschmelzen n/l. Diese Übung trainiert den Kontrast, ohne ihren Akzent zu bewerten.','Некоторые носители кантонского не различают n/l; упражнение тренирует контраст, а не оценивает их акцент.'],
+}
+
+export function extraExercise(exercise: Exercise, locale: AddedLocale, englishGloss: string) {
+  const column = addedLocales.indexOf(locale)
+  const translation = glosses[englishGloss]?.[column]
+  if (!translation) throw new Error(`Missing exercise gloss: ${exercise.id}`)
+  const parts = [cues[exercise.target][column]]
+  // Use the existing IPA—not translated spelling—to identify nasal word endings.
+  const ending = exercise.ipa.replace(/[˥˦˧˨˩ː/\s]/g, '').match(/([mnŋ])$/)?.[1]
+  if (ending) parts.push(cues.final[column].replace('{sound}', ending))
+  if (['en-knock-lock', 'en-knife-life', 'en-knit-lit'].includes(exercise.id)) parts.push(cues.silentK[column])
+  if (exercise.tone) {
+    const key = `${exercise.language === 'zh-CN' ? 'zh' : 'yue'}${exercise.tone}`
+    if (cues[key]) parts.push(cues[key][column])
+  }
+  if (exercise.id === 'yue-nei-lei') parts.push(cues.yueVariation[column])
+  return { cue: parts.join(' '), translation }
+}

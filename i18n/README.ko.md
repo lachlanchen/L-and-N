@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@ L-and-N은 어려운 소리 대조를 짧은 연습 순환으로 바꿉니다. �
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## UI 12개 언어, 연습 3개 언어
+
+현재 소스는 아래 프로필의 11개 UI 언어와 기존 광둥어를 지원해요. 메뉴, 학습 원리, 모델 라벨, 점수 피드백, 개인정보/구매 메시지와 118개 단어 뜻을 번역했어요. 추가된 8개 언어에는 관련 성조와 끝소리를 포함한 간결한 L/N 안내를 제공해요. UI 언어를 바꿔도 연습 단어, 음성, 채점은 그대로예요. 아랍어는 오른쪽에서 왼쪽으로 표시해요. 네이티브 공개 여부는 출시 기록을 확인하세요. 별도의 Watch 앱 언어 확장은 이 변경에 포함되지 않아요.
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[UI 12개 언어, 연습 3개 언어](../docs/LOCALIZATION.md)
+
+## 앱 보기
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## 주요 기능
 
-- 영어 최소 대립쌍 10개와 20단어, 독자적인 표준중국어 및 광둥어 연습을 제공합니다.
+- 최소 대립쌍 59개: 영어 16개, 표준중국어 22개, 광둥어 21개. 뜻과 발음 안내를 UI 언어로 제공해요.
 - 목표 글자나 한자를 강조하고 혀 위치와 공기 흐름을 쉬운 말로 안내합니다.
 - 영어 GPT-SoVITS와 중국어 네이티브 모델 음성이 앱에 포함되어 실시간 TTS가 필요 없습니다.
 - 실시간 파형과 시작 구간 스펙트럼은 무음, 클리핑, 타이밍을 확인하기 위한 것이며 장식적인 정답 미터가 아닙니다.
@@ -27,7 +45,7 @@ L-and-N은 어려운 소리 대조를 짧은 연습 순환으로 바꿉니다. �
 
 ## 근거를 확인하는 점수
 
-로컬 평가기는 유성 시작점과 녹음 품질을 확인한 뒤 저대역 비음 에너지, A1–P0 형식 대리값, 대략적인 F1/F2 간격, 스펙트럼 기울기, 연속성, 제시 단어 인식, 최소 대립 결과를 함께 비교합니다. 언어별 참조 프로필을 사용하고 여러 번의 좋은 녹음이 있을 때만 개인 기준을 조심스럽게 바꿉니다. 근거가 약하거나 충돌하면 신뢰도를 낮추고 다시 녹음하도록 안내합니다.
+인식기가 발화 단어를 판단해요. 상대 단어를 들으면 점수를 제한하고 이유를 알려요. 분석기는 유성 시작점과 녹음 품질을 확인하고, 작은 기기 내 신경망(약 9천 매개변수)으로 첫 300ms가 설측음인지 비음인지 추정해요. 강의 녹음에서 얻은 1만 1천 개 이상의 /l/·/n/ 시작 구간으로 학습했으며 학습에 쓰지 않은 녹음에서 약 89%를 보였어요. 기존 스펙트럼 지표는 약한 보정만 하고, 근거가 약하거나 충돌하면 신뢰도를 낮춰요. 모든 휴대전화나 억양에 검증된 정확도는 아니에요. [모델 설명](../docs/research/onset-model.md).
 
 이는 연습 피드백이며 진단, 억양 판정, 인증된 측정이 아닙니다. 파형만으로 자음을 확정할 수 없고 소리만으로 혀 위치를 유일하게 역산할 수도 없습니다. [연구 보고서](../docs/research/pronunciation-assessment.md)에 L/N, GOP/CTC, 성조, 시각 피드백, 조음 역문제의 근거와 한계를 설명합니다.
 

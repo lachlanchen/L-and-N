@@ -1,4 +1,7 @@
 import type { Exercise, UILanguage } from '../types'
+import type { LegacyUILanguage } from '../i18n'
+import { addedLocales, type AddedLocale } from './ui-extra'
+import { extraExercise } from './exercise-extra'
 
 export interface ExerciseCopy {
   /** Coaching cue shown under the word, in the interface language. */
@@ -14,7 +17,7 @@ export interface ExerciseCopy {
  * never shows English coaching text and an English interface never shows a
  * Chinese-only gloss.
  */
-export const exerciseCopy: Record<UILanguage, Record<string, ExerciseCopy>> = {
+export const exerciseCopy: Record<LegacyUILanguage, Record<string, ExerciseCopy>> = {
   en: {
     'en-light-night': { cue: 'Make the tongue tip narrow and place it forward, near the back of the upper front teeth. Let air escape around its sides.', gloss: 'brightness; not heavy' },
     'en-night-light': { cue: 'Widen the tongue tip against the bony ridge so the mouth is sealed, then let the voiced air resonate through your nose.', gloss: 'the dark hours' },
@@ -501,7 +504,10 @@ export function localizedExercise(
   exercise: Exercise,
   language: UILanguage,
 ): { cue: string; translation: string } {
-  const copy = exerciseCopy[language]?.[exercise.id]
+  if (addedLocales.includes(language as AddedLocale)) {
+    return extraExercise(exercise, language as AddedLocale, exerciseCopy.en[exercise.id]?.gloss ?? '')
+  }
+  const copy = exerciseCopy[language as LegacyUILanguage]?.[exercise.id]
   return {
     cue: copy?.cue ?? exercise.cue,
     translation: copy?.gloss ?? exercise.translation,

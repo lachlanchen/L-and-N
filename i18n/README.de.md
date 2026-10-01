@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@ L-and-N macht aus einem schwierigen Lautkontrast eine kurze Übungsschleife: Zie
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## 12 Oberflächensprachen, drei Übungssprachen
+
+Der aktuelle Quellcode unterstützt die 11 Profilsprachen unten sowie weiterhin Kantonesisch. Menüs, Lernprinzipien, Modellbeschriftungen, Bewertungsfeedback, Datenschutz/Kaufmeldungen und alle 118 Wortbedeutungen sind übersetzt. Die acht neuen Sprachen nutzen kurze L/N-Hinweise mit passenden Ton- und Auslautinformationen. Ein Sprachwechsel ändert weder Übungswörter noch Audio oder Bewertung. Arabisch nutzt Rechts-nach-links-Layout. Native Verfügbarkeit steht in den Release-Belegen; die separate Watch-App wird dadurch nicht erweitert.
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12 Oberflächensprachen, drei Übungssprachen](../docs/LOCALIZATION.md)
+
+## App ansehen
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## Funktionen
 
-- 20 englische Wörter in zehn Minimalpaaren sowie eigene Übungen für Mandarin und Kantonesisch.
+- 59 Minimalpaare: 16 englische, 22 Mandarin- und 21 kantonesische, mit übersetzten Bedeutungen und Hinweisen.
 - Markiert Buchstabe oder Schriftzeichen und erklärt Zungenposition und Luftstrom in klarer Sprache.
 - Englische GPT-SoVITS- und native chinesische Modellaufnahmen sind enthalten; zum Anhören ist kein laufender TTS-Dienst nötig.
 - Live-Wellenform und Anfangsspektrum zeigen Stille, Übersteuerung und Timing, nicht eine erfundene „Richtigkeit“.
@@ -27,7 +45,7 @@ L-and-N macht aus einem schwierigen Lautkontrast eine kurze Übungsschleife: Zie
 
 ## Eine überprüfbare Bewertung
 
-Die lokale Analyse sucht den stimmhaften Beginn, prüft die Aufnahmequalität und kombiniert mehrere Hinweise: tieffrequente nasale Energie, eine A1–P0-ähnliche Näherung, ungefähre F1/F2-Abstände, spektrale Neigung, Kontinuität, Erkennung des vorgegebenen Wortes und Minimalpaar-Kontrast. Sprachabhängige Referenzprofile werden nur nach mehreren guten Aufnahmen vorsichtig personalisiert. Schwache oder widersprüchliche Daten senken die Sicherheit und lösen eine Bitte zur Wiederholung aus.
+Die Erkennung bestimmt das gesprochene Wort; beim Gegenwort wird die Bewertung begrenzt und erklärt. Die Analyse findet den stimmhaften Beginn, prüft die Qualität und nutzt ein kleines lokales Netz (rund neuntausend Parameter) für die ersten 300 ms, um lateral und nasal zu unterscheiden. Es wurde mit über elftausend /l/- und /n/-Anlauten aus Vorlesungsaufnahmen trainiert und erreicht rund 89 % auf Aufnahmen außerhalb des Trainings. Alte Spektralhinweise korrigieren nur leicht; schwache oder widersprüchliche Evidenz senkt die Sicherheit. Das ist keine für jedes Telefon und jeden Akzent validierte Genauigkeit. [Modelldetails](../docs/research/onset-model.md).
 
 Das Ergebnis ist Übungshilfe, keine Diagnose, kein Akzenturteil und keine zertifizierte Messung. Eine Wellenform zeigt Timing und Übersteuerung, beweist aber keinen Konsonanten. Aus Audio lässt sich die Zungenposition nicht eindeutig zurückrechnen. Der [Forschungsbericht](../docs/research/pronunciation-assessment.md) erklärt Methode und Grenzen mit Quellen zu L/N, GOP/CTC, Tönen, visuellem Feedback und artikulatorischer Inversion.
 

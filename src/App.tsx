@@ -124,8 +124,9 @@ function App() {
   }, [])
 
   useEffect(() => {
-    window.localStorage.setItem('landn.ui-language', uiLanguage)
-    document.documentElement.lang = uiLanguage === 'zh-Hans' ? 'zh-CN' : uiLanguage === 'zh-Hant' ? 'zh-TW' : uiLanguage === 'yue' ? 'yue-HK' : 'en'
+    try { window.localStorage.setItem('landn.ui-language', uiLanguage) } catch { /* Selection works without persistent storage. */ }
+    document.documentElement.lang = uiLanguage === 'zh-Hans' ? 'zh-CN' : uiLanguage === 'zh-Hant' ? 'zh-TW' : uiLanguage === 'yue' ? 'yue-HK' : uiLanguage
+    document.documentElement.dir = uiLanguage === 'ar' ? 'rtl' : 'ltr'
     document.title = copy.appTitle
   }, [copy.appTitle, uiLanguage])
 
@@ -530,9 +531,9 @@ function App() {
         </div>
 
         <div className="word-area">
-          <span className="target-label">{copy.practice.target} /{exercise.target.toLowerCase()}/</span>
-          <h2>{exercise.word}</h2>
-          <p className="ipa">{exercise.ipa} <span>· {exerciseText.translation}</span></p>
+          <span className="target-label">{copy.practice.target} <bdi>/{exercise.target.toLowerCase()}/</bdi></span>
+          <h2 dir="ltr" lang={language}>{exercise.word}</h2>
+          <p className="ipa"><bdi dir="ltr">{exercise.ipa}</bdi> <span>· {exerciseText.translation}</span></p>
           <SoundSpelling exercise={exercise} copy={copy} />
           <button className="listen-button" data-testid="practice-model" title={copy.practice.studioTitle}
             aria-busy={studioPlaying} disabled={captureBusy || studioPlaying} onClick={() => void playStudio()}>

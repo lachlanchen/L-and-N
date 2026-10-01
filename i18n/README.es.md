@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@ L-and-N convierte un contraste difícil en un ciclo breve: ver la letra o carác
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## 12 idiomas de interfaz, tres de práctica
+
+El código actual admite los 11 idiomas de interfaz del perfil indicados abajo, más cantonés. Se traducen menús, principios de aprendizaje, etiquetas del modelo, comentarios, privacidad/compras y los significados de las 118 palabras. Los ocho idiomas añadidos usan indicaciones L/N concisas con tonos y finales pertinentes. Cambiar la interfaz no cambia palabras, audio ni evaluación. Árabe usa diseño de derecha a izquierda. La disponibilidad nativa consta en los recibos de publicación; este cambio no amplía la app de reloj independiente.
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12 idiomas de interfaz, tres de práctica](../docs/LOCALIZATION.md)
+
+## Ver la aplicación
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## Qué hace
 
-- Entrena 20 palabras inglesas en diez pares mínimos, además de ejercicios originales de mandarín y cantonés.
+- 59 pares mínimos: 16 ingleses, 22 de mandarín y 21 de cantonés, con significados e indicaciones localizados.
 - Destaca la letra o carácter objetivo y explica la posición de la lengua y el flujo de aire con lenguaje sencillo.
 - Incluye GPT-SoVITS en inglés y voces nativas chinas; escucharlas no depende de un servicio TTS activo.
 - Muestra la onda en vivo y el espectro del inicio para revelar silencio, saturación y tiempo, no como un medidor decorativo de «corrección».
@@ -27,7 +45,7 @@ L-and-N convierte un contraste difícil en un ciclo breve: ver la letra o carác
 
 ## Una puntuación que se puede inspeccionar
 
-El analizador local localiza el inicio sonoro, comprueba la calidad y combina energía nasal de baja frecuencia, una aproximación tipo A1–P0, espaciado F1/F2 aproximado, inclinación espectral, continuidad, reconocimiento de la palabra indicada y contraste del par mínimo. Los perfiles de referencia dependen del idioma y solo varias grabaciones buenas ajustan con cautela la base personal. Las pruebas débiles o contradictorias reducen la confianza y piden repetir.
+El reconocedor determina la palabra: si oye la pareja, limita la puntuación y explica por qué. El analizador localiza el inicio sonoro, comprueba la calidad y usa una pequeña red local (unos nueve mil parámetros) sobre los primeros 300 ms para distinguir inicio lateral o nasal. Se entrenó con más de once mil inicios /l/ y /n/ de clases grabadas y alcanza alrededor del 89% en grabaciones no vistas durante el entrenamiento. Los antiguos indicios espectrales solo ajustan levemente el resultado; evidencia débil o contradictoria reduce la confianza. No es precisión validada para todo teléfono o acento. [Detalles del modelo](../docs/research/onset-model.md).
 
 Es orientación para practicar, no diagnóstico, juicio de acento ni medición certificada. La onda muestra tiempo y saturación, pero no demuestra una consonante; tampoco se puede deducir una posición única de lengua solo desde el audio. El [informe de investigación](../docs/research/pronunciation-assessment.md) presenta método, límites y fuentes sobre L/N, GOP/CTC, tonos, retroalimentación visual e inversión articulatoria.
 

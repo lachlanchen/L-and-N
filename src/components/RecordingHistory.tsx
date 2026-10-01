@@ -55,9 +55,9 @@ export function RecordingHistory({ attempts, copy, language, visibleCount, onLoa
           return (
             <article key={`${attempt.exerciseId}-${attempt.createdAt}`} data-testid="history-attempt">
               <div className="history-word">
-                <strong>{item?.word ?? attempt.exerciseId}</strong>
+                <strong><bdi dir="ltr" lang={item?.language}>{item?.word ?? attempt.exerciseId}</bdi></strong>
                 <span>{copy.progress.target} /{(attempt.target ?? item?.target)?.toLowerCase() ?? '—'}/ · {copy.progress.detected} {attempt.detectedSound}</span>
-                {attempt.transcript && <span>{copy.score.heard}: {attempt.transcript}</span>}
+                {attempt.transcript && <span>{copy.score.heard}: <bdi>{attempt.transcript}</bdi></span>}
                 <time dateTime={attempt.createdAt}>{Number.isFinite(date.getTime()) ? dateFormat.format(date) : attempt.createdAt}</time>
                 {playbackError && playbackError.takeId === attempt.takeId && <p className="error-message" role="alert">{playbackError.message}</p>}
               </div>

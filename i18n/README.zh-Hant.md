@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@ L-and-N 把容易混淆的聲音變成短練習循環：看清單詞中的目標
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## 12種介面語言，3種練習語言
+
+目前原始碼支援下列個人資料的11種介面語言，並保留廣東話介面。選單、學習原理、模型標籤、評分回饋、私隱及購買提示、全部118個詞的釋義均已本地化。新增8種語言使用簡潔的L/N發音提示，並加入適用的聲調和詞尾指導。切換介面語言不會改變練習詞、音訊或評分。阿拉伯語使用由右至左版面。原生版本是否上線請以發佈記錄為準；此次改動不擴展獨立手錶應用程式的語言。
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12種介面語言，3種練習語言](../docs/LOCALIZATION.md)
+
+## 觀看應用程式
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## 功能
 
-- 英語包含 10 組最小對立、20 個詞，並有原創普通話及廣東話練習。
+- 59組最小對立：英語16組、普通話22組、廣東話21組，提供本地化釋義與發音提示。
 - 突出目標字母或漢字，以清楚的舌位和氣流提示協助練習。
 - 英語 GPT-SoVITS 與原生普通話、廣東話示範音已封裝在應用內，播放不依賴即時語音合成服務。
 - 即時波形與起始段頻譜用來發現靜音、削波和發音時機，不偽裝成「正確度動畫」。
@@ -27,7 +45,7 @@ L-and-N 把容易混淆的聲音變成短練習循環：看清單詞中的目標
 
 ## 可查看證據的評分
 
-本機評分器先定位有聲起始段和檢查錄音品質，再綜合低頻鼻音能量、A1–P0 類代理量、近似 F1/F2 距離、頻譜傾斜、連續性、提示詞辨識及最小對立結果。不同語言採用不同參考輪廓，只有多次高品質錄音才會謹慎調整個人基準。證據薄弱或矛盾時會降低信心並建議重錄。
+辨識器判斷講了哪個詞；若聽到對立詞，會限制分數並說明原因。分析器找到有聲起始段、檢查錄音品質，再用小型本地神經網絡（約9千個參數）分析最初300毫秒，判斷詞首更像邊音還是鼻音。模型用講課錄音中的1萬1千多個 /l/、/n/ 起始段訓練，在未用於訓練的錄音上約為89%。舊版頻譜指標僅輕微調整結果；證據弱或互相矛盾時降低可信度。這不是對所有手機和口音都已驗證的準確率。 [模型詳情](../docs/research/onset-model.md).
 
 這是練習回饋，不是醫療診斷、口音裁判或認證量測。波形能顯示時機與削波，但不能獨自證明說了哪個輔音；聲音也無法唯一反推出舌頭位置。[研究報告](../docs/research/pronunciation-assessment.md)說明方法、限制與 L/N、GOP/CTC、聲調、視覺回饋及發音反演文獻。
 

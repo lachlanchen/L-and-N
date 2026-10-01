@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## 12 لغة للواجهة، وثلاث لغات للتدريب
+
+يدعم المصدر الحالي لغات واجهة الملف الشخصي الإحدى عشرة أدناه، إضافة إلى الكانتونية. تُرجمت القوائم ومبادئ التعلم وتسميات النموذج وملاحظات التقييم ورسائل الخصوصية والشراء ومعاني الكلمات الـ118. تستخدم اللغات الثماني المضافة إرشادات موجزة لـL/N مع النغمات والنهايات المناسبة. تغيير لغة الواجهة لا يغيّر كلمات التدريب أو الصوت أو التقييم. الواجهة العربية من اليمين إلى اليسار. توفر النسخ الأصلية موثّق في سجلات الإصدار؛ تطبيق الساعة المنفصل غير مشمول بهذا التوسّع.
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12 لغة للواجهة، وثلاث لغات للتدريب](../docs/LOCALIZATION.md)
+
+## شاهد التطبيق
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## ماذا يقدم
 
-- عشرون كلمة إنجليزية ضمن عشرة أزواج دنيا، إضافة إلى تمارين أصلية للماندرين والكانتونية.
+- 59 زوجاً متقارباً: 16 بالإنجليزية و22 بالماندرين و21 بالكانتونية، مع معانٍ وإرشادات مترجمة.
 - إبراز الحرف أو الرمز المستهدف وشرح بسيط لموضع اللسان ومسار الهواء.
 - أصوات GPT-SoVITS الإنجليزية والأصوات الصينية الأصلية مضمّنة، فلا يحتاج الاستماع إلى خدمة TTS حية.
 - يعرض موجة حية وطيف بداية الصوت لرؤية الصمت والتشبع والتوقيت، وليس كمؤشر زخرفي يدّعي تحديد «الصحة».
@@ -27,7 +45,7 @@
 
 ## نتيجة يمكن فحص أدلتها
 
-يحدد المحلل المحلي بداية الصوت المجهور ويفحص جودة التسجيل، ثم يجمع طاقة الأنفية منخفضة التردد، ومقياساً تقريبياً من نوع A1–P0، والمسافة التقريبية بين F1 وF2، وميل الطيف، والاستمرارية، والتعرف على الكلمة المطلوبة، وتباين الزوج الأدنى. تختلف الملفات المرجعية بحسب اللغة، ولا تتغير القاعدة الشخصية إلا بحذر بعد عدة تسجيلات جيدة. تخفض الأدلة الضعيفة أو المتعارضة الثقة وتطلب إعادة المحاولة.
+يحدّد المتعرّف الكلمة المنطوقة؛ إذا سمع الكلمة المقابلة يُحدّ التقييم ويُذكر السبب. يجد المحلّل بداية الصوت ويفحص جودة التسجيل، ثم تستخدم شبكة محلية صغيرة (نحو تسعة آلاف معامل) أول 300 ملّي ثانية للتمييز بين البداية الجانبية والأنفية. دُرّبت على أكثر من أحد عشر ألف بداية /l/ و/n/ من تسجيلات محاضرات، وبلغت نحو 89% على تسجيلات لم ترها في التدريب. تؤثر المؤشرات الطيفية القديمة تأثيراً محدوداً فقط؛ الأدلة الضعيفة أو المتعارضة تخفض الثقة. هذه ليست دقة مثبتة لكل هاتف أو لهجة. [تفاصيل النموذج](../docs/research/onset-model.md).
 
 هذه مساعدة تدريبية وليست تشخيصاً أو حكماً على اللهجة أو قياساً معتمداً. تبين الموجة التوقيت والتشبع لكنها لا تثبت أي صامت، كما لا يمكن استنتاج موضع وحيد للسان من الصوت وحده. يشرح [تقرير البحث](../docs/research/pronunciation-assessment.md) المنهج وحدوده ومصادر L/N وGOP/CTC والنغمات والتغذية الراجعة البصرية وعكس النطق.
 

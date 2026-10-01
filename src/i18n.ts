@@ -1,9 +1,20 @@
 import type { PronunciationFeedback, PronunciationFeedbackCode, TrainingLanguage, UILanguage } from './types'
+import { addedLocales, extraUI, type AddedLocale } from './data/ui-extra'
+
+export type LegacyUILanguage = Exclude<UILanguage, AddedLocale>
 
 export const uiLanguageLabels: Record<UILanguage, string> = {
   en: 'English',
+  ar: 'العربية',
+  es: 'Español',
+  fr: 'Français',
+  ja: '日本語',
+  ko: '한국어',
+  vi: 'Tiếng Việt',
   'zh-Hans': '简体中文',
   'zh-Hant': '繁體中文',
+  de: 'Deutsch',
+  ru: 'Русский',
   yue: '廣東話',
 }
 
@@ -182,7 +193,7 @@ export interface UICopy {
   errors: { microphone: string; recording: string; silence: string; transcription: string; scoring: string }
 }
 
-const copies: Record<UILanguage, UICopy> = {
+const copies: Record<LegacyUILanguage, UICopy> = {
   en: {
     androidSpeech: {
       allow: 'Allow online word recognition',
@@ -622,18 +633,41 @@ const copies: Record<UILanguage, UICopy> = {
   },
 }
 
-export function initialUILanguage(): UILanguage {
-  const saved = window.localStorage.getItem('landn.ui-language')
-  if (saved && saved in copies) return saved as UILanguage
-  const locale = navigator.language.toLowerCase()
+export function resolveUILanguage(value: string): UILanguage {
+  if (Object.hasOwn(uiLanguageLabels, value)) return value as UILanguage
+  const locale = value.toLowerCase().replaceAll('_', '-')
   if (locale.startsWith('yue')) return 'yue'
-  if (locale.includes('hant') || locale.includes('hk') || locale.includes('tw')) return 'zh-Hant'
+  if (locale.startsWith('zh') && /hant|hk|tw|mo/.test(locale)) return 'zh-Hant'
   if (locale.startsWith('zh')) return 'zh-Hans'
+  const base = locale.split('-')[0]
+  if (addedLocales.includes(base as AddedLocale)) return base as AddedLocale
   return 'en'
 }
 
+export function initialUILanguage(): UILanguage {
+  try {
+    const saved = window.localStorage.getItem('landn.ui-language')
+    if (saved && Object.hasOwn(uiLanguageLabels, saved)) return saved as UILanguage
+  } catch { /* Private browsing can disable storage; language selection still works. */ }
+  return resolveUILanguage(navigator.language)
+}
+
+function translateTree(value: unknown, path: string, column: number): unknown {
+  if (typeof value === 'string') {
+    const translated = extraUI[path]?.[column]
+    if (!translated) throw new Error(`Missing UI translation: ${path}`)
+    return translated
+  }
+  if (Array.isArray(value)) return value.map((item, index) => translateTree(item, `${path}.${index}`, column))
+  return Object.fromEntries(Object.entries(value as Record<string, unknown>).map(([key, item]) =>
+    [key, translateTree(item, path ? `${path}.${key}` : key, column)]))
+}
+
+const additionalCopies = Object.fromEntries(addedLocales.map((locale, column) =>
+  [locale, translateTree(copies.en, '', column)])) as Record<AddedLocale, UICopy>
+
 export function uiCopy(language: UILanguage): UICopy {
-  return copies[language]
+  return Object.hasOwn(copies, language) ? copies[language as LegacyUILanguage] : additionalCopies[language as AddedLocale]
 }
 
 export function formatCopy(template: string, values: Record<string, string | number>): string {

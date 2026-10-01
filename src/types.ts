@@ -4,8 +4,16 @@ export type TrainingLanguage = 'en-US' | 'zh-CN' | 'yue-HK'
 
 export type UILanguage =
   | 'en'
+  | 'ar'
+  | 'es'
+  | 'fr'
+  | 'ja'
+  | 'ko'
+  | 'vi'
   | 'zh-Hans'
   | 'zh-Hant'
+  | 'de'
+  | 'ru'
   | 'yue'
 
 export interface Exercise {

@@ -10,6 +10,8 @@ import { extractAcousticFeatures } from './lib/acoustics'
 import * as speech from './lib/speech'
 import { exercises } from './data/curriculum'
 import { listeningPairs } from './lib/listening-exam'
+import { uiCopy, uiLanguageLabels } from './i18n'
+import { addedLocales } from './data/ui-extra'
 
 const audioCaptureMocks = vi.hoisted(() => ({
   startAudioCapture: vi.fn(),
@@ -194,6 +196,33 @@ describe('web store links', () => {
 })
 
 describe('language and sound controls', () => {
+  it.each(addedLocales)('uses %s UI across tabs without changing practice words or language', async (locale) => {
+    render(<App />)
+    const picker = screen.getByTestId('ui-language-picker')
+    expect(picker.querySelectorAll('option')).toHaveLength(12)
+    expect(picker.textContent).toContain(uiLanguageLabels.yue)
+    fireEvent.change(picker, { target: { value: locale } })
+    const copy = uiCopy(locale)
+    expect(screen.getByRole('heading', { level: 2, name: 'light' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: copy.practice.startRecording })).toBeTruthy()
+    expect(document.documentElement.dir).toBe(locale === 'ar' ? 'rtl' : 'ltr')
+    expect(document.documentElement.lang).toBe(locale)
+    fireEvent.click(screen.getByTestId('practice-language-yue-HK'))
+    const practiceWord = screen.getByRole('heading', { level: 2 }).textContent
+    expect(screen.getByTestId('app-root').getAttribute('data-practice-language')).toBe('yue-HK')
+    fireEvent.click(screen.getByRole('button', { name: copy.nav.learn }))
+    expect(screen.getByRole('heading', { name: copy.learn.title })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: copy.nav.progress }))
+    expect(screen.getByRole('heading', { name: copy.progress.title })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: copy.nav.listen }))
+    expect(screen.getByRole('heading', { name: copy.listen.title })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: copy.nav.practice }))
+    fireEvent.change(picker, { target: { value: 'en' } })
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toBe(practiceWord)
+    expect(screen.getByTestId('app-root').getAttribute('data-practice-language')).toBe('yue-HK')
+    await waitFor(() => expect(window.localStorage.getItem('landn.ui-language')).toBe('en'))
+  })
+
   it('keeps interface language independent from practice language', async () => {
     render(<App />)
 

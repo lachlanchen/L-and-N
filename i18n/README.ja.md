@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@ L-and-N は、難しい音の対立を短い練習サイクルにします。単
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## 12の表示言語、3つの練習言語
+
+現在のソースは、下記のプロフィールの11言語に加え、広東語のUIにも対応します。メニュー、学習原理、モデルのラベル、評価の説明、プライバシー・購入メッセージ、全118語の意味を翻訳しています。追加8言語では、声調や語末に応じた簡潔なL/Nの指導を表示します。表示言語を変えても練習語、音声、採点は変わりません。アラビア語は右から左のレイアウトです。ネイティブ版の公開状況はリリース記録を参照してください。独立したWatch版の言語拡張はこの変更に含みません。
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12の表示言語、3つの練習言語](../docs/LOCALIZATION.md)
+
+## アプリを見る
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## できること
 
-- 英語 10 組・20 語のミニマルペアと、独自の普通話・広東語練習を収録しています。
+- 最小対立59組：英語16組、普通話22組、広東語21組。意味と指導を各表示言語で提供します。
 - 対象文字や漢字を強調し、舌の位置と空気の流れを平易な言葉で示します。
 - 英語 GPT-SoVITS と中国語ネイティブ音声をアプリに同梱し、再生時にオンライン TTS は不要です。
 - ライブ波形と開始部スペクトルは無音、クリッピング、タイミングを確認するためのものです。見栄えだけの正答メーターにはしません。
@@ -27,7 +45,7 @@ L-and-N は、難しい音の対立を短い練習サイクルにします。単
 
 ## 根拠を確認できるスコア
 
-端末内スコアラーは有声開始点と録音品質を調べ、低域の鼻音エネルギー、A1–P0 型の代理値、おおよその F1/F2 間隔、スペクトル傾斜、連続性、提示語の認識、ミニマルペアの結果を組み合わせます。言語ごとの参照プロファイルを使い、複数回の良質な録音がある場合だけ個人基準を慎重に調整します。証拠が弱い、または矛盾するときは信頼度を下げ、再録音を促します。
+認識器が発話した語を判定し、対立語を認識した場合は点数を制限して理由を示します。分析器は有声開始点と録音品質を確認し、小さな端末内ネットワーク（約9千パラメータ）で最初の300 msが側音か鼻音かを推定します。講義録音の /l/・/n/ の開始部1万1千件超で学習し、学習に使わない録音で約89%を示しました。以前のスペクトル指標は微調整にだけ使い、弱い・矛盾する証拠では信頼度を下げます。すべての端末・アクセントで検証済みの精度ではありません。 [モデルの詳細](../docs/research/onset-model.md).
 
 これは練習用フィードバックであり、診断、訛りの判定、認証された測定ではありません。波形だけでは子音を確定できず、音声から舌位置を一意に逆算することもできません。[研究レポート](../docs/research/pronunciation-assessment.md)に L/N、GOP/CTC、声調、視覚フィードバック、調音逆推定の根拠と限界をまとめています。
 

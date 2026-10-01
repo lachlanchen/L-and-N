@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@ L-and-N transforme un contraste difficile en une boucle courte : voir la lettre 
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## 12 langues d’interface, trois langues de pratique
+
+Le code actuel prend en charge les 11 langues du profil ci-dessous, plus le cantonais. Menus, principes, étiquettes du modèle, retours, messages de confidentialité/achat et sens des 118 mots sont traduits. Les huit langues ajoutées emploient des conseils L/N concis avec les tons et finales pertinents. Changer l’interface ne change ni mots, ni audio, ni évaluation. L’arabe s’affiche de droite à gauche. Les reçus de publication indiquent la disponibilité native ; ce changement n’étend pas l’application montre distincte.
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12 langues d’interface, trois langues de pratique](../docs/LOCALIZATION.md)
+
+## Voir l’application
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## Fonctionnalités
 
-- Entraîne 20 mots anglais en dix paires minimales, avec des exercices originaux en mandarin et cantonais.
+- 59 paires minimales : 16 anglaises, 22 en mandarin et 21 en cantonais, avec sens et conseils traduits.
 - Met en évidence la lettre ou le caractère cible et explique simplement la position de la langue et le flux d'air.
 - Des modèles GPT-SoVITS anglais et des voix chinoises natives sont intégrés ; leur écoute ne dépend pas d'un service TTS en ligne.
 - L'onde en direct et le spectre d'attaque montrent silence, saturation et timing, sans prétendre être une jauge de « justesse ».
@@ -27,7 +45,7 @@ L-and-N transforme un contraste difficile en une boucle courte : voir la lettre 
 
 ## Un score vérifiable
 
-L'analyse locale repère l'attaque voisée, contrôle la qualité puis combine plusieurs indices : énergie nasale grave, approximation de type A1–P0, espacement F1/F2 approximatif, pente spectrale, continuité, reconnaissance du mot demandé et contraste de la paire minimale. Les références dépendent de la langue et plusieurs bons enregistrements sont nécessaires avant toute adaptation personnelle. Des indices faibles ou contradictoires diminuent la confiance et invitent à recommencer.
+Le reconnaisseur détermine le mot : s’il entend le mot opposé, le score est plafonné et expliqué. L’analyse trouve le début voisé, vérifie la qualité et utilise un petit réseau local (environ neuf mille paramètres) sur les 300 premières ms pour distinguer une attaque latérale ou nasale. Entraîné sur plus de onze mille attaques /l/ et /n/ de cours enregistrés, il atteint environ 89 % sur des enregistrements absents de l’entraînement. Les anciens indices spectraux n’apportent qu’un léger ajustement ; des preuves faibles ou contradictoires réduisent la confiance. Ce n’est pas une précision validée pour chaque téléphone ou accent. [Détails du modèle](../docs/research/onset-model.md).
 
 Ce retour sert à s'entraîner : ce n'est ni un diagnostic, ni un jugement d'accent, ni une mesure certifiée. Une onde révèle timing et saturation mais ne prouve pas une consonne, et l'audio ne permet pas de retrouver une position unique de langue. Le [rapport de recherche](../docs/research/pronunciation-assessment.md) explique méthode et limites avec les travaux sur L/N, GOP/CTC, tons, retour visuel et inversion articulatoire.
 

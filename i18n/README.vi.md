@@ -1,6 +1,8 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-![LazyingArt banner](../docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,9 +18,25 @@ L-and-N biến một cặp âm dễ nhầm thành vòng luyện tập ngắn: nh
 
 <p align="center"><a href="https://apps.apple.com/us/app/l-n-speech-practice/id6808872450"><img src="../docs/images/store-app-store.png" width="48%" alt="L &amp; N: Speech Practice on the App Store"></a> <a href="https://play.google.com/store/apps/details?id=art.lazying.landn"><img src="../docs/images/store-google-play.png" width="48%" alt="L &amp; N: Speech Practice on Google Play"></a></p>
 
+## 12 ngôn ngữ giao diện, ba ngôn ngữ luyện tập
+
+Mã nguồn hiện tại hỗ trợ 11 ngôn ngữ giao diện của hồ sơ bên dưới, cộng tiếng Quảng Đông. Menu, nguyên lý học, nhãn mô hình, phản hồi điểm, thông báo riêng tư/mua hàng và nghĩa của cả 118 từ đã được dịch. Tám ngôn ngữ thêm vào dùng hướng dẫn L/N ngắn với thanh và âm cuối phù hợp. Đổi giao diện không đổi từ luyện, âm thanh hay chấm điểm. Tiếng Ả Rập hiển thị từ phải sang trái. Tình trạng bản gốc theo biên nhận phát hành; thay đổi này không mở rộng ứng dụng đồng hồ riêng.
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12 ngôn ngữ giao diện, ba ngôn ngữ luyện tập](../docs/LOCALIZATION.md)
+
+## Xem ứng dụng
+
+English · 中文
+
+<video src="https://github.com/user-attachments/assets/036ebbdf-ab34-4761-875e-46470074aff8" controls width="320"></video>
+
+<video src="https://github.com/user-attachments/assets/f13a2ea0-ca16-4d40-8f3b-478e5b5e7792" controls width="320"></video>
+
 ## Tính năng
 
-- Luyện 20 từ tiếng Anh trong mười cặp tối thiểu, cùng bài tập Quan thoại và Quảng Đông nguyên bản.
+- 59 cặp tối thiểu: 16 tiếng Anh, 22 Quan thoại, 21 Quảng Đông, với nghĩa và hướng dẫn đã dịch.
 - Làm nổi chữ cái hoặc chữ Hán mục tiêu và hướng dẫn vị trí lưỡi, luồng khí bằng lời dễ hiểu.
 - Âm GPT-SoVITS tiếng Anh và giọng Hoa bản địa được đóng gói sẵn, không cần TTS trực tuyến khi nghe.
 - Sóng âm trực tiếp và phổ đoạn đầu giúp thấy im lặng, quá biên và thời điểm; chúng không giả làm thước đo “đúng”.
@@ -27,7 +45,7 @@ L-and-N biến một cặp âm dễ nhầm thành vòng luyện tập ngắn: nh
 
 ## Điểm số có thể kiểm tra
 
-Bộ phân tích cục bộ tìm khởi đầu hữu thanh, kiểm tra chất lượng, rồi kết hợp năng lượng mũi dải thấp, đại lượng gần A1–P0, khoảng F1/F2 ước lượng, độ nghiêng phổ, tính liên tục, nhận dạng từ được nhắc và độ phân biệt cặp tối thiểu. Hồ sơ tham chiếu tùy ngôn ngữ và chỉ nhiều bản thu tốt mới điều chỉnh nền cá nhân một cách dè dặt. Bằng chứng yếu hoặc mâu thuẫn sẽ hạ độ tin cậy và yêu cầu thử lại.
+Bộ nhận dạng quyết định từ đã nói; nếu nghe từ đối lập, điểm bị giới hạn và có giải thích. Bộ phân tích tìm điểm bắt đầu hữu thanh, kiểm tra chất lượng và dùng mạng nhỏ trên thiết bị (khoảng chín nghìn tham số) với 300 ms đầu để phân biệt âm bên và âm mũi. Mạng học từ hơn mười một nghìn đoạn đầu /l/ và /n/ trong bài giảng, đạt khoảng 89% trên bản ghi không dùng để huấn luyện. Dấu hiệu phổ cũ chỉ điều chỉnh nhẹ; bằng chứng yếu hoặc mâu thuẫn giảm độ tin cậy. Đây không phải độ chính xác đã kiểm chứng trên mọi điện thoại hay giọng. [Chi tiết mô hình](../docs/research/onset-model.md).
 
 Đây là phản hồi luyện tập, không phải chẩn đoán, phán xét giọng hay phép đo được chứng nhận. Sóng âm cho biết thời điểm và quá biên nhưng không chứng minh phụ âm; âm thanh cũng không xác định duy nhất vị trí lưỡi. [Báo cáo nghiên cứu](../docs/research/pronunciation-assessment.md) trình bày phương pháp, giới hạn và nguồn về L/N, GOP/CTC, thanh điệu, phản hồi thị giác và bài toán ngược cấu âm.
 

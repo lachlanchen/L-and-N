@@ -1,6 +1,8 @@
 [English](README.md) · [العربية](i18n/README.ar.md) · [Español](i18n/README.es.md) · [Français](i18n/README.fr.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [Tiếng Việt](i18n/README.vi.md) · [中文 (简体)](i18n/README.zh-Hans.md) · [中文（繁體）](i18n/README.zh-Hant.md) · [Deutsch](i18n/README.de.md) · [Русский](i18n/README.ru.md)
 
-![LazyingArt banner](docs/images/banner.svg)
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+[![PWA](https://img.shields.io/badge/PWA-L_%26_N-13A99B?style=for-the-badge)](https://l-and-n.lazying.art) [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-lachlanchen-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
 
 # L-and-N
 
@@ -16,6 +18,14 @@ The web app is free and needs no account. On Google Play the app installs free w
 
 L-and-N turns a small but frustrating speech contrast into a short practice loop: see the letter inside the word, hear a studio model, watch the signal, record, and receive an explained score. The same curriculum runs as an installable PWA, Android app, iPhone/iPad app, and a compact watchOS drill.
 
+## 12 UI languages, three practice languages
+
+The current source supports the 11 profile UI languages below, plus Cantonese. Menus, Learn principles, model labels, score feedback, privacy/purchase messages and all 118 word meanings are localized. The eight added languages use concise L/N coaching cues with relevant tone and ending guidance. Changing UI language does not change practice words, audio or scoring. Arabic has right-to-left layout. Native store availability follows the release receipts; the separate watch companion is not expanded by this change.
+
+English · العربية · Español · Français · 日本語 · 한국어 · Tiếng Việt · 简体中文 · 繁體中文 · Deutsch · Русский · 廣東話
+
+[12 UI languages, three practice languages](docs/LOCALIZATION.md)
+
 ## Watch the app
 
 English demo · subtitled
@@ -30,7 +40,7 @@ English demo · subtitled
 
 ## What it does
 
-- Trains 59 minimal pairs: 16 English (light/night, line/nine, lead/need …), 22 Mandarin covering every final (韵母) that takes both l- and n- (蓝/南, 里/你, 辣/纳, 类/内, 零/宁, 略/虐 …) and 21 Cantonese finals (你/理, 男/藍, 犁/泥, 立/納, 落/諾, 亂/嫩 …), each with cues in every interface language.
+- Trains 59 minimal pairs: 16 English, 22 Mandarin and 21 Cantonese, with localized meanings and coaching cues.
 - Highlights the target letter or Han character and gives a plain-language tongue/airflow cue.
 - Bundles studio audio generated at release time with one native neural voice per language and verified by a recognizer and the app's own onset model (`tools/audio/synthesize_word_clips.py`), so listening never depends on a live TTS service. The studio example says the word twice; the exam concatenates verified single-word clips.
 - Trains the ear as well as the mouth: the Listen tab plays a random run of one minimal pair, such as “light night light light night”, in rounds of 3, 5 or 7 words, and you tap the word you heard at each position before submitting. Method and limits: [docs/research/listening-exam.md](docs/research/listening-exam.md)
@@ -40,13 +50,13 @@ English demo · subtitled
 
 ## A score you can inspect
 
-The recognizer decides which word was said: if it heard the paired word, the score is capped and says so. The scorer then finds the voiced onset, checks recording quality, and runs a small on-device neural network (about nine thousand parameters, plain TypeScript, no download) over the first 300 ms to judge whether the onset was lateral or nasal. The network was trained on more than eleven thousand real /l/ and /n/ word onsets cut from lecture recordings with Whisper word timestamps and reaches about 89 % on unseen recordings; the older hand-tuned spectral cues (low-band energy, an A1–P0 proxy, F1/F2 spacing, tilt) now only nudge it. Weak or contradictory evidence lowers confidence and asks for another attempt. Details and limits: [docs/research/onset-model.md](docs/research/onset-model.md).
+The recognizer determines the word; hearing its paired word caps the score with an explanation. A small on-device network (about nine thousand parameters) examines the first 300 ms for lateral/nasal evidence. Trained on over eleven thousand /l/ and /n/ lecture-recording onsets, it reached about 89% on held-out recordings—not validated accuracy for every phone or accent. Spectral cues make only small adjustments; weak or conflicting evidence lowers confidence. [Model evidence and limits](docs/research/onset-model.md).
 
 This is a coaching signal, not a diagnosis or a certified accent judgment. A waveform reveals silence, clipping, and timing, but cannot prove which consonant was spoken. Audio alone also cannot uniquely recover tongue position. The design and limitations are documented in [the research report](docs/research/pronunciation-assessment.md), with links to the L/N, GOP/CTC, tone, visual-biofeedback, and articulatory-inversion literature.
 
 ## Privacy and speech services
 
-Acoustic features, scores, progress, and calibration run locally. On iOS, one native audio-engine stream supplies the waveform, local acoustic analysis, and operating-system speech recognition together; the app does not compete with itself for the microphone. The hosted PWA normally tries compatible browser speech recognition first; the browser or platform may process that recognition through its own service. On iPhone and iPad web, L & N instead records one stream so the waveform and recorder do not compete, then transcribes that same short clip after the user stops. When browser recognition is unavailable, fails, or returns no text, an attempt may be sent transiently through a same-origin, rate-limited gateway to the private Whisper service for a word-level cross-check. The gateway accepts only the exact transcription route from this origin, limits size and concurrency, does not log or store audio, and returns `Cache-Control: no-store`. If transcription is unavailable, the waveform remains visible but no score is displayed or saved.
+Acoustics, scores, progress and calibration run locally. iOS shares one native audio stream between waveform, analysis and system recognition. The PWA normally tries browser recognition, whose provider may process audio online. iPhone/iPad web records one stream and transcribes it after stopping. Unavailable, failed or empty recognition may send the short clip transiently through a same-origin, rate-limited gateway to private Whisper. It permits only the transcription route, limits size/concurrency and neither logs nor stores audio (`Cache-Control: no-store`). Without transcription, the waveform remains available but no score is shown or saved.
 
 The public browser never receives LazyEdge credentials and never connects directly to the private model service. All packaged studio examples are static audio assets generated and intelligibility-checked at release time.
 

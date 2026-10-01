@@ -35,7 +35,7 @@ describe('recording history', () => {
     expect(screen.getByText('75 of 75 attempts')).toBeInTheDocument()
     fireEvent.click(screen.getAllByTestId('history-play')[74])
     expect(onPlay).toHaveBeenCalledExactlyOnceWith('take-74')
-    expect(screen.getAllByText('Recognizer heard: light')).toHaveLength(75)
+    expect(screen.getAllByText((_text, element) => element?.tagName === 'SPAN' && element.textContent === 'Recognizer heard: light')).toHaveLength(75)
   })
 
   it('loads the next batch on scrolling and ignores stale or duplicate observer events', () => {
