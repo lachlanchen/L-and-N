@@ -133,6 +133,7 @@ export function validateCapturedAudio(
 ): void {
   const essentialValues = [
     features.rms,
+    features.speechRms ?? features.rms,
     features.durationMs,
     features.signalQuality,
     features.spectralCentroidHz,
@@ -140,7 +141,7 @@ export function validateCapturedAudio(
   if (rawBytes < 256 || features.waveform.length < 8 || essentialValues.some((value) => !Number.isFinite(value))) {
     throw new AudioCaptureError('empty-recording', 'The recorder returned no decodable audio samples.')
   }
-  if (features.rms < 0.0018 || features.durationMs < 120) {
+  if ((features.speechRms ?? features.rms) < 0.0008 || features.durationMs < 100) {
     throw new AudioCaptureError('silent-recording', 'The recording did not contain a clear spoken sound.')
   }
 }

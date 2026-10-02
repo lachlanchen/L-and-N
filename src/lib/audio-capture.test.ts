@@ -41,6 +41,20 @@ describe('captured-audio validation', () => {
 
     expect(() => validateCapturedAudio(features, samples.byteLength)).not.toThrow()
   })
+
+  it('does not call a quiet Android word empty because its onset is quieter than the vowel', () => {
+    const samples=new Float32Array(16000)
+    for(let i=1600;i<6400;i++) {
+      const amplitude=i<4800?0.002:0.006
+      samples[i]=amplitude*Math.sin(2*Math.PI*190*i/16000)
+    }
+    const features=extractAcousticFeatures(samples,16000)
+    expect(features.rms).toBeLessThan(0.0018)
+    expect(features.speechRms).toBeGreaterThan(0.0018)
+    expect(features.durationMs).toBeGreaterThan(240)
+    expect(features.pitchContour.some(p=>p>0)).toBe(true)
+    expect(() => validateCapturedAudio(features,samples.byteLength)).not.toThrow()
+  })
 })
 
 describe('web capture startup', () => {

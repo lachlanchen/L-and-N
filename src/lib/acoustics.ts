@@ -88,7 +88,7 @@ function estimatePitchContour(samples: Float32Array, sampleRate: number): number
   // at 48 kHz each pitch estimate is expensive on mobile CPUs.
   for (let offset = 0; offset + windowSize <= samples.length && contour.length < 36; offset += stepSize) {
     const frame = samples.slice(offset, offset + windowSize)
-    contour.push(rms(frame) >= 0.006 ? estimatePitch(frame, sampleRate) : 0)
+    contour.push(rms(frame) >= 0.0006 ? estimatePitch(frame, sampleRate) : 0)
   }
   return contour.slice(0, 36).map((value) => Number(value.toFixed(2)))
 }
@@ -158,7 +158,7 @@ export function extractAcousticFeatures(samples: Float32Array, sampleRate: numbe
   // A nasal murmur sits 10–20 dB below the following vowel. A 14 % peak
   // threshold (−17 dB) skipped it and measured the vowel instead, so the
   // onset window starts at 5 % of the peak (−26 dB) once the noise floor allows.
-  const threshold = Math.max(0.003, noiseFloor * 2.8, peakFrame * 0.05)
+  const threshold = Math.max(0.0006, noiseFloor * 2.8, peakFrame * 0.05)
   let firstActiveFrame = frameRms.findIndex(
     (value, index) => value >= threshold && (frameRms[index + 1] ?? value) >= threshold,
   )
@@ -201,7 +201,8 @@ export function extractAcousticFeatures(samples: Float32Array, sampleRate: numbe
       0,
     )
   const centroid = powers.reduce((sum, power, index) => sum + power * frequencies[index], 0) / totalPower
-  const activeFrames = frameRms.filter((value) => value >= peakFrame * 0.28).length
+  const wordFrames = frameRms.slice(firstActiveFrame, lastActiveFrame + 1)
+  const activeFrames = wordFrames.filter((value) => value >= peakFrame * 0.28).length
   const pitchHz = estimatePitch(centered, sampleRate)
   const fourthHarmonic = pitchHz ? Math.min(1800, pitchHz * 4) : 400
   const tiltLowPower = goertzelPower(centered, sampleRate, fourthHarmonic)
@@ -223,15 +224,24 @@ export function extractAcousticFeatures(samples: Float32Array, sampleRate: numbe
   })
   const snrDb = 20 * Math.log10((peakFrame + 1e-6) / (noiseFloor + 1e-6))
   const activeDurationMs = ((activeEnd - activeStart) / sampleRate) * 1000
+  // Capture validity concerns the whole word, not the Hann-windowed initial
+  // 240 ms. A correct nasal onset can be much quieter than its following vowel,
+  // particularly with Android's unprocessed microphone gain.
+  const activeWord=samples.subarray(activeStart,activeEnd)
+  const wordMean=activeWord.reduce((sum,value)=>sum+value,0)/activeWord.length
+  const speechRms=Math.sqrt(activeWord.reduce((sum,value)=>sum+(value-wordMean)**2,0)/activeWord.length)
   const clipped = samples.reduce((count, sample) => count + (Math.abs(sample) >= 0.985 ? 1 : 0), 0) / samples.length
   const signalQuality = clamp(
     clamp((snrDb - 6) / 24) * 0.52 +
-      clamp((activeDurationMs - 180) / 520) * 0.3 +
+      // A natural monosyllable does not need to be held for 700 ms. Enough
+      // frames for a stable onset matter; stretching is not signal quality.
+      clamp((activeDurationMs - 80) / 160) * 0.3 +
       (1 - clamp(clipped / 0.015)) * 0.18,
   )
 
   return {
     rms: Math.sqrt(sumSquares / centered.length),
+    speechRms,
     noiseFloor,
     zeroCrossingRate: crossings / Math.max(1, centered.length - 1),
     lowBandRatio: clamp(bandPower(150, 450) / totalPower),
@@ -245,7 +255,7 @@ export function extractAcousticFeatures(samples: Float32Array, sampleRate: numbe
     formantSpacingHz,
     firstFormantBandwidthHz,
     nasalPeakContrastDb: Number.isFinite(nasalPeakContrastDb) ? nasalPeakContrastDb : 0,
-    voicedContinuity: clamp(activeFrames / Math.max(1, frameRms.length)),
+    voicedContinuity: clamp(activeFrames / Math.max(1, wordFrames.length)),
     durationMs: activeDurationMs,
     onsetMs: (activeStart / sampleRate) * 1000,
     onsetDurationMs: ((onsetEnd - activeStart) / sampleRate) * 1000,

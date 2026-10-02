@@ -74,6 +74,16 @@ describe('hybrid pronunciation score', () => {
     expect(score.detectionSource).toBe('acoustic')
     expect(score.feedback.some((item) => item.code === 'recognitionUnavailable')).toBe(true)
   })
+
+  it('does not penalize or ask to stretch a clear short monosyllable', () => {
+    const short = scorePronunciation(exercise, 'light', { ...lLikeFeatures, durationMs: 220 })
+    expect(short.delivery).toBeGreaterThanOrEqual(90)
+    expect(short.feedback.some((item) => item.code === 'holdLonger')).toBe(false)
+    const briefRecognized = scorePronunciation(exercise, 'light', { ...lLikeFeatures, durationMs: 120 })
+    expect(briefRecognized.feedback.some((item) => item.code === 'holdLonger')).toBe(false)
+    const unresolved = scorePronunciation(exercise, '', { ...lLikeFeatures, durationMs: 120 })
+    expect(unresolved.feedback.some((item) => item.code === 'holdLonger')).toBe(true)
+  })
 })
 
 describe('recognizer-anchored sound detection', () => {

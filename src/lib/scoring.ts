@@ -368,7 +368,7 @@ export function scorePronunciation(
   const delivery = clampScore(
     (features.signalQuality * 0.5 +
       features.voicedContinuity * 0.25 +
-      Math.min(1, features.durationMs / 700) * 0.25) *
+      Math.min(1, features.durationMs / 240) * 0.25) *
       100,
   )
   const tone = scoreTone(exercise, features)
@@ -409,7 +409,9 @@ export function scorePronunciation(
   }
 
   if (features.signalQuality < 0.4) feedback.push({ code: 'signalLimited' })
-  if (features.durationMs < 350) feedback.push({ code: 'holdLonger' })
+  // Do not tell learners to unnaturally stretch a clearly recognized "low"
+  // or "no". Only a very brief, unresolved take needs another onset sample.
+  if (features.durationMs < 140 && recognizedSound === null) feedback.push({ code: 'holdLonger' })
   if (tone !== null && tone < 62) feedback.push({ code: 'toneShape', value: exercise.tone })
   if (calibration?.L || calibration?.N) feedback.push({ code: 'personalized' })
 

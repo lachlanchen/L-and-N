@@ -35,6 +35,8 @@ export interface Exercise {
 
 export interface AcousticFeatures {
   rms: number
+  /** Unwindowed AC level over the active word, distinct from the quieter onset. */
+  speechRms?: number
   noiseFloor: number
   zeroCrossingRate: number
   lowBandRatio: number

@@ -12,4 +12,20 @@ describe('bounded pitch analysis', () => {
     expect(long.onsetNasalProbability).toBe(short.onsetNasalProbability)
     expect(long.durationMs).toBeGreaterThan(short.durationMs)
   })
+
+  it('measures word continuity without penalizing normal auto-stop silence', () => {
+    const rate = 16000
+    const word = Float32Array.from({ length: rate * .22 }, (_, index) =>
+      .08 * Math.sin(2 * Math.PI * 190 * index / rate))
+    const short = new Float32Array(word.length + rate * .15)
+    short.set(word, rate * .05)
+    const padded = new Float32Array(word.length + rate)
+    padded.set(word, rate * .05)
+    const a = extractAcousticFeatures(short, rate)
+    const b = extractAcousticFeatures(padded, rate)
+    expect(a.voicedContinuity).toBeGreaterThan(.85)
+    expect(b.voicedContinuity).toBeCloseTo(a.voicedContinuity, 1)
+    expect(b.signalQuality).toBeGreaterThan(.9)
+    expect(b.durationMs).toBeLessThan(260)
+  })
 })
